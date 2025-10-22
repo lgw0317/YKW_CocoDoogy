@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -98,11 +97,30 @@ public class PlayerMovement : MonoBehaviour
         Quaternion targetRot = Quaternion.LookRotation(new Vector3(finalDir.x, 0, finalDir.z), Vector3.up);
         Quaternion smoothRot = Quaternion.Slerp(rb.rotation, targetRot, rotateLerp * Time.fixedDeltaTime);
         rb.MoveRotation(smoothRot);
+
+        // 방향 벡터 계산 후, 이동 시도한 위치 앞에 푸시 가능한 오브젝트가 있으면
+        Ray ray = new Ray(rb.position + Vector3.up * 0.5f, moveDir);
+        if (Physics.Raycast(ray, out RaycastHit hit, 1.1f, pushable))
+        {
+            if (hit.collider.TryGetComponent<PushableObjects>(out var pushableObj))
+            {
+                Vector2Int dir = To4Direction(moveDir);
+                pushableObj.StartPushAttempt(dir);
+            }
+        }
+        else
+        {
+            foreach(var obj in FindObjectsOfType<PushableObjects>())
+            {
+                obj.StopPushAttempt();
+            }
+        }
+
     }
 
     bool TryGetGround(out Vector3 groundNormal)
     {
-        // 캡슐 아래반 측정: 플레이어 콜라이더 기준으로
+        // 캡슐 아래 측정: 플레이어 콜라이더 기준으로
         groundNormal = Vector3.up;
 
         var pos = rb.position + Vector3.up * (groundProbeRadius + groundProbeExtra);
@@ -115,6 +133,13 @@ public class PlayerMovement : MonoBehaviour
             return true;
         }
         return false;
+    }
+    Vector2Int To4Direction(Vector3 dir)
+    {
+        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.z))
+            return dir.x > 0 ? Vector2Int.right : Vector2Int.left;
+        else
+            return dir.z > 0 ? Vector2Int.up : Vector2Int.down;
     }
 
     bool TryStepUp(Vector3 moveDir, out Vector3 stepOffset)
@@ -138,15 +163,5 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         return false;
-    }
-
-    bool IsCellBlocked(Vector3 cellCenter)
-    {
-        float half = tileSize * 0.45f;
-        Vector3 halfExt = new Vector3(half, tileSize * 0.6f, half);
-        return Physics.CheckBox(
-            cellCenter, halfExt, Quaternion.identity,
-            blocking, QueryTriggerInteraction.Ignore
-        );
     }
 }

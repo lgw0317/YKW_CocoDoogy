@@ -2,6 +2,7 @@
 
 public interface IPushable
 {
-    bool RequestPush(Vector3 axis);
     bool IsMoving { get; }
+    Vector3 originPos { get; }
+    Vector3 targetPos { get; }
 }
