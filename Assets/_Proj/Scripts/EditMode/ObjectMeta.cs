@@ -1,17 +1,23 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 [DisallowMultipleComponent]
 public class ObjectMeta : MonoBehaviour
 {
     [Header("Meta")]
-    public string displayName = "ÀÌ¸§ ¾øÀ½";
-    [TextArea] public string description = "¼³¸íÀÌ ¾ø½À´Ï´Ù.";
-    public Sprite icon; // ¼±ÅÃ»çÇ×
+    [SerializeField] private string displayName = "ì´ë¦„ ì—†ìŒ";
+    [TextArea, SerializeField] private string description = "ì„¤ëª…ì´ ì—†ìŠµë‹ˆë‹¤.";
 
-    // ÆíÀÇ: ÆĞ³Î¿¡ ³ª ÀÚ½ÅÀ» Ç¥½Ã
-    public void ShowInfo(InfoPanel panel)
+    public string DisplayName => displayName;
+    public string Description => description;
+
+    public void ShowInfo()
     {
-        if (!panel) return;
-        panel.Show(displayName, description, icon);
+        var panel = InfoPanel.FindInScene();
+        if (!panel)
+        {
+            Debug.LogWarning("[ObjectMeta] InfoPanelì„ ì”¬ì—ì„œ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.");
+            return;
+        }
+        panel.Show(displayName, description);
     }
 }

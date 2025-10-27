@@ -6,62 +6,61 @@ using TouchES = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 /// <summary>
 /// QuarterView
-/// - 피벗(Tracking Target)을 중심으로 카메라 궤도 회전(Yaw/Pitch) + 거리(줌)를 제어.
-/// - 마우스 드래그/한 손가락 드래그: 회전, 휠/핀치: 줌.
+/// - 피벗(Tracking Target)을 기준으로 카메라의 궤도 회전(Yaw/Pitch) + 거리(줌)를 제어합니다.
+/// - 마우스/한 손가락 드래그: 회전, 마우스 휠/핀치: 줌.
 /// - 오브젝트 드래그 중(EditModeController.BlockOrbit)에는 "회전"만 차단(줌은 허용).
-/// - FollowOffset(y,z)만 다루므로 CinemachineFollow가 필요.
+/// - CinemachineCamera + CinemachineFollow 조합에서 FollowOffset(y,z)만 조정합니다.
 /// </summary>
 public class QuarterView : MonoBehaviour
 {
-    #region === Serialized Config ===
+    #region === Inspector ===
     [Header("Cinemachine")]
-    [Tooltip("CM_FollowCamera")]
-    public CinemachineCamera cm;                 // Inspector 할당 권장
+    [Tooltip("CM_FollowCamera (CinemachineCamera 컴포넌트)")]
+    [SerializeField] private CinemachineCamera cm;
 
-    [Header("Sensitivity")]
+    [Header("감도 (Sensitivity)")]
     [Tooltip("좌우 회전 감도 (px -> deg)")]
-    public float yawSpeed = 0.6f;
+    [SerializeField] private float yawSpeed = 0.6f;
     [Tooltip("상하 회전 감도 (px -> deg)")]
-    public float pitchSpeed = 0.4f;
-    [Tooltip("줌 감도 (scalar)")]
-    public float zoomSpeed = 0.5f;
+    [SerializeField] private float pitchSpeed = 0.4f;
+    [Tooltip("줌 감도 (scale)")]
+    [SerializeField] private float zoomSpeed = 0.5f;
 
-    [Header("Limits")]
+    [Header("제한 (Limits)")]
     [Tooltip("피벗-카메라 거리 범위")]
-    public float minDistance = 6f;
-    public float maxDistance = 16f;
+    [SerializeField] private float minDistance = 6f;
+    [SerializeField] private float maxDistance = 16f;
     [Tooltip("피치 각도 제한(도)")]
-    public float minPitch = 5f;
-    public float maxPitch = 90f;
+    [SerializeField] private float minPitch = 5f;
+    [SerializeField] private float maxPitch = 90f;
     #endregion
 
-    #region === Internals / State ===
-    private CinemachineFollow follow;            // FollowOffset 제어 대상
-    private float pitchDeg = 35f;                // 현재 피치(도)
-    private bool _lastBlockOrbit = false;        // 디버깅 추적용(기능적 의미 X)
+    #region === Internals ===
+    private CinemachineFollow _follow;   // FollowOffset 제어 대상
+    private float _pitchDeg = 35f;       // 현재 피치(도)
+    private bool _lastBlockOrbit;        // Debug용 상태 추적
     #endregion
 
     #region === Constants ===
-    private const float Z_EPS = 0.3f;            // z>=0 방지(카메라 플립 방지)
-    private const float WHEEL_SCALE = 0.1f;      // 마우스 휠 배율
-    private const float PINCH_SCALE = 0.01f;     // 핀치 배율
+    private const float Z_EPS = 0.3f;    // z>=0 방지(카메라 플립 방지용 버퍼)
+    private const float WHEEL_SCALE = 0.1f;
+    private const float PINCH_SCALE = 0.01f;
     #endregion
 
     #region === Input Actions ===
-    private InputAction lookDelta;               // <Pointer>/delta
-    private InputAction primary;                 // */{PrimaryAction}
-    private InputAction secondary;               // */{SecondaryAction}
-    private InputAction scrollY;                 // <Mouse>/scroll/y
+    private InputAction _lookDelta;      // <Pointer>/delta
+    private InputAction _primary;        // */{PrimaryAction}
+    private InputAction _secondary;      // */{SecondaryAction}
+    private InputAction _scrollY;        // <Mouse>/scroll/y
     #endregion
 
     #region === Unity Lifecycle ===
     private void Awake()
     {
-        // Cinemachine 준비
         if (!cm) cm = FindFirstObjectByType<CinemachineCamera>();
-        follow = cm ? cm.GetComponent<CinemachineFollow>() : null;
+        _follow = cm ? cm.GetComponent<CinemachineFollow>() : null;
 
-        if (!follow)
+        if (!_follow)
         {
             Debug.LogError("[QuarterView] CinemachineFollow가 필요합니다. CM 카메라에 CinemachineFollow를 추가하세요.");
             enabled = false;
@@ -69,56 +68,54 @@ public class QuarterView : MonoBehaviour
         }
 
         // 현재 FollowOffset에서 피치 초기화
-        var o = follow.FollowOffset;
-        pitchDeg = Mathf.Clamp(Rad2Deg(CurrentPitchRad(o)), minPitch, maxPitch);
+        var o = _follow.FollowOffset;
+        _pitchDeg = Mathf.Clamp(Rad2Deg(CurrentPitchRad(in o)), minPitch, maxPitch);
 
-        // 입력 바인딩 생성
-        lookDelta = new InputAction(type: InputActionType.PassThrough, binding: "<Pointer>/delta");
-        primary = new InputAction(type: InputActionType.Button, binding: "*/{PrimaryAction}");
-        secondary = new InputAction(type: InputActionType.Button, binding: "*/{SecondaryAction}");
-        scrollY = new InputAction(type: InputActionType.PassThrough, binding: "<Mouse>/scroll/y");
+        // 입력 바인딩
+        _lookDelta = new InputAction(type: InputActionType.PassThrough, binding: "<Pointer>/delta");
+        _primary = new InputAction(type: InputActionType.Button, binding: "*/{PrimaryAction}");
+        _secondary = new InputAction(type: InputActionType.Button, binding: "*/{SecondaryAction}");
+        _scrollY = new InputAction(type: InputActionType.PassThrough, binding: "<Mouse>/scroll/y");
     }
 
     private void OnEnable()
     {
         EnhancedTouchSupport.Enable();
-        lookDelta?.Enable();
-        primary?.Enable();
-        secondary?.Enable();
-        scrollY?.Enable();
+        _lookDelta?.Enable();
+        _primary?.Enable();
+        _secondary?.Enable();
+        _scrollY?.Enable();
     }
 
     private void OnDisable()
     {
         EnhancedTouchSupport.Disable();
-        lookDelta?.Disable();
-        primary?.Disable();
-        secondary?.Disable();
-        scrollY?.Disable();
+        _lookDelta?.Disable();
+        _primary?.Disable();
+        _secondary?.Disable();
+        _scrollY?.Disable();
     }
 
     private void OnDestroy()
     {
-        lookDelta?.Dispose();
-        primary?.Dispose();
-        secondary?.Dispose();
-        scrollY?.Dispose();
+        _lookDelta?.Dispose();
+        _primary?.Dispose();
+        _secondary?.Dispose();
+        _scrollY?.Dispose();
     }
 
     private void Update()
     {
-        if (!follow) return;
+        if (!_follow) return;
 
-        HandlePointerInput();      // 마우스/터치 입력 모두 처리
-        TrackBlockOrbitChange();   // 디버깅/동기화용
-        ClampZBehindTarget();      // 플립 방지
+        HandlePointerInput();      // 마우스/터치 통합 입력 처리
+        TrackBlockOrbitChange();   // 상태 추적 (디버그용)
+        ClampZBehindTarget();      // z 안전 보정(플립 방지)
     }
     #endregion
 
-    #region === Input Dispatcher ===
-    /// <summary>
-    /// 마우스/터치 입력을 한 곳에서 분기 처리.
-    /// </summary>
+    #region === Input ===
+    /// <summary>마우스/터치 입력을 한 곳에서 분기 처리.</summary>
     private void HandlePointerInput()
     {
         HandleMouseInput();
@@ -126,8 +123,8 @@ public class QuarterView : MonoBehaviour
     }
 
     /// <summary>
-    /// 마우스 입력:
-    /// - 드래그(좌/우 버튼): 회전 (단, 드래그 중엔 차단)
+    /// 마우스:
+    /// - 좌/우 버튼 드래그: 회전 (단, BlockOrbit==true면 회전 차단)
     /// - 휠: 줌
     /// </summary>
     private void HandleMouseInput()
@@ -135,21 +132,24 @@ public class QuarterView : MonoBehaviour
         var mouse = Mouse.current;
         if (mouse == null) return;
 
-        bool pressed = primary.IsPressed() || secondary.IsPressed();
+        bool pressed = _primary.IsPressed() || _secondary.IsPressed();
         if (pressed && !EditModeController.BlockOrbit)
         {
-            Vector2 delta = lookDelta.ReadValue<Vector2>();
+            Vector2 delta = _lookDelta.ReadValue<Vector2>();
             RotateByDelta(delta);
         }
 
-        float wheel = scrollY.ReadValue<float>();
+        float wheel = _scrollY.ReadValue<float>();
         if (Mathf.Abs(wheel) > 0.01f)
+        {
+            // 휠 위로 스크롤(양수)일 때 카메라가 가까워지도록 부호 반전
             ApplyZoom(-wheel * WHEEL_SCALE);
+        }
     }
 
     /// <summary>
-    /// 터치 입력:
-    /// - 1손가락 드래그: 회전 (단, 드래그 중엔 차단)
+    /// 터치:
+    /// - 1손가락 드래그: 회전 (BlockOrbit==true면 차단)
     /// - 2손가락 이상: 핀치 줌
     /// </summary>
     private void HandleTouchInput()
@@ -179,9 +179,7 @@ public class QuarterView : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// BlockOrbit 플래그 변경 추적(동작 변경은 없고, 상태 동기화 목적).
-    /// </summary>
+    /// <summary>BlockOrbit 플래그 변경 로그 추적(동작 변경 없음).</summary>
     private void TrackBlockOrbitChange()
     {
         if (EditModeController.BlockOrbit != _lastBlockOrbit)
@@ -190,57 +188,57 @@ public class QuarterView : MonoBehaviour
     #endregion
 
     #region === Camera Ops ===
-    /// <summary>드래그 델타를 야우/피치로 변환하여 적용.</summary>
+    /// <summary>드래그 델타를 야우/피치로 환산하여 적용.</summary>
     private void RotateByDelta(Vector2 delta)
     {
-        // Yaw: 월드 기준 Y 회전(피벗 부모에 적용)
+        // Yaw(수평 회전): 월드 Y축 기준
         transform.Rotate(Vector3.up, delta.x * yawSpeed, Space.World);
 
-        // Pitch: 내부 각도 갱신 후 FollowOffset(y,z) 재계산
-        pitchDeg = Mathf.Clamp(pitchDeg - delta.y * pitchSpeed, minPitch, maxPitch);
+        // Pitch(수직 회전): 내부 각도 갱신 → FollowOffset 재계산
+        _pitchDeg = Mathf.Clamp(_pitchDeg - delta.y * pitchSpeed, minPitch, maxPitch);
         ApplyPitchToOffset();
     }
 
     /// <summary>줌(거리만 변경, 현재 피치는 유지).</summary>
     private void ApplyZoom(float delta)
     {
-        var o = follow.FollowOffset;
-        float curDist = CurrentDistance(o);
+        var o = _follow.FollowOffset;
+        float curDist = CurrentDistance(in o);
         float newDist = Mathf.Clamp(curDist + delta * zoomSpeed, minDistance, maxDistance);
 
-        float rad = Deg2Rad(pitchDeg);
+        float rad = Deg2Rad(_pitchDeg);
         o.y = Mathf.Sin(rad) * newDist;
         o.z = -Mathf.Cos(rad) * newDist;
 
-        if (o.z > -Z_EPS) o.z = -Z_EPS;          // 플립 방지
-        follow.FollowOffset = o;
+        if (o.z > -Z_EPS) o.z = -Z_EPS; // 플립 방지
+        _follow.FollowOffset = o;
 
-        // 수치 일관성 유지(경계에서 보정되는 경우를 반영)
-        pitchDeg = Mathf.Clamp(Rad2Deg(CurrentPitchRad(o)), minPitch, maxPitch);
+        // 경계 보정 반영(수치 일관성 유지)
+        _pitchDeg = Mathf.Clamp(Rad2Deg(CurrentPitchRad(in o)), minPitch, maxPitch);
     }
 
-    /// <summary>현재 거리 유지하면서 피치 각도만 FollowOffset에 반영.</summary>
+    /// <summary>현재 거리 유지하면서 피치만 FollowOffset에 반영.</summary>
     private void ApplyPitchToOffset()
     {
-        var o = follow.FollowOffset;
-        float dist = CurrentDistance(o);
+        var o = _follow.FollowOffset;
+        float dist = CurrentDistance(in o);
 
-        float rad = Deg2Rad(pitchDeg);
+        float rad = Deg2Rad(_pitchDeg);
         o.y = Mathf.Sin(rad) * dist;
         o.z = -Mathf.Cos(rad) * dist;
 
         if (o.z > -Z_EPS) o.z = -Z_EPS;
-        follow.FollowOffset = o;
+        _follow.FollowOffset = o;
     }
 
     /// <summary>항상 카메라가 피벗 뒤(-z)에 있도록 강제.</summary>
     private void ClampZBehindTarget()
     {
-        var o = follow.FollowOffset;
+        var o = _follow.FollowOffset;
         if (o.z > -Z_EPS)
         {
             o.z = -Z_EPS;
-            follow.FollowOffset = o;
+            _follow.FollowOffset = o;
         }
     }
     #endregion

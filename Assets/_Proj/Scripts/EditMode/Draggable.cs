@@ -5,155 +5,308 @@ public class Draggable : MonoBehaviour
 {
     #region === Inspector ===
     [Header("Highlight (optional)")]
-    [SerializeField] Renderer[] renderers;                              // 하이라이트를 적용할 렌더러들(비우면 자동 수집)
-    [SerializeField] Color highlightColor = new(1f, 0.9f, 0.3f, 1f);    // 선택(노란색)
-    [SerializeField] Color invalidColor = new(1f, 0.2f, 0.2f, 1f);    // 배치 불가(빨간색)
+    [SerializeField] private Renderer[] renderers;
+    [SerializeField] private Color highlightColor = new(1f, 0.9f, 0.3f, 1f);
+    [SerializeField] private Color invalidColor = new(1f, 0.2f, 0.2f, 1f);
 
-    [Header("Position Persistence")]
-    [SerializeField, Tooltip("시작 시 PlayerPrefs에 저장된 위치를 자동 로드")]
-    bool loadSavedPositionOnStart = true;
+    [Header("Transform Persistence")]
+    [SerializeField, Tooltip("시작 시 PlayerPrefs에 저장된 위치/회전을 자동 로드")]
+    private bool loadSavedTransformOnStart = true;
 
     [SerializeField, Tooltip("저장 키 직접 지정(비우면 'SceneName/ObjectName' 사용)")]
-    string customSaveKey = "";
+    private string customSaveKey = "";
+
+    [Header("Advanced")]
+    [SerializeField, Tooltip("머티리얼 인스턴스 생성 없이 색을 바꾸기 위해 PropertyBlock 사용 권장")]
+    private bool useMaterialPropertyBlock = true;
+
+    [SerializeField, Tooltip("색상 속성명(대부분 _Color). 커스텀 셰이더면 여기에 맞춰 변경")]
+    private string colorPropName = "_Color";
+
+    [SerializeField, Tooltip("키 충돌을 줄이기 위해 ObjectName 대신 전체 트랜스폼 경로를 포함")]
+    private bool useFullTransformPathForKey = false;
     #endregion
 
     #region === State ===
-    Color[] _originalColors;           // 렌더러별 원래 색상
-    bool _highlighted = false;         // 선택 상태
-    bool _invalid = false;             // 배치 불가 상태(겹침 등)
+    private Color[] originalColors;       // 렌더러별 원본 색상(간단화: 첫 머티리얼 기준)
+    private bool highlighted;
+    private bool invalid;
+
+    private MaterialPropertyBlock mpb;
+    private int colorPropId = -1;
+    private static readonly string[] kColorPropCandidates = { "_BaseColor", "_Color", "_TintColor" };
     #endregion
 
-    #region === Unity Lifecycle ===
-    void Awake()
+    #region === Unity ===
+    private void Awake()
     {
         EnsureRenderers();
         CacheOriginalColors();
+        InitPropertyBlock();
 
-        if (loadSavedPositionOnStart)
-            LoadPositionIfAny();
+        if (loadSavedTransformOnStart)
+            LoadTransformIfAny();
 
-        ApplyVisual(); // 초기 시각 상태 반영
+        ApplyVisual();
     }
 
-    void OnValidate()
+    private void OnValidate()
     {
-        // 에디터에서 값 변경 시 자동 보정
         EnsureRenderers();
-        // _originalColors는 런타임 때 채워지므로, 에디터 갱신은 현재 머티리얼 상태 기준으로만 색상 적용
+        // 에디터에서도 즉시 반영
+        if (colorPropId < 0) colorPropId = Shader.PropertyToID(colorPropName);
         ApplyVisual();
+    }
+
+    private void OnDestroy()
+    {
+        // PropertyBlock으로 칠했을 때, 파괴 시 원복(안전)
+        if (useMaterialPropertyBlock && renderers != null)
+        {
+            foreach (var r in renderers)
+            {
+                if (!r) continue;
+                r.SetPropertyBlock(null);
+            }
+        }
     }
     #endregion
 
     #region === Public API (Highlight & Validity) ===
-    /// <summary>선택(하이라이트) 상태 토글</summary>
     public void SetHighlighted(bool on)
     {
-        _highlighted = on;
+        highlighted = on;
         ApplyVisual();
     }
 
-    /// <summary>배치 불가(Invalid) 상태 토글</summary>
     public void SetInvalid(bool on)
     {
-        _invalid = on;
+        invalid = on;
         ApplyVisual();
     }
     #endregion
 
     #region === Public API (Persistence) ===
-    /// <summary>현재 위치를 PlayerPrefs에 저장</summary>
-    public void SavePosition()
+    /// <summary>현재 위치/회전을 PlayerPrefs에 저장합니다.</summary>
+    public void SavePosition() => SaveTransform(); // 호환 유지
+
+    public void SaveTransform()
     {
         Vector3 p = transform.position;
+        Quaternion q = transform.rotation;
+
         PlayerPrefs.SetFloat(BuildKey("x"), p.x);
         PlayerPrefs.SetFloat(BuildKey("y"), p.y);
         PlayerPrefs.SetFloat(BuildKey("z"), p.z);
+
+        PlayerPrefs.SetFloat(BuildKey("qx"), q.x);
+        PlayerPrefs.SetFloat(BuildKey("qy"), q.y);
+        PlayerPrefs.SetFloat(BuildKey("qz"), q.z);
+        PlayerPrefs.SetFloat(BuildKey("qw"), q.w);
+
         PlayerPrefs.Save();
     }
 
-    /// <summary>PlayerPrefs에 위치가 있으면 불러옴</summary>
-    public void LoadPositionIfAny()
+    /// <summary>저장된 위치/회전이 있으면 불러옵니다.</summary>
+    public void LoadPositionIfAny() => LoadTransformIfAny(); // 호환 유지
+
+    public void LoadTransformIfAny()
     {
         string kx = BuildKey("x");
-        if (!PlayerPrefs.HasKey(kx)) return;
+        string ky = BuildKey("y");
+        string kz = BuildKey("z");
 
-        float x = PlayerPrefs.GetFloat(kx, transform.position.x);
-        float y = PlayerPrefs.GetFloat(BuildKey("y"), transform.position.y);
-        float z = PlayerPrefs.GetFloat(BuildKey("z"), transform.position.z);
-        transform.position = new Vector3(x, y, z);
+        // 위치
+        if (PlayerPrefs.HasKey(kx))
+        {
+            float x = PlayerPrefs.GetFloat(kx, transform.position.x);
+            float y = PlayerPrefs.GetFloat(ky, transform.position.y);
+            float z = PlayerPrefs.GetFloat(kz, transform.position.z);
+            transform.position = new Vector3(x, y, z);
+        }
+
+        // 회전(쿼터니언 우선)
+        string kQx = BuildKey("qx");
+        string kQy = BuildKey("qy");
+        string kQz = BuildKey("qz");
+        string kQw = BuildKey("qw");
+
+        if (PlayerPrefs.HasKey(kQx) && PlayerPrefs.HasKey(kQy) &&
+            PlayerPrefs.HasKey(kQz) && PlayerPrefs.HasKey(kQw))
+        {
+            var q = new Quaternion(
+                PlayerPrefs.GetFloat(kQx, transform.rotation.x),
+                PlayerPrefs.GetFloat(kQy, transform.rotation.y),
+                PlayerPrefs.GetFloat(kQz, transform.rotation.z),
+                PlayerPrefs.GetFloat(kQw, transform.rotation.w)
+            );
+            transform.rotation = q;
+        }
+        else
+        {
+            // 과거 Euler 호환(rx,ry,rz)
+            string kRx = BuildKey("rx");
+            string kRy = BuildKey("ry");
+            string kRz = BuildKey("rz");
+            if (PlayerPrefs.HasKey(kRy))
+            {
+                var euler = new Vector3(
+                    PlayerPrefs.GetFloat(kRx, transform.eulerAngles.x),
+                    PlayerPrefs.GetFloat(kRy, transform.eulerAngles.y),
+                    PlayerPrefs.GetFloat(kRz, transform.eulerAngles.z)
+                );
+                transform.eulerAngles = euler;
+            }
+        }
+
+        Physics.SyncTransforms();
+    }
+
+    /// <summary>이 오브젝트의 저장된 위치/회전 키를 삭제합니다.</summary>
+    public void DeleteSavedPosition()
+    {
+        PlayerPrefs.DeleteKey(BuildKey("x"));
+        PlayerPrefs.DeleteKey(BuildKey("y"));
+        PlayerPrefs.DeleteKey(BuildKey("z"));
+
+        PlayerPrefs.DeleteKey(BuildKey("qx"));
+        PlayerPrefs.DeleteKey(BuildKey("qy"));
+        PlayerPrefs.DeleteKey(BuildKey("qz"));
+        PlayerPrefs.DeleteKey(BuildKey("qw"));
+
+        PlayerPrefs.DeleteKey(BuildKey("rx"));
+        PlayerPrefs.DeleteKey(BuildKey("ry"));
+        PlayerPrefs.DeleteKey(BuildKey("rz"));
+        PlayerPrefs.Save();
     }
     #endregion
 
-    #region === Visual Helpers ===
-    /// <summary>렌더러 배열 보장(비어 있으면 자식에서 자동 수집)</summary>
-    void EnsureRenderers()
-    {
-        if (renderers == null || renderers.Length == 0)
-            renderers = GetComponentsInChildren<Renderer>();
-    }
-
-    /// <summary>원래 색상 캐시</summary>
-    void CacheOriginalColors()
+    #region === Visual ===
+    private void ApplyVisual()
     {
         if (renderers == null || renderers.Length == 0) return;
 
-        _originalColors = new Color[renderers.Length];
+        var useOriginal = !invalid && !highlighted;
+        var color = useOriginal ? Color.white : (invalid ? invalidColor : highlightColor);
+
+        // 각 렌더러마다 프로퍼티 탐지
         for (int i = 0; i < renderers.Length; i++)
         {
             var r = renderers[i];
             if (!r) continue;
 
-            // 런타임에 material 접근 시 머티리얼 인스턴스가 생성됨. 최초 캐시에만 접근.
-            _originalColors[i] = r.material.color;
-        }
-    }
+            // 1) 우선순위: 명시된 colorPropName가 유효하면 그걸 사용
+            string propToUse = null;
+            var matForCheck = r.sharedMaterial ? r.sharedMaterial : (Application.isPlaying ? r.material : null);
+            if (matForCheck && matForCheck.HasProperty(colorPropName))
+                propToUse = colorPropName;
+            else
+                propToUse = DetectColorProp(r); // 2) 자동 탐지
 
-    /// <summary>현재 상태에 따른 색상을 렌더러에 적용</summary>
-    void ApplyVisual()
-    {
-        if (renderers == null || renderers.Length == 0) return;
-
-        // 적용할 목표 색상 결정
-        Color target;
-        if (_invalid) target = invalidColor;
-        else if (_highlighted) target = highlightColor;
-        else
-        {
-            // 원래 색상 복원 (캐시가 유효할 때만)
-            target = Color.white;
-        }
-
-        bool isPlaying = Application.isPlaying;
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            var r = renderers[i];
-            if (!r) continue;
-
-            // 에디터에서는 sharedMaterial을 써서 머티리얼 인스턴스 남발 방지
-            var mat = isPlaying ? r.material : r.sharedMaterial;
-
-            if (!_invalid && !_highlighted && _originalColors != null && _originalColors.Length == renderers.Length)
+            if (useMaterialPropertyBlock && propToUse != null)
             {
-                // 원래 색상으로 복원
-                mat.color = _originalColors[i];
+                // PropertyBlock 경로
+                EnsureMPB();
+                int pid = Shader.PropertyToID(propToUse);
+                if (useOriginal && originalColors != null && i < originalColors.Length)
+                    mpb.SetColor(pid, originalColors[i]);
+                else
+                    mpb.SetColor(pid, color);
+                r.SetPropertyBlock(mpb);
             }
             else
             {
-                // 상태 색상 적용
-                mat.color = target;
+                // Fallback: material.color (메모리 증가 가능)
+                bool isPlaying = Application.isPlaying;
+                var mat = isPlaying ? r.material : r.sharedMaterial;
+                if (!mat) continue;
+
+                if (useOriginal && originalColors != null && i < originalColors.Length)
+                    mat.color = originalColors[i];
+                else
+                    mat.color = color;
             }
         }
+    }
+    private string DetectColorProp(Renderer r)
+    {
+        var mat = r ? (r.sharedMaterial ? r.sharedMaterial : (Application.isPlaying ? r.material : null)) : null;
+        if (!mat) return null;
+        foreach (var p in kColorPropCandidates)
+            if (mat.HasProperty(p)) return p;
+        return null;
+    }
+    private void EnsureRenderers()
+    {
+        if (renderers == null || renderers.Length == 0)
+            renderers = GetComponentsInChildren<Renderer>(includeInactive: true);
+    }
+
+    private void CacheOriginalColors()
+    {
+        if (renderers == null || renderers.Length == 0)
+        {
+            originalColors = null;
+            return;
+        }
+
+        originalColors = new Color[renderers.Length];
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            var r = renderers[i];
+            if (!r)
+            {
+                originalColors[i] = Color.white;
+                continue;
+            }
+
+            // sharedMaterial 우선: 에디터에서도 안전
+            var mat = r.sharedMaterial ? r.sharedMaterial : (Application.isPlaying ? r.material : null);
+            originalColors[i] = mat && mat.HasProperty(colorPropName) ? mat.GetColor(colorPropName) : Color.white;
+        }
+    }
+
+    private void InitPropertyBlock()
+    {
+        colorPropId = Shader.PropertyToID(colorPropName);
+        if (useMaterialPropertyBlock && mpb == null)
+            mpb = new MaterialPropertyBlock();
+    }
+
+    private void EnsureMPB()
+    {
+        if (mpb == null) mpb = new MaterialPropertyBlock();
+        if (colorPropId < 0) colorPropId = Shader.PropertyToID(colorPropName);
     }
     #endregion
 
     #region === Key Helpers ===
-    /// <summary>저장 키 생성: (customSaveKey or SceneName/ObjectName):suffix</summary>
-    string BuildKey(string suffix)
+    private string BuildKey(string suffix)
     {
-        string baseKey = string.IsNullOrEmpty(customSaveKey)
-            ? $"{gameObject.scene.name}/{gameObject.name}"
-            : customSaveKey;
+        string baseKey;
+        if (!string.IsNullOrEmpty(customSaveKey))
+        {
+            baseKey = customSaveKey;
+        }
+        else
+        {
+            var sceneName = gameObject.scene.name;
+            var objPath = useFullTransformPathForKey ? GetFullPath(transform) : gameObject.name;
+            baseKey = $"{sceneName}/{objPath}";
+        }
         return $"{baseKey}:{suffix}";
+    }
+
+    private static string GetFullPath(Transform t)
+    {
+        // Root/Parent/Child 형식 경로(동일 이름 오브젝트 충돌↓)
+        var path = t.name;
+        while (t.parent != null)
+        {
+            t = t.parent;
+            path = $"{t.name}/{path}";
+        }
+        return path;
     }
     #endregion
 }

@@ -1,134 +1,139 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.UI;
 using TouchES = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class EditModeController : MonoBehaviour
 {
     #region === Config (Inspector) ===
     [Header("Pick & Drag")]
-    [SerializeField] LayerMask draggableMask = ~0;
+    [SerializeField] private LayerMask draggableMask = ~0;
 
     [Header("Move Plane")]
-    [SerializeField, Tooltip("Y를 시작 높이에 고정")] bool lockYToInitial = true;
-    [SerializeField, Tooltip("lockYToInitial=false일 때 사용할 고정 Y")] float fixedY = 0f;
+    [SerializeField, Tooltip("Y를 시작 높이에 고정")] private bool lockYToInitial = true;
+    [SerializeField, Tooltip("lockYToInitial=false일 때 사용할 고정 Y")] private float fixedY = 0f;
 
     [Header("Grid Snap")]
-    [SerializeField] bool snapToGrid = true;
-    [SerializeField, Min(0.01f)] float gridSize = 1f;
+    [SerializeField] private bool snapToGrid = true;
+    [SerializeField, Min(0.01f)] private float gridSize = 1f;
     [SerializeField, Tooltip("격자 원점(이 오프셋 기준으로 스냅)")]
-    Vector3 gridOrigin = Vector3.zero;
+    private Vector3 gridOrigin = Vector3.zero;
 
     [Header("Undo")]
-    [SerializeField, Tooltip("히스토리 최대 저장 개수(-1: 무제한)")] int undoMax = -1;
+    [SerializeField, Tooltip("히스토리 최대 저장 개수(-1: 무제한)")] private int undoMax = -1;
 
     [Header("Overlap")]
-    [SerializeField, Tooltip("침투 허용오차(이 값 이하의 접촉은 허용)")] float overlapEpsilon = 0.0005f;
+    [SerializeField, Tooltip("침투 허용오차(이 값 이하의 접촉은 허용)")] private float overlapEpsilon = 0.0005f;
 
     [Header("UI (Toolbar/Undo)")]
-    [SerializeField] Button undoButton;
-    [SerializeField] ObjectActionToolbar actionToolbar;
+    [SerializeField] private Button undoButton;
+    [SerializeField] private ObjectActionToolbar actionToolbar;
 
     [Header("Edit Mode Entry (Long Press)")]
     [SerializeField, Tooltip("롱프레스 대상(중심 오브젝트). 이 오브젝트 위에서 1초 누르면 편집모드 진입")]
-    Transform longPressTarget;
+    private Transform longPressTarget;
     [SerializeField, Tooltip("롱프레스 유지 시간(초)")]
-    float longPressSeconds = 1.0f;
+    private float longPressSeconds = 1.0f;
     [SerializeField, Tooltip("롱프레스 중 허용되는 포인터 이동량(px)")]
-    float longPressSlopPixels = 10f;
+    private float longPressSlopPixels = 10f;
 
     [Header("Save/Back Buttons")]
-    [SerializeField] Button saveButton;
-    [SerializeField] Button backButton;
+    [SerializeField] private Button saveButton;
+    [SerializeField] private Button backButton;
 
     [Header("Panels")]
     [SerializeField, Tooltip("뒤로가기 확인 패널(Yes/No)")]
-    GameObject exitConfirmPanel;
-    [SerializeField] Button exitYesButton;
-    [SerializeField] Button exitNoButton;
+    private GameObject exitConfirmPanel;
+    [SerializeField] private Button exitYesButton;
+    [SerializeField] private Button exitNoButton;
     [SerializeField, Tooltip("저장 완료 알림 패널(확인 버튼 1개)")]
-    GameObject savedInfoPanel;
-    [SerializeField] Button savedOkButton;
+    private GameObject savedInfoPanel;
+    [SerializeField] private Button savedOkButton;
     #endregion
 
     #region === Public State ===
     public bool IsEditMode { get; private set; }
     public Transform CurrentTarget { get; private set; }
+    /// <summary>오브젝트 드래그 중일 때 카메라 회전 차단 플래그</summary>
     public static bool BlockOrbit;
     #endregion
 
     #region === Private State ===
-    Camera cam;
+    private Camera cam;
 
-    bool pointerDown;
-    Vector2 pressScreenPos;
-    Transform pressedHitTarget;
-    bool isDragging = false;
-    bool movedDuringDrag = false;
-    bool _currentPlacementValid = true;
-    bool _startedOnDraggable = false;
+    private bool pointerDown;
+    private Vector2 pressScreenPos;
+    private Transform pressedHitTarget;
+    private bool isDragging;
+    private bool movedDuringDrag;
+    private bool currentPlacementValid = true;
+    private bool startedOnDraggable;
 
-    Plane movePlane;
-    float movePlaneY;
-    bool movePlaneReady;
+    private Plane movePlane;
+    private float movePlaneY;
+    private bool movePlaneReady;
 
-    Vector3? lastBeforeDragPos = null;
-    readonly Dictionary<Transform, Stack<Vector3>> _history = new();
+    private struct Snap { public Vector3 pos; public Quaternion rot; }
+    private Snap? lastBeforeDrag;
+    private readonly Dictionary<Transform, Stack<Snap>> history = new();
 
-    bool longPressArmed = false;
-    float longPressTimer = 0f;
-    Vector2 longPressStartPos;
+    // Long-press
+    private bool longPressArmed;
+    private float longPressTimer;
+    private Vector2 longPressStartPos;
 
-    bool hasUnsavedChanges = false;
-
-    struct ObjSnapshot { public Transform t; public Vector3 pos; public Quaternion rot; public bool activeSelf; }
-    readonly List<ObjSnapshot> _baseline = new List<ObjSnapshot>();
+    // Save/baseline
+    private bool hasUnsavedChanges;
+    private struct ObjSnapshot { public Transform t; public Vector3 pos; public Quaternion rot; public bool activeSelf; }
+    private readonly List<ObjSnapshot> baseline = new();
     #endregion
 
     #region === Unity Lifecycle ===
-    void Awake()
+    private void Awake()
     {
         cam = Camera.main;
         if (!cam) Debug.LogWarning("[EditModeController] Main Camera를 찾지 못했습니다.");
 
-        InitUndoButton();
+        WireUndoButton();
         actionToolbar?.Hide();
 
-        InitSaveButton();
-        InitBackButton();
-        InitExitPanels();
-        InitSavedInfoPanel();
+        WireSaveButton();
+        WireBackButton();
+        WireExitPanels();
+        WireSavedInfoPanel();
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         EnhancedTouchSupport.Enable();
         TouchSimulation.Enable();
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         TouchSimulation.Disable();
         EnhancedTouchSupport.Disable();
+
         BlockOrbit = false;
         isDragging = false;
-        if (actionToolbar != null) actionToolbar.Hide();
+        actionToolbar?.Hide();
     }
 
-    void Update()
+    private void Update()
     {
         HandlePointerLifecycle();
-        HandleLongPressCheck();
+        HandleLongPress();
         MaintainOrbitBlockFlag();
     }
     #endregion
 
-    #region === UI Wiring (Awake) ===
-    void InitUndoButton()
+    #region === UI Wiring ===
+    private void WireUndoButton()
     {
         if (!undoButton) return;
         undoButton.gameObject.SetActive(false);
@@ -137,7 +142,7 @@ public class EditModeController : MonoBehaviour
         undoButton.onClick.AddListener(UndoLastMove);
     }
 
-    void InitSaveButton()
+    private void WireSaveButton()
     {
         if (!saveButton) return;
         saveButton.gameObject.SetActive(false);
@@ -145,7 +150,7 @@ public class EditModeController : MonoBehaviour
         saveButton.onClick.AddListener(OnSaveClicked);
     }
 
-    void InitBackButton()
+    private void WireBackButton()
     {
         if (!backButton) return;
         backButton.gameObject.SetActive(false);
@@ -153,7 +158,7 @@ public class EditModeController : MonoBehaviour
         backButton.onClick.AddListener(OnBackClicked);
     }
 
-    void InitExitPanels()
+    private void WireExitPanels()
     {
         if (exitConfirmPanel) exitConfirmPanel.SetActive(false);
 
@@ -177,21 +182,18 @@ public class EditModeController : MonoBehaviour
         }
     }
 
-    void InitSavedInfoPanel()
+    private void WireSavedInfoPanel()
     {
         if (savedInfoPanel) savedInfoPanel.SetActive(false);
         if (!savedOkButton) return;
 
         savedOkButton.onClick.RemoveAllListeners();
-        savedOkButton.onClick.AddListener(() =>
-        {
-            if (savedInfoPanel) savedInfoPanel.SetActive(false);
-        });
+        savedOkButton.onClick.AddListener(() => savedInfoPanel?.SetActive(false));
     }
     #endregion
 
-    #region === Edit Mode Toggle / Selection ===
-    void SetEditMode(bool on, bool keepTarget)
+    #region === Edit Mode / Selection ===
+    private void SetEditMode(bool on, bool keepTarget)
     {
         if (IsEditMode == on)
         {
@@ -199,44 +201,43 @@ public class EditModeController : MonoBehaviour
             return;
         }
 
-        if (undoButton) undoButton.gameObject.SetActive(on);
-        if (saveButton) saveButton.gameObject.SetActive(on);
-        if (backButton) backButton.gameObject.SetActive(on);
-
+        ToggleTopButtons(on);
         IsEditMode = on;
 
         if (on)
         {
-            _history.Clear();
+            history.Clear();
             CaptureBaseline();
             hasUnsavedChanges = false;
             UpdateUndoUI();
-
-            if (actionToolbar)
-            {
-                if (CurrentTarget) ShowToolbarFor(CurrentTarget);
-                else actionToolbar.Hide();
-            }
+            UpdateToolbar();
         }
         else
         {
+            // 종료 처리
             if (CurrentTarget && CurrentTarget.TryGetComponent<Draggable>(out var drag))
             {
                 drag.SetInvalid(false);
-                drag.SavePosition(); // 편집 종료 시 저장(현재 정책)
+                drag.SavePosition(); // 정책: 종료 시 저장
                 drag.SetHighlighted(false);
             }
             if (!keepTarget) SelectTarget(null);
 
-            lastBeforeDragPos = null;
+            lastBeforeDrag = null;
             isDragging = false;
             BlockOrbit = false;
 
-            _history.Clear();
+            history.Clear();
             UpdateUndoUI();
-
-            if (actionToolbar) actionToolbar.Hide();
+            actionToolbar?.Hide();
         }
+    }
+
+    private void ToggleTopButtons(bool on)
+    {
+        if (undoButton) undoButton.gameObject.SetActive(on);
+        if (saveButton) saveButton.gameObject.SetActive(on);
+        if (backButton) backButton.gameObject.SetActive(on);
     }
 
     public void SelectTarget(Transform t)
@@ -255,18 +256,20 @@ public class EditModeController : MonoBehaviour
             now.SetHighlighted(true);
         }
 
-        if (actionToolbar)
-        {
-            if (IsEditMode && CurrentTarget) ShowToolbarFor(CurrentTarget);
-            else actionToolbar.Hide();
-        }
-
+        UpdateToolbar();
         UpdateUndoUI();
+    }
+
+    private void UpdateToolbar()
+    {
+        if (!actionToolbar) return;
+        if (IsEditMode && CurrentTarget) ShowToolbarFor(CurrentTarget);
+        else actionToolbar.Hide();
     }
     #endregion
 
     #region === Pointer Lifecycle ===
-    void HandlePointerLifecycle()
+    private void HandlePointerLifecycle()
     {
         if (IsPointerDownThisFrame() && !IsPointerOverUI())
             OnPointerDown();
@@ -279,7 +282,7 @@ public class EditModeController : MonoBehaviour
             OnPointerUp();
     }
 
-    void OnPointerDown()
+    private void OnPointerDown()
     {
         pointerDown = true;
         pressScreenPos = GetPointerScreenPos();
@@ -288,36 +291,39 @@ public class EditModeController : MonoBehaviour
 
         if (IsEditMode && pressedHitTarget) SelectTarget(pressedHitTarget);
 
+        // 롱프레스 준비
         longPressArmed = false;
         longPressTimer = 0f;
         if (!IsEditMode && longPressTarget)
         {
             var hit = RaycastTransform(pressScreenPos);
-            if (hit == longPressTarget)
+            if (hit == longPressTarget) // 필요 시 자식 허용: hit.IsChildOf(longPressTarget)
             {
                 longPressArmed = true;
                 longPressStartPos = pressScreenPos;
             }
         }
 
-        _startedOnDraggable = IsEditMode && pressedHitTarget;
+        startedOnDraggable = IsEditMode && pressedHitTarget;
 
         isDragging = false;
         movedDuringDrag = false;
-        _currentPlacementValid = true;
+        currentPlacementValid = true;
     }
 
-    void OnPointerHeldOrDragged()
+    private void OnPointerHeldOrDragged()
     {
-        if (IsEditMode && _startedOnDraggable && CurrentTarget && IsPointerMoving())
+        if (IsEditMode && startedOnDraggable && CurrentTarget && IsPointerMoving())
         {
             if (!isDragging)
             {
                 isDragging = true;
                 BlockOrbit = true;
-                lastBeforeDragPos = CurrentTarget.position;
-                PrepareMovePlane();
 
+                // 드래그 시작 스냅샷
+                lastBeforeDrag = new Snap { pos = CurrentTarget.position, rot = CurrentTarget.rotation };
+
+                PrepareMovePlane();
                 actionToolbar?.Hide();
             }
 
@@ -325,7 +331,7 @@ public class EditModeController : MonoBehaviour
         }
     }
 
-    void OnPointerUp()
+    private void OnPointerUp()
     {
         pointerDown = false;
 
@@ -339,10 +345,14 @@ public class EditModeController : MonoBehaviour
 
             if (IsEditMode && CurrentTarget)
             {
-                if (!_currentPlacementValid)
+                if (!currentPlacementValid)
                 {
-                    if (lastBeforeDragPos.HasValue)
-                        CurrentTarget.position = lastBeforeDragPos.Value;
+                    // 원복
+                    if (lastBeforeDrag.HasValue)
+                    {
+                        CurrentTarget.position = lastBeforeDrag.Value.pos;
+                        CurrentTarget.rotation = lastBeforeDrag.Value.rot;
+                    }
 
                     if (CurrentTarget.TryGetComponent<Draggable>(out var drag0))
                     {
@@ -350,14 +360,11 @@ public class EditModeController : MonoBehaviour
                         drag0.SetHighlighted(true);
                     }
                 }
-                else if (movedDuringDrag)
+                else if (movedDuringDrag && lastBeforeDrag.HasValue)
                 {
-                    if (lastBeforeDragPos.HasValue)
-                    {
-                        var stack = GetOrCreateHistory(CurrentTarget);
-                        stack.Push(lastBeforeDragPos.Value);
-                        TrimHistoryIfNeeded(stack);
-                    }
+                    var stack = GetOrCreateHistory(CurrentTarget);
+                    stack.Push(lastBeforeDrag.Value);
+                    TrimHistoryIfNeeded(stack);
 
                     hasUnsavedChanges = true;
                     UpdateUndoUI();
@@ -366,16 +373,16 @@ public class EditModeController : MonoBehaviour
         }
 
         movedDuringDrag = false;
-        lastBeforeDragPos = null;
-        _currentPlacementValid = true;
-        _startedOnDraggable = false;
+        lastBeforeDrag = null;
+        currentPlacementValid = true;
+        startedOnDraggable = false;
 
-        if (IsEditMode && CurrentTarget && actionToolbar) ShowToolbarFor(CurrentTarget);
+        if (IsEditMode && CurrentTarget) UpdateToolbar();
     }
     #endregion
 
     #region === Long-Press Entry ===
-    void HandleLongPressCheck()
+    private void HandleLongPress()
     {
         if (!longPressArmed || IsEditMode || !pointerDown) return;
 
@@ -397,7 +404,7 @@ public class EditModeController : MonoBehaviour
     #endregion
 
     #region === Drag / Move / Snap ===
-    void PrepareMovePlane()
+    private void PrepareMovePlane()
     {
         float y = fixedY;
         if (lockYToInitial && CurrentTarget) y = CurrentTarget.position.y;
@@ -407,7 +414,7 @@ public class EditModeController : MonoBehaviour
         movePlaneReady = true;
     }
 
-    void DragMove(Vector2 screenPos)
+    private void DragMove(Vector2 screenPos)
     {
         if (!cam) return;
         if (!movePlaneReady) PrepareMovePlane();
@@ -420,23 +427,22 @@ public class EditModeController : MonoBehaviour
 
         if (snapToGrid) hit = SnapToGrid(hit);
 
-        if (CurrentTarget && CurrentTarget.position != hit)
+        if (!CurrentTarget || CurrentTarget.position == hit) return;
+
+        CurrentTarget.position = hit;
+        movedDuringDrag = true;
+
+        bool valid = !OverlapsOthers(CurrentTarget);
+        currentPlacementValid = valid;
+
+        if (CurrentTarget.TryGetComponent<Draggable>(out var drag))
         {
-            CurrentTarget.position = hit;
-            movedDuringDrag = true;
-
-            bool valid = !OverlapsOthers(CurrentTarget);
-            _currentPlacementValid = valid;
-
-            if (CurrentTarget.TryGetComponent<Draggable>(out var drag))
-            {
-                drag.SetInvalid(!valid);
-                drag.SetHighlighted(true);
-            }
+            drag.SetInvalid(!valid);
+            drag.SetHighlighted(true);
         }
     }
 
-    Vector3 SnapToGrid(Vector3 world)
+    private Vector3 SnapToGrid(Vector3 world)
     {
         float Snap(float v, float origin) => Mathf.Round((v - origin) / gridSize) * gridSize + origin;
         world.x = Snap(world.x, gridOrigin.x);
@@ -446,11 +452,11 @@ public class EditModeController : MonoBehaviour
     #endregion
 
     #region === Baseline Snapshot ===
-    static bool IsInLayerMask(int layer, LayerMask mask) => (mask.value & (1 << layer)) != 0;
+    private static bool IsInLayerMask(int layer, LayerMask mask) => (mask.value & (1 << layer)) != 0;
 
-    void CaptureBaseline()
+    private void CaptureBaseline()
     {
-        _baseline.Clear();
+        baseline.Clear();
         var set = new HashSet<int>();
 
 #if UNITY_2022_2_OR_NEWER
@@ -463,7 +469,7 @@ public class EditModeController : MonoBehaviour
             if (!d) continue;
             var tr = d.transform;
             if (tr && set.Add(tr.GetInstanceID()))
-                _baseline.Add(new ObjSnapshot { t = tr, pos = tr.position, rot = tr.rotation, activeSelf = tr.gameObject.activeSelf });
+                baseline.Add(new ObjSnapshot { t = tr, pos = tr.position, rot = tr.rotation, activeSelf = tr.gameObject.activeSelf });
         }
 
 #if UNITY_2022_2_OR_NEWER
@@ -480,13 +486,13 @@ public class EditModeController : MonoBehaviour
 
             var tr = c.transform;
             if (tr && set.Add(tr.GetInstanceID()))
-                _baseline.Add(new ObjSnapshot { t = tr, pos = tr.position, rot = tr.rotation, activeSelf = tr.gameObject.activeSelf });
+                baseline.Add(new ObjSnapshot { t = tr, pos = tr.position, rot = tr.rotation, activeSelf = tr.gameObject.activeSelf });
         }
     }
 
-    void RestoreBaseline()
+    private void RestoreBaseline()
     {
-        foreach (var s in _baseline)
+        foreach (var s in baseline)
         {
             if (!s.t) continue;
 
@@ -521,11 +527,10 @@ public class EditModeController : MonoBehaviour
     #endregion
 
     #region === Overlap Check ===
-    bool OverlapsOthers(Transform t)
+    private bool OverlapsOthers(Transform t)
     {
         var myCols = t.GetComponentsInChildren<Collider>();
         if (myCols == null || myCols.Length == 0) return false;
-
         if (!TryGetCombinedBoundsFromColliders(myCols, out Bounds myBounds)) return false;
 
         var half = myBounds.extents;
@@ -556,9 +561,9 @@ public class EditModeController : MonoBehaviour
         return false;
     }
 
-    static bool IsSameRootOrChild(Transform root, Transform other) => other == root || other.IsChildOf(root);
+    private static bool IsSameRootOrChild(Transform root, Transform other) => other == root || other.IsChildOf(root);
 
-    static bool TryGetCombinedBoundsFromColliders(Collider[] cols, out Bounds combined)
+    private static bool TryGetCombinedBoundsFromColliders(Collider[] cols, out Bounds combined)
     {
         combined = new Bounds();
         bool hasAny = false;
@@ -577,34 +582,41 @@ public class EditModeController : MonoBehaviour
     {
         if (!CurrentTarget) return;
 
-        if (_history.TryGetValue(CurrentTarget, out var stack) && stack.Count > 0)
+        if (history.TryGetValue(CurrentTarget, out var stack) && stack.Count > 0)
         {
-            Vector3 prev = stack.Peek();
-            Vector3 original = CurrentTarget.position;
+            Snap prev = stack.Peek();
 
-            CurrentTarget.position = prev;
-            bool overlap = OverlapsOthers(CurrentTarget);
+            // 현재 상태 백업
+            Vector3 curPos = CurrentTarget.position;
+            Quaternion curRot = CurrentTarget.rotation;
 
-            if (overlap)
+            // 이전 스냅샷으로 복원
+            CurrentTarget.position = prev.pos;
+            CurrentTarget.rotation = prev.rot;
+
+            if (OverlapsOthers(CurrentTarget))
             {
-                CurrentTarget.position = original;
+                // 겹치면 취소
+                CurrentTarget.position = curPos;
+                CurrentTarget.rotation = curRot;
+
                 if (CurrentTarget.TryGetComponent<Draggable>(out var dragFail))
                 {
                     dragFail.SetInvalid(true);
                     dragFail.SetHighlighted(true);
                 }
-                Debug.Log("[Undo] 이전 위치가 다른 오브젝트와 겹쳐 되돌릴 수 없습니다.");
+                Debug.Log("[Undo] 이전 상태가 겹쳐서 되돌릴 수 없습니다.");
                 return;
             }
 
             stack.Pop();
-            if (CurrentTarget.TryGetComponent<Draggable>(out var drag))
+            if (CurrentTarget.TryGetComponent<Draggable>(out var dragOk))
             {
-                drag.SetInvalid(false);
-                drag.SetHighlighted(true);
+                dragOk.SetInvalid(false);
+                dragOk.SetHighlighted(true);
             }
             hasUnsavedChanges = true;
-            Debug.Log("[Undo] 위치 되돌리기 성공");
+            Debug.Log("[Undo] 되돌리기 성공");
         }
 
         UpdateUndoUI();
@@ -613,30 +625,31 @@ public class EditModeController : MonoBehaviour
     public void ClearCurrentHistory()
     {
         if (!CurrentTarget) return;
-        if (_history.ContainsKey(CurrentTarget)) _history[CurrentTarget].Clear();
+        if (history.ContainsKey(CurrentTarget)) history[CurrentTarget].Clear();
         UpdateUndoUI();
     }
 
-    Stack<Vector3> GetOrCreateHistory(Transform t)
+    private Stack<Snap> GetOrCreateHistory(Transform t)
     {
-        if (!_history.TryGetValue(t, out var stack))
+        if (!history.TryGetValue(t, out var stack))
         {
-            stack = new Stack<Vector3>(8);
-            _history[t] = stack;
+            stack = new Stack<Snap>(8);
+            history[t] = stack;
         }
         return stack;
     }
 
-    void TrimHistoryIfNeeded(Stack<Vector3> stack)
+    private void TrimHistoryIfNeeded(Stack<Snap> stack)
     {
         if (undoMax <= 0) return;
         if (stack.Count <= undoMax) return;
 
-        var arr = stack.ToArray();
-        Array.Reverse(arr);
+        // 오래된 항목 제거 (Bottom부터)
+        var arr = stack.ToArray();   // Top->Bottom
+        Array.Reverse(arr);          // Bottom->Top
         int removeCount = stack.Count - undoMax;
 
-        var trimmed = new List<Vector3>(undoMax);
+        var trimmed = new List<Snap>(undoMax);
         for (int i = 0; i < arr.Length; i++)
         {
             if (i < removeCount) continue;
@@ -647,7 +660,7 @@ public class EditModeController : MonoBehaviour
             stack.Push(trimmed[i]);
     }
 
-    void UpdateUndoUI()
+    private void UpdateUndoUI()
     {
         if (!undoButton) return;
 
@@ -658,7 +671,7 @@ public class EditModeController : MonoBehaviour
         }
 
         bool canUndo = false;
-        if (CurrentTarget && _history.TryGetValue(CurrentTarget, out var stack))
+        if (CurrentTarget && history.TryGetValue(CurrentTarget, out var stack))
             canUndo = stack != null && stack.Count > 0;
 
         undoButton.interactable = canUndo;
@@ -666,7 +679,7 @@ public class EditModeController : MonoBehaviour
     #endregion
 
     #region === Save / Back ===
-    void OnBackClicked()
+    private void OnBackClicked()
     {
         if (hasUnsavedChanges)
         {
@@ -679,7 +692,7 @@ public class EditModeController : MonoBehaviour
         }
     }
 
-    void ExitWithoutSave(bool restore)
+    private void ExitWithoutSave(bool restore)
     {
         if (restore)
         {
@@ -690,10 +703,10 @@ public class EditModeController : MonoBehaviour
         SetEditMode(false, keepTarget: false);
 
         hasUnsavedChanges = false;
-        _baseline.Clear();
+        baseline.Clear();
     }
 
-    void OnSaveClicked()
+    private void OnSaveClicked()
     {
         SaveAllDraggablePositions();
         hasUnsavedChanges = false;
@@ -703,7 +716,7 @@ public class EditModeController : MonoBehaviour
         else Debug.Log("[Save] 저장되었습니다!");
     }
 
-    void SaveAllDraggablePositions()
+    private void SaveAllDraggablePositions()
     {
 #if UNITY_2022_2_OR_NEWER
         var drags = FindObjectsByType<Draggable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -723,7 +736,7 @@ public class EditModeController : MonoBehaviour
     #endregion
 
     #region === Toolbar ===
-    void ShowToolbarFor(Transform t)
+    private void ShowToolbarFor(Transform t)
     {
         if (!actionToolbar) return;
 
@@ -732,40 +745,66 @@ public class EditModeController : MonoBehaviour
             worldCamera: cam,
             onInfo: OnToolbarInfo,
             onRotate: OnToolbarRotate,
-            onInventory: null,
-            onOk: null,         
+            onInventory: null, // 필요 시 연결
+            onOk: null,
             onCancel: null
         );
     }
 
-    void OnToolbarInfo()
+    private void OnToolbarInfo()
     {
         if (!CurrentTarget) return;
-        if (CurrentTarget.TryGetComponent<ObjectMeta>(out var meta))
+
+        // 대상에서 ObjectMeta 찾기(부모/자식 허용)
+        var meta = CurrentTarget.GetComponentInParent<ObjectMeta>();
+        if (!meta) meta = CurrentTarget.GetComponentInChildren<ObjectMeta>();
+        if (!meta)
         {
-            var panel = UnityEngine.Object.FindFirstObjectByType<InfoPanel>(FindObjectsInactive.Include);
-            if (panel) meta.ShowInfo(panel);
+            Debug.LogWarning("[EditModeController] 선택 대상에 ObjectMeta가 없습니다.");
+            return;
         }
+
+        var panel = InfoPanel.FindInScene();
+        if (!panel)
+        {
+            Debug.LogWarning("[EditModeController] InfoPanel을 씬에서 찾지 못했습니다.");
+            return;
+        }
+
+        // ✅ 토글: 열려 있으면 닫고, 아니면 메타 정보로 열기
+        panel.Toggle(meta.DisplayName, meta.Description);
+
     }
 
-    void OnToolbarRotate()
+    private void OnToolbarRotate()
     {
         if (!CurrentTarget) return;
 
-        Quaternion originalRot = CurrentTarget.rotation;
+        // 회전 전 스냅샷 저장 (Undo용)
+        var originalSnap = new Snap { pos = CurrentTarget.position, rot = CurrentTarget.rotation };
+
         CurrentTarget.Rotate(0f, 90f, 0f, Space.World);
 
         if (OverlapsOthers(CurrentTarget))
         {
-            CurrentTarget.rotation = originalRot;
+            // 겹치면 회전 취소
+            CurrentTarget.position = originalSnap.pos;
+            CurrentTarget.rotation = originalSnap.rot;
+
             if (CurrentTarget.TryGetComponent<Draggable>(out var dragFail))
             {
                 dragFail.SetInvalid(true);
                 dragFail.SetHighlighted(true);
             }
-            Debug.Log("[Rotate] 회전 결과가 다른 오브젝트와 겹쳐서 취소되었습니다.");
+            Debug.Log("[Rotate] 겹쳐서 회전을 취소했습니다.");
             return;
         }
+
+        // 정상 회전 → Undo 스택에 방금 전 상태 push
+        var stack = GetOrCreateHistory(CurrentTarget);
+        stack.Push(originalSnap);
+        TrimHistoryIfNeeded(stack);
+        UpdateUndoUI();
 
         if (CurrentTarget.TryGetComponent<Draggable>(out var dragOk))
         {
@@ -778,14 +817,14 @@ public class EditModeController : MonoBehaviour
     #endregion
 
     #region === Raycast / Input Utils ===
-    static Vector2 GetPointerScreenPos()
+    private static Vector2 GetPointerScreenPos()
     {
         if (TouchES.activeTouches.Count > 0)
             return TouchES.activeTouches[0].screenPosition;
         return Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
     }
 
-    static bool IsPointerDownThisFrame()
+    private static bool IsPointerDownThisFrame()
     {
         for (int i = 0; i < TouchES.activeTouches.Count; i++)
             if (TouchES.activeTouches[i].phase == UnityEngine.InputSystem.TouchPhase.Began)
@@ -794,7 +833,7 @@ public class EditModeController : MonoBehaviour
         return Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
     }
 
-    static bool IsPointerUpThisFrame()
+    private static bool IsPointerUpThisFrame()
     {
         for (int i = 0; i < TouchES.activeTouches.Count; i++)
         {
@@ -806,7 +845,7 @@ public class EditModeController : MonoBehaviour
         return Mouse.current != null && Mouse.current.leftButton.wasReleasedThisFrame;
     }
 
-    static bool IsPointerMoving()
+    private static bool IsPointerMoving()
     {
         for (int i = 0; i < TouchES.activeTouches.Count; i++)
             if (TouchES.activeTouches[i].phase == UnityEngine.InputSystem.TouchPhase.Moved)
@@ -818,7 +857,7 @@ public class EditModeController : MonoBehaviour
         return false;
     }
 
-    static bool IsPointerOverUI()
+    private static bool IsPointerOverUI()
     {
         if (!EventSystem.current) return false;
 
@@ -841,21 +880,21 @@ public class EditModeController : MonoBehaviour
         return EventSystem.current.IsPointerOverGameObject();
     }
 
-    Transform RaycastDraggable(Vector2 screenPos)
+    private Transform RaycastDraggable(Vector2 screenPos)
     {
         if (!cam) return null;
         Ray ray = cam.ScreenPointToRay(screenPos);
         return Physics.Raycast(ray, out RaycastHit hit, 1000f, draggableMask) ? hit.transform : null;
     }
 
-    Transform RaycastTransform(Vector2 screenPos)
+    private Transform RaycastTransform(Vector2 screenPos)
     {
         if (!cam) return null;
         Ray ray = cam.ScreenPointToRay(screenPos);
         return Physics.Raycast(ray, out RaycastHit hit, 1000f, ~0) ? hit.transform : null;
     }
 
-    void MaintainOrbitBlockFlag()
+    private void MaintainOrbitBlockFlag()
     {
         if (!isDragging && BlockOrbit) BlockOrbit = false;
     }
