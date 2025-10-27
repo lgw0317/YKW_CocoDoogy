@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   draggableMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   lockYToInitial: 1
   fixedY: 0
   snapToGrid: 1
