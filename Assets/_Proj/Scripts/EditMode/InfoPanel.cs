@@ -2,7 +2,6 @@
 using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.UI;
-using UnityEngine.InputSystem;
 
 [DisallowMultipleComponent]
 public class InfoPanel : MonoBehaviour, IPointerClickHandler
@@ -12,13 +11,6 @@ public class InfoPanel : MonoBehaviour, IPointerClickHandler
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text descText;
 
-    [Header("Behavior")]
-    [SerializeField] private bool closeOnBackgroundClick = true;
-    [SerializeField] private bool closeOnEscape = true;
-    [SerializeField, Tooltip("열린 직후 한 프레임 동안 배경 클릭 무시")]
-    private bool ignoreBackgroundClickOnOpen = true;
-
-    private int openedFrame = -1;
     private static InfoPanel _cached;
 
     private GameObject Root => root ? root : gameObject;
@@ -30,20 +22,10 @@ public class InfoPanel : MonoBehaviour, IPointerClickHandler
         if (_cached == null) _cached = this;
     }
 
-    private void Update()
-    {
-        if (closeOnEscape && IsVisible && Keyboard.current != null &&
-            Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            Hide();
-        }
-    }
-
     public void Show(string title, string desc)
     {
         if (titleText) titleText.text = title ?? "";
         if (descText) descText.text = desc ?? "";
-        openedFrame = Time.frameCount;
         Root.SetActive(true);
     }
 
@@ -68,10 +50,9 @@ public class InfoPanel : MonoBehaviour, IPointerClickHandler
         else Show(title, desc);
     }
 
+    // 배경 클릭 시 닫기 (옵션 제거: 항상 닫음)
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!closeOnBackgroundClick) return;
-        if (ignoreBackgroundClickOnOpen && Time.frameCount == openedFrame) return;
         Hide();
     }
 

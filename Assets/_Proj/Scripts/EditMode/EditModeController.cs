@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -54,10 +53,6 @@ public class EditModeController : MonoBehaviour
     [SerializeField, Tooltip("저장 완료 알림 패널(확인 버튼 1개)")]
     private GameObject savedInfoPanel;
     [SerializeField] private Button savedOkButton;
-
-    private System.Action _onCurrentPreviewReturned; // 수량 복구 콜백 (보관/취소 시)
-    private bool _isInventoryPreview => CurrentTarget && CurrentTarget.GetComponent<InventoryItemTag>()?.isPreview == true;
-
     #endregion
 
     #region === Public State ===
@@ -96,7 +91,7 @@ public class EditModeController : MonoBehaviour
     private struct ObjSnapshot { public Transform t; public Vector3 pos; public Quaternion rot; public bool activeSelf; }
     private readonly List<ObjSnapshot> baseline = new();
     #endregion
-    public event Action<bool> EditModeChanged;
+
     #region === Unity Lifecycle ===
     private void Awake()
     {
@@ -235,7 +230,6 @@ public class EditModeController : MonoBehaviour
             UpdateUndoUI();
             actionToolbar?.Hide();
         }
-        EditModeChanged?.Invoke(IsEditMode);
     }
 
     private void ToggleTopButtons(bool on)
@@ -330,11 +324,9 @@ public class EditModeController : MonoBehaviour
 
                 PrepareMovePlane();
 
-                // ✅ 프리뷰일 때는 툴바를 숨기지 않음
-                if (!(CurrentTarget && CurrentTarget.GetComponent<InventoryItemTag>()?.isPreview == true))
-                    actionToolbar?.Hide();
+                // 드래그 중 툴바 숨김
+                actionToolbar?.Hide();
             }
-
 
             DragMove(GetPointerScreenPos());
         }
@@ -715,19 +707,15 @@ public class EditModeController : MonoBehaviour
         baseline.Clear();
     }
 
-    void OnSaveClicked()
+    private void OnSaveClicked()
     {
         SaveAllDraggablePositions();
         hasUnsavedChanges = false;
-
-        // ✅ 인벤 배치 저장(존재/좌표 JSON)
-        FindFirstObjectByType<InventoryPlacementPersistence>()?.SavePlacedInventory();
 
         CaptureBaseline();
         if (savedInfoPanel) savedInfoPanel.SetActive(true);
         else Debug.Log("[Save] 저장되었습니다!");
     }
-
 
     private void SaveAllDraggablePositions()
     {
@@ -749,38 +737,21 @@ public class EditModeController : MonoBehaviour
     #endregion
 
     #region === Toolbar ===
-    void ShowToolbarFor(Transform t)
+    private void ShowToolbarFor(Transform t)
     {
         if (!actionToolbar) return;
 
-        bool isPreview = t && t.GetComponent<InventoryItemTag>()?.isPreview == true;
-
-        if (isPreview)
-        {
-            actionToolbar.Show(
-                target: t,
-                worldCamera: cam,
-                onInfo: OnToolbarInfo,
-                onRotate: OnToolbarRotate,
-                onInventory: StashCurrentPreviewToInventory, // 보관
-                onOk: ConfirmCurrentPreview,                 // 확인(배치 확정)
-                onCancel: CancelCurrentPreview               // 취소(보관과 동일)
-            );
-        }
-        else
-        {
-            actionToolbar.Show(
-                target: t,
-                worldCamera: cam,
-                onInfo: OnToolbarInfo,
-                onRotate: OnToolbarRotate,
-                onInventory: null,
-                onOk: null,
-                onCancel: null
-            );
-        }
+        // 인벤/프리뷰 제거: 기본 두 버튼만
+        actionToolbar.Show(
+            target: t,
+            worldCamera: cam,
+            onInfo: OnToolbarInfo,
+            onRotate: OnToolbarRotate,
+            onInventory: null,
+            onOk: null,
+            onCancel: null
+        );
     }
-
 
     private void OnToolbarInfo()
     {
@@ -802,9 +773,8 @@ public class EditModeController : MonoBehaviour
             return;
         }
 
-        // ✅ 토글: 열려 있으면 닫고, 아니면 메타 정보로 열기
+        // 토글: 열려 있으면 닫고, 아니면 메타 정보로 열기
         panel.Toggle(meta.DisplayName, meta.Description);
-
     }
 
     private void OnToolbarRotate()
@@ -929,117 +899,5 @@ public class EditModeController : MonoBehaviour
     {
         if (!isDragging && BlockOrbit) BlockOrbit = false;
     }
-
-    public void BeginInventoryPlacement(InventoryEntry entry, System.Action onReturnToInventory)
-    {
-        if (entry == null || entry.prefab == null) return;
-
-        // 프리뷰 인스턴스 생성
-        var go = Instantiate(entry.prefab);
-        var tag = go.GetComponent<InventoryItemTag>();
-        if (!tag) tag = go.AddComponent<InventoryItemTag>();
-        tag.entryId = entry.id;
-        tag.isPreview = true;
-
-        SelectTarget(go.transform);
-        SetEditMode(true, keepTarget: true);
-
-        // 겹치지 않는 스폰 위치 시도
-        TryPlaceAtFreeSpot(go.transform);
-
-        // ✅ 프리뷰 전용 툴바 표시
-        ShowToolbarFor(CurrentTarget);
-
-        _onCurrentPreviewReturned = onReturnToInventory;
-    }
-
-
-    // === Add: 프리뷰 확정 ===
-    public void ConfirmCurrentPreview()
-    {
-        if (!_isInventoryPreview || !CurrentTarget) return;
-
-        if (OverlapsOthers(CurrentTarget))
-        {
-            if (CurrentTarget.TryGetComponent<Draggable>(out var d))
-            {
-                d.SetInvalid(true);
-                d.SetHighlighted(true);
-            }
-            Debug.Log("[Inventory] 겹쳐서 배치 불가");
-            return;
-        }
-
-        var tag = CurrentTarget.GetComponent<InventoryItemTag>();
-        if (tag) tag.isPreview = false;
-
-        if (CurrentTarget.TryGetComponent<Draggable>(out var ok))
-        {
-            ok.SetInvalid(false);
-            ok.SetHighlighted(true);
-        }
-
-        hasUnsavedChanges = true;
-        UpdateUndoUI();
-        ShowToolbarFor(CurrentTarget);
-    }
-
-
-    // === Add: 프리뷰 보관(= 인벤으로 반환) ===
-    public void StashCurrentPreviewToInventory()
-    {
-        if (!_isInventoryPreview || !CurrentTarget) return;
-
-        var t = CurrentTarget;
-        SelectTarget(null);
-        Destroy(t.gameObject);
-
-        actionToolbar?.Hide();
-
-        _onCurrentPreviewReturned?.Invoke();
-        _onCurrentPreviewReturned = null;
-    }
-
-    // === Add: 프리뷰 취소 (보관과 동일) ===
-    public void CancelCurrentPreview()
-    {
-        StashCurrentPreviewToInventory();
-    }
-    // === Add: 겹치지 않는 근처 위치 찾기 ===
-    private void TryPlaceAtFreeSpot(Transform t)
-    {
-        // 기준점: 카메라 정면 바닥 평면 교차점 또는 현재 위치
-        Vector3 basePos = t.position;
-        if (cam)
-        {
-            var ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-            if (new Plane(Vector3.up, Vector3.zero).Raycast(ray, out float enter))
-            {
-                basePos = ray.GetPoint(enter);
-            }
-        }
-
-        Vector3[] offsets =
-        {
-        Vector3.zero,
-        new Vector3( 1,0, 0), new Vector3(-1,0, 0), new Vector3(0,0, 1), new Vector3(0,0,-1),
-        new Vector3( 1,0, 1), new Vector3( 1,0,-1), new Vector3(-1,0, 1), new Vector3(-1,0,-1),
-        new Vector3( 2,0, 0), new Vector3(0,0, 2), new Vector3(-2,0,0), new Vector3(0,0,-2),
-    };
-
-        foreach (var o in offsets)
-        {
-            var p = basePos + o * gridSize; // 격자 단위로 이동
-            if (snapToGrid) p = SnapToGrid(p);
-
-            t.position = new Vector3(p.x, lockYToInitial ? t.position.y : p.y, p.z);
-            Physics.SyncTransforms();
-
-            if (!OverlapsOthers(t))
-                return;
-        }
-        // 실패 시 현재 위치 유지(사용자가 이동해서 빈곳으로)
-    }
-
     #endregion
 }
