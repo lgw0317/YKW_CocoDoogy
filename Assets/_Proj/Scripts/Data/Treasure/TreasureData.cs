@@ -11,7 +11,7 @@ public enum TreasureType
 
 [CreateAssetMenu(fileName = "Treasure", menuName = "TreasureSO/Treasure")]
 
-public class Treasure : ScriptableObject
+public class TreasureData : ScriptableObject
 {
     public int Treasure_Id; //보물 ID
 

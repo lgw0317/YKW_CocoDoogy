@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57c48c27c4a94f147a102e684626a128, type: 3}
-  m_Name: TestTreasure 2
+  m_Name: TestRelicTreasure 2
   m_EditorClassIdentifier: 
-  Treasure_Id: 3
-  Treaure_Type: 1
-  Take_Item_ID: 3
+  Treasure_Id: 1003
+  Treaure_Type: 3
+  Take_Item_ID: 1003
   Count: 1
-  prefab: {fileID: 3170935016321444504, guid: 4a3b15809fb130049b33861415899688, type: 3}
-  icon: {fileID: 21300000, guid: 0fe994269e9fd22499afb2624a193327, type: 3}
+  prefab: {fileID: 2516298674694979683, guid: 0f0e454dc87dc82469420cb3a4651e26, type: 3}
+  icon: {fileID: 21300000, guid: dd7cd48904b030b45b72b0aa1ac2e555, type: 3}
