@@ -8,15 +8,17 @@ using UnityEngine.EventSystems;
 /// </summary>
 /// 
 
-public class InteractionHandler : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class UserInteractionHandler : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private IInteractable interactable;
     private IDraggable draggable;
     private ILongPressable longPressable;
 
     private bool isPressing = false;
+    private bool isDragging = false;
     private float pressTime = 0f;
     private Vector3 startPos;
+
 
     private void Awake()
     {
@@ -28,7 +30,8 @@ public class InteractionHandler : MonoBehaviour, IPointerClickHandler, IPointerD
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (isPressing) return;
-        draggable?.OnBeginDrag(eventData.position);
+        draggable?.OnDragStart(eventData.position);
+        isDragging = true;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -43,12 +46,13 @@ public class InteractionHandler : MonoBehaviour, IPointerClickHandler, IPointerD
         if (isPressing) return;
         //Vector3 setPos = eventData.pointerCurrentRaycast.worldPosition;
         //transform.position = setPos;
-        draggable?.OnEndDrag(eventData.position);
+        draggable?.OnDragEnd(eventData.position);
+        isDragging = false;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (isPressing) return;
+        if (isPressing || isDragging) return;
         interactable.OnInteract();
     }
 

@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
-public class InteractionManager : MonoBehaviour
+public class UserInteractionManager : MonoBehaviour
 {
     
-    public static InteractionManager Instance { get; private set; }
+    public static UserInteractionManager Instance { get; private set; }
 
     public event Action<IInteractable> OnInteracted;
 

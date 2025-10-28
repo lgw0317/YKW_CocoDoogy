@@ -14,6 +14,7 @@ public class ObjectNavMeshAgentController
     private float waitTime; // 목표 지점 도달 후 대기 시간
     private float timer;
     private Transform transform;
+    public Transform[] waypoints { private get; set; }
 
     public ObjectNavMeshAgentController(NavMeshAgent agent, float moveSpeed, float angularSpeed, float acceleration, float moveRadius, float waitTime, float timer, Transform transform)
     {
@@ -37,6 +38,7 @@ public class ObjectNavMeshAgentController
         if (agent.speed != moveSpeed) agent.speed = moveSpeed;
         if (agent.angularSpeed != angularSpeed) agent.angularSpeed = angularSpeed;
         if (agent.acceleration != acceleration) agent.acceleration = acceleration;
+        
     }
 
     public void WaitAndMove()
@@ -47,13 +49,18 @@ public class ObjectNavMeshAgentController
             timer += Time.deltaTime;
             if (timer >= waitTime)
             {
-                MoveToRandomPosition();
+                MoveRandomPosition();
                 timer = 0;
             }
         }
     }
 
-    public void MoveToRandomPosition()
+    public void AgentStop()
+    {
+        agent.isStopped = true;
+    }
+
+    public void MoveRandomPosition()
     {
         Vector3 randomDir = Random.insideUnitSphere * moveRadius;
         randomDir += transform.position;

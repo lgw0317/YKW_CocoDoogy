@@ -73,7 +73,7 @@ public class RandomWalker : MonoBehaviour, IInteractable, IDraggable, ILongPress
         anim.Play("Jump");
     }
 
-    public void OnBeginDrag(Vector3 position)
+    public void OnDragStart(Vector3 position)
     {
         throw new System.NotImplementedException();
     }
@@ -83,7 +83,7 @@ public class RandomWalker : MonoBehaviour, IInteractable, IDraggable, ILongPress
         throw new System.NotImplementedException();
     }
 
-    public void OnEndDrag(Vector3 position)
+    public void OnDragEnd(Vector3 position)
     {
         throw new System.NotImplementedException();
     }
