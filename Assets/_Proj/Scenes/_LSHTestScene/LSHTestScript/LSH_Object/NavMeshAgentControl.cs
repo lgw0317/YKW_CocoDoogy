@@ -41,7 +41,7 @@ public class NavMeshAgentControl
         
     }
 
-    public void WaitAndMove()
+    public void WaitAndMove(Transform point)
     {
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
@@ -49,7 +49,7 @@ public class NavMeshAgentControl
             timer += Time.deltaTime;
             if (timer >= waitTime)
             {
-                MoveRandomPosition();
+                MoveToPoint(point);
                 timer = 0;
             }
         }
@@ -81,28 +81,27 @@ public class NavMeshAgentControl
         agent.stoppingDistance = 0f;
     }
 
-    public void LetsGoCoco(ref int currentIndex, Transform[] waypoints)
+    public void LetsGoCoco(ref int currentIndex, int reset, Transform[] waypoints)
     {
         Debug.Log($"에이전트 상태 : {agent.pathPending}");
         if (agent.enabled && !agent.pathPending && agent.remainingDistance < 0.5f)
         {
-            currentIndex++;
             Debug.Log($"1현재 인덱스 값 : {currentIndex}");
             Debug.Log($"1현재 웨이포인트 길이 : {waypoints.Length}");
             if (currentIndex < waypoints.Length)
             {
+                MoveToPoint(waypoints[currentIndex]);
+                if (currentIndex == waypoints.Length - 1)
+                {
+                    WaitAndMove(waypoints[currentIndex]);
+                    currentIndex = reset;
+                }
+                currentIndex++;
                 if (waypoints[currentIndex] == null)
                 {
                     Debug.Log("2다음 포인트 없는뎁숑");
                 }
-                MoveToPoint(waypoints[currentIndex]);
             }
-            else if (currentIndex > waypoints.Length)
-            {
-                currentIndex = 0;
-                MoveToPoint(waypoints[currentIndex]);
-            }
-
         }
     }
 

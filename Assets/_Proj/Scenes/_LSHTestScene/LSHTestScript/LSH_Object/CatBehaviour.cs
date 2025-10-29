@@ -94,8 +94,9 @@ public class CatBehaviour : MonoBehaviour, IInteractable, IDraggable, ILongPress
         }
         else
         {
-            oNMAC.LetsGoCoco(ref currentWaypoinIndex, InLobbyManager.Instance.waypoints);
+            oNMAC.AgentIsStop(false);
             oAC.MoveAnim(oNMAC.ValueOfMagnitude());
+            oNMAC.LetsGoCoco(ref currentWaypoinIndex, 0, InLobbyManager.Instance.waypoints);
         }
 
         //oNMAC.MoveValueChanged();
@@ -113,11 +114,11 @@ public class CatBehaviour : MonoBehaviour, IInteractable, IDraggable, ILongPress
     private void OnEnable()
     {
         gameObject.transform.position = InLobbyManager.Instance.waypoints[0].position;
-
     }
     private void OnDisable() // 인벤토리나 뭐 씬 넘어가면 처리할 것들
     {
-        
+        gameObject.transform.position = InLobbyManager.Instance.waypoints[0].position;
+        currentWaypoinIndex = 0;
     }
 
     public void OnDragStart(Vector3 position)// IBeginDragHandler 쪽으로 넘어감

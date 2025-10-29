@@ -46,7 +46,7 @@ public class InLobbyManager : MonoBehaviour
     {
         foreach (var data in objectDatabase)
         {
-            GameObject obj = Instantiate(data.prefab);
+            GameObject obj = Instantiate(data.prefab, waypoints[0].position, Quaternion.identity);
             var meta = obj.GetComponent<GameObjectData>();
             meta.Initialize(data);
         }
