@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +13,13 @@ public class Buffalo : MonoBehaviour
     [Tooltip("점프 높이 곡선 0~1 비율")]
     public AnimationCurve jumpY = AnimationCurve.EaseInOut(0, 0, 1, 0.5f);
     // TODO : 버튼 쿨타임 필요(기본값 : 5초)
+    [Header("Cooldown")]
+    [Tooltip("쿨타임")]
+    public float coolTime = 5f;
+    public Image btnImg;
+    public Sprite defaultSprite;
+    public Sprite timerSprite;
+    public Image coolTimeFillImg;
 
     [Header("Visual")]
     public RingRange ring;
@@ -27,6 +33,7 @@ public class Buffalo : MonoBehaviour
     [SerializeField] private Shockwave shockwave;
 
     bool running;
+    bool onCooldown;
 
     void Awake()
     {
@@ -34,6 +41,16 @@ public class Buffalo : MonoBehaviour
         ring.gameObject.SetActive(false);
 
         if (!shockwave) shockwave = GetComponent<Shockwave>();
+
+        btnImg = interactionBtn.targetGraphic as Image;
+
+        btnImg.enabled = true;
+
+        if (coolTimeFillImg)
+        {
+            coolTimeFillImg.enabled = false;
+            coolTimeFillImg.fillAmount = 0f;
+        }
 
         var playerGO = GameObject.FindGameObjectWithTag("Player");
         if (playerGO != null)
@@ -45,6 +62,8 @@ public class Buffalo : MonoBehaviour
     void Start()
     {
         if (ring == null) ring = GetComponentInChildren<RingRange>(true);
+        btnImg.sprite = defaultSprite;
+        SetBtnInteractable(true);
     }
 
     void Update()
@@ -54,6 +73,7 @@ public class Buffalo : MonoBehaviour
 
     void LateUpdate()
     {
+        // NOTE, TODO : 최종 시점(카메라) 변경 후 UI를 시점에 맞게 rotation 설정해줘야 함. 현재는 0,0,0
         if (interactionBtn)
         {
             // World Rotation을 Quaternion.identity(X=0, Y=0, Z=0)로 설정
@@ -79,7 +99,9 @@ public class Buffalo : MonoBehaviour
     public void Interact()
     {
         Debug.Log("[BuffaloShockwave] Interact called");
-        if (!running) StartCoroutine(WaveRunCoroutine());
+        if (running || onCooldown) return;
+        StartCoroutine(WaveRunCoroutine());
+        StartCoroutine(CooldownCoroutine());
     }
 
     void OnMouseDown() => Interact();
@@ -115,5 +137,51 @@ public class Buffalo : MonoBehaviour
             yield return null;
         }
         transform.position = p0; // 끝나면 원위치
+    }
+
+
+    void SetBtnInteractable(bool on)
+    {
+        if (interactionBtn) interactionBtn.interactable = on;
+    }
+
+    IEnumerator CooldownCoroutine()
+    {
+        onCooldown = true;
+
+        btnImg.sprite = timerSprite;
+
+        if (coolTimeFillImg)
+        {
+            coolTimeFillImg.enabled = true;
+            coolTimeFillImg.fillAmount = 1f; // 100%에서 시작
+        }
+
+        SetBtnInteractable(false);
+
+        float cd = Mathf.Max(0.01f, coolTime);
+        float t = 0f;
+        while (t < cd)
+        {
+            t += Time.deltaTime;
+            if (coolTimeFillImg)
+            {
+                // 1 -> 0 으로 감소(남은 시간 비율)
+                coolTimeFillImg.fillAmount = Mathf.Clamp01(1f - (t / cd));
+            }
+            yield return null;
+        }
+
+        btnImg.sprite = defaultSprite;
+
+        // 쿨 종료 : 기본 이미지(스킬)로 복귀 + 오버레이 숨김 + 버튼 활성화
+        if (coolTimeFillImg)
+        {
+            coolTimeFillImg.fillAmount = 0f;
+            coolTimeFillImg.enabled = false;
+        }
+        SetBtnInteractable(true);
+
+        onCooldown = false;
     }
 }

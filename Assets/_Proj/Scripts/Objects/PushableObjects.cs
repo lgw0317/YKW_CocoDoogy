@@ -195,36 +195,46 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
 
     // ========== 공중 띄우기용 ==========
     // 충격파 맞았을 때 y+1 duration 동안 띄우기
-    public void WaveLift(float duration, float holdSec)
+    public void WaveLift(float rise, float hold, float fall)
     {
         if (isMoving || isFalling) return;
-        StartCoroutine(WaveLiftCoroutine(duration, holdSec));
+        StartCoroutine(WaveLiftCoroutine(rise, hold, fall));
     }
 
     // 복귀
-    IEnumerator WaveLiftCoroutine(float duration, float holdSec)
+    IEnumerator WaveLiftCoroutine(float rise, float holdSec, float fall)
     {
         isMoving = true;
 
         Vector3 start = transform.position;
         Vector3 target = start + Vector3.up * tileSize;
         
-        float t = 0f;
-        duration = Mathf.Max(0.01f, duration);
+        rise = Mathf.Max(0.01f, rise);
+        holdSec = Mathf.Max(0f, holdSec);
+        fall = Mathf.Max(0.01f, fall);
 
-        while (t < duration)
+        float t = 0f;
+        while (t < rise)
         {
             t += Time.deltaTime;
-            transform.position = Vector3.Lerp(start, target, t / duration);
+            transform.position = Vector3.Lerp(start, target, t / rise);
             yield return null;
         }
         transform.position = target;
 
         if(holdSec > 0f) 
             yield return new WaitForSeconds(holdSec);
+
+        t = 0f;
+        while(t < fall)
+        {
+            t += Time.deltaTime;
+            transform.position = Vector3.Lerp(target, start, t / fall);
+            yield return null;
+        }
         transform.position = start;
          
-        if (allowFall) { yield return StartCoroutine(CheckFall()); }
+        //if (allowFall) { yield return StartCoroutine(CheckFall()); }
         isMoving = false;
     }
 }

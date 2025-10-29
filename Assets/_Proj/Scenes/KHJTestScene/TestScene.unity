@@ -639,14 +639,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b01b265e234fdd47b834a63d0cef32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.12
+  moveTime: 0.2
   tileSize: 1
   blockingMask:
     serializedVersion: 2
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 0
@@ -668,7 +668,7 @@ GameObject:
   - component: {fileID: 196982952}
   - component: {fileID: 196982951}
   - component: {fileID: 196982950}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -885,14 +885,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b01b265e234fdd47b834a63d0cef32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.12
+  moveTime: 0.2
   tileSize: 1
   blockingMask:
     serializedVersion: 2
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 0
@@ -1746,6 +1746,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 437609031}
+  - component: {fileID: 437609032}
   - component: {fileID: 437609029}
   - component: {fileID: 437609028}
   - component: {fileID: 437609027}
@@ -1845,6 +1846,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &437609032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437609026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b01b265e234fdd47b834a63d0cef32d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveTime: 0.12
+  tileSize: 1
+  blockingMask:
+    serializedVersion: 2
+    m_Bits: 384
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 513
+  slopeMask:
+    serializedVersion: 2
+    m_Bits: 0
+  throughLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  requiredHoldtime: 0.9
+  allowFall: 1
+  allowSlope: 0
 --- !u!1 &462038717
 GameObject:
   m_ObjectHideFlags: 0
@@ -1857,7 +1887,7 @@ GameObject:
   - component: {fileID: 462038721}
   - component: {fileID: 462038720}
   - component: {fileID: 462038719}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2222,14 +2252,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b01b265e234fdd47b834a63d0cef32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.12
+  moveTime: 0.2
   tileSize: 1
   blockingMask:
     serializedVersion: 2
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 0
@@ -2334,7 +2364,7 @@ Transform:
   m_GameObject: {fileID: 737044284}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2645,7 +2675,7 @@ GameObject:
   - component: {fileID: 833778955}
   - component: {fileID: 833778954}
   - component: {fileID: 833778953}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3254,7 +3284,7 @@ MonoBehaviour:
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 1
@@ -3563,6 +3593,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  coolTime: 5
+  btnImg: {fileID: 1212422258}
+  defaultSprite: {fileID: 21300000, guid: 714c04b9c20f2164892a00f7bc90ac33, type: 3}
+  timerSprite: {fileID: 21300000, guid: f833e453b126aef4295f594590894fa3, type: 3}
+  coolTimeFillImg: {fileID: 1160885226}
   ring: {fileID: 312907492}
   interactionBtn: {fileID: 1212422257}
   detectRadius: 3
@@ -3591,8 +3626,9 @@ MonoBehaviour:
   occluderMask:
     serializedVersion: 2
     m_Bits: 384
-  riseSecondsPerTile: 0.5
-  hangSeconds: 0.4
+  riseSec: 0.1
+  hangSec: 0.4
+  fallSec: 1
 --- !u!1 &1133486613
 GameObject:
   m_ObjectHideFlags: 0
@@ -3697,6 +3733,81 @@ MonoBehaviour:
   gx: 0
   gz: 0
   gh: 0
+--- !u!1 &1160885223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1160885224}
+  - component: {fileID: 1160885225}
+  - component: {fileID: 1160885226}
+  m_Layer: 0
+  m_Name: CoolOverlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1160885224
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160885223}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1212422256}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1160885225
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160885223}
+  m_CullTransparentMesh: 1
+--- !u!114 &1160885226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160885223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.48584908, g: 0.69576716, b: 1, a: 0.78039217}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: e3c64caa1bb854ff58aba5cc9a008834, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 0
+  m_FillOrigin: 2
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1170278105
 GameObject:
   m_ObjectHideFlags: 0
@@ -3966,7 +4077,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1160885224}
   m_Father: {fileID: 977014952}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4414,7 +4526,7 @@ MonoBehaviour:
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 1
@@ -4848,7 +4960,7 @@ MonoBehaviour:
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 1
@@ -5027,7 +5139,7 @@ GameObject:
   - component: {fileID: 1462381661}
   - component: {fileID: 1462381660}
   - component: {fileID: 1462381659}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5629,14 +5741,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b01b265e234fdd47b834a63d0cef32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.12
+  moveTime: 0.2
   tileSize: 1
   blockingMask:
     serializedVersion: 2
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 0
@@ -5885,7 +5997,7 @@ GameObject:
   - component: {fileID: 1595269104}
   - component: {fileID: 1595269103}
   - component: {fileID: 1595269102}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6087,14 +6199,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b01b265e234fdd47b834a63d0cef32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.12
+  moveTime: 0.2
   tileSize: 1
   blockingMask:
     serializedVersion: 2
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 0
@@ -6441,14 +6553,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b01b265e234fdd47b834a63d0cef32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.12
+  moveTime: 0.2
   tileSize: 1
   blockingMask:
     serializedVersion: 2
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 0
@@ -6801,14 +6913,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b01b265e234fdd47b834a63d0cef32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.12
+  moveTime: 0.2
   tileSize: 1
   blockingMask:
     serializedVersion: 2
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 0
@@ -6954,14 +7066,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b01b265e234fdd47b834a63d0cef32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.12
+  moveTime: 0.2
   tileSize: 1
   blockingMask:
     serializedVersion: 2
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 0
@@ -7333,7 +7445,7 @@ GameObject:
   - component: {fileID: 1922374396}
   - component: {fileID: 1922374395}
   - component: {fileID: 1922374394}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7535,14 +7647,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b01b265e234fdd47b834a63d0cef32d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.12
+  moveTime: 0.2
   tileSize: 1
   blockingMask:
     serializedVersion: 2
     m_Bits: 384
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 0
@@ -7593,7 +7705,7 @@ Transform:
   m_GameObject: {fileID: 1940160608}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 0, z: -3}
+  m_LocalPosition: {x: 2, y: 1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7617,10 +7729,10 @@ MonoBehaviour:
   tileSize: 1
   blockingMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 1
@@ -7628,7 +7740,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   requiredHoldtime: 0.9
-  allowFall: 1
+  allowFall: 0
   allowSlope: 0
   btnGroup: {fileID: 1223942444}
   up: {fileID: 1888213193}
@@ -7642,7 +7754,7 @@ MonoBehaviour:
     m_Bits: 8
   pushableLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 256
   dashSpeed: 0.08
   rotateLerp: 25
   useGlobalTimeScale: 1
@@ -7711,7 +7823,7 @@ GameObject:
   - component: {fileID: 2001222679}
   - component: {fileID: 2001222678}
   - component: {fileID: 2001222677}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7895,7 +8007,7 @@ GameObject:
   - component: {fileID: 2086675072}
   - component: {fileID: 2086675071}
   m_Layer: 2
-  m_Name: Canvas
+  m_Name: Canvas(Joystick)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8018,10 +8130,10 @@ SceneRoots:
   - {fileID: 562939523}
   - {fileID: 601934553}
   - {fileID: 795707064}
+  - {fileID: 437609031}
   - {fileID: 172523475}
   - {fileID: 233665280}
   - {fileID: 1621411388}
-  - {fileID: 437609031}
   - {fileID: 1868279834}
   - {fileID: 1680770751}
   - {fileID: 1927625609}

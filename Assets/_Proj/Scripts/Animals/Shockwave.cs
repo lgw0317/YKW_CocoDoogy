@@ -22,9 +22,11 @@ public class Shockwave : MonoBehaviour
 
     [Header("Lift Timing")]
     [Tooltip("떠오르는 데 걸리는 시간")]
-    [Min(0.01f)] public float riseSecondsPerTile = 0.5f;
+    [Min(0.01f)] public float riseSec = 1f;
     [Tooltip("공중에서 홀딩되는 시간")]
-    [Min(0.0f)] public float hangSeconds = 0.4f;
+    [Min(0.0f)] public float hangSec = 0.4f;
+    [Tooltip("떨어지는 데 걸리는 시간")]
+    [Min(0.01f)] public float fallSec = 1f;
 
     public void Fire()
     {
@@ -35,8 +37,9 @@ public class Shockwave : MonoBehaviour
             targetLayer: targetLayer,
             useOcclusion: useOcclusion,
             occludeMask: occluderMask,
-            riseSecondsPerTile: riseSecondsPerTile,
-            hangSeconds: hangSeconds
+            riseSeconds: riseSec,
+            hangSeconds: hangSec,
+            fallSeconds: fallSec
          );
     }
 
@@ -47,8 +50,9 @@ public class Shockwave : MonoBehaviour
         LayerMask targetLayer,
         bool useOcclusion,
         LayerMask occludeMask,
-        float riseSecondsPerTile,
-        float hangSeconds
+        float riseSeconds,
+        float hangSeconds,
+        float fallSeconds
     )
     {
         float t = Mathf.Max(0.0001f, tile);
@@ -64,17 +68,16 @@ public class Shockwave : MonoBehaviour
         var all = new List<(Collider col, Component pushable, int h, int gx, int gz, float ts)>();
         foreach (var c in cols)
         {
-            var p = (Component)c.GetComponent("PushableObjects")
-                  ?? (Component)c.GetComponent("PushableBox")
-                  ?? (Component)c.GetComponent("PushableOrb");
+            // PushableObejcts.cs를 찾거나 상속 클래스 컴포넌트 찾음
+            var p = (Component)c.GetComponent(typeof(PushableObjects));
 
-            float ts = p != null ? GetTileSize(p, tile) : tile; // 비-푸시블은 기본 타일 높이
+            float ts = p != null ? GetTileSize(p, tile) : tile; // !pushables는 기본 타일 높이
             int h = Mathf.FloorToInt(c.transform.position.y / ts + 1e-4f);
             int gx = Mathf.FloorToInt((c.transform.position.x + 0.5f * ts) / ts);
             int gz = Mathf.FloorToInt((c.transform.position.z + 0.5f * ts) / ts);
             all.Add((c, p, h, gx, gz, ts));
         }
-        // 기준층(centerH) 가시성 검사 (pushables도 occlude)
+        // 기준층(centerH) 가시성 검사 (pushables도 occlude 가능)
         LayerMask blockMask = occluderMask | targetLayer;
         var baseHits = new List<(Collider col, Component pushable, int gx, int gz, float ts)>();
         foreach (var e in all)
@@ -97,24 +100,25 @@ public class Shockwave : MonoBehaviour
                 if (e.gx != gx || e.gz != gz) continue;
                 if (e.h < centerH) continue; // 아래층 제외
 
-                float rise = Mathf.Max(0.0001f, riseSecondsPerTile);
-                float hang = Mathf.Max(0f, hangSeconds);
+                float rise = Mathf.Max(0.0001f, riseSeconds);
+                float hold = Mathf.Max(0f, hangSeconds);
+                float fall = Mathf.Max(0.001f, fallSeconds);
 
                 if (e.pushable != null)
                 {
-                    if (!TryCallLiftAny(e.pushable, rise, hang))
-                        StartCoroutine(LiftTransCoroutine(e.col.transform, e.ts, rise, hang));
+                    if (!TryCallLiftAny(e.pushable, rise, hold, fall))
+                        StartCoroutine(LiftTransCoroutine(e.col.transform, e.ts, rise, hold, fall));
                 }
                 else
                 {
                     // layer로 타깃되면 폴백 리프트 허용
-                    StartCoroutine(LiftTransCoroutine(e.col.transform, e.ts, rise, hang));
+                    StartCoroutine(LiftTransCoroutine(e.col.transform, e.ts, rise, hold, fall));
                 }
             }
         }
     }
 
-    static bool TryCallLiftAny(Component target, float rise, float hang)
+    static bool TryCallLiftAny(Component target, float rise, float hang, float fall)
     {
         const string methodName = "WaveLift";
         var type = target.GetType();
@@ -125,7 +129,8 @@ public class Shockwave : MonoBehaviour
             var ps = m.GetParameters();
             object[] args = null;
 
-            if (ps.Length == 2) args = new object[] { ConvertArg(ps[0], rise), ConvertArg(ps[1], hang) };
+            if (ps.Length == 3) args = new object[] { ConvertArg(ps[0], rise), ConvertArg(ps[1], hang), ConvertArg(ps[2], fall) };
+            else if (ps.Length == 2) args = new object[] { ConvertArg(ps[0], rise), ConvertArg(ps[1], hang) };
             else if (ps.Length == 1) args = new object[] { ConvertArg(ps[0], rise) };
             else if (ps.Length == 0) args = null;
             else continue;
@@ -156,6 +161,10 @@ public class Shockwave : MonoBehaviour
         if (dist <= 0.0001f) return false;
         dir /= dist;
 
+        float startOffset = 0.01f;
+        Vector3 startRay = a + dir * startOffset;
+        float rayDist = dist - startOffset;
+
         var hits = Physics.RaycastAll(a, dir, dist - 0.01f, blockMask, QueryTriggerInteraction.Ignore);
         foreach (var hit in hits)
         {
@@ -172,10 +181,9 @@ public class Shockwave : MonoBehaviour
             if (cb.max.y < yCentre - halfBand) continue;
             if (cb.min.y > yCentre + halfBand) continue;
 
+            // 추가 검증 : 차폐물도 정확히 기준층에 위치해야 함
             float tsOcc = tile;
-            var pOcc = (Component)hit.collider.GetComponent("PushableObjects")
-                     ?? (Component)hit.collider.GetComponent("PushableBox")
-                     ?? (Component)hit.collider.GetComponent("PushableOrb");
+            var pOcc = (Component)hit.collider.GetComponent(typeof(PushableObjects));
             if (pOcc != null) tsOcc = GetTileSize(pOcc, tile);
 
             int hOcc = Mathf.FloorToInt(hit.collider.transform.position.y / tsOcc + 1e-4f);
@@ -208,7 +216,7 @@ public class Shockwave : MonoBehaviour
         return Mathf.Max(0.0001f, fallback);
     }
 
-    static System.Collections.IEnumerator LiftTransCoroutine(Transform tr, float tile, float rise, float hang)
+    static System.Collections.IEnumerator LiftTransCoroutine(Transform tr, float tile, float rise, float hang, float fall)
     {
         Vector3 start = tr.position;
         Vector3 upPos = start + Vector3.up * tile;
@@ -218,70 +226,23 @@ public class Shockwave : MonoBehaviour
         while (t < rise)
         {
             t += Time.deltaTime;
-            float k = Mathf.Clamp01(t / rise);
-            tr.position = Vector3.Lerp(start, upPos, k);
+            tr.position = Vector3.Lerp(start, upPos, t / rise);
             yield return null;
         }
         tr.position = upPos;
 
+        // 홀딩
         if (hang > 0f) yield return new WaitForSeconds(hang);
 
         // 낙하는 대상 PushableObjects 측에서 처리 X
         // 원위치로 하강
         t = 0f;
-        while(t < rise)
+        while(t < fall)
         {
             t += Time.deltaTime;
-            float k = Mathf.Clamp01(t / rise);
-            tr.position = Vector3.Lerp(upPos, start, k);
+            tr.position = Vector3.Lerp(upPos, start,t / fall);
             yield return null;
         }
         tr.position = start;
-    }
-
-    static bool HasFixedAboveAny(List<Component> stack, int upTiles)
-    {
-        foreach (var p in stack)
-        {
-            float ts = GetTileSize(p, 1f);
-            Vector3 center = p.transform.position + Vector3.up * (upTiles * ts);
-            float r = ts * 0.25f;
-
-            var cols = Physics.OverlapSphere(center, r, ~0, QueryTriggerInteraction.Ignore);
-            foreach (var c in cols)
-            {
-                var so = c.GetComponent<ShockwaveObject>();
-                if (so != null && so.isFixed && !so.passThrough) return true;
-            }
-        }
-        return false;
-    }
-
-    static bool IsBlocked(Vector3 from, Vector3 to, int centerH, float tile, LayerMask occludeMask)
-    {
-        float y = centerH * tile + tile * 0.5f;
-        Vector3 a = new(from.x, y, from.z);
-        Vector3 b = new(to.x, y, to.z);
-        Vector3 dir = (b - a);
-        float dist = dir.magnitude;
-        if (dist <= 0.0001f) return false;
-        dir /= dist;
-
-        var hits = Physics.RaycastAll(a, dir, dist, occludeMask, QueryTriggerInteraction.Ignore);
-        foreach (var h in hits)
-        {
-            var sw = h.collider.GetComponent<ShockwaveObject>();
-            if (sw != null)
-            {
-                // 컴포넌트가 있으면 속성 우선
-                if (sw.passThrough) continue; // 통과 허용
-                if (sw.isFixed) return true; // 고정물 -> 차폐
-                continue;
-            }
-
-            // 컴포넌트가 없어도 occludeMask에 맞으면 차폐된 것으로 간주
-            return true;
-        }
-        return false;
     }
 }
