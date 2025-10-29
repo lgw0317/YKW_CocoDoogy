@@ -240,7 +240,7 @@ public class Shockwave : MonoBehaviour
         while(t < fall)
         {
             t += Time.deltaTime;
-            tr.position = Vector3.Lerp(upPos, start,t / rise);
+            tr.position = Vector3.Lerp(upPos, start,t / fall);
             yield return null;
         }
         tr.position = start;

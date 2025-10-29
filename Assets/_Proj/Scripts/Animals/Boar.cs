@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+// 10/29 TODO : 카메라 세팅 후 팝업 UI 조정 76라인
 public class Boar : PushableObjects, IDashDirection
 {
     [Header("Canvas")]
@@ -72,6 +73,7 @@ public class Boar : PushableObjects, IDashDirection
     // HACK : 카메라 세팅에 따라 카메라 정면을 조금 따라가도록 수정하는 것이 나은 방법일 수도 있음. 추후 joystick, camera 변경 후 다시 생각.
     private void LateUpdate()
     {
+        // NOTE, TODO : 최종 시점(카메라) 변경 후 UI를 시점에 맞게 rotation 설정해줘야 함. 현재는 0,0,0
         // 멧돼지(부모)의 회전에 상관없이 UI가 월드 축에 고정되게 유지
         if (btnGroup != null)
         {
@@ -165,6 +167,9 @@ public class Boar : PushableObjects, IDashDirection
             transform.rotation = Quaternion.Slerp(startRot, initTargetRot, rotElapsed / rotateTime);
             yield return null;
         }
+
+        Vector3 boarNextPos = transform.position;
+
         while (true)
         {
             Vector3 currentPos = transform.position;
@@ -175,18 +180,25 @@ public class Boar : PushableObjects, IDashDirection
 
             if (hits.Length == 0)
             {
+                // 땅 없으면 멈춤
+                if (!HasGround(nextPos))
+                {
+                    isMoving = false;
+                    yield break;
+                }
                 // 완전 비었으면 전진
                 yield return StartCoroutine(DashMoveTo(nextPos, moveDir));
+                boarNextPos = nextPos;
                 continue;
             }
 
             // Pushable이 하나라도 있나?
             bool foundPushable = false;
-            Collider pushHead = null;
+            PushableObjects pushHead = null;
             foreach (var h in hits)
             {
                 if (h == null || h.isTrigger) continue;
-                if (h.TryGetComponent<IPushHandler>(out _)) { foundPushable = true; pushHead = h; break; }
+                if (h.TryGetComponent(out PushableObjects p)) { pushHead = p; foundPushable = true;  break; }
             }
 
             if (foundPushable)
@@ -195,6 +207,7 @@ public class Boar : PushableObjects, IDashDirection
                 if (!CollectChain(pushHead.transform.position, dashDir, out var chain, out Vector3 tailNextWorld))
                 {
                     // 체인 뒤가 막혀서 못 밈
+                    HitStop(pushHead.gameObject);
                     break;
                 }
 
@@ -225,6 +238,11 @@ public class Boar : PushableObjects, IDashDirection
                 // 연속된 모든 pushables를 동시에 1칸 이동
                 yield return StartCoroutine(ChainShiftOneCell(chain, dashDir));
 
+                
+                // REVIEW, NOTE : 기획서 변경에 따라 밀고 난 후 한 칸 전진 한 다음에 보어 멈추게 하려면 아래 2개 라인을 주석 해제
+                //var posAfterPush = transform.position + new Vector3(dashDir.x, 0, dashDir.y);
+                //yield return StartCoroutine(DashMoveTo(posAfterPush, new Vector3(dashDir.x, 0, dashDir.y)));
+
                 // 멧돼지는 보어는 전진하지 않고 멈춤
                 HitStop(pushHead.gameObject);
                 break;
@@ -235,7 +253,7 @@ public class Boar : PushableObjects, IDashDirection
             break;
         }
         isMoving = false;
-        StartCoroutine(CheckFall());
+        yield return StartCoroutine(CheckFall());
     }
 
     // 연속된 PushableObjects 체인 수집
@@ -266,21 +284,15 @@ public class Boar : PushableObjects, IDashDirection
             {
                 if (c == null || c.isTrigger) continue;
                 // pushable 레이어가 지정돼 있으면 레이어 필터
-                if (pushableLayer.value != 0 && (pushableLayer.value & (1 << c.gameObject.layer)) == 0)
-                {
-                    // 푸시 대상 아님(다른 블록)
-                    nonPushBlocking = true;
-                    break;
-                }
                 if (c.TryGetComponent(out PushableObjects p))
                 {
                     push = p;
                     // 같은 칸에 다른 충돌체가 더 있더라도, pushable이 1개라도 있으면 우선 push로 취급
                     break;
                 }
-                else
+                if (pushableLayer.value != 0 && (pushableLayer.value & (1 << c.gameObject.layer)) == 0)
                 {
-                    // 비푸시블 충돌체가 있으면 막힘. 체인 종료.
+                    // 푸시 대상 아님(다른 블록)
                     nonPushBlocking = true;
                     break;
                 }
@@ -398,9 +410,52 @@ public class Boar : PushableObjects, IDashDirection
             }
         }
     }
+
     protected override bool CheckBlocking(Vector3 target)
     {
         // 멧돼지 크기에 맞는 충돌체 검사
         return Physics.CheckBox(target + Vector3.up * 0.5f, Vector3.one * 0.4f, Quaternion.identity, blockingMask);
     }
+
+    bool HasGround(Vector3 worldPos)
+    {
+        float half = Mathf.Min(0.45f, tileSize * 0.45f);
+        Vector3 halfExt = new Vector3(half, 0.05f, half);
+
+        float castDist = tileSize * 1.25f;
+        Vector3 origin = worldPos + Vector3.up * (tileSize * 0.5f);
+
+        return Physics.BoxCast(
+            origin,
+            halfExt,
+            Vector3.down,
+            out _,
+            Quaternion.identity,
+            castDist,
+            blockingMask,
+            QueryTriggerInteraction.Ignore
+        );
+    }
+#if UNITY_EDITOR
+    void OnDrawGizmosSelected()
+    {
+        if (Application.isPlaying)
+        {
+            Vector3 dir = transform.forward;
+            Vector3 nextPos = transform.position + dir.normalized * tileSize;
+
+            float half = Mathf.Min(0.45f, tileSize * 0.45f);
+            Vector3 halfExtents = new Vector3(half, 0.05f, half);
+            Vector3 origin = nextPos + Vector3.up * (tileSize * 0.5f);
+
+            Gizmos.color = Color.cyan;
+            // 시작 박스
+            Gizmos.DrawWireCube(origin, halfExtents * 2f);
+            // 끝 위치(아래) 표시
+            Vector3 end = origin + Vector3.down * (tileSize * 1.25f);
+            Gizmos.DrawLine(origin, end);
+            Gizmos.DrawWireCube(end, halfExtents * 2f);
+        }
+    }
+#endif
 }

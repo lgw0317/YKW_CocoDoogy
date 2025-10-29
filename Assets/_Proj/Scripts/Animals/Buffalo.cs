@@ -73,6 +73,7 @@ public class Buffalo : MonoBehaviour
 
     void LateUpdate()
     {
+        // NOTE, TODO : 최종 시점(카메라) 변경 후 UI를 시점에 맞게 rotation 설정해줘야 함. 현재는 0,0,0
         if (interactionBtn)
         {
             // World Rotation을 Quaternion.identity(X=0, Y=0, Z=0)로 설정

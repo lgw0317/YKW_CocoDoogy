@@ -668,7 +668,7 @@ GameObject:
   - component: {fileID: 196982952}
   - component: {fileID: 196982951}
   - component: {fileID: 196982950}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1887,7 +1887,7 @@ GameObject:
   - component: {fileID: 462038721}
   - component: {fileID: 462038720}
   - component: {fileID: 462038719}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2364,7 +2364,7 @@ Transform:
   m_GameObject: {fileID: 737044284}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3341,7 +3341,6 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1212422256}
-  - {fileID: 1160885224}
   m_Father: {fileID: 1124772849}
   m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3764,12 +3763,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 977014952}
+  m_Father: {fileID: 1212422256}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -70, y: -70}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1160885225
 CanvasRenderer:
@@ -4078,7 +4077,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1160885224}
   m_Father: {fileID: 977014952}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -5139,7 +5139,7 @@ GameObject:
   - component: {fileID: 1462381661}
   - component: {fileID: 1462381660}
   - component: {fileID: 1462381659}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5997,7 +5997,7 @@ GameObject:
   - component: {fileID: 1595269104}
   - component: {fileID: 1595269103}
   - component: {fileID: 1595269102}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7445,7 +7445,7 @@ GameObject:
   - component: {fileID: 1922374396}
   - component: {fileID: 1922374395}
   - component: {fileID: 1922374394}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7729,10 +7729,10 @@ MonoBehaviour:
   tileSize: 1
   blockingMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640
   groundMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   slopeMask:
     serializedVersion: 2
     m_Bits: 1
@@ -7740,7 +7740,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   requiredHoldtime: 0.9
-  allowFall: 1
+  allowFall: 0
   allowSlope: 0
   btnGroup: {fileID: 1223942444}
   up: {fileID: 1888213193}
@@ -7823,7 +7823,7 @@ GameObject:
   - component: {fileID: 2001222679}
   - component: {fileID: 2001222678}
   - component: {fileID: 2001222677}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8007,7 +8007,7 @@ GameObject:
   - component: {fileID: 2086675072}
   - component: {fileID: 2086675071}
   m_Layer: 2
-  m_Name: Canvas
+  m_Name: Canvas(Joystick)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
