@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -11,12 +11,20 @@ public class DecoData
     public string name;
     public string prefabPath;
     public string iconPath;
-    public string category;
+    public Category category;
     public string tag;
-    public string acquire;
+    public Acquire acquire;
     public int stack;
     public string description;
 
     [NonSerialized] public GameObject prefab;
     [NonSerialized] public Sprite icon;
+}
+public enum Category
+{
+    plant, strucure, furniture, fixtures
+}
+public enum Acquire
+{
+    quest, ingame, shop
 }

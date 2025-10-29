@@ -12,22 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6037a0173bdf524da49605a584898b5, type: 3}
   m_Name: DecoDatabase
   m_EditorClassIdentifier: 
-  decos:
+  decoList:
   - id: 10001
     name: deco_maple_tree
-    prefabPath: Assets/_Proj/Resources/Prefabs/Deco/deco_maple_tree.prefab
-    iconPath: Assets/_Proj/Resources/Icons/Deco/deco_maple_
-    category: plant
+    prefabPath: Assets/Resources/Prefabs/Deco/deco_maple_tree.prefab
+    iconPath: Assets/Resources/Icons/Deco/ico_maple_tree.png
+    category: 0
     tag: tree
-    acquire: shop
+    acquire: 2
     stack: 99
     description: deco_maple_tree_desc
-  - id: 0
-    name: 
-    prefabPath: 
-    iconPath: 
-    category: 
-    tag: 
-    acquire: 
-    stack: 0
-    description: 

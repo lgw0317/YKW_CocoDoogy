@@ -1,0 +1,9 @@
+{
+    "entries": [
+      { "name": "tbl_deco_mst", "type": "SO" },
+    { "name": "tbl_item_mst", "type": "SO" },
+    { "name": "tbl_character_mst", "type": "SO" },
+    { "name": "tbl_ui_text", "type": "CSV_ONLY" },
+    { "name": "tbl_dialogue", "type": "CSV_ONLY" }
+  ]
+}
