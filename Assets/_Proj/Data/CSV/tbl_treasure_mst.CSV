@@ -1,0 +1,7 @@
+treasure_id,treasure_type,reward_id,count
+treasure_1_1_1,coin,-1,50
+treasure_1_1_2,cap,-1,5000
+treasure_1_1_3,article,10001,1
+treasure_1_2_1,accessary,20001,1
+treasure_1_2_2,relic,50001,1
+treasure_1_2_3,relic,50001,1

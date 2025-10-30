@@ -12,7 +12,7 @@ public class DecoData
     public string deco_prefab;
     public string deco_icon;
     public Type deco_type;
-    public string deco_tag; //todo : 향후 enum으로 수정 예정
+    public Tag deco_tag; 
     public Acquire deco_acquire;
     public int deco_stack;
     public string deco_desc;
@@ -41,6 +41,10 @@ public class DecoData
 public enum Type
 {
     plant, strucure, furniture, fixtures
+}
+public enum Tag
+{
+    tree, flower, chair, house, lite
 }
 public enum Acquire
 {

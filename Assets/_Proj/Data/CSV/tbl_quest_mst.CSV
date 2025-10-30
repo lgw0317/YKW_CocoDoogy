@@ -1,0 +1,2 @@
+quest_id,quest_name,quest_type,quest_object,quest_obj_desc,quest_value,quest_reward_cap,quest_reward_item,quest_reward_count,quest_desc
+70001,quest_name_gamelogin,daily,login,quest_obj_gamelogin,1,1000,0,0,quest_desc_gamelogin

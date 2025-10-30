@@ -1,24 +1,65 @@
 ﻿{
   "entries": [
+
+    {
+      "name": "tbl_animal_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_artifact_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_background_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_chapter_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_codex_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_costume_mst",
+      "type": "SO"
+    },
     {
       "name": "tbl_deco_mst",
       "type": "SO"
     },
     {
-      "name": "tbl_item_mst",
+      "name": "tbl_home_mst",
       "type": "SO"
     },
     {
-      "name": "tbl_character_mst",
+      "name": "tbl_profile_icon_mst",
       "type": "SO"
     },
     {
-      "name": "tbl_ui_text",
-      "type": "CSV_ONLY"
+      "name": "tbl_quest_mst",
+      "type": "SO"
     },
     {
-      "name": "tbl_dialogue",
-      "type": "CSV_ONLY"
+      "name": "tbl_shop_item_dtl",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_shop_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_stage_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_text_mst",
+      "type": "SO"
+    },
+    {
+      "name": "tbl_treasure_mst",
+      "type": "SO"
     }
   ]
 }

@@ -48,6 +48,7 @@ public static class DecoParser
 
             // Enum 변환 부분
             Enum.TryParse(v[4], true, out Type category);
+            Enum.TryParse(v[5], true, out Tag tag);
             Enum.TryParse(v[6], true, out Acquire acquire);
 
             db.decoList.Add(new DecoData
@@ -57,7 +58,7 @@ public static class DecoParser
                 deco_prefab = v[2],
                 deco_icon = v[3],
                 deco_type = category,
-                deco_tag = v[5],
+                deco_tag = tag,
                 deco_acquire = acquire,
                 deco_stack = stack,
                 deco_desc = v.Length > 8 ? v[8] : ""

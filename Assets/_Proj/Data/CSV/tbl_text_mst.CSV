@@ -1,0 +1,26 @@
+kr_text_id,kr_text
+string,string
+chapter_1_name,새로운 모험의 시작
+chapter_1_desc,코코두기는 숲에서 새로운 친구를 만나게됩니다
+stage_1_1_name,숲에서 하룻밤!
+stage_1_2_name,신나는 박스 놀이!
+stage_1_1_desc,"주인님이 날 두고 먼저 갔어, 새로운 놀이 시간이야"
+stage_1_2_desc,박스를 가지고 신나게 놀아보자
+deco_maple_tree,단풍 나무
+deco_maple_tree_desc,생명력이 강한 단풍나무입니다
+costume_cute_hat,귀여운 모자
+costume_cute_hat_desc,코코두기를 닮아 귀여운 모자입니다
+animal_hog,호기
+animal_hog_desc,산에서 만난 돌직구를 좋아하는 친구입니다
+home_sweet_home,따뜻한 우리의 집
+home_sweet_home_desc,두 주인의 손길과 온기가 느껴지는 집입니다
+icon_cocodugi,반짝이는 코코두기 아이콘
+icon_cocodugi_desc,좋아요 500개를 모은 당신을 위한 선물입니다
+artifact_teapot,오래된 차 주전자
+artifact_teapot_desc,누군가의 추억이 남아있는 색이 바랜 주전자입니다
+codex_maple_tree_lore,과거에는 이 나무가 도시 곳곳을 차지했다고합니다. 끈질긴 생명력으로 다시 한번 세상을 아름답게 꾸밀 준비가 되었습니다.
+background_default,기본 배경
+background_default_desc,익숙하지만 정겨운 배경입니다
+quest_name_gamelogin,하루한번 코코두기와
+quest_obj_gamelogin,하루 1회 접속
+quest_desc_gamelogin,하루 1회 접속하십시오

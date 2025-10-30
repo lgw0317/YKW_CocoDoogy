@@ -1,0 +1,10 @@
+costume_id,costume_name,costume_prefab,costume_icon,costume_part,costume_tag,costume_acquire,costume_desc
+20001,costume_cute_hat,Assets/Resources/Prefabs/Costume/costume_cute_hat.prefab,Assets/Resources/Icons/Costume/icon_cute_hat.png,head,normal,quest,costume_cute_hat_desc
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,

@@ -1,2 +1,6 @@
-﻿deco_id,deco_name,deco_prefab,deco_icon,deco_type,deco_tag,deco_acquire,deco_stack,deco_desc
-10001,deco_maple_tree,Assets/Resources/Prefabs/Deco/Deco_maple_tree.prefab,Assets/Resources/Icons/Deco/Deco_maple_tree,plant,tree,shop,99,deco_maple_tree_desc
+deco_id,deco_name,deco_prefab,deco_icon,deco_type,deco_tag,deco_acquire,deco_stack,deco_desc
+10001,deco_maple_tree,Assets/Resources/Prefabs/Deco/deco_maple_tree.prefab,Assets/Resources/Icons/Deco/icon_maple_tree.png,plant,chair,ingame,99,deco_maple_tree_desc
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,
+,,,,,,,,

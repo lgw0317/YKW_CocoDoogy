@@ -15,10 +15,10 @@ MonoBehaviour:
   decoList:
   - deco_id: 10001
     deco_name: deco_maple_tree
-    deco_prefab: Assets/Resources/Prefabs/Deco/Deco_maple_tree.prefab
-    deco_icon: Assets/Resources/Icons/Deco/Deco_maple_tree
+    deco_prefab: Assets/Resources/Prefabs/Deco/deco_maple_tree.prefab
+    deco_icon: Assets/Resources/Icons/Deco/icon_maple_tree.png
     deco_type: 0
-    deco_tag: tree
-    deco_acquire: 2
+    deco_tag: 2
+    deco_acquire: 1
     deco_stack: 99
     deco_desc: deco_maple_tree_desc

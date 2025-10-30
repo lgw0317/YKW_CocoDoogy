@@ -1,0 +1,9 @@
+animal_id,animal_name,animal_type,animal_tag,animal_prefab,animal_icon,animal_acquire,animal_desc
+30001,animal_hog,pig,default,Assets/Resources/Prefabs/Animal/animal_hog.prefab,Assets/Resources/Icons/Animal/animal_hog.png,ingame,animal_hog_desc
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
