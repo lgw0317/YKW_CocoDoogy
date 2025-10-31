@@ -33,7 +33,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
     public bool allowFall = true;
     public bool allowSlope = false;
 
-    public event Action OnFallFinished;
     #endregion
     // TODO : 슬로프 탈 때 Constraints.FreezeRotation 끄기. 이게 맞나..?
     protected virtual void Awake()
@@ -178,11 +177,6 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
             yield return StartCoroutine(MoveTo(fallTarget));
             currPos = transform.position;
         }
-        // 낙하 하고, 바닥에 충돌하는 순간
-        if (startedFalling)
-        {
-            OnFallFinished?.Invoke(); // 낙하 완료 시 이벤트 발생
-        }
 
         isFalling = false;
     }
@@ -213,11 +207,17 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         TryPush(dir);
     }
 
+    protected virtual bool IsImmuneToWaveLift()
+    {
+        // 연속 튕김에 기본적으로 면역 없음. 필요 한 물체에 구현 해 줄 것.
+        return false;
+    }
+
     // ========== 공중 띄우기용 ==========
     // 충격파 맞았을 때 y+1 duration 동안 띄우기
     public void WaveLift(float rise, float hold, float fall)
     {
-        if (isMoving || isFalling) return;
+        if (isMoving || isFalling || IsImmuneToWaveLift()) return;
         StartCoroutine(WaveLiftCoroutine(rise, hold, fall));
     }
 
@@ -255,6 +255,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         transform.position = start;
          
         isMoving = false;
+
         yield break;
         // NOTE : 혹시나 뭔가 다른 작업을 하다 여기에서 CheckFall()을 할 일이 생긴다면 차라리 다른 스크립트를 작성하는 것을 권장. 원위치 복귀 후 다시 낙하 검사하는 실수 생기면 안 됨.
         // pushables가 충격파 받은 이후로 적층된 물체들이 원위치 후 다시 낙하 검사를 하게 되면 한 번 더 낙하해서 원위치에서 -y로 더 내려가게 됨

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 // 10/30 TODO : Shockwave 사용해서 버팔로와 같이 충격파 발생시킬 수 있도록 수정.
 // 버팔로와 다르게 낙하 시점에 충격파를 발생시켜야 함. -> 감지탑에 충격파 발생 여부 전달
@@ -6,6 +8,7 @@
 // 낙하하고 있다는 걸 어떻게 알지? 버팔로 뿐 아니라 그냥 절벽에서 떨어지더라도 충격파 발생됨.
 // 충격파 발생 shockwave.Fire();
 
+[RequireComponent(typeof(Shockwave))]
 public class PushableOrb : PushableObjects
 {
     SphereCollider sph;
@@ -13,54 +16,56 @@ public class PushableOrb : PushableObjects
     [SerializeField] private Shockwave shockwave;
     [SerializeField] private ShockPing shockPing;
 
-    [Tooltip("쿨타임")]
-    public float coolTime = 5f;
+    [Tooltip("Orb 충격파 쿨타임")]
+    public float orbCoolTime = 6f;
     private float lastShockwaveTime = -float.MaxValue;
+    private static Dictionary<int, float> floorCooldowns = new();
+
+    [Header("Orb Fall Detection")]
+    public float probeUp = 0.1f;
+    public float probeDown = 1.5f;
+    private bool wasGrounded;
+
 
     protected override void Awake()
     {
         base.Awake();
-        sph = GetComponent<SphereCollider>(); 
+        sph = GetComponent<SphereCollider>();
         allowSlope = true;
         shockwave = GetComponent<Shockwave>();
         shockPing = GetComponent<ShockPing>();
-
-        // 낙하 완료 이벤트 구독
-        OnFallFinished += OnOrbFallFinished;
+        wasGrounded = true;
     }
 
-    void OnDestroy()
+    void FixedUpdate()
     {
-        OnFallFinished -= OnOrbFallFinished;
-    }
-
-    void OnOrbFallFinished()
-    {
-        if (Time.time < lastShockwaveTime + coolTime)
-            return;
-        if (shockwave != null)
+        if (isMoving || isFalling)
         {
-            // y 축을 기준으로 수평적으로 충돌체를 검색
-            shockwave.Fire(
-                origin: transform.position,
-                tile: tileSize,
-                radiusTiles: shockwave.radiusShock,
-                targetLayer: shockwave.targetLayer,
-                useOcclusion: shockwave.useOcclusion,
-                occludeMask: shockwave.occluderMask,
-                riseSeconds: shockwave.riseSec,
-                hangSeconds: shockwave.hangSec,
-                fallSeconds: shockwave.fallSec
-            );
-            Debug.Log($"[Orb] Shockwave.Fire at {transform.position}", this);
-            if (shockPing != null)
-            {
-                shockPing.PingTowers(transform.position);
-            }
-            lastShockwaveTime = Time.time;
-            Debug.Log("구슬 착지 완료. 수평 충격파 발사됨.");
+            // 이동/낙하 중일 때 wasGrounded를 false로 유지 (공중 상태로 간주)
+            wasGrounded = false;
+            return;
         }
+
+        // Raycast를 사용하여 현재 땅에 닿아있는지 확인
+        // tileSize를 곱하여 월드 단위 길이로 변환
+        bool grounded = Physics.Raycast(
+            origin: transform.position + Vector3.up * probeUp * tileSize,
+            direction: Vector3.down,
+            maxDistance: probeDown * tileSize,
+            layerMask: groundMask,
+            queryTriggerInteraction: QueryTriggerInteraction.Ignore
+        );
+
+        // 이전에는 공중이었는데, 지금은 지상에 닿은 경우 = 착지 완료
+        if (!wasGrounded && grounded) // TODO : 여기 조건이 이상한 것 같은데...어떤 조건으로 설정해줘야 wavelift가 중복되지 않을까...
+        {
+            Debug.Log($"[Orb] 충격파 발생 {name}", this);
+            TryFireShockwave(); // 충격파 발생 시도
+        }
+        wasGrounded = grounded;
     }
+
+
 
     protected override bool CheckBlocking(Vector3 target)
     {
@@ -78,5 +83,47 @@ public class PushableOrb : PushableObjects
             return true;
         }
         return false;
+    }
+
+    protected override bool IsImmuneToWaveLift()
+    {
+        return Time.time < lastShockwaveTime + orbCoolTime;
+    }
+
+    void TryFireShockwave()
+    {
+        if (shockwave == null) return;
+        int yFloor = Mathf.RoundToInt(transform.position.y / tileSize);
+
+        float now = Time.time;
+
+        if (floorCooldowns.TryGetValue(yFloor, out var lastTime) && now - lastTime < orbCoolTime) return;
+
+        if (now - lastShockwaveTime < orbCoolTime) return;
+
+        floorCooldowns[yFloor] = now;
+        lastShockwaveTime = now;
+
+        Debug.Log($"[Orb] {yFloor}층 충격파 발생", this);
+        WaveLift(shockwave.riseSec, shockwave.hangSec, shockwave.fallSec);
+
+        shockwave.Fire(
+            origin: transform.position,
+            tile: tileSize,
+            radiusTiles: shockwave.radiusShock,
+            targetLayer: shockwave.targetLayer,
+            useOcclusion: shockwave.useOcclusion,
+            occludeMask: shockwave.occluderMask,
+            riseSeconds: shockwave.riseSec,
+            hangSeconds: shockwave.hangSec,
+            fallSeconds: shockwave.fallSec
+        );
+
+        // 감지탑 통지
+        if (shockPing)
+        {
+            shockPing.PingTowers(transform.position);
+            Debug.Log($"[Orb] 감지탑 Ping 전송 by {name}.", this);
+        }
     }
 }
