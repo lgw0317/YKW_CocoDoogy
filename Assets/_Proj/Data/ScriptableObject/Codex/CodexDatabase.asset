@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e867d28efe3280b48be35e798c53b845, type: 3}
+  m_Name: CodexDatabase
+  m_EditorClassIdentifier: 
+  codexList:
+  - codex_id: codex_deco_maple_tree
+    codex_type: 0
+    item_id: 10001
+    codex_lore: "\uACFC\uAC70\uC5D0\uB294 \uC774 \uB098\uBB34\uAC00 \uB3C4\uC2DC
+      \uACF3\uACF3\uC744 \uCC28\uC9C0\uD588\uB2E4\uACE0\uD569\uB2C8\uB2E4. \uB048\uC9C8\uAE34
+      \uC0DD\uBA85\uB825\uC73C\uB85C \uB2E4\uC2DC \uD55C\uBC88 \uC138\uC0C1\uC744
+      \uC544\uB984\uB2F5\uAC8C \uAFB8\uBC00 \uC900\uBE44\uAC00 \uB418\uC5C8\uC2B5\uB2C8\uB2E4."
+    codex_display: Assets/Resources/Codex_display/Deco/codex_display_maple_tree.png
+    codex_icon: Assets/Resources/Icons/Codex/codex_icon_maple_tree.png

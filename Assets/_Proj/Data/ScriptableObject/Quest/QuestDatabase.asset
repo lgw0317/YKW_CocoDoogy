@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60cd51f975fa11f4a897bcb39e0c8d0b, type: 3}
+  m_Name: QuestDatabase
+  m_EditorClassIdentifier: 
+  questList:
+  - quest_id: 70001
+    quest_name: "\uD558\uB8E8\uD55C\uBC88 \uCF54\uCF54\uB450\uAE30\uC640"
+    quest_type: 0
+    quest_object: 0
+    quest_obj_desc: "\uD558\uB8E8 1\uD68C \uC811\uC18D"
+    quest_value: 1
+    quest_reward_cap: 1000
+    quest_reward_item: 0
+    quest_reward_item_count: 0
+    quest_desc: "\uD558\uB8E8 1\uD68C \uC811\uC18D\uD558\uC2ED\uC2DC\uC624"

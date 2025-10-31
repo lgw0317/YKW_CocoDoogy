@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b2241b825db012428da4a2ec4608a72, type: 3}
+  m_Name: CostumeDatabase
+  m_EditorClassIdentifier: 
+  costumeList:
+  - costume_id: 20001
+    costume_name: "\uADC0\uC5EC\uC6B4 \uBAA8\uC790"
+    costume_prefab: Assets/Resources/Prefabs/Costume/costume_cute_hat.prefab
+    costume_icon: Assets/Resources/Icons/Costume/icon_cute_hat.png
+    cos_part: 0
+    cos_tag: 0
+    cos_acquire: 0
+    costume_desc: "\uCF54\uCF54\uB450\uAE30\uB97C \uB2EE\uC544 \uADC0\uC5EC\uC6B4
+      \uBAA8\uC790\uC785\uB2C8\uB2E4"

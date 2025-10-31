@@ -73,7 +73,7 @@ public class CsvImportManager : EditorWindow
                     CodexParser.Import(csvPath);
                     break;
                 case "tbl_costume_mst":
-                    CodexParser.Import(csvPath);
+                    CostumeParser.Import(csvPath);
                     break;
                 case "tbl_deco_mst":
                     DecoParser.Import(csvPath);
