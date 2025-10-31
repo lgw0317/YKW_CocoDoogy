@@ -412,13 +412,9 @@ GameObject:
   - component: {fileID: 1693816920450361211}
   - component: {fileID: 1693816920450361210}
   - component: {fileID: 1693816920450361189}
-  - component: {fileID: -6997932112040816763}
-  - component: {fileID: 4560682941341826180}
-  - component: {fileID: 5703946061178836855}
-  - component: {fileID: 3671061147577458614}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Dog 1
-  m_TagString: Untagged
+  m_TagString: CocoDoogy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -519,72 +515,6 @@ CapsuleCollider:
   m_Height: 0.9782456
   m_Direction: 2
   m_Center: {x: 0, y: 0.49714744, z: 0.06643301}
---- !u!114 &-6997932112040816763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1693816920450361209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10d131bb5c3a40d4a8f0ac738208cd18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4560682941341826180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1693816920450361209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71d17737898b6f544b0f76a6c08bff63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5703946061178836855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1693816920450361209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f8016b02592f6844891f1518eba3324, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  renderers:
-  - {fileID: 1693816919786645907}
-  - {fileID: 1693816919275241079}
-  - {fileID: 1693816919888243770}
-  - {fileID: 1693816919444554685}
-  highlightColor: {r: 1, g: 0.9, b: 0.3, a: 1}
-  invalidColor: {r: 1, g: 0.2, b: 0.2, a: 1}
-  loadSavedTransformOnStart: 1
-  customSaveKey: 
-  useMaterialPropertyBlock: 1
-  colorPropName: _Color
-  useFullTransformPathForKey: 0
---- !u!114 &3671061147577458614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1693816920450361209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1efa3ec9f5f163b41ab03a576de1c049, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 3.5
-  angularSpeed: 120
-  acceleration: 8
-  moveRadius: 10
-  waitTime: 2
-  editController: {fileID: 0}
 --- !u!1 &4828338645736489794
 GameObject:
   m_ObjectHideFlags: 0

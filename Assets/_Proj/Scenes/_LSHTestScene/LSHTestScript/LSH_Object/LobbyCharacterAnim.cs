@@ -35,7 +35,7 @@ public class LobbyCharacterAnim
     
     public void StopAnim()
     {
-
+        
     }
 
 }

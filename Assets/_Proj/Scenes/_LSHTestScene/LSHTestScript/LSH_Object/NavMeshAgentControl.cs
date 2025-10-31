@@ -55,12 +55,6 @@ public class NavMeshAgentControl
         }
     }
 
-    // public void NewWrap() // �ʿ��
-    // {
-    //     agent.Warp(transform.position);
-    //     Debug.Log($"{agent.Warp(transform.position)}");
-    // }
-
     /// <summary>
     /// 이동
     /// </summary>
@@ -82,30 +76,6 @@ public class NavMeshAgentControl
         agent.speed = 3f;
         agent.acceleration = 8f;
         agent.stoppingDistance = 0f;
-    }
-
-    public void LetsGoCoco(ref int currentIndex, int reset, Transform[] waypoints)
-    {
-        Debug.Log($"������Ʈ ���� : {agent.pathPending}");
-        if (agent.enabled && !agent.pathPending && agent.remainingDistance < 0.5f)
-        {
-            Debug.Log($"1���� �ε��� �� : {currentIndex}");
-            Debug.Log($"1���� ��������Ʈ ���� : {waypoints.Length}");
-            if (currentIndex < waypoints.Length)
-            {
-                MoveToPoint(waypoints[currentIndex]);
-                if (currentIndex == waypoints.Length - 1)
-                {
-                    WaitAndMove(waypoints[currentIndex]);
-                    currentIndex = reset;
-                }
-                currentIndex++;
-                if (waypoints[currentIndex] == null)
-                {
-                    Debug.Log("2���� ����Ʈ ���µ���");
-                }
-            }
-        }
     }
 
     public void MoveRandomPosition()
@@ -130,4 +100,5 @@ public class NavMeshAgentControl
         if (which == true) agent.enabled = true;
         else agent.enabled = false;
     }
+    
 }
