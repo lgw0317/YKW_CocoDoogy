@@ -15,10 +15,19 @@ MonoBehaviour:
   decoList:
   - id: 10001
     name: deco_maple_tree
-    prefabPath: Assets/Resources/Prefabs/Deco/deco_maple_tree.prefab
-    iconPath: Assets/Resources/Icons/Deco/ico_maple_tree.png
+    prefabPath: Prefabs/Deco/deco_maple_tree
+    iconPath: Icons/Deco/icon_maple_tree
     category: 0
     tag: tree
     acquire: 2
     stack: 99
     description: deco_maple_tree_desc
+  - id: 10002
+    name: Toy_02 1
+    prefabPath: Prefabs/Deco/Armchair_041
+    iconPath: Icons/Deco/deco_maple_tree 1
+    category: 0
+    tag: tree
+    acquire: 2
+    stack: 99
+    description: Armchair_041
