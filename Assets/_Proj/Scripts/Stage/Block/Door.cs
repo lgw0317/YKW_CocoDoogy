@@ -10,14 +10,15 @@ public class Door : Block, ISignalReceiver
     public bool IsOn { get; set; }
 
     public float openSpeed = 1f;
-
+    Transform left;
+    Transform right;
     public void ReceiveSignal()
     {
         IsOn = !IsOn;
         
         // KHJ - 디버깅으로만 테스트 좀 해볼게요
         Debug.Log($"[Door] 문{(IsOn ? "열림" : "닫힘")}");
-        RotateDoor(IsOn);
+        ToggleDoor(IsOn);
         //if (IsOn)
         //{
         //    //TODO: 문이 열리는 로직을 여기에 집어넣기
@@ -28,13 +29,22 @@ public class Door : Block, ISignalReceiver
         //}
     }
 
-    void RotateDoor(bool isOn)
+    void Awake()
     {
-        Transform doorTransform = transform.Find("door_metal_left");
-        //float startRotation = isOn ? 0 : 90;
-        float targetRotation = isOn ? 90 : -90;
-        //doorTransform.Rotate(0, startRotation, 0);
-        doorTransform.Rotate(0, targetRotation, 0);
+        
+        if (!left)
+            left = transform.GetChild(0).GetChild(1);
+        if (!right)
+            right = transform.GetChild(0).GetChild(2);
+    }
+
+    void ToggleDoor(bool isOn)
+    {
+        
+
+        float xOffset = .75f;
+        left.Translate(isOn ? new(xOffset, 0, 0) : new(-xOffset, 0, 0));
+        right.Translate(isOn ? new(-xOffset, 0, 0) : new(xOffset, 0, 0));
     }
     protected override void OnEnable()
     {
