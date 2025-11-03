@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - MainPlane
+  - CocoDoogy
+  - Master
+  - Decoration
+  - Animal
+  - pooled
+  - newPooled
   layers:
   - Default
   - TransparentFX
@@ -17,6 +24,9 @@ TagManager:
   - Ground
   - Animal
   - TransparentWall
+  - DetectionTower
+  - Door
+  - Slope
   - 
   - 
   - 
@@ -32,11 +42,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - MainPlane
+  - InLobbyObject
   m_SortingLayers:
   - name: Default
     uniqueID: 0
