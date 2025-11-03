@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 // NOTE, TODO : 최종 시점(카메라) 변경 후 UI를 시점에 맞게 rotation 설정해줘야 함. 현재는 0,0,0. 라인 76
 [DisallowMultipleComponent]
-public class Buffalo : MonoBehaviour
+public class Buffalo : MonoBehaviour, IPlayerFinder
 {
     [Header("Timer & Jump")]
     [Tooltip("버튼 누른 뒤 실행까지 대기 시간")]
@@ -35,6 +35,8 @@ public class Buffalo : MonoBehaviour
 
     bool running;
     bool onCooldown;
+
+    Transform IPlayerFinder.Player { get => playerTrans; set => playerTrans = value; }
 
     void Awake()
     {

@@ -38,7 +38,7 @@ public class StageManager : MonoBehaviour
     //맵의 이름으로 찾아온 현재 맵 데이터 객체 (초기상태로의 복귀를 위해 필요)
     private MapData currentMapData; //맵데이터는 늘 기억되고 있을 것임.
 
-
+    private List<IPlayerFinder> finders = new();
      
     [SerializeField] BlockFactory factory;
 
@@ -92,6 +92,14 @@ public class StageManager : MonoBehaviour
         var joystick = Instantiate(joystickPrefab, joystickRoot);
         joystick.GetComponent<RectTransform>().anchoredPosition = new(300, 200);
         playerObject.GetComponent<PlayerMovement>().joystick = joystick;
+
+
+        //TODO: 나중에 꼭 지울 것.
+        Camera.main.GetComponent<CamControl_Temp>().playerObj = playerObject;
+        foreach (var finder in finders)
+        {
+            finder.SetPlayerTransform(playerObject);
+        }
     }
 
 
@@ -113,7 +121,8 @@ public class StageManager : MonoBehaviour
                 startPoint = block.position;
             if (block.blockType == BlockType.End)
                 go.GetComponent<EndBlock>().Init(this);
-
+            if (BlockType.Hog <= block.blockType && block.blockType <= BlockType.Buffalo)
+                finders.Add(go.GetComponent<IPlayerFinder>());
             //GetComponent<Block>().Init(block);
             EnlistBlock(go.GetComponent<Block>());
             if (loaded.blocks.Find(x => x.blockType == BlockType.Start) == null) //스타트 없는 스테이지다?

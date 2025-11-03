@@ -5,7 +5,7 @@ using UnityEngine.UI;
 // 10/29 TODO : 카메라 세팅 후 팝업 UI 조정 76라인
 // 10/30 TODO : 플레이어 마주쳐도 못 가게 막아야
 
-public class Boar : PushableObjects, IDashDirection
+public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 {
     [Header("Canvas")]
     [SerializeField] GameObject btnGroup;
@@ -32,6 +32,9 @@ public class Boar : PushableObjects, IDashDirection
     public bool useGlobalTimeScale = true; // 전체 일시정지(0.06s)로 타격감
     [Range(0f, 0.2f)]
     public float hitstopSeconds = 0.06f;
+
+    Transform IPlayerFinder.Player { get => playerTrans; set => playerTrans = value; }
+
     //public ParticleSystem hitFx;
 
 

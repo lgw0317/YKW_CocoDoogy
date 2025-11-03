@@ -167,7 +167,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 5291992017778968749, guid: c4c522c376ad1b745b54524b0a7cded8, type: 3}
   joystickPrefab: {fileID: 8076522967414642225, guid: e70ee23931c899d429b2f8a615b74827, type: 3}
   joystickRoot: {fileID: 484405798}
-  mapNameToLoad: WaterTest
+  mapNameToLoad: WaterTest_Animal
   blockPositions: []
   blocks: []
   factory: {fileID: 1415150933}
@@ -596,6 +596,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: afda1e32a7f3db84785d2bbc1bf76732, type: 2}
   - {fileID: 11400000, guid: 04bd500d14da0b44ba2c543d56d9eaec, type: 2}
   - {fileID: 11400000, guid: da8ce819fcf49ac40bcd6ededa13d342, type: 2}
+  - {fileID: 11400000, guid: 695767b0c49016240be248159dd38724, type: 2}
+  - {fileID: 11400000, guid: b07ea6efcc393bd4480a89c40c9bdd94, type: 2}
+  - {fileID: 11400000, guid: ab6fd6971db391544b454062424d49b1, type: 2}
 --- !u!1 &1499593641
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,6 +643,7 @@ GameObject:
   - component: {fileID: 1722618156}
   - component: {fileID: 1722618155}
   - component: {fileID: 1722618158}
+  - component: {fileID: 1722618159}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -765,6 +769,19 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &1722618159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722618154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1273c01ffa268614da2386c4e973bfc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObj: {fileID: 0}
 --- !u!1 &1989352762
 GameObject:
   m_ObjectHideFlags: 0

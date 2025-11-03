@@ -10,7 +10,7 @@ using UnityEngine.UI;
 // 움직이는 동안은 팝업X
 // 물길 영향 X
 [RequireComponent(typeof(Rigidbody))]
-public class Turtle : MonoBehaviour, IDashDirection
+public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
 {
     [Header("Movement Settgins")]
     public float tileSize = 1f;
@@ -39,6 +39,8 @@ public class Turtle : MonoBehaviour, IDashDirection
     [SerializeField] Image typeIcon;
 
     public bool CanInteract => !isMoving; // 이동 중이 아닐 때만 상호작용 가능
+
+    Transform IPlayerFinder.Player { get => playerTrans; set => playerTrans = value; }
 
     void Awake()
     {
