@@ -761,6 +761,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 95016675}
   m_CullTransparentMesh: 1
+--- !u!1 &108785712
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 108785714}
+  - component: {fileID: 108785713}
+  m_Layer: 0
+  m_Name: DataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &108785713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108785712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 742f26c8130a71c4fab87715662f48cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataRegistry: {fileID: 11400000, guid: 44cf70b577d1a344fb31129f8dcd7ec8, type: 2}
+--- !u!4 &108785714
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108785712}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.21273, y: 0, z: 6.56364}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &115348742
 GameObject:
   m_ObjectHideFlags: 0
@@ -1344,8 +1389,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 169777719}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.02130218, y: 0.000000013371066, z: -2.8489752e-10, w: 0.9997731}
-  m_LocalPosition: {x: 0, y: 3, z: -12}
+  m_LocalRotation: {x: 0.10686241, y: -0.000000013340425, z: 0.0000000014338002, w: 0.99427384}
+  m_LocalPosition: {x: 0, y: 8, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3046,6 +3091,7 @@ GameObject:
   m_Component:
   - component: {fileID: 444961666}
   - component: {fileID: 444961665}
+  - component: {fileID: 444961667}
   m_Layer: 0
   m_Name: EditController
   m_TagString: Untagged
@@ -3102,6 +3148,46 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &444961667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444961664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6d7ffd54660c1459be1c9f34ca4597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  draggableMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  lockYToInitial: 1
+  fixedY: 0
+  snapToGrid: 1
+  gridSize: 1
+  gridOrigin: {x: 0, y: 0, z: 0}
+  undoMax: -1
+  overlapEpsilon: 0.0005
+  undoButton: {fileID: 0}
+  actionToolbar: {fileID: 0}
+  longPressTarget: {fileID: 0}
+  longPressSeconds: 1
+  longPressSlopPixels: 10
+  saveButton: {fileID: 0}
+  backButton: {fileID: 0}
+  exitConfirmPanel: {fileID: 0}
+  exitYesButton: {fileID: 0}
+  exitNoButton: {fileID: 0}
+  savedInfoPanel: {fileID: 0}
+  savedOkButton: {fileID: 0}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  groundProbeUp: 3
+  groundProbeDown: 6
+  requireGround: 1
 --- !u!1 &457508890
 GameObject:
   m_ObjectHideFlags: 0
@@ -4853,6 +4939,78 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865071494}
   m_CullTransparentMesh: 1
+--- !u!1 &875290332
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 875290334}
+  - component: {fileID: 875290333}
+  m_Layer: 0
+  m_Name: EditModeController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &875290333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875290332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6d7ffd54660c1459be1c9f34ca4597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  draggableMask:
+    serializedVersion: 2
+    m_Bits: 64
+  lockYToInitial: 1
+  fixedY: 0
+  snapToGrid: 1
+  gridSize: 1
+  gridOrigin: {x: 0, y: 0, z: 0}
+  undoMax: -1
+  overlapEpsilon: 0.0005
+  undoButton: {fileID: 0}
+  actionToolbar: {fileID: 0}
+  longPressTarget: {fileID: 0}
+  longPressSeconds: 1
+  longPressSlopPixels: 10
+  saveButton: {fileID: 0}
+  backButton: {fileID: 0}
+  exitConfirmPanel: {fileID: 0}
+  exitYesButton: {fileID: 0}
+  exitNoButton: {fileID: 0}
+  savedInfoPanel: {fileID: 0}
+  savedOkButton: {fileID: 0}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 512
+  groundProbeUp: 3
+  groundProbeDown: 6
+  requireGround: 1
+--- !u!4 &875290334
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875290332}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &912015451
 GameObject:
   m_ObjectHideFlags: 0
@@ -6369,7 +6527,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 798160575}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9949493
+  m_Size: 0.9999959
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10023,7 +10181,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.22039795}
+  m_AnchoredPosition: {x: 0, y: 0.00048828125}
   m_SizeDelta: {x: 0, y: 550}
   m_Pivot: {x: 0, y: 1}
 --- !u!4 &1998608442
@@ -13527,3 +13685,5 @@ SceneRoots:
   - {fileID: 613663122}
   - {fileID: 1043265989}
   - {fileID: 403660557}
+  - {fileID: 108785714}
+  - {fileID: 875290334}

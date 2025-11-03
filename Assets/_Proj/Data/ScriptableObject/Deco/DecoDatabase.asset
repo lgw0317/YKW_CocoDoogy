@@ -15,8 +15,8 @@ MonoBehaviour:
   decoList:
   - deco_id: 10001
     deco_name: "\uB2E8\uD48D \uB098\uBB34"
-    deco_prefab: Assets/Resources/Prefabs/Deco/deco_maple_tree.prefab
-    deco_icon: Assets/Resources/Icons/Deco/icon_maple_tree.png
+    deco_prefab: Prefabs/Deco/deco_maple_tree
+    deco_icon: Icons/Deco/icon_maple_tree
     deco_type: 0
     deco_tag: 2
     deco_acquire: 1

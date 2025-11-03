@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using Unity.AI.Navigation;
 using UnityEngine;
@@ -23,7 +23,7 @@ public class InLobbyManager : MonoBehaviour
 {
     [SerializeField] TestScriptableCharacter[] charDatabase;
     [SerializeField] GameObject plane;
-    [SerializeField] EditController editController;
+    [SerializeField] EditModeController editController;
     
     private NavMeshSurface planeSurface;
     public Transform[] cocoWaypoints;
@@ -47,7 +47,7 @@ public class InLobbyManager : MonoBehaviour
 
         planeSurface = plane.GetComponent<NavMeshSurface>();
 
-        if (editController == null) editController = FindFirstObjectByType<EditController>();
+        if (editController == null) editController = FindFirstObjectByType<EditModeController>();
         isEditMode = false;
 
         originalLayer = LayerMask.NameToLayer("InLobbyObject");
