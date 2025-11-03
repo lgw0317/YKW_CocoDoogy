@@ -1,43 +1,59 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// - 드래그 가능한 오브젝트에 붙는 공통 컴포넌트
+/// - 하이라이트 / 무효 표시 색상
+/// - 위치/회전 PlayerPrefs 저장/로드
+/// - 렌더러 자동 수집
+/// </summary>
 [DisallowMultipleComponent]
 public class Draggable : MonoBehaviour
 {
     #region === Inspector ===
-    [Header("Highlight (optional)")]
+
+    [Header("Highlight (선택/보관 상태 표현)")]
     [SerializeField] private Renderer[] renderers;
     [SerializeField] private Color highlightColor = new(1f, 0.9f, 0.3f, 1f);
     [SerializeField] private Color invalidColor = new(1f, 0.2f, 0.2f, 1f);
 
-    [Header("Transform Persistence")]
-    [SerializeField, Tooltip("시작 시 PlayerPrefs에 저장된 위치/회전을 자동 로드")]
-    private bool loadSavedTransformOnStart = true;
+    [Header("Transform 저장/로드")]
+    [Tooltip("Start 시 PlayerPrefs에서 자동 로드할지 여부")]
+    [SerializeField] private bool loadSavedTransformOnStart = true;
 
-    [SerializeField, Tooltip("저장 키 직접 지정(비우면 'SceneName/ObjectName' 사용)")]
-    private string customSaveKey = "";
+    [Tooltip("수동으로 저장 키를 지정하고 싶을 때")]
+    [SerializeField] private string customSaveKey = "";
 
-    [Header("Advanced")]
-    [SerializeField, Tooltip("머티리얼 인스턴스 생성 없이 색을 바꾸기 위해 PropertyBlock 사용 권장")]
-    private bool useMaterialPropertyBlock = true;
+    [Header("고급")]
+    [Tooltip("머티리얼 인스턴스를 안 만들고 색 변경할 때 권장")]
+    [SerializeField] private bool useMaterialPropertyBlock = true;
 
-    [SerializeField, Tooltip("색상 속성명(대부분 _Color). 커스텀 셰이더면 여기에 맞춰 변경")]
-    private string colorPropName = "_Color";
+    [Tooltip("셰이더 색상 프로퍼티명")]
+    [SerializeField] private string colorPropName = "_Color";
 
-    [SerializeField, Tooltip("키 충돌을 줄이기 위해 ObjectName 대신 전체 트랜스폼 경로를 포함")]
-    private bool useFullTransformPathForKey = false;
+    [Tooltip("저장 키에 전체 트랜스폼 경로를 포함할지 여부")]
+    [SerializeField] private bool useFullTransformPathForKey = false;
+
     #endregion
 
+
     #region === State ===
-    private Color[] originalColors;       // 렌더러별 원본 색상(간단화: 첫 머티리얼 기준)
+
+    private Color[] originalColors;   // 렌더러별 원래 색
     private bool highlighted;
     private bool invalid;
 
+    // PropertyBlock
     private MaterialPropertyBlock mpb;
     private int colorPropId = -1;
+
+    // 셰이더 색상 후보들
     private static readonly string[] kColorPropCandidates = { "_BaseColor", "_Color", "_TintColor" };
+
     #endregion
 
+
     #region === Unity ===
+
     private void Awake()
     {
         EnsureRenderers();
@@ -53,14 +69,14 @@ public class Draggable : MonoBehaviour
     private void OnValidate()
     {
         EnsureRenderers();
-        // 에디터에서도 즉시 반영
-        if (colorPropId < 0) colorPropId = Shader.PropertyToID(colorPropName);
+        if (colorPropId < 0)
+            colorPropId = Shader.PropertyToID(colorPropName);
         ApplyVisual();
     }
 
     private void OnDestroy()
     {
-        // PropertyBlock으로 칠했을 때, 파괴 시 원복(안전)
+        // PropertyBlock 으로 덮어쓴 거 제거
         if (useMaterialPropertyBlock && renderers != null)
         {
             foreach (var r in renderers)
@@ -70,26 +86,34 @@ public class Draggable : MonoBehaviour
             }
         }
     }
+
     #endregion
 
+
     #region === Public API (Highlight & Validity) ===
+
+    /// <summary>선택 등으로 하이라이트 켤 때</summary>
     public void SetHighlighted(bool on)
     {
         highlighted = on;
         ApplyVisual();
     }
 
+    /// <summary>배치 불가일 때 빨간색</summary>
     public void SetInvalid(bool on)
     {
         invalid = on;
         ApplyVisual();
     }
+
     #endregion
 
-    #region === Public API (Persistence) ===
-    /// <summary>현재 위치/회전을 PlayerPrefs에 저장합니다.</summary>
-    public void SavePosition() => SaveTransform(); // 호환 유지
 
+    #region === Public API (Persistence) ===
+
+    public void SavePosition() => SaveTransform();
+
+    /// <summary>현재 위치/회전을 PlayerPrefs에 저장</summary>
     public void SaveTransform()
     {
         Vector3 p = transform.position;
@@ -107,118 +131,110 @@ public class Draggable : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    /// <summary>저장된 위치/회전이 있으면 불러옵니다.</summary>
-    public void LoadPositionIfAny() => LoadTransformIfAny(); // 호환 유지
+    public void LoadPositionIfAny() => LoadTransformIfAny();
 
+    /// <summary>저장된 위치/회전이 있으면 불러온다.</summary>
     public void LoadTransformIfAny()
     {
-        string kx = BuildKey("x");
-        string ky = BuildKey("y");
-        string kz = BuildKey("z");
-
         // 위치
-        if (PlayerPrefs.HasKey(kx))
+        if (PlayerPrefs.HasKey(BuildKey("x")))
         {
-            float x = PlayerPrefs.GetFloat(kx, transform.position.x);
-            float y = PlayerPrefs.GetFloat(ky, transform.position.y);
-            float z = PlayerPrefs.GetFloat(kz, transform.position.z);
+            float x = PlayerPrefs.GetFloat(BuildKey("x"), transform.position.x);
+            float y = PlayerPrefs.GetFloat(BuildKey("y"), transform.position.y);
+            float z = PlayerPrefs.GetFloat(BuildKey("z"), transform.position.z);
             transform.position = new Vector3(x, y, z);
         }
 
-        // 회전(쿼터니언 우선)
-        string kQx = BuildKey("qx");
-        string kQy = BuildKey("qy");
-        string kQz = BuildKey("qz");
-        string kQw = BuildKey("qw");
-
-        if (PlayerPrefs.HasKey(kQx) && PlayerPrefs.HasKey(kQy) &&
-            PlayerPrefs.HasKey(kQz) && PlayerPrefs.HasKey(kQw))
+        // 회전 (Quat 우선)
+        if (PlayerPrefs.HasKey(BuildKey("qx")) &&
+            PlayerPrefs.HasKey(BuildKey("qy")) &&
+            PlayerPrefs.HasKey(BuildKey("qz")) &&
+            PlayerPrefs.HasKey(BuildKey("qw")))
         {
             var q = new Quaternion(
-                PlayerPrefs.GetFloat(kQx, transform.rotation.x),
-                PlayerPrefs.GetFloat(kQy, transform.rotation.y),
-                PlayerPrefs.GetFloat(kQz, transform.rotation.z),
-                PlayerPrefs.GetFloat(kQw, transform.rotation.w)
+                PlayerPrefs.GetFloat(BuildKey("qx"), transform.rotation.x),
+                PlayerPrefs.GetFloat(BuildKey("qy"), transform.rotation.y),
+                PlayerPrefs.GetFloat(BuildKey("qz"), transform.rotation.z),
+                PlayerPrefs.GetFloat(BuildKey("qw"), transform.rotation.w)
             );
             transform.rotation = q;
         }
         else
         {
-            // 과거 Euler 호환(rx,ry,rz)
-            string kRx = BuildKey("rx");
-            string kRy = BuildKey("ry");
-            string kRz = BuildKey("rz");
-            if (PlayerPrefs.HasKey(kRy))
+            // 예전 방식(Euler) 호환
+            if (PlayerPrefs.HasKey(BuildKey("ry")))
             {
                 var euler = new Vector3(
-                    PlayerPrefs.GetFloat(kRx, transform.eulerAngles.x),
-                    PlayerPrefs.GetFloat(kRy, transform.eulerAngles.y),
-                    PlayerPrefs.GetFloat(kRz, transform.eulerAngles.z)
+                    PlayerPrefs.GetFloat(BuildKey("rx"), transform.eulerAngles.x),
+                    PlayerPrefs.GetFloat(BuildKey("ry"), transform.eulerAngles.y),
+                    PlayerPrefs.GetFloat(BuildKey("rz"), transform.eulerAngles.z)
                 );
                 transform.eulerAngles = euler;
             }
         }
 
         Physics.SyncTransforms();
-        //LSH
-        InLobbyManager.Instance.NewMap();
     }
 
-    /// <summary>이 오브젝트의 저장된 위치/회전 키를 삭제합니다.</summary>
+    /// <summary>저장된 위치/회전 삭제</summary>
     public void DeleteSavedPosition()
     {
         PlayerPrefs.DeleteKey(BuildKey("x"));
         PlayerPrefs.DeleteKey(BuildKey("y"));
         PlayerPrefs.DeleteKey(BuildKey("z"));
-
         PlayerPrefs.DeleteKey(BuildKey("qx"));
         PlayerPrefs.DeleteKey(BuildKey("qy"));
         PlayerPrefs.DeleteKey(BuildKey("qz"));
         PlayerPrefs.DeleteKey(BuildKey("qw"));
-
         PlayerPrefs.DeleteKey(BuildKey("rx"));
         PlayerPrefs.DeleteKey(BuildKey("ry"));
         PlayerPrefs.DeleteKey(BuildKey("rz"));
         PlayerPrefs.Save();
     }
+
     #endregion
 
+
     #region === Visual ===
+
+    /// <summary>현재 상태(highlight/invalid)에 맞춰 렌더러 색을 갱신.</summary>
     private void ApplyVisual()
     {
         if (renderers == null || renderers.Length == 0) return;
 
-        var useOriginal = !invalid && !highlighted;
-        var color = useOriginal ? Color.white : (invalid ? invalidColor : highlightColor);
+        bool useOriginal = !invalid && !highlighted;
+        Color color = useOriginal
+            ? Color.white
+            : (invalid ? invalidColor : highlightColor);
 
-        // 각 렌더러마다 프로퍼티 탐지
         for (int i = 0; i < renderers.Length; i++)
         {
             var r = renderers[i];
             if (!r) continue;
 
-            // 1) 우선순위: 명시된 colorPropName가 유효하면 그걸 사용
-            string propToUse = null;
+            // 사용할 프로퍼티 이름 결정
+            string propToUse;
             var matForCheck = r.sharedMaterial ? r.sharedMaterial : (Application.isPlaying ? r.material : null);
             if (matForCheck && matForCheck.HasProperty(colorPropName))
                 propToUse = colorPropName;
             else
-                propToUse = DetectColorProp(r); // 2) 자동 탐지
+                propToUse = DetectColorProp(r);
 
             if (useMaterialPropertyBlock && propToUse != null)
             {
-                // PropertyBlock 경로
                 EnsureMPB();
                 int pid = Shader.PropertyToID(propToUse);
+
                 if (useOriginal && originalColors != null && i < originalColors.Length)
                     mpb.SetColor(pid, originalColors[i]);
                 else
                     mpb.SetColor(pid, color);
+
                 r.SetPropertyBlock(mpb);
             }
             else
             {
-                // Fallback: material.color (메모리 증가 가능)
+                // fallback
                 bool isPlaying = Application.isPlaying;
                 var mat = isPlaying ? r.material : r.sharedMaterial;
                 if (!mat) continue;
@@ -230,14 +246,19 @@ public class Draggable : MonoBehaviour
             }
         }
     }
+
+    /// <summary>렌더러에서 쓸 수 있는 색상 프로퍼티 탐색</summary>
     private string DetectColorProp(Renderer r)
     {
         var mat = r ? (r.sharedMaterial ? r.sharedMaterial : (Application.isPlaying ? r.material : null)) : null;
         if (!mat) return null;
         foreach (var p in kColorPropCandidates)
+        {
             if (mat.HasProperty(p)) return p;
+        }
         return null;
     }
+
     private void EnsureRenderers()
     {
         if (renderers == null || renderers.Length == 0)
@@ -262,9 +283,10 @@ public class Draggable : MonoBehaviour
                 continue;
             }
 
-            // sharedMaterial 우선: 에디터에서도 안전
             var mat = r.sharedMaterial ? r.sharedMaterial : (Application.isPlaying ? r.material : null);
-            originalColors[i] = mat && mat.HasProperty(colorPropName) ? mat.GetColor(colorPropName) : Color.white;
+            originalColors[i] = mat && mat.HasProperty(colorPropName)
+                ? mat.GetColor(colorPropName)
+                : Color.white;
         }
     }
 
@@ -280,12 +302,17 @@ public class Draggable : MonoBehaviour
         if (mpb == null) mpb = new MaterialPropertyBlock();
         if (colorPropId < 0) colorPropId = Shader.PropertyToID(colorPropName);
     }
+
     #endregion
 
+
     #region === Key Helpers ===
+
+    /// <summary>PlayerPrefs 저장 키 생성</summary>
     private string BuildKey(string suffix)
     {
         string baseKey;
+
         if (!string.IsNullOrEmpty(customSaveKey))
         {
             baseKey = customSaveKey;
@@ -296,13 +323,13 @@ public class Draggable : MonoBehaviour
             var objPath = useFullTransformPathForKey ? GetFullPath(transform) : gameObject.name;
             baseKey = $"{sceneName}/{objPath}";
         }
+
         return $"{baseKey}:{suffix}";
     }
 
     private static string GetFullPath(Transform t)
     {
-        // Root/Parent/Child 형식 경로(동일 이름 오브젝트 충돌↓)
-        var path = t.name;
+        string path = t.name;
         while (t.parent != null)
         {
             t = t.parent;
@@ -310,5 +337,6 @@ public class Draggable : MonoBehaviour
         }
         return path;
     }
+
     #endregion
 }

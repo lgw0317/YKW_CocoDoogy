@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 3.0f;
     public float accel = 25f;
     public float rotateLerp = 10f;
+    public LayerMask slopeMask; // 경사로에서만 올라타기는 허용시키기 위해. PlayerSlope.cs와 역할이 다름.
+                                // 살짝 겹치는 내용 있을 수 있어서 전체적으로 리팩터링 하면 좋긴 함.
     #endregion
 
     void Awake()
@@ -35,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-  
+
     void FixedUpdate()
     {
         if (joystick == null) return;
@@ -43,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 input = new Vector2(joystick.InputDir.x, joystick.InputDir.z);
 
-                Vector3 inputOffset = new(joystick.InputDir.x, 0, joystick.InputDir.z);
+        Vector3 inputOffset = new(joystick.InputDir.x, 0, joystick.InputDir.z);
         Ray ray = new(transform.position + (inputOffset * .3f), inputOffset);
         RaycastHit[] results = new RaycastHit[10];
 
@@ -54,9 +56,9 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-            
-            
-            
+
+
+
             input = Vector2.zero;
 
         //생각을 해봅시다...
@@ -144,12 +146,34 @@ public class PlayerMovement : MonoBehaviour
 
         // 위치 이동
         Vector3 nextPos = rb.position + finalDir * (moveSpeed * Time.fixedDeltaTime) + stepOffset;
+
+        // 같은 y층 오브젝트 감지
+        float halfTile = 0.5f;
+        Vector3 boxCenter = nextPos + Vector3.up * 0.5f; // 플레이어 중심
+        Vector3 halfExt = new Vector3(0.4f, 0.45f, 0.4f);
+        Collider[] sameYHits = Physics.OverlapBox(boxCenter, halfExt, Quaternion.identity, ~0, QueryTriggerInteraction.Collide);
+
+        foreach (var col in sameYHits)
+        {
+            if (col.attachedRigidbody == rb) continue;
+            if (col.isTrigger) continue;
+
+            // 상대의 중심 y값이 같은 층에 있다면 이동 차단
+            float dy = Mathf.Abs(col.bounds.center.y - rb.position.y);
+            if (dy < halfTile && !Physics.Raycast(rb.position + Vector3.up * 0.1f, Vector3.down, 1.2f, slopeMask))
+            {
+                // 같은 높이 + 슬로프 아님 -> 이동 금지
+                return;
+            }
+        }
         rb.MovePosition(nextPos);
-         
+
         // 회전 처리
         Quaternion targetRot = Quaternion.LookRotation(new Vector3(finalDir.x, 0, finalDir.z), Vector3.up);
         Quaternion smoothRot = Quaternion.Slerp(rb.rotation, targetRot, rotateLerp * Time.fixedDeltaTime);
         rb.MoveRotation(smoothRot);
+
+
     }
 
     public Vector2Int To4Dir(Vector3 dir)

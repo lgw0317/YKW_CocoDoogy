@@ -1,9 +1,9 @@
-using System;
+ï»¿using System;
 using System.IO;
 using UnityEngine;
 
 [Serializable]
-public class SettingData // °ÔÀÓ ¼³Á¤Ã³·³ ¿É¼Ç ÀúÀåÇÏ°í ½ÍÀ¸¸é µ¥ÀÌÅÍ ³ÖÀ¸¼¼¿ä
+public class SettingData // ê²Œì„ ì„¤ì •ì²˜ëŸ¼ ì˜µì…˜ ì €ì¥í•˜ê³  ì‹¶ìœ¼ë©´ ë°ì´í„° ë„£ìœ¼ì„¸ìš”
 {
     public AudioVolumeData audio = new AudioVolumeData();
 }
@@ -14,12 +14,8 @@ public class SettingManager : MonoBehaviour
     public SettingData settingData;
     public static SettingManager Instance { get; private set; }
 
-    // ÇÃ·§Æû ºĞÇÒ À©µµ¿ì¿Í ³ª¸ÓÁöµé. À©µµ¿ì ÀúÀå °æ·Î ³»¹®¼­->ÄÚÄÚµÎ±â->option.json
-#if UNITY_STANDALONE_WIN
-    private static readonly string savePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "CocoDoogy", "option.json");
-#else
-    private static readonly string savePath = Path.Combine(Application.persistentDataPath, "options.json");
-#endif
+    private string savePath;
+    // í”Œë«í¼ ë¶„í•  ìœˆë„ìš°ì™€ ë‚˜ë¨¸ì§€ë“¤. ìœˆë„ìš° ì €ì¥ ê²½ë¡œ ë‚´ë¬¸ì„œ->ì½”ì½”ë‘ê¸°->option.json
 
     private void Awake()
     {
@@ -30,6 +26,11 @@ public class SettingManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+#if UNITY_STANDALONE_WIN
+    savePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), "CocoDoogy", "option.json");
+#else
+    savePath = Path.Combine(Application.persistentDataPath, "options.json");
+#endif
 
         LoadSettings();
     }
@@ -47,7 +48,7 @@ public class SettingManager : MonoBehaviour
     {
         if (!File.Exists(savePath))
         {
-            // ÆÄÀÏÀÌ ¾øÀ» ½Ã »õ·Î »ı¼º
+            // íŒŒì¼ì´ ì—†ì„ ì‹œ ìƒˆë¡œ ìƒì„±
             settingData = new SettingData { audio = new AudioVolumeData() };
             SaveSettings();
             return;
