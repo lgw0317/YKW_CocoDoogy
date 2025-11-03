@@ -48,8 +48,9 @@ public class PanelRouter : MonoBehaviour
         Toggle(chapterPanel);
         if (chapterPanel)
         {
-            dimOverlay.GetComponent<Image>().color = Color.white;
-            dimOverlay.GetComponent<Image>().sprite = chapterSelectSprite;
+            var img = dimOverlay.GetComponent<Image>();
+            img.color = Color.white;
+            img.sprite = chapterSelectSprite;
             dimOverlay.GetComponent<RectTransform>().localScale = new Vector3(1.2f, 1.2f, 1.2f);
         }
     }
@@ -58,8 +59,7 @@ public class PanelRouter : MonoBehaviour
         Toggle(stagePanel);
         if (stagePanel)
         {
-            var chapterProvider = DataManager.Instance.Chapter;
-            var bg = chapterProvider.GetChapterBgIcon(chapterId);
+            var bg = DataManager.Instance.Chapter.GetChapterBgIcon(chapterId);
             if (bg != null)
             {
                 var img = dimOverlay.GetComponent<Image>();

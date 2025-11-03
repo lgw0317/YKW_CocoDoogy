@@ -5,7 +5,11 @@ using UnityEngine.UI;
 
 public class StageInfo : MonoBehaviour
 {
-    public GameObject StagePrefab;
+    public GameObject StagePrefab;          // 버튼 프리팹
+    public GameObject StageDetailPrefab;    // 상세창 프리팹
+    public Transform stageParent;           // StagePrefab 붙일 위치
+    public Transform detailParent;          // StageDetailPrefab 붙일 위치
+    private List<GameObject> activeDetails = new List<GameObject>();
 
     public void ShowStages(string chapterId)
     {
@@ -15,57 +19,66 @@ public class StageInfo : MonoBehaviour
         var stageProvider = DataManager.Instance.Stage;
 
         ChapterData chapter = chapterProvider.GetData(chapterId);
-        if (chapter == null)
-        {
-            Debug.LogWarning($"[StageInfo] 챕터({chapterId}) 데이터를 찾을 수 없습니다.");
-            return;
-        }
+        if (chapter == null) return;
 
         foreach (var stageId in chapter.chapter_staglist)
         {
-            var stageData = stageProvider.GetData(stageId);
-            if (stageData == null)
-            {
-                Debug.LogWarning($"[StageInfo] 스테이지({stageId}) 데이터를 찾을 수 없습니다.");
-                continue;
-            }
+            StageData stageData = stageProvider.GetData(stageId);
+            if (stageData == null) continue;
 
-            CreateStageUI(stageData, stageProvider);
+            CreateStageButton(stageData, stageProvider);
         }
     }
 
-    void CreateStageUI(StageData data, StageProvider provider)
+    void CreateStageButton(StageData data, StageProvider provider)
     {
-        GameObject stageInstance = Instantiate(StagePrefab, transform);
+        GameObject stageObj = Instantiate(StagePrefab, stageParent);
 
-        // 이미지
-        Image[] imgs = stageInstance.GetComponentsInChildren<Image>(true);
-        if (imgs.Length > 0)
-            imgs[0].sprite = provider.GetIcon(data.stage_id);
-
-        // 텍스트
-        TextMeshProUGUI[] texts = stageInstance.GetComponentsInChildren<TextMeshProUGUI>(true);
-        if (texts.Length >= 2)
-        {
+        // 버튼 텍스트
+        TextMeshProUGUI[] texts = stageObj.GetComponentsInChildren<TextMeshProUGUI>(true);
+        if (texts.Length > 0)
             texts[0].text = data.stage_name;
-            texts[1].text = data.stage_desc;
+
+        // 별 표시 (예시)
+        Transform starGroup = stageObj.transform.Find("StarGroup");
+        if (starGroup)
+        {
+            int stars = Random.Range(0, 4); // TODO: 실제 데이터
+            for (int i = 0; i < 3; i++)
+            {
+                Image star = starGroup.GetChild(i).GetComponent<Image>();
+                star.color = i < stars ? Color.yellow : Color.gray;
+            }
         }
 
-        // 버튼
-        Button stageButton = stageInstance.GetComponent<Button>();
-        if (stageButton != null)
-        {
-            stageButton.onClick.AddListener(() =>
-            {
-                Debug.Log($"[StageInfo] 스테이지 선택됨: {data.stage_id}");
-                // TODO: 스테이지 진입 로직 추가
-            });
-        }
+        // 클릭 이벤트
+        Button btn = stageObj.GetComponent<Button>();
+        btn.onClick.AddListener(() => ShowStageDetail(data, provider));
+    }
+
+    void ShowStageDetail(StageData data, StageProvider provider)
+    {
+        // 기존 상세창 제거
+        foreach (var obj in activeDetails)
+            Destroy(obj);
+        activeDetails.Clear();
+
+        // 새로운 상세창 Instantiate
+        GameObject detailObj = Instantiate(StageDetailPrefab, detailParent);
+        activeDetails.Add(detailObj);
+
+        StageDetailInfo detail = detailObj.GetComponent<StageDetailInfo>();
+        if (detail != null)
+            detail.ShowDetail(data);
     }
 
     void ClearStages()
     {
-        foreach (Transform child in transform)
+        foreach (Transform child in stageParent)
             Destroy(child.gameObject);
+
+        foreach (var obj in activeDetails)
+            Destroy(obj);
+        activeDetails.Clear();
     }
 }

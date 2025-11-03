@@ -8,16 +8,15 @@ public class ChapterInfo : MonoBehaviour
     public GameObject ChapterPrefab;
     void Awake()
     {
-        var chapterProvider = DataManager.Instance.Chapter;
-        var chapters = chapterProvider.GetAllChapters();
+        var chapters = DataManager.Instance.Chapter.GetAllChapters();
 
         foreach (var chapter in chapters)
         {
-            CreateChapterUI(chapter, chapterProvider);
+            CreateChapterUI(chapter);
         }
     }
 
-    void CreateChapterUI(ChapterData data, ChapterProvider provider)
+    void CreateChapterUI(ChapterData data)
     {
         GameObject chapterInstance = Instantiate(ChapterPrefab, transform);
 
@@ -26,7 +25,7 @@ public class ChapterInfo : MonoBehaviour
         if (imgs.Length > 1)
         {
             imgs[0].sprite = null;
-            imgs[1].sprite = provider.GetChapterIcon(data.chapter_id);
+            imgs[1].sprite = DataManager.Instance.Chapter.GetChapterIcon(data.chapter_id);
         }
 
         // 텍스트 설정
