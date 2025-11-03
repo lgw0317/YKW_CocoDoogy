@@ -15,24 +15,23 @@ public class StageInfo : MonoBehaviour
     {
         ClearStages();
 
-        var chapterProvider = DataManager.Instance.Chapter;
-        var stageProvider = DataManager.Instance.Stage;
-
-        ChapterData chapter = chapterProvider.GetData(chapterId);
+        var chapter = DataManager.Instance.Chapter.GetData(chapterId);
         if (chapter == null) return;
 
         foreach (var stageId in chapter.chapter_staglist)
         {
-            StageData stageData = stageProvider.GetData(stageId);
+            var stageData = DataManager.Instance.Stage.GetData(stageId);
             if (stageData == null) continue;
 
-            CreateStageButton(stageData, stageProvider);
+            CreateStageButton(stageData.stage_id);
         }
     }
 
-    void CreateStageButton(StageData data, StageProvider provider)
+    void CreateStageButton(string id)
     {
         GameObject stageObj = Instantiate(StagePrefab, stageParent);
+
+        var data = DataManager.Instance.Stage.GetData(id);
 
         // 버튼 텍스트
         TextMeshProUGUI[] texts = stageObj.GetComponentsInChildren<TextMeshProUGUI>(true);
@@ -52,11 +51,11 @@ public class StageInfo : MonoBehaviour
         }
 
         // 클릭 이벤트
-        Button btn = stageObj.GetComponent<Button>();
-        btn.onClick.AddListener(() => ShowStageDetail(data, provider));
+        Button btn = stageObj.GetComponentInChildren<Button>();
+        btn.onClick.AddListener(() => ShowStageDetail(data.stage_id));
     }
 
-    void ShowStageDetail(StageData data, StageProvider provider)
+    void ShowStageDetail(string id)
     {
         // 기존 상세창 제거
         foreach (var obj in activeDetails)
@@ -69,7 +68,7 @@ public class StageInfo : MonoBehaviour
 
         StageDetailInfo detail = detailObj.GetComponent<StageDetailInfo>();
         if (detail != null)
-            detail.ShowDetail(data);
+            detail.ShowDetail(id);
     }
 
     void ClearStages()

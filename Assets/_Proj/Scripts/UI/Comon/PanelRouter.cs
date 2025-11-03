@@ -69,9 +69,8 @@ public class PanelRouter : MonoBehaviour
             }
 
             // StageInfo에 chapterId 전달
-            var stageInfo = stagePanel.GetComponent<StageInfo>();
-            if (stageInfo != null)
-                stageInfo.ShowStages(chapterId);
+            var stageInfo = stagePanel.GetComponentInChildren<StageInfo>();
+            stageInfo.ShowStages(chapterId);
         }
     }
     public void CloseAll()

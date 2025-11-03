@@ -9,11 +9,12 @@ public class StageDetailInfo : MonoBehaviour
     public TextMeshProUGUI stageDesc;
     public Transform rewardGroup; // 보상 UI 부모
 
-    public void ShowDetail(StageData data)
+    public void ShowDetail(string id)
     {
+        var data = DataManager.Instance.Stage.GetData(id);
         // 이미지
         if (stageImage != null)
-            stageImage.sprite = DataManager.Instance.Stage.GetIcon(stageName.text);
+            stageImage.sprite = DataManager.Instance.Stage.GetIcon(id);
 
         // 텍스트
         if (stageName != null) stageName.text = data.stage_name;
