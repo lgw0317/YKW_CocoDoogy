@@ -70,7 +70,7 @@ public class Shockwave : MonoBehaviour
         int centerH = Mathf.FloorToInt(origin.y / t + 1e-4f);
 
         // 반경 내 후보 수집
-        var cols = Physics.OverlapSphere(origin, radiusWorld, targetLayer, QueryTriggerInteraction.Ignore); 
+        var cols = Physics.OverlapSphere(origin, radiusWorld, targetLayer, QueryTriggerInteraction.Ignore);
         Debug.Log($"[SW] OverlapSphere hits={cols?.Length ?? 0} radiusW={radiusWorld}", this);
         if (cols == null || cols.Length == 0) return;
 
@@ -85,15 +85,17 @@ public class Shockwave : MonoBehaviour
             int gz = Mathf.FloorToInt((c.transform.position.z + 0.5f * ts) / ts);
             all.Add((c, p, h, gx, gz, ts));
         }
+
         // 기준층(centerH) 가시성 검사 (pushables도 occlude 가능)
         LayerMask blockMask = occluderMask | targetLayer;
         var baseHits = new List<(Collider col, Component pushable, int gx, int gz, float ts)>();
+
         foreach (var e in all)
         {
             if (e.h != centerH) continue;
 
             if (useOcclusion && IsLineBlocked(origin, e.col, centerH, e.ts, blockMask, this.transform))
-                continue;
+                continue; // 가려진 물체는 기준층에서도 제외
             baseHits.Add((e.col, e.pushable, e.gx, e.gz, e.ts));
         }
 
@@ -103,10 +105,20 @@ public class Shockwave : MonoBehaviour
             int gx = baseHit.gx;
             int gz = baseHit.gz;
 
-            foreach (var e in all)
+            // 기준층 포함해서 위로 쭉 검사
+            var columnObjs = all.Where(e => e.gx == gx && e.gz == gz && e.h >= centerH)
+                                .OrderBy(e => e.h).ToList();
+
+            foreach (var e in columnObjs)
             {
-                if (e.gx != gx || e.gz != gz) continue;
-                if (e.h < centerH) continue; // 아래층 제외
+                // 기준층은 origin→타겟 검사
+                // 위층은 baseHit→타겟 검사 (중간 occlude 차단)
+                Vector3 src = (e.h == centerH)
+                    ? origin
+                    : baseHit.col.transform.position + Vector3.up * (baseHit.ts * 0.5f);
+
+                if (useOcclusion && IsLineBlocked(src, e.col, e.h, e.ts, blockMask, this.transform))
+                    break; // 중간에서 막히면 그 위는 영향 X
 
                 float rise = Mathf.Max(0.0001f, riseSeconds);
                 float hold = Mathf.Max(0f, hangSeconds);
@@ -119,14 +131,13 @@ public class Shockwave : MonoBehaviour
                 }
                 else
                 {
-                    // layer로 타깃되면 폴백 리프트 허용
                     StartCoroutine(LiftTransCoroutine(e.col.transform, e.ts, rise, hold, fall));
                 }
             }
         }
     }
 
-    static bool TryCallLiftAny(Component target, float rise, float hang, float fall)
+        static bool TryCallLiftAny(Component target, float rise, float hang, float fall)
     {
         const string methodName = "WaveLift";
         var type = target.GetType();

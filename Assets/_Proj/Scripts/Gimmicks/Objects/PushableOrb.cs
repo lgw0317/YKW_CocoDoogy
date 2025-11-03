@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 // 10/30 TODO : Shockwave 사용해서 버팔로와 같이 충격파 발생시킬 수 있도록 수정.
@@ -16,7 +15,7 @@ public class PushableOrb : PushableObjects
     [SerializeField] private Shockwave shockwave;
     [SerializeField] private ShockPing shockPing;
 
-    [Tooltip("Orb 충격파 쿨타임")]
+    [Tooltip("Orb 자신이 충격파 발생시킬 수 있는 쿨타임")]
     public float orbCoolTime = 6f;
     private float lastShockwaveTime = -float.MaxValue;
     private static Dictionary<int, float> floorCooldowns = new();
@@ -65,8 +64,6 @@ public class PushableOrb : PushableObjects
         wasGrounded = grounded;
     }
 
-
-
     protected override bool CheckBlocking(Vector3 target)
     {
         float r = sph.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y, transform.lossyScale.z) - 0.005f;
@@ -90,21 +87,31 @@ public class PushableOrb : PushableObjects
         return Time.time < lastShockwaveTime + orbCoolTime;
     }
 
+    protected override void OnLanded()
+    {
+        if(Time.time - lastShockwaveTime > orbCoolTime)
+        {
+            Debug.Log($"[Orb] 착지 감지 : {name}");
+            TryFireShockwave();
+        }
+    }
+
     void TryFireShockwave()
     {
         if (shockwave == null) return;
-        int yFloor = Mathf.RoundToInt(transform.position.y / tileSize);
+        //int yFloor = Mathf.RoundToInt(transform.position.y / tileSize);
 
         float now = Time.time;
 
-        if (floorCooldowns.TryGetValue(yFloor, out var lastTime) && now - lastTime < orbCoolTime) return;
+        //if (floorCooldowns.TryGetValue(yFloor, out var lastTime) && now - lastTime < orbCoolTime) return;
 
         if (now - lastShockwaveTime < orbCoolTime) return;
 
-        floorCooldowns[yFloor] = now;
+        //floorCooldowns[yFloor] = now;
         lastShockwaveTime = now;
 
-        Debug.Log($"[Orb] {yFloor}층 충격파 발생", this);
+        //Debug.Log($"[Orb] {yFloor}층 충격파 발생", this);
+        Debug.Log($"[Orb] {name} 충격파 발생", this);
         WaveLift(shockwave.riseSec, shockwave.hangSec, shockwave.fallSec);
 
         shockwave.Fire(

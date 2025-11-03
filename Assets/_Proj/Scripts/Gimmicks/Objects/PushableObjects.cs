@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class PushableObjects : MonoBehaviour, IPushHandler
@@ -33,8 +34,12 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
     public bool allowFall = true;
     public bool allowSlope = false;
 
+    private static Dictionary<int, float> gloablShockImmunity = new();
+    [Tooltip("충격파 맞은 오브젝트가 다시 반응하기까지 쿨타임")]
+    public float immuneTime = 5f;
     #endregion
     // TODO : 슬로프 탈 때 Constraints.FreezeRotation 끄기. 이게 맞나..?
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -179,6 +184,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         }
 
         isFalling = false;
+        OnLanded();
     }
 
     // Push 시도 시작(방향 기억, 시간 누적)
@@ -213,10 +219,23 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         return false;
     }
 
+    protected virtual void OnLanded() { }
+
     // ========== 공중 띄우기용 ==========
     // 충격파 맞았을 때 y+1 duration 동안 띄우기
     public void WaveLift(float rise, float hold, float fall)
     {
+        int id = GetInstanceID();
+        float now = Time.time;
+        if(gloablShockImmunity.TryGetValue(id, out var lastTime))
+        {
+            if(now - lastTime < immuneTime)
+            {
+                return;
+            }
+        }
+        gloablShockImmunity[id] = now;
+
         if (isMoving || isFalling || IsImmuneToWaveLift()) return;
         StartCoroutine(WaveLiftCoroutine(rise, hold, fall));
     }
@@ -255,7 +274,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler
         transform.position = start;
          
         isMoving = false;
-
+        Debug.Log($"{name} 충격파 영향 받음");
         yield break;
         // NOTE : 혹시나 뭔가 다른 작업을 하다 여기에서 CheckFall()을 할 일이 생긴다면 차라리 다른 스크립트를 작성하는 것을 권장. 원위치 복귀 후 다시 낙하 검사하는 실수 생기면 안 됨.
         // pushables가 충격파 받은 이후로 적층된 물체들이 원위치 후 다시 낙하 검사를 하게 되면 한 번 더 낙하해서 원위치에서 -y로 더 내려가게 됨
