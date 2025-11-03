@@ -15,47 +15,63 @@ public class BlockFactory : MonoBehaviour
     public List<BlockData> allBlocks = new List<BlockData>();
 
 
-    public GameObject CreateBlock(BlockSaveData data)
+    public GameObject CreateBlock(BlockSaveData block)
     {
-        if (data == null) return null;
+        if (block == null) return null;
 
-        Vector3Int position = data.position;
-        Quaternion rotation = data.rotation;
+        Vector3Int position = block.position;
+        Quaternion rotation = block.rotation;
         
         //블록 프리팹 찾기 => 블록타입이 노멀이면 이름으로 찾고, 아니면 타입으로 찾기.
-        var blockPrefab = data.blockType == BlockType.Normal ? FindBlockPrefab(data.blockType, data.blockName) : FindBlockPrefab(data.blockType);
+        var blockPrefab = block.blockType == BlockType.Normal ? FindBlockPrefab(block.blockType, block.blockName) : FindBlockPrefab(block.blockType);
 
-        var obj = Instantiate(blockPrefab, position, rotation);
-        //switch (data.blockType)
-        //{
-        //    case BlockType.Box:
-        //        obj.AddComponent<Box>().Init(data);
-        //        break;
-        //    case BlockType.Switch:
-        //        obj.AddComponent<Switch>();
-        //        break;
-        //    case BlockType.Door:
-        //        obj.AddComponent<Door>();
-        //        break;
-        //    case BlockType.End:
-        //        obj.AddComponent<EndBlock>();
-        //        break;
-        //    case BlockType.Start:
-        //    case BlockType.Normal:
-        //    case BlockType.Slope:
-        //    case BlockType.Water:
-        //    case BlockType.FlowWater:
-        //    case BlockType.Turret:
-        //    case BlockType.Tower:
-        //    case BlockType.Ironball:
-        //    case BlockType.Hog:
-        //    case BlockType.Tortoise:
-        //    case BlockType.Buffalo:
-        //        obj.AddComponent<NormalBlock>();
-        //        break;
-        //}
+        var go = Instantiate(blockPrefab, position, rotation);
+        switch (block.blockType)
+        {
+            case BlockType.Box:
+                go.AddComponent<BoxBlock>().Init(block);
+                break;
+            case BlockType.Switch:
+                go.AddComponent<SwitchBlock>().Init(block);
+                break;
+            case BlockType.Door:
+                go.AddComponent<DoorBlock>().Init(block);
+                break;
+            case BlockType.End:
+                go.AddComponent<EndBlock>().Init(block);
+                break;
+            case BlockType.Turret:
+                go.AddComponent<TurretBlock>().Init(block);
+                break;
+            case BlockType.Tower:
+                go.AddComponent<TowerBlock>().Init(block);
+                break;
+            case BlockType.Ironball:
+                go.AddComponent<IronballBlock>().Init(block);
+                break;
+            case BlockType.Start:
+            case BlockType.Slope:
+            case BlockType.Normal:
+                go.AddComponent<NormalBlock>().Init(block);
+                break;
+            case BlockType.Water:
+                go.AddComponent<WaterBlock>().Init(block);
+                break;
+            case BlockType.FlowWater:
+                go.AddComponent<FlowWaterBlock>().Init(block);
+                break;
+            case BlockType.Hog:
+                go.AddComponent<HogBlock>().Init(block);
+                break;
+            case BlockType.Tortoise:
+                go.AddComponent<TortoiseBlock>().Init(block);
+                break;
+            case BlockType.Buffalo:
+                go.AddComponent<BuffaloBlock>().Init(block);
+                break;
+        }
 
-        return obj;
+        return go;
     }
 
 

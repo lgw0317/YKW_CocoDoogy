@@ -103,53 +103,19 @@ public class StageManager : MonoBehaviour
             print($"[StageManager] {block.blockName}: {block.blockType} [{block.position.x}],[{block.position.y}],[{block.position.z}]");
             //여기서 팩토리가 들고 있는 프리팹으로 인스턴시에이트.
             
+            //생성 후 블록의 타입으로 컴포넌트 붙여주는 처리는 BlockFactory에서 담당.
             GameObject go = factory.CreateBlock(block);
             go.transform.SetParent(stageRoot, true);
             go.name = block.blockName;
 
-            //생성 후 블록의 타입이나 블록의 이름에 따라 적절한 컴포넌트를 붙여 줌.
-            switch (block.blockType)
-            {
-                case BlockType.Box:
-                    go.AddComponent<BoxBlock>().Init(block);
-                    break;
-                case BlockType.Switch:
-                    go.AddComponent<SwitchBlock>().Init(block);
-                    break;
-                case BlockType.Door:
-                    go.AddComponent<DoorBlock>().Init(block);
-                    break;
-                case BlockType.End:
-                    go.AddComponent<EndBlock>().Init(block);
-                    endBlock = go.GetComponent<EndBlock>();
-                    endBlock.Init(this);
-                    break;
-                case BlockType.Start:
-                    go.AddComponent<NormalBlock>().Init(block);
-                    startPoint = block.position;
-                    break;
-                case BlockType.Normal:
-                case BlockType.Slope:
-                case BlockType.Water:
-                case BlockType.FlowWater:
-                case BlockType.Turret:
-                    go.AddComponent<TurretBlock>().Init(block);
-                    break;
-                case BlockType.Tower:
-                    go.AddComponent<TowerBlock>().Init(block);
-                    break;
-                case BlockType.Ironball:
-                    //go.AddComponent<Ironball>().Init(block);
-                case BlockType.Hog:
-                case BlockType.Tortoise:
-                case BlockType.Buffalo:
-                    go.AddComponent<NormalBlock>().Init(block);
-                    break;
-            }
-            
+                    
+            if (block.blockType == BlockType.Start)
+                startPoint = block.position;
+            if (block.blockType == BlockType.End)
+                go.GetComponent<EndBlock>().Init(this);
 
-                    //GetComponent<Block>().Init(block);
-                    EnlistBlock(go.GetComponent<Block>());
+            //GetComponent<Block>().Init(block);
+            EnlistBlock(go.GetComponent<Block>());
             if (loaded.blocks.Find(x => x.blockType == BlockType.Start) == null) //스타트 없는 스테이지다?
             {
                 Debug.Log("스테이지의 시작점이 없음. 원점 + 5y지점에 주인공 생성.");

@@ -53,8 +53,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.1, z: 1}
+  m_Center: {x: 0, y: -0.45, z: 0}
 --- !u!114 &899011336641022762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,9 +64,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 4989480202343424376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba936d7f00c82854f8768da9ad934a23, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f979258fb0857949b102e8c942941dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridPosition: {x: 0, y: 0, z: 0}
+  origin:
+    blockType: 0
+    blockName: 
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    property:
+      isOn: 0
+      linkedPos: {x: 2147483647, y: 2147483647, z: 2147483647}
 --- !u!1 &7509723137891210488
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +142,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b7cc05f58384fc9499e0c0c8524a49d8, type: 2}
+  - {fileID: 2100000, guid: f0382076dce9c094f9eb3f6fe13db2cb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -174,8 +183,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 0.1, z: 1}
+  m_Center: {x: 0, y: -0.45, z: 0}
 --- !u!114 &526847530306874677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +194,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7509723137891210488}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 526ccb0ecb18ae6468d2cda47c32c5a1, type: 3}
+  m_Script: {fileID: 11500000, guid: 1956ffc446d861346ae5fca4793b0f3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterMat: {fileID: 2100000, guid: b7cc05f58384fc9499e0c0c8524a49d8, type: 2}
+  flowTime: 10
