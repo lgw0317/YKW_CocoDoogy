@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 6491595043485257789}
   - component: {fileID: 7906382339539672984}
   - component: {fileID: 5358698139589012306}
-  m_Layer: 0
+  - component: {fileID: 4814774241621082437}
+  m_Layer: 6
   m_Name: Kids_Table_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,3 +87,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4814774241621082437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5862868544136432263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f8016b02592f6844891f1518eba3324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 5358698139589012306}
+  highlightColor: {r: 1, g: 0.9, b: 0.3, a: 1}
+  invalidColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+  loadSavedTransformOnStart: 1
+  customSaveKey: 
+  useMaterialPropertyBlock: 1
+  colorPropName: _Color
+  useFullTransformPathForKey: 0
