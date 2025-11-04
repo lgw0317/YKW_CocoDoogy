@@ -46,7 +46,6 @@ public class ChapterInfo : MonoBehaviour
 
     void OpenStage(string chapterId)
     {
-        Debug.Log($"[ChapterInfo] OpenStage: {chapterId}");
         PanelRouter pr = GetComponentInParent<PanelRouter>();
         pr.ToggleStage(chapterId);
     }

@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class StageDetailInfo : MonoBehaviour
 {
@@ -8,9 +9,17 @@ public class StageDetailInfo : MonoBehaviour
     public TextMeshProUGUI stageName;
     public TextMeshProUGUI stageDesc;
     public Transform rewardGroup; // 보상 UI 부모
+    public Button enterButton;
+    private string currentStageId;
+
+    void Awake()
+    {
+        enterButton.onClick.AddListener(EnterStage);
+    }
 
     public void ShowDetail(string id)
     {
+        currentStageId = id;
         var data = DataManager.Instance.Stage.GetData(id);
         // 이미지
         if (stageImage != null)
@@ -22,5 +31,16 @@ public class StageDetailInfo : MonoBehaviour
 
         // TODO: 보상 표시 (treasure_01_id ~ 03_id)
         // rewardGroup 아래 동적 생성 가능
+    }
+
+    async void EnterStage()
+    {
+        var data = DataManager.Instance.Stage.GetData(currentStageId);
+
+        string mapId = data.map_id;
+
+        await SceneManager.LoadSceneAsync("Chapter1_StageScene_TESTONLY");
+
+        var mapData = await FirebaseManager_FORTEST.Instance.LoadMapFromFirebase(mapId);
     }
 }

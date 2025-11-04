@@ -42,7 +42,7 @@ public class StageInfo : MonoBehaviour
         Transform starGroup = stageObj.transform.Find("StarGroup");
         if (starGroup)
         {
-            int stars = Random.Range(0, 4); // TODO: 실제 데이터
+            int stars = Random.Range(0, 4); // TODO: 임시로 작성해둔것 수정 필수
             for (int i = 0; i < 3; i++)
             {
                 Image star = starGroup.GetChild(i).GetComponent<Image>();
