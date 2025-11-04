@@ -12,7 +12,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     [SerializeField] protected float angularSpeed = 120f;
     [SerializeField] protected float acceleration = 8f;
     [Header("Move")]
-    [SerializeField] protected float moveRadius = 10f; // 웨이포인트에서 범위
+    [SerializeField] protected float moveRadius = 8f; // 웨이포인트에서 범위
     [SerializeField] protected float waitTime = 2f; // 대기 시간
     //[SerializeField] protected EditController editController; // 편집모드, 로비매니저로
 
@@ -41,6 +41,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        agent.height = 1f;
 
         // agent
         charAgent = new NavMeshAgentControl(agent, moveSpeed, angularSpeed, acceleration, moveRadius, trans);
@@ -73,10 +74,14 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     protected void Update()
     {
         charAnim.MoveAnim(charAgent.ValueOfMagnitude());
+        if (!agent.hasPath) Debug.Log($"{gameObject.name} No path");
+        else if (agent.pathStatus == NavMeshPathStatus.PathInvalid) Debug.Log($"{gameObject.name} Invalid path");
+        else if (agent.isStopped) Debug.Log($"{gameObject.name} Agent is stopped");
+        else if (agent.enabled == false) Debug.Log($"{gameObject.name} Agent doesn't enable");
         //charAgent.MoveValueChanged();
     }
 
-    protected void OnDisable() // 코코두기와 마스터는 리스트에서 지우면 안됩니다.
+    protected void OnDisable() // 코코두기와 마스터는 리스트에서 지우면 안됩니다. 이 부분은 로비 틀이 제대로 만들어 지면 해결 예정
     {
         // 씬전환 시에는 return 시키고 그것이 아니라면 초기화 해야함
         switch (gameObject.tag)
@@ -127,8 +132,9 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     /// 코코두기와 마스터 상호작용
     /// </summary>
     public abstract void OnCocoMasterEmotion();
+
     /// <summary>
-    /// 드래그 시작
+    /// ILobbyDraggable, 드래그 시작
     /// </summary>
     /// <param name="position"></param>
     public void OnLobbyBeginDrag(Vector3 position)
@@ -144,7 +150,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         agent.enabled = false;
     }
     /// <summary>
-    /// 드래그 중
+    /// ILobbyDraggable, 드래그 중
     /// </summary>
     /// <param name="position"></param>
     public void OnLobbyDrag(Vector3 position)
@@ -161,7 +167,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         }
     }
     /// <summary>
-    /// 드래그 끝
+    /// ILobbyDraggable, 드래그 끝
     /// </summary>
     /// <param name="position"></param>
     public virtual void OnLobbyEndDrag(Vector3 position)
@@ -184,7 +190,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         
     }
     /// <summary>
-    /// 터치 시 상호작용
+    /// ILobbyInteractable, 터치 시 상호작용
     /// </summary>
     public virtual void OnLobbyInteract()
     {
@@ -192,10 +198,9 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         if (InLobbyManager.Instance.isEditMode) return;
 
         Debug.Log($"Click");
-        charAnim.InteractionAnim();
     }
     /// <summary>
-    /// 누를 시 상호작용
+    /// ILobbyPressable, 누를 시 상호작용
     /// </summary>
     public void OnLobbyPress()
     {
@@ -206,9 +211,39 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         agent.isStopped = true;
         charAnim.StopAnim();
     }
-
     /// <summary>
-    /// 오브젝트 생성 시 등록
+    /// ILobbyState, 일반모드 진입 시
+    /// </summary>
+    public virtual void InNormal()
+    {
+        if (!agent.enabled) agent.enabled = true;
+        if (agent.isStopped) agent.isStopped = false;
+        agent.Warp(transform.position);
+    }
+    /// <summary>
+    /// ILobbyState, 편집모드 진입 시
+    /// </summary>
+    public void InEdit()
+    {
+        charAnim.StopAnim();
+        StopMoving();
+        if (!agent.isStopped) agent.isStopped = true;
+        agent.enabled = false;
+    }
+    /// <summary>
+    /// ILobbyState, 업데이트 진입 시
+    /// </summary>
+    public abstract void InUpdate();
+    /// <summary>
+    /// ILobbyState, 로비 씬 스타트 시
+    /// </summary>
+    public abstract void StartScene();
+    /// <summary>
+    /// ILobbyState, 로비 씬 나갈 시
+    /// </summary>
+    public abstract void ExitScene();
+    /// <summary>
+    /// ILobbyState, 오브젝트 생성 시 등록
     /// </summary>
     public void Register()
     {
@@ -218,9 +253,10 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
             return;
         }
         InLobbyManager.Instance.RegisterLobbyChar(this);
+        Debug.Log($"{this} 등록");
     }
     /// <summary>
-    /// 오브젝트 삭제 시 취소
+    /// ILobbyState, 오브젝트 삭제 시 취소
     /// </summary>
     public void Unregister()
     {
@@ -229,31 +265,8 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
             Debug.LogWarning("로비인터페이스 못 찾음");
             return;
         }
+        if (gameObject.CompareTag("CocoDoogy") || gameObject.CompareTag("Master")) return;
         InLobbyManager.Instance.UnregisterLobbyChar(this);
+        Debug.Log($"{this} 삭제");
     }
-    /// <summary>
-    /// 일반모드 진입 시
-    /// </summary>
-    public virtual void InNormal()
-    {
-        if (!agent.enabled) agent.enabled = true;
-        if (agent.isStopped) agent.isStopped = false;
-        agent.Warp(transform.position);
-    }
-    /// <summary>
-    /// 편집모드 진입 시
-    /// </summary>
-    public void InEdit()
-    {
-        charAnim.StopAnim();
-        StopMoving();
-        if (!agent.isStopped) agent.isStopped = true;
-        agent.enabled = false;
-    }
-
-    public abstract void InUpdate();
-
-    public abstract void StartScene();
-
-    public abstract void ExitScene();
 }

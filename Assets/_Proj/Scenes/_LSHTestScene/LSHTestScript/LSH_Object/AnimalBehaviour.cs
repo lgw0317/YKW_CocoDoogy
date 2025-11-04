@@ -1,26 +1,21 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class AnimalBehaviour : BaseLobbyCharacterBehaviour
 {
-    [SerializeField] float decoDetectRadius = 10f;
+    [SerializeField] float decoDetectRadius = 20f; // 데코 오브젝트 탐색 범위
     private Transform targetDeco;
 
     protected override void Awake()
     {
         base.Awake();
+        agent.avoidancePriority = 50;
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
         targetDeco = null;
-    }
-
-    private void Start()
-    {
-        StartCoroutine(Move());
     }
 
     private IEnumerator Move()
@@ -31,12 +26,14 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
             FindNearestDeco();
             if (targetDeco != null)
             {
-                charAgent.MoveRandomPosition(targetDeco);
+                charAgent.MoveToRandomTransPoint(targetDeco);
             }
             else
             {
-                charAgent.MoveRandomPosition(transform);
+                charAgent.MoveToRandomTransPoint(transform);
             }
+
+            if (!agent.hasPath) charAgent.MoveToRandomTransPoint(transform);
             yield return waitU;
         }
     }
@@ -57,28 +54,8 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
                 nearest = deco.transform;
             }
         }
-
         targetDeco = nearest;
     }
-    // private void FindNearestDeco()
-    // {
-    //     // 나중에 로비 안에 활성화 된 데코 리스트가 있으면 대체
-    //     GameObject[] decoGObj = GameObject.FindGameObjectsWithTag("Decoration");
-
-    //     float minDistance = 1000f;
-    //     int closestIndex = 0;
-
-    //     for (int i = 0; i < decoGObj.Length; i++)
-    //     {
-    //         float distance = Vector3.Distance(transform.position, decoGObj[i].transform.position);
-    //         if (distance < decoDetectRadius && distance < minDistance)
-    //         {
-    //             minDistance = distance;
-    //             closestIndex = i;
-    //         }
-    //     }
-    //     targetDeco = decoGObj[closestIndex].transform;
-    // }
     
     // 인터페이스 영역
     public override void OnCocoAnimalEmotion()
@@ -97,29 +74,25 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
         base.OnLobbyEndDrag(position);
         StartCoroutine(Move());
     }
-
     public override void OnLobbyInteract()
     {
         base.OnLobbyInteract();
+        charAnim.InteractionAnim();
         AudioEvents.Raise(SFXKey.CocodoogyFootstep, pooled: true, pos: transform.position); // 각 동물 소리로
     }
-
     public override void InNormal()
     {
         base.InNormal();
         StartCoroutine(Move());
     }
-
     public override void InUpdate()
     {
         
     }
-
     public override void StartScene()
     {
-        
+        StartCoroutine(Move());
     }
-
     public override void ExitScene()
     {
         

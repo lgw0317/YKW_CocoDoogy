@@ -73,6 +73,7 @@ public class InLobbyManager : MonoBehaviour
             if (lC != null)
             {
                 lC.StartScene();
+                Debug.Log($"{lC} StartScene");
             }
         }
     }
@@ -123,6 +124,7 @@ public class InLobbyManager : MonoBehaviour
             if (lC != null)
             {
                 lC.ExitScene();
+                Debug.Log($"{lC} ExitScene 호출");
             }
         }
     }
@@ -136,5 +138,6 @@ public class InLobbyManager : MonoBehaviour
     public void UnregisterLobbyChar(ILobbyState gObj)
     {
         lobbyCharacter.Remove(gObj);
+        Debug.Log($"{gObj} 삭제됨");
     }
 }

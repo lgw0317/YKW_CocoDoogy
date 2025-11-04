@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 
 // 코코두기가 안드로이드와 특정 범위 내에 있거나 랜덤 값으로
 // 뽑힌 동물들에게 다가갔을때 로비 매니저에게 이벤트 호출, 로비매니저는
@@ -10,11 +9,12 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
 {
     private int currentWaypointIndex; // 웨이포인트 이동 인덱스
     private int animalInteractCount = 0; // 동물 친구들 상호작용 판단
-    private int masterInteractCount = 0;
+    private int masterInteractCount = 0; // 깡통 상호작용 판단
 
     protected override void Awake()
     {
         base.Awake();
+        agent.avoidancePriority = 99;
     }
 
     protected override void OnEnable()
@@ -22,12 +22,8 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
         base.OnEnable();
         currentWaypointIndex = 0;
         animalInteractCount = 0;
+        masterInteractCount = 0;
 
-    }
-
-    private void Start()
-    {
-        StartCoroutine(LetsGoCoco(InLobbyManager.Instance.cocoWaypoints));
     }
 
     // 가자 멍뭉아
@@ -39,7 +35,8 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
         {
             if (currentWaypointIndex == waypoints.Length - 1)
             {
-                charAgent.MoveToTransPoint(waypoints[currentWaypointIndex]);
+                //charAgent.MoveToTransPoint(waypoints[currentWaypointIndex]);
+                charAgent.CocoMoveToRandomTransPoint(waypoints[currentWaypointIndex]);
                 currentWaypointIndex = 0;
             }
             if (currentWaypointIndex == 0)
@@ -50,7 +47,8 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
             }
             currentWaypointIndex++;
             Debug.Log($"현재 인덱스 값 : {currentWaypointIndex}");
-            charAgent.MoveToTransPoint(waypoints[currentWaypointIndex]);
+            //charAgent.MoveToTransPoint(waypoints[currentWaypointIndex]);
+            charAgent.CocoMoveToRandomTransPoint(waypoints[currentWaypointIndex]);
             yield return waitU;
 
         }
@@ -59,7 +57,7 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
     // 드래그나 편집모드 성공적으로 끝날 시 본인 위치 기준 가장 가까운 포인트 찾기 
     private int GetClosestWaypointIndex()
     {
-        float minDistance = 1000f;
+        float minDistance = float.MaxValue;
         int closestIndex = 0;
 
         for (int i = 0; i < InLobbyManager.Instance.cocoWaypoints.Length; i++)
@@ -99,30 +97,26 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
         currentWaypointIndex = GetClosestWaypointIndex();
         StartCoroutine(LetsGoCoco(InLobbyManager.Instance.cocoWaypoints));
     }
-
     public override void OnLobbyInteract()
     {
         base.OnLobbyInteract();
+        charAnim.InteractionAnim();
         AudioEvents.Raise(SFXKey.CocodoogyFootstep, pooled: true, pos: transform.position);
     }
-
     public override void InNormal()
     {
         base.InNormal();
         currentWaypointIndex = GetClosestWaypointIndex();
         StartCoroutine(LetsGoCoco(InLobbyManager.Instance.cocoWaypoints));
     }
-
     public override void InUpdate()
     {
 
     }
-
     public override void StartScene()
     {
-
+        StartCoroutine(LetsGoCoco(InLobbyManager.Instance.cocoWaypoints));
     }
-
     public override void ExitScene()
     {
 

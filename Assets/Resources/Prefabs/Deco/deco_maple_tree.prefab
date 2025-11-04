@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 400732239478783482}
   - component: {fileID: 2584732459708449100}
   - component: {fileID: 6537624912751262667}
-  - component: {fileID: 8150378200755518177}
+  - component: {fileID: -7202016410380508038}
   m_Layer: 6
   m_Name: deco_maple_tree
   m_TagString: Decoration
@@ -127,24 +127,29 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4781277628412113339, guid: 4fe08cfe9a50e48ae9c433976188ec45, type: 3}
---- !u!208 &8150378200755518177
-NavMeshObstacle:
+--- !u!65 &-7202016410380508038
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2202070730110295087}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.75, y: 5.405, z: 0.75}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 4.8620005, z: 0}
-  m_TimeToStationary: 0.5
+  m_Size: {x: 2, y: 10.810764, z: 2}
+  m_Center: {x: 0.44, y: 4.8623934, z: -0.12}

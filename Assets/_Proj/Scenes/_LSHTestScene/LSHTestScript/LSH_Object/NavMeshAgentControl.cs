@@ -68,7 +68,7 @@ public class NavMeshAgentControl
         agent.SetDestination(pos);
         agent.speed = speed;
         agent.acceleration = Random.Range(speed, 10f);
-        agent.stoppingDistance = Random.Range(0.3f, 1f);
+        //agent.stoppingDistance = Random.Range(0f, 0.5f);
     }
     /// <summary>
     /// Vector3일 시 위치 이동
@@ -81,7 +81,7 @@ public class NavMeshAgentControl
         agent.SetDestination(point);
         agent.speed = speed;
         agent.acceleration = Random.Range(speed, 10f);
-        agent.stoppingDistance = Random.Range(0.3f, 1f);
+        //agent.stoppingDistance = Random.Range(0f, 0.5f);
     }
     /// <summary>
     /// 마지막 포인트 지점일 시 느리게 이동(필요 없을 수 있음)
@@ -100,19 +100,34 @@ public class NavMeshAgentControl
     /// 해당 포인트를 기준으로 랜덤 범위 이동
     /// </summary>
     /// <param name="point"></param>
-    public void MoveRandomPosition(Transform point)
+    public void MoveToRandomTransPoint(Transform point)
     {
         if (agent.isStopped) agent.isStopped = false;
         Vector3 randomDir = point.position + Random.insideUnitSphere * moveRadius;
+        randomDir.y = point.position.y;
         //randomDir += transform.position;
-
-        if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, moveRadius, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, 0.3f, NavMesh.AllAreas))
         {
+            //randomDir = hit.position;
             //agent.SetDestination(hit.position);
             MoveToVectorPoint(hit.position);
+            //MoveToVectorPoint(randomDir);
         }
     }
 
+    public void CocoMoveToRandomTransPoint(Transform point)
+    {
+        if (agent.isStopped) agent.isStopped = false;
+        Vector3 randomDir = point.position + Random.insideUnitSphere * 1f;
+        randomDir.y = point.position.y;
+        //randomDir += transform.position;
+        if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        {
+            //randomDir = hit.position;
+            MoveToVectorPoint(hit.position);
+            //MoveToVectorPoint(randomDir);
+        }
+    }
     public void RestAgent()
     {
         if (agent.enabled == false) agent.enabled = true;
