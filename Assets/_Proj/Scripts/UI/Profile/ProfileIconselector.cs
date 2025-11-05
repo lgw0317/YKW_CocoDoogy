@@ -1,11 +1,11 @@
-﻿using Firebase.Auth;
+using Firebase.Auth;
 using Firebase.Database;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ProfileItemSelector : MonoBehaviour
+public class ProfileIconSelector : MonoBehaviour
 {
     [SerializeField] private GameObject root;
     [SerializeField] private Transform slotParent;
@@ -14,10 +14,8 @@ public class ProfileItemSelector : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private TMP_Text titleText;
 
-    private string currentCategory;
     private int selectedItemId = -1;
-
-    private ProfileFavoriteIcon currentTargetIcon;
+    private ProfileIconController currentTargetIcon;
     private ProfilePanelController parentController;
 
     private void Awake()
@@ -33,17 +31,16 @@ public class ProfileItemSelector : MonoBehaviour
 
     }
 
-    public void Open(string category, ProfileFavoriteIcon targetIcon, ProfilePanelController parent)
+    public void Open(ProfileIconController targetIcon, ProfilePanelController parent)
     {
         if (root != null)
             root.SetActive(true);
 
-        currentCategory = category;
         currentTargetIcon = targetIcon;
         parentController = parent;
 
         if (titleText != null)
-            titleText.text = $"{category}";
+            titleText.text = "������ ����";
 
         BuildList();
     }
@@ -53,21 +50,20 @@ public class ProfileItemSelector : MonoBehaviour
         foreach (Transform t in slotParent)
             Destroy(t.gameObject);
 
-        List<ProfilePanelController.ProfileOwnedItemData> ownedList =
+        List<ProfilePanelController.ProfileOwnedItemData> iconList =
             parentController != null
-            ? parentController.GetOwnedItemsByCategory(currentCategory)
+            ? parentController.GetProfileIconItems()
             : null;
 
-        if (ownedList == null || ownedList.Count == 0)
+        if (iconList == null || iconList.Count == 0)
         {
             selectedItemId = -1;
             return;
         }
 
-        foreach (var item in ownedList)
+        foreach (var item in iconList)
         {
             var slot = Instantiate(slotPrefab, slotParent);
-            // 여기서 DB의 itemId를 넘겨줌
             slot.Bind(item.itemId, item.icon, OnSlotSelected);
         }
 
@@ -91,18 +87,16 @@ public class ProfileItemSelector : MonoBehaviour
         if (selectedItemId < 0)
             return;
 
-        Sprite equippedSprite = parentController?.EquipItem(currentCategory, selectedItemId);
+        Sprite newIcon = parentController?.EquipProfileIcon(selectedItemId);
 
-        // 아이콘 + id 둘 다 넘겨야 DB id가 안 꼬임
-        if (equippedSprite != null && currentTargetIcon != null)
-            currentTargetIcon.UpdateIcon(equippedSprite, selectedItemId);
+        if (newIcon != null && currentTargetIcon != null)
+            currentTargetIcon.SetIcon(newIcon);
 
-        // Firebase 저장 그대로 유지
         var user = FirebaseAuth.DefaultInstance.CurrentUser;
         if (user != null)
         {
             FirebaseDatabase.DefaultInstance
-                .GetReference($"users/{user.UserId}/profile/equipped/{currentCategory}")
+                .GetReference($"users/{user.UserId}/profile/profileIcon")
                 .SetValueAsync(selectedItemId);
         }
 
@@ -114,7 +108,6 @@ public class ProfileItemSelector : MonoBehaviour
         if (root != null)
             root.SetActive(false);
 
-        currentCategory = null;
         currentTargetIcon = null;
         parentController = null;
         selectedItemId = -1;
