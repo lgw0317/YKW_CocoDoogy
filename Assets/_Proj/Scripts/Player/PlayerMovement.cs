@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -45,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         if (camTr == null) camTr = Camera.main?.transform;
 
         Vector2 input = new Vector2(joystick.InputDir.x, joystick.InputDir.z);
+
         //if (input.magnitude > 0)
         //{
         //    Vector3 input45Below = new(joystick.InputDir.x, -1, joystick.InputDir.z);
@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
 
         //    RaycastHit[] mainRayHits = Physics.RaycastAll(mainRay, .71f, LayerMask.GetMask("Ground", "Wall", "Slope"));
         //    bool isSlope = false;
-            
+
         //    for (int i = 0; i < mainRayHits.Length; i++)
         //    {
         //        print($"PlayerMovement: [{i}]: {mainRayHits[i].collider.name}");
@@ -70,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
         //    if (mainRayHits. Length < 1)
         //    {
         //        input *= -.01f;
-               
+
         //    }
         //    else
         //    {
@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
         //            }
         //        }
         //    }
-            
+
         //}
         //Vector3 inputOffset = new(joystick.InputDir.x, 0, joystick.InputDir.z);
         //Ray ray = new(transform.position + (inputOffset * .3f), inputOffset);
@@ -139,7 +139,6 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-
         if (input.sqrMagnitude < 0.01f)
         {
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
@@ -151,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
                     strategy.Execute(Vector3.zero, rb, this);
                 // 입력 없음 상태도 전략이 받아야 함. 그래서 zero로라도 실행.
             }
-
+            // 입력 없을 때 회전 시키는 것 차단. return 없으면 자동으로 0,0,0으로 돌아감.
             return;
         }
 

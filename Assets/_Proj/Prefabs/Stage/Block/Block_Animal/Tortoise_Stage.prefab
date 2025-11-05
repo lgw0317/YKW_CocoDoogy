@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: -5410010934899105090}
   m_Layer: 9
   m_Name: Tortoise_Stage
-  m_TagString: Untagged
+  m_TagString: Turtle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -648,7 +648,7 @@ MonoBehaviour:
   moveSpeed: 5
   blockLayer:
     serializedVersion: 2
-    m_Bits: 640
+    m_Bits: 896
   ridableLayer:
     serializedVersion: 2
     m_Bits: 264

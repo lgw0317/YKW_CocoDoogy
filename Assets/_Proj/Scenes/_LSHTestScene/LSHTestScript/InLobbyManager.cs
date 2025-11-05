@@ -21,7 +21,6 @@ using System.Collections.Generic;
 
 public class InLobbyManager : MonoBehaviour
 {
-    [SerializeField] TestScriptableCharacter[] charDatabase;
     [SerializeField] GameObject plane;
     [SerializeField] EditModeController editController;
     
@@ -58,31 +57,20 @@ public class InLobbyManager : MonoBehaviour
     private void Start() // 깨끗한 프리팹에 붙여주는 방법이 인게임 아웃게임 전환에서 좋지 않을 깝숑
     {
         planeSurface.BuildNavMesh();
-        foreach (var data in charDatabase)
-        {
-            GameObject gObj;
-            gObj = Instantiate(data.prefab, cocoWaypoints[0].position, Quaternion.identity);
-            switch (data.type)
-            {
-                case CharacterType.None:
-                    break;
-                case CharacterType.CocoDoogy:
-                    gObj.AddComponent<CocoDoogyBehaviour>();
-                    break;
-                case CharacterType.Master:
-                    gObj.AddComponent<MasterBehaviour>();
-                    break;
-                case CharacterType.Decoration:
-                    break;
-                case CharacterType.Animal:
-                    gObj.AddComponent<AnimalBehaviour>();
-                    break;
-            }
-            gObj.tag = data.type.ToString();
-            gObj.layer = LayerMask.NameToLayer("InLobbyObject");
-            var meta = gObj.GetComponent<GameObjectData>();
-            meta.Initialize(data);
-        }
+        GameObject gObj = Instantiate(DataManager.Instance.Animal.GetPrefab(30002), cocoWaypoints[0].position, Quaternion.identity);
+        gObj.AddComponent<CocoDoogyBehaviour>();
+        gObj.tag = "CocoDoogy";
+        gObj.layer = LayerMask.NameToLayer("InLobbyObject");
+
+        GameObject gObj2 = Instantiate(DataManager.Instance.Animal.GetPrefab(30001), cocoWaypoints[5].position, Quaternion.identity);
+        gObj2.AddComponent<AnimalBehaviour>();
+        gObj2.tag = "Animal";
+        gObj2.layer = LayerMask.NameToLayer("InLobbyObject");
+
+        GameObject gObj3 = Instantiate(DataManager.Instance.Animal.GetPrefab(30003), cocoWaypoints[6].position, Quaternion.identity);
+        gObj3.AddComponent<MasterBehaviour>();
+        gObj3.tag = "Master";
+        gObj3.layer = LayerMask.NameToLayer("InLobbyObject");
 
         foreach (var lC in lobbyCharacter)
         {
@@ -90,6 +78,7 @@ public class InLobbyManager : MonoBehaviour
             if (lC != null)
             {
                 lC.StartScene();
+                Debug.Log($"{lC} StartScene");
             }
         }
     }
@@ -140,6 +129,7 @@ public class InLobbyManager : MonoBehaviour
             if (lC != null)
             {
                 lC.ExitScene();
+                Debug.Log($"{lC} ExitScene 호출");
             }
         }
     }
@@ -153,5 +143,6 @@ public class InLobbyManager : MonoBehaviour
     public void UnregisterLobbyChar(ILobbyState gObj)
     {
         lobbyCharacter.Remove(gObj);
+        Debug.Log($"{gObj} 삭제됨");
     }
 }

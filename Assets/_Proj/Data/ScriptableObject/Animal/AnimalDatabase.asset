@@ -22,3 +22,20 @@ MonoBehaviour:
     animal_acquire: 1
     animal_desc: "\uC0B0\uC5D0\uC11C \uB9CC\uB09C \uB3CC\uC9C1\uAD6C\uB97C \uC88B\uC544\uD558\uB294
       \uBA67\uB3FC\uC9C0 \uCE5C\uAD6C\uC785\uB2C8\uB2E4"
+  - animal_id: 30002
+    animal_name: "\uCF54\uCF54\uB450\uAE30"
+    animal_type: 0
+    animal_tag: 0
+    animal_prefab: Prefabs/Animal/animal_CocoDoogy
+    animal_icon: Icons/Animal/animal_hog
+    animal_acquire: 1
+    animal_desc: "\uC8FC\uC778\uC774 \uBCF4\uC2E0\uD0D5 \uC7AC\uB8CC\uB85C \uC4F8\uB824\uACE0
+      \uD0A4\uC6B0\uB824 \uD588\uB358 \uAC15\uC544\uC9C0"
+  - animal_id: 30003
+    animal_name: "\uC548\uB4DC\uB85C\uC774\uB4DC\uC8FC\uC778"
+    animal_type: 0
+    animal_tag: 0
+    animal_prefab: Prefabs/Animal/animal_RobobotA
+    animal_icon: Icons/Animal/animal_hog
+    animal_acquire: 1
+    animal_desc: "\uB85C\uBD07\uB3C4 \uB3D9\uBB3C\uC778 \uC2DC\uB300\uC785\uB2C8\uB2E4?"

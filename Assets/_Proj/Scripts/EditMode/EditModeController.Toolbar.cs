@@ -85,35 +85,52 @@ public partial class EditModeController
             return;
         }
 
-        var tag = CurrentTarget.GetComponentInParent<PlaceableTag_Deco>()
-               ?? CurrentTarget.GetComponentInChildren<PlaceableTag_Deco>();
+        // 새 공통 태그만 사용
+        var ptag = CurrentTarget.GetComponentInParent<PlaceableTag>()
+                 ?? CurrentTarget.GetComponentInChildren<PlaceableTag>();
 
-        if (tag == null)
+        if (!ptag)
         {
-            panel.Show("정보 없음", "이 오브젝트에는 PlaceableTag_Deco(decoId)가 없습니다.");
+            panel.Show("정보 없음", "PlaceableTag가 없습니다.");
             return;
         }
 
-        if (DecoInventoryRuntime.I == null || DecoInventoryRuntime.I.DB == null)
+        string title = $"{ptag.category} {ptag.id}";
+        string desc = "설명이 없습니다.";
+
+        switch (ptag.category)
         {
-            panel.Show($"Deco {tag.decoId}", "인벤토리/데이터베이스를 찾지 못했습니다.");
-            return;
+            case PlaceableCategory.Deco:
+                if (DecoInventoryRuntime.I?.DB)
+                {
+                    var d = DecoInventoryRuntime.I.DB.decoList.Find(x => x != null && x.deco_id == ptag.id);
+                    if (d != null)
+                    {
+                        title = string.IsNullOrEmpty(d.deco_name) ? $"Deco {d.deco_id}" : d.deco_name;
+                        if (!string.IsNullOrEmpty(d.deco_desc)) desc = d.deco_desc;
+                    }
+                }
+                break;
+
+            case PlaceableCategory.Home:
+                {
+                    var hd = DataManager.Instance?.Home?.GetData(ptag.id);
+                    if (hd != null) { title = hd.home_name; /* 설명 필드 있으면 desc 설정 */ }
+                    break;
+                }
+
+            case PlaceableCategory.Animal:
+                {
+                    var ad = DataManager.Instance?.Animal?.GetData(ptag.id);
+                    if (ad != null) { title = ad.animal_name; /* 설명 필드 있으면 desc 설정 */ }
+                    break;
+                }
         }
-
-        var db = DecoInventoryRuntime.I.DB;
-        var data = db.decoList.Find(d => d != null && d.deco_id == tag.decoId);
-
-        if (data == null)
-        {
-            panel.Show($"Deco {tag.decoId}", "데이터베이스에 이 decoId가 없습니다.");
-            return;
-        }
-
-        var title = string.IsNullOrEmpty(data.deco_name) ? $"Deco {data.deco_id}" : data.deco_name;
-        var desc = string.IsNullOrEmpty(data.deco_desc) ? "설명이 없습니다." : data.deco_desc;
 
         panel.Show(title, desc);
     }
+
+
 
     // ─────────────────────────────────────────────────────
     // 툴바 표시
@@ -197,35 +214,52 @@ public partial class EditModeController
             return;
         }
 
-        var tag = CurrentTarget.GetComponentInParent<PlaceableTag_Deco>()
-               ?? CurrentTarget.GetComponentInChildren<PlaceableTag_Deco>();
+        // 공통 태그만 사용
+        var ptag = CurrentTarget.GetComponentInParent<PlaceableTag>()
+                 ?? CurrentTarget.GetComponentInChildren<PlaceableTag>();
 
-        if (tag == null)
+        if (!ptag)
         {
-            panel.Toggle("정보 없음", "이 오브젝트에는 PlaceableTag_Deco(decoId)가 없습니다.");
+            panel.Toggle("정보 없음", "PlaceableTag가 없습니다.");
             return;
         }
 
-        if (DecoInventoryRuntime.I == null || DecoInventoryRuntime.I.DB == null)
+        string title = $"{ptag.category} {ptag.id}";
+        string desc = "설명이 없습니다.";
+
+        switch (ptag.category)
         {
-            panel.Toggle($"Deco {tag.decoId}", "인벤토리/데이터베이스를 찾지 못했습니다.");
-            return;
+            case PlaceableCategory.Deco:
+                if (DecoInventoryRuntime.I?.DB)
+                {
+                    var d = DecoInventoryRuntime.I.DB.decoList.Find(x => x != null && x.deco_id == ptag.id);
+                    if (d != null)
+                    {
+                        title = string.IsNullOrEmpty(d.deco_name) ? $"Deco {d.deco_id}" : d.deco_name;
+                        if (!string.IsNullOrEmpty(d.deco_desc)) desc = d.deco_desc;
+                    }
+                }
+                break;
+
+            case PlaceableCategory.Home:
+                {
+                    var hd = DataManager.Instance?.Home?.GetData(ptag.id);
+                    if (hd != null) { title = hd.home_name; /* desc 설정 가능하면 여기서 */ }
+                    break;
+                }
+
+            case PlaceableCategory.Animal:
+                {
+                    var ad = DataManager.Instance?.Animal?.GetData(ptag.id);
+                    if (ad != null) { title = ad.animal_name; /* desc 설정 가능하면 여기서 */ }
+                    break;
+                }
         }
 
-        var db = DecoInventoryRuntime.I.DB;
-        var data = db.decoList.Find(d => d != null && d.deco_id == tag.decoId);
-
-        if (data == null)
-        {
-            panel.Toggle($"Deco {tag.decoId}", "데이터베이스에 이 decoId가 없습니다.");
-            return;
-        }
-
-        var title = string.IsNullOrEmpty(data.deco_name) ? $"Deco {data.deco_id}" : data.deco_name;
-        var desc = string.IsNullOrEmpty(data.deco_desc) ? "설명이 없습니다." : data.deco_desc;
-
+        // Toggle로 열고/닫기
         panel.Toggle(title, desc);
     }
+
 
     /// <summary>
     /// Rotate 버튼: 90도 회전 + 겹치면 롤백 + Undo 기록
@@ -283,26 +317,27 @@ public partial class EditModeController
     {
         if (!CurrentTarget) return;
 
-        int decoId = 0;
-        var tag = CurrentTarget.GetComponent<PlaceableTag_Deco>();
-        if (tag != null) decoId = tag.decoId;
+        // 공통 태그
+        var ptag = CurrentTarget.GetComponent<PlaceableTag>();
+        int decoId = (ptag != null && ptag.category == PlaceableCategory.Deco) ? ptag.id : 0;
 
         var go = CurrentTarget.gameObject;
 
-        // 먼저 선택 해제 + 툴바 숨김
+        // 선택 해제 + 툴바 숨김
         SelectTarget(null);
         actionToolbar?.Hide();
 
-        // 실제 오브젝트 삭제
+        // 오브젝트 삭제 (인벤으로 회수하는 의미)
         Object.Destroy(go);
 
-        // 인벤 수량 +1
+        // 데코만 인벤 수량 +1
         if (decoId != 0 && DecoInventoryRuntime.I != null)
             DecoInventoryRuntime.I.Add(decoId, 1);
 
         hasUnsavedChanges = true;
         pendingFromInventory = null;
     }
+
 
     /// <summary>
     /// OK 버튼: 인벤에서 꺼낸 임시 오브젝트를 "진짜 배치"로 확정
@@ -342,9 +377,9 @@ public partial class EditModeController
     {
         if (!CurrentTarget) return;
 
-        int decoId = 0;
-        var tag = CurrentTarget.GetComponent<PlaceableTag_Deco>();
-        if (tag != null) decoId = tag.decoId;
+        // 공통 태그
+        var ptag = CurrentTarget.GetComponent<PlaceableTag>();
+        int decoId = (ptag != null && ptag.category == PlaceableCategory.Deco) ? ptag.id : 0;
 
         var go = CurrentTarget.gameObject;
 
@@ -352,10 +387,10 @@ public partial class EditModeController
         SelectTarget(null);
         actionToolbar?.Hide();
 
-        // 실제 삭제
+        // 임시 배치물 취소 → 삭제
         Object.Destroy(go);
 
-        // 인벤 수량 롤백
+        // 데코만 인벤 수량 되돌리기(+1)
         if (decoId != 0 && DecoInventoryRuntime.I != null)
             DecoInventoryRuntime.I.Add(decoId, 1);
 

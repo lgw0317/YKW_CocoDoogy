@@ -12,7 +12,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     [SerializeField] protected float angularSpeed = 120f;
     [SerializeField] protected float acceleration = 8f;
     [Header("Move")]
-    [SerializeField] protected float moveRadius = 10f; // 웨이포인트에서 범위
+    [SerializeField] protected float moveRadius = 8f; // 웨이포인트에서 범위
     [SerializeField] protected float waitTime = 2f; // 대기 시간
     //[SerializeField] protected EditController editController; // 편집모드, 로비매니저로
 
@@ -33,13 +33,18 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     protected bool yCaptured = false; // yValue가 값을 얻었는지 판단
     protected int mainPlaneMask;
 
+    protected bool isMoving;
+    protected WaitUntil waitU;
+    protected WaitForSeconds waitFS;
+
     protected virtual void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        agent.height = 1f;
 
         // agent
-        charAgent = new NavMeshAgentControl(agent, moveSpeed, angularSpeed, acceleration, moveRadius, waitTime, trans);
+        charAgent = new NavMeshAgentControl(agent, moveSpeed, angularSpeed, acceleration, moveRadius, trans);
         // charAnim
         charAnim = new LobbyCharacterAnim(anim);
         mainCam = Camera.main;
@@ -48,6 +53,8 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         //originalLayer = LayerMask.NameToLayer("InLobbyObject"); // 로비매니저로
         //editableLayer = LayerMask.NameToLayer("Editable"); // 로비매니저로
         mainPlaneMask = LayerMask.NameToLayer("MainPlaneLayer");
+        waitU = new WaitUntil(() => !agent.pathPending && agent.remainingDistance < Mathf.Infinity && agent.remainingDistance <= agent.stoppingDistance);
+        waitFS = new WaitForSeconds(waitTime);
         //isEditMode = false; // 상태패턴 전환 시 수정, 로비매니저로
 
     }
@@ -64,30 +71,62 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         }
     }
 
-    protected void OnDisable() // 코코두기와 마스터는 리스트에서 지우면 안됩니다.
+    protected void Update()
+    {
+        charAnim.MoveAnim(charAgent.ValueOfMagnitude());
+        if (!agent.hasPath) Debug.Log($"{gameObject.name} No path");
+        else if (agent.pathStatus == NavMeshPathStatus.PathInvalid) Debug.Log($"{gameObject.name} Invalid path");
+        else if (agent.isStopped) Debug.Log($"{gameObject.name} Agent is stopped");
+        else if (agent.enabled == false) Debug.Log($"{gameObject.name} Agent doesn't enable");
+        //charAgent.MoveValueChanged();
+    }
+
+    protected void OnDisable() // 코코두기와 마스터는 리스트에서 지우면 안됩니다. 이 부분은 로비 틀이 제대로 만들어 지면 해결 예정
     {
         // 씬전환 시에는 return 시키고 그것이 아니라면 초기화 해야함
         switch (gameObject.tag)
         {
             case "CocoDoogy":
+                ResetMoving();
                 break;
             case "Master":
+                ResetMoving();
                 break;
             case "Animal":
                 Unregister();
+                ResetMoving();
                 break;
             default: throw new Exception("누구세요?");
         }
     }
 
+    protected void ResetMoving()
+    {
+        if (isMoving == true)
+        {
+            isMoving = false;
+            StopAllCoroutines();
+            if (agent != null && agent.isActiveAndEnabled) agent.ResetPath();
+        }
+    }
+    
+    protected void StartMoving()
+    {
+        if (isMoving == false)
+        {
+            isMoving = true;
+            if (agent != null && agent.isActiveAndEnabled) agent.ResetPath();
+        }
+    }
+
     // 애니메이션 시 에이전트 제어 근데 이곳에 쓰는게 맞나.
-    public void StopAgentBeginAnim()
+    public void StopAgent()
     {
         agent.isStopped = true;
 
     }
-    
-    public void StartAgentEndAnim()
+
+    public void StartAgent()
     {
         agent.isStopped = false;
     }
@@ -102,8 +141,9 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     /// 코코두기와 마스터 상호작용
     /// </summary>
     public abstract void OnCocoMasterEmotion();
+
     /// <summary>
-    /// 드래그 시작
+    /// ILobbyDraggable, 드래그 시작
     /// </summary>
     /// <param name="position"></param>
     public void OnLobbyBeginDrag(Vector3 position)
@@ -112,13 +152,14 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         if (InLobbyManager.Instance.isEditMode) return;
 
         originalPos = transform.position;
+        ResetMoving();
         isDragging = true;
         charAnim.StopAnim();
-        charAgent.AgentIsStop(true);
-        charAgent.EnableAgent(false);
+        agent.isStopped = true;
+        agent.enabled = false;
     }
     /// <summary>
-    /// 드래그 중
+    /// ILobbyDraggable, 드래그 중
     /// </summary>
     /// <param name="position"></param>
     public void OnLobbyDrag(Vector3 position)
@@ -135,7 +176,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         }
     }
     /// <summary>
-    /// 드래그 끝
+    /// ILobbyDraggable, 드래그 끝
     /// </summary>
     /// <param name="position"></param>
     public virtual void OnLobbyEndDrag(Vector3 position)
@@ -153,23 +194,22 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
             transform.position = navHit.position;
             Debug.Log($"{gameObject.name} : NavMesh 있음 해당 포지션으로");
         }
-        charAgent.EnableAgent(true);
+        agent.enabled = true;
         agent.Warp(transform.position);
         
     }
     /// <summary>
-    /// 터치 시 상호작용
+    /// ILobbyInteractable, 터치 시 상호작용
     /// </summary>
     public virtual void OnLobbyInteract()
     {
         if (InLobbyManager.Instance == null) return;
         if (InLobbyManager.Instance.isEditMode) return;
-
-        Debug.Log($"Click");
         charAnim.InteractionAnim();
+        Debug.Log($"Click");
     }
     /// <summary>
-    /// 누를 시 상호작용
+    /// ILobbyPressable, 누를 시 상호작용
     /// </summary>
     public void OnLobbyPress()
     {
@@ -177,12 +217,42 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         if (InLobbyManager.Instance.isEditMode) return;
 
         Debug.Log($"Press");
-        charAgent.AgentIsStop(true);
+        agent.isStopped = true;
         charAnim.StopAnim();
     }
-
     /// <summary>
-    /// 오브젝트 생성 시 등록
+    /// ILobbyState, 일반모드 진입 시
+    /// </summary>
+    public virtual void InNormal()
+    {
+        if (!agent.enabled) agent.enabled = true;
+        if (agent.isStopped) agent.isStopped = false;
+        agent.Warp(transform.position);
+    }
+    /// <summary>
+    /// ILobbyState, 편집모드 진입 시
+    /// </summary>
+    public void InEdit()
+    {
+        charAnim.StopAnim();
+        ResetMoving();
+        if (!agent.isStopped) agent.isStopped = true;
+        agent.enabled = false;
+    }
+    /// <summary>
+    /// ILobbyState, 업데이트 진입 시
+    /// </summary>
+    public abstract void InUpdate();
+    /// <summary>
+    /// ILobbyState, 로비 씬 스타트 시
+    /// </summary>
+    public abstract void StartScene();
+    /// <summary>
+    /// ILobbyState, 로비 씬 나갈 시
+    /// </summary>
+    public abstract void ExitScene();
+    /// <summary>
+    /// ILobbyState, 오브젝트 생성 시 등록
     /// </summary>
     public void Register()
     {
@@ -192,9 +262,10 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
             return;
         }
         InLobbyManager.Instance.RegisterLobbyChar(this);
+        Debug.Log($"{this} 등록");
     }
     /// <summary>
-    /// 오브젝트 삭제 시 취소
+    /// ILobbyState, 오브젝트 삭제 시 취소
     /// </summary>
     public void Unregister()
     {
@@ -203,30 +274,8 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
             Debug.LogWarning("로비인터페이스 못 찾음");
             return;
         }
+        if (gameObject.CompareTag("CocoDoogy") || gameObject.CompareTag("Master")) return;
         InLobbyManager.Instance.UnregisterLobbyChar(this);
+        Debug.Log($"{this} 삭제");
     }
-    /// <summary>
-    /// 일반모드 진입 시
-    /// </summary>
-    public virtual void InNormal()
-    {
-        if (!agent.enabled) charAgent.EnableAgent(true);
-        if (agent.isStopped) charAgent.AgentIsStop(false);
-        agent.Warp(transform.position);
-    }
-    /// <summary>
-    /// 편집모드 진입 시
-    /// </summary>
-    public void InEdit()
-    {
-        charAnim.StopAnim();
-        if (!agent.isStopped) charAgent.AgentIsStop(true);
-        charAgent.EnableAgent(false);
-    }
-
-    public abstract void InUpdate();
-
-    public abstract void StartScene();
-
-    public abstract void ExitScene();
 }

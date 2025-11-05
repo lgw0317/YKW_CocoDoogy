@@ -10,8 +10,6 @@ using UnityEngine;
 [RequireComponent(typeof(Shockwave))]
 public class PushableOrb : PushableObjects
 {
-    SphereCollider sph;
-
     [SerializeField] private Shockwave shockwave;
     [SerializeField] private ShockPing shockPing;
 
@@ -29,7 +27,6 @@ public class PushableOrb : PushableObjects
     protected override void Awake()
     {
         base.Awake();
-        sph = GetComponent<SphereCollider>();
         allowSlope = true;
         shockwave = GetComponent<Shockwave>();
         shockPing = GetComponent<ShockPing>();
@@ -56,30 +53,12 @@ public class PushableOrb : PushableObjects
         );
 
         // 이전에는 공중이었는데, 지금은 지상에 닿은 경우 = 착지 완료
-        if (!wasGrounded && grounded) // TODO : 여기 조건이 이상한 것 같은데...어떤 조건으로 설정해줘야 wavelift가 중복되지 않을까...
+        if (!wasGrounded && grounded)
         {
             Debug.Log($"[Orb] 충격파 발생 {name}", this);
             TryFireShockwave(); // 충격파 발생 시도
         }
         wasGrounded = grounded;
-    }
-
-    protected override bool CheckBlocking(Vector3 target)
-    {
-        float r = sph.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y, transform.lossyScale.z) - 0.005f;
-        Vector3 center = new(target.x, target.y + r, target.z);
-
-        if (Physics.CheckSphere(center, r, blockingMask, QueryTriggerInteraction.Ignore))
-            return true;
-
-        var hits = Physics.OverlapSphere(center, r, ~throughLayer, QueryTriggerInteraction.Ignore);
-        foreach (var c in hits)
-        {
-            // if ((groundMask.value & (1 << c.gameObject.layer)) != 0) continue; // 필요 시 바닥 제외
-            if (c.transform.IsChildOf(transform)) continue;
-            return true;
-        }
-        return false;
     }
 
     protected override bool IsImmuneToWaveLift()

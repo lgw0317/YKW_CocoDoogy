@@ -1,0 +1,82 @@
+﻿using Firebase.Auth;
+using Firebase.Database;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ProfileItemSelector : MonoBehaviour
+{
+    [SerializeField] private GameObject root;
+    [SerializeField] private Transform slotParent;
+    [SerializeField] private ProfileItemSlot slotPrefab;
+    [SerializeField] private Button applyButton;
+    [SerializeField] private Button closeButton;
+    [SerializeField] private TMP_Text titleText;
+
+    private string currentCategory;
+    private int selectedItemId = -1;
+    private ProfileFavoriteIcon currentTargetIcon;
+    private ProfilePanelController parentController;
+
+    private void Awake()
+    {
+        if (root) root.SetActive(false);
+        if (applyButton) applyButton.onClick.AddListener(Apply);
+        if (closeButton) closeButton.onClick.AddListener(Close);
+    }
+
+    public void Open(string category, ProfileFavoriteIcon targetIcon, ProfilePanelController parent)
+    {
+        root.SetActive(true);
+        currentCategory = category;
+        currentTargetIcon = targetIcon;
+        parentController = parent;
+        if (titleText) titleText.text = $"{category} 보유 아이템";
+        BuildList();
+    }
+
+    private void BuildList()
+    {
+        foreach (Transform t in slotParent)
+            Destroy(t.gameObject);
+
+        //List<int> owned = CodexUnlockManager.Instance.GetUnlockedIdsByCategory(currentCategory);
+        //foreach (int id in owned)
+        {
+            var slot = Instantiate(slotPrefab, slotParent);
+            //var sprite = YourGameIconLoader.GetIconById(id);
+            //slot.Bind(id, sprite, OnSlotSelected);
+        }
+    }
+
+    private void OnSlotSelected(int id, ProfileItemSlot slot)
+    {
+        selectedItemId = id;
+        foreach (Transform t in slotParent)
+        {
+            var s = t.GetComponent<ProfileItemSlot>();
+            s?.SetSelected(s == slot);
+        }
+    }
+
+    private void Apply()
+    {
+        if (selectedItemId < 0) return;
+
+        //Sprite newSprite = YourGameIconLoader.GetIconById(selectedItemId);
+        //currentTargetIcon.UpdateIcon(newSprite);
+
+        var user = FirebaseAuth.DefaultInstance.CurrentUser;
+        if (user != null)
+        {
+            FirebaseDatabase.DefaultInstance
+                .GetReference($"users/{user.UserId}/profile/equipped/{currentCategory}")
+                .SetValueAsync(selectedItemId);
+        }
+
+        Close();
+    }
+
+    public void Close() => root.SetActive(false);
+}

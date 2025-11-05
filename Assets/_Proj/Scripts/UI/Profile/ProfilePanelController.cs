@@ -1,0 +1,100 @@
+﻿using Firebase.Auth;
+using Firebase.Database;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine;
+
+public class ProfilePanelController : MonoBehaviour
+{
+    [Header("Info")]
+    [SerializeField] private ProfileIconController profileIcon;
+    [SerializeField] private TMP_Text nicknameText;
+    [SerializeField] private TMP_Text uidText;
+    [SerializeField] private TMP_Text joinDateText;
+
+    [Header("Progress")]
+    [SerializeField] private RadialProgress artifactProgress;
+    //[SerializeField] private RadialPRogress stageProgress;
+    //[SerializeField] private RadialPRogress codexProgress;
+    //[SerializeField] private RadialPRogress achievementProgress;
+
+    [Header("Favorite Icons")]
+    [SerializeField] private ProfileFavoriteIcon animalIcon;
+    [SerializeField] private ProfileFavoriteIcon decoIcon;
+    [SerializeField] private ProfileFavoriteIcon costumeIcon;
+    [SerializeField] private ProfileFavoriteIcon artifactIcon;
+
+    [Header("Popups")]
+    [SerializeField] private ProfileItemSelector ownedItemPopup;
+    //[SerializeField] private ProfileIconSelector profileIconPopup;
+
+    private FirebaseAuth _auth;
+
+    private void Awake()
+    {
+        _auth = FirebaseAuth.DefaultInstance;
+    }
+
+    private void OnEnable()
+    {
+        LoadUserInfo();
+        RefreshProgress();
+        SetupIcons();
+    }
+
+    private void LoadUserInfo()
+    {
+        var user = _auth.CurrentUser;
+        nicknameText.text = user?.DisplayName ?? "-";
+        uidText.text = user?.UserId ?? "-";
+
+        if (user != null)
+        {
+            //var date = System.DateTimeOffset.FromUnixTimeSeconds//(user.Metadata.CreationTimestamp).LocalDateTime;
+            //joinDateText.text = date.ToString("yyyy-MM-dd");
+        }
+        else
+        {
+            joinDateText.text = "-";
+        }
+    }
+
+    private void RefreshProgress()
+    {
+        // 예시 수치
+        artifactProgress.SetProgress(12, 40);  
+        //stageProgress.SetProgressPercent(0.33f);  
+        //codexProgress.SetProgress(58f);       
+        //achievementProgress.SetProgressPercent(0.75f); 
+    }
+
+    private void SetupIcons()
+    {
+        //profileIcon.Init(this, YourGameIconLoader.GetEquippedSprite("Profile"));
+        //animalIcon.Initialize(this, YourGameIconLoader.GetEquippedSprite("Animal"), "Animal");
+        //decoIcon.Initialize(this, YourGameIconLoader.GetEquippedSprite("Deco"), "Deco");
+        //costumeIcon.Initialize(this, YourGameIconLoader.GetEquippedSprite("Costume"), "Costume");
+        //artifactIcon.Initialize(this, YourGameIconLoader.GetEquippedSprite("Artifact"), "Artifact");
+    }
+
+    // 프로필 아이콘 클릭 시
+    public void OpenProfileIconPopup(ProfileIconController source)
+    {
+        //if (profileIconPopup)
+        //    profileIconPopup.Open(source, this);
+    }
+
+    // 아래 FavoriteIcon(동물/조경/치장/유물) 클릭 시
+    public void OpenOwnedItemPopup(string category, ProfileFavoriteIcon source)
+    {
+        if (ownedItemPopup)
+            ownedItemPopup.Open(category, source, this);
+    }
+
+    // 외부에서 닫기 호출용
+    public void Close()
+    {
+        gameObject.SetActive(false);
+    }
+
+}

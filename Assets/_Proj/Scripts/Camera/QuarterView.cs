@@ -73,6 +73,12 @@ public class QuarterView : MonoBehaviour
     private bool _wasEditMode;
     private bool _lastBlockOrbit;            // 디버그용 추적
 
+    // === UI-전역 오비트 차단 ===
+    private static int _uiOrbitBlockCount = 0;
+    public static bool IsUIOrbitBlocked => _uiOrbitBlockCount > 0;
+    public static void PushUIOrbitBlock() { _uiOrbitBlockCount++; }
+    public static void PopUIOrbitBlock() { _uiOrbitBlockCount = Mathf.Max(0, _uiOrbitBlockCount - 1); }
+
     #endregion
 
     #region === Const ===
@@ -228,6 +234,7 @@ public class QuarterView : MonoBehaviour
 
     private void HandlePointerInput()
     {
+        if (IsUIOrbitBlocked) return;
         HandleMouseInput();
         HandleTouchInput();
     }
