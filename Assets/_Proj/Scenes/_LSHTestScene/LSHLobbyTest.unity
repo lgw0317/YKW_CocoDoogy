@@ -1751,6 +1751,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Backyard Base
       objectReference: {fileID: 0}
+    - target: {fileID: 8676101801004593912, guid: 4806c8f5b035a45ecb2883e36e6e2180, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -7435,7 +7439,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0004272461}
+  m_AnchoredPosition: {x: 0, y: 0.0005493164}
   m_SizeDelta: {x: 0, y: 550}
   m_Pivot: {x: 0, y: 1}
 --- !u!4 &1255915395 stripped
@@ -8795,7 +8799,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 430939952}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999947
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
