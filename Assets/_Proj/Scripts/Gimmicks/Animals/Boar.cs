@@ -174,8 +174,14 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 
         Vector3 boarNextPos = transform.position;
 
+        int stepGuard = 0;
         while (true)
         {
+            if(++stepGuard > 10)
+            {
+                Debug.LogWarning("[Boar] 무한 루프 빠질 뻔");
+                break;
+            }
             Vector3 currentPos = transform.position;
             Vector3 nextPos = currentPos + moveDir * tileSize;
 
@@ -256,6 +262,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 break;
             }
         }
+        
         isMoving = false;
         yield return StartCoroutine(CheckFall());
     }
