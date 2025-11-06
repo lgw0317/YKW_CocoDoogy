@@ -1,4 +1,3 @@
-﻿treasure_id,treasure_type,reward_id,count,coco_coment
 treasure_1_1_1,coin,-1,50,[coco_get_coin]
 treasure_1_1_2,cap,-2,50,[coco_get_cap]
 treasure_1_1_3,deco,10001,1,가구를 먹었어!

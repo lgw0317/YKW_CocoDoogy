@@ -13,11 +13,6 @@ MonoBehaviour:
   m_Name: TreasureDatabase
   m_EditorClassIdentifier: 
   treasureList:
-  - treasure_id: treasure_1_1_1
-    treasureType: 0
-    reward_id: -1
-    count: 50
-    coco_coment: '[coco_get_coin]'
   - treasure_id: treasure_1_1_2
     treasureType: 1
     reward_id: -2
