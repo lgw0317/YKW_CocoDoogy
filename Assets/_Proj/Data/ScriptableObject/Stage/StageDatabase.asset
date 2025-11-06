@@ -16,15 +16,16 @@ MonoBehaviour:
   - stage_id: stage_1_1
     stage_name: "\uC232\uC5D0\uC11C \uD558\uB8FB\uBC24!"
     stage_img: Img/Stage/stage_1_1_main
-    stage_desc: "\uC8FC\uC778\uB2D8\uC774 \uB0A0 \uB450\uACE0 \uBA3C\uC800 \uAC14\uC5B4"
-    map_id: " \uC0C8\uB85C\uC6B4 \uB180\uC774 \uC2DC\uAC04\uC774\uC57C"
-    start_cutscene: map_1_1
-    start_talk: /movie/Stage/stage_1_1_start.mp4
-    end_talk: talk_1_1_1
-    end_cutscene: talk_1_1_2
-    treasure_01_id: /movie/Stage/stage_1_1_end.mp4
-    treasure_02_id: treasure_1_1_1
-    treasure_03_id: treasure_1_1_2
+    stage_desc: "\"\uC8FC\uC778\uB2D8\uC774 \uB0A0 \uB450\uACE0 \uBA3C\uC800 \uAC14\uC5B4,
+      \uC0C8\uB85C\uC6B4 \uB180\uC774 \uC2DC\uAC04\uC774\uC57C\""
+    map_id: map_1_1
+    start_cutscene: /movie/Stage/stage_1_1_start.mp4
+    start_talk: talk_1_1_1
+    end_talk: talk_1_1_2
+    end_cutscene: /movie/Stage/stage_1_1_end.mp4
+    treasure_01_id: treasure_1_1_1
+    treasure_02_id: treasure_1_1_2
+    treasure_03_id: treasure_1_1_3
   - stage_id: stage_1_2
     stage_name: "\uC2E0\uB098\uB294 \uBC15\uC2A4 \uB180\uC774!"
     stage_img: Img/Stage/stage_1_1_main
