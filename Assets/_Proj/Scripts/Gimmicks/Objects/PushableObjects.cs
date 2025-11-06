@@ -90,7 +90,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             return false;
 
         // 바닥 유무 확인
-        bool hasGroundAtTarget = Physics.Raycast(target + Vector3.up * 0.1f, Vector3.down, 2.5f, groundMask);
+        bool hasGroundAtTarget = Physics.Raycast(target + Vector3.up * 0.1f, Vector3.down, 10f, groundMask);
 
         if (!hasGroundAtTarget)
         {
@@ -148,8 +148,16 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     // 단순 이동(1칸 Lerp 이동)
     protected IEnumerator MoveTo(Vector3 target)
     {
+        //이동 시작 순간 내 머리 위에 있는 콜라이더, 주변 콜라이더 전부 켜주기
+
         //이동 시작 전 내 주변 사방에 있는 타일들에게서 IEdgeColliderHandler 검출하여 캐싱
-        List<IEdgeColliderHandler> cache = new();
+        List<IEdgeColliderHandler> startCache = new();
+        if (TryGetComponent<IEdgeColliderHandler>(out var handler))
+        {
+            startCache = handler.DetectGrounds();
+            handler.SetAllCollider();
+            startCache.ForEach((x) => x.SetAllCollider());
+        }
         for (int i = 0; i < 4; i++)
         {
             Vector3 checkDir = i == 0 ? transform.forward : i == 1 ? -transform.right : i == 2 ? -transform.forward : transform.right;
@@ -160,7 +168,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
                 Debug.Log($"PushableObj: {name} moving start. hitted {hit.collider.name}");
                 if (hit.collider.TryGetComponent<IEdgeColliderHandler>(out var targetHandler))
                 {
-                    cache.Add(targetHandler);
+                    startCache.Add(targetHandler);
                 }
             }
         }
@@ -181,32 +189,34 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         isMoving = false;
 
         //중요: 한 프레임만 뒤에 실행시키기.
+        
         yield return null;
 
-        if (gameObject.TryGetComponent<IEdgeColliderHandler>(out var handler))
-            //만약 내가 머리 위에 투명벽이 달린 객체라면??
+        if (handler != null)
+            //만약 내가 머리 위에 투명벽이 달린 객체라면?? 바꿔 말해, 내가 올라탈 수 있는 객체라면?
         {
             handler.DetectAndApplyFourEdge();
+            handler.DetectGrounds().ForEach(x => x.DetectAndApplyFourEdge());
         }
 
-        //이동이 끝나고 나서 곧바로 내 주변 사방에 있는 타일에서 IEdgeColliderHandler 검출
-        for (int i = 0; i < 4; i++)
-        {
-            Vector3 checkDir = i == 0 ? transform.forward : i == 1 ? -transform.right : i == 2 ? -transform.forward : transform.right;
-            Ray ray = new(transform.position - (Vector3.up * .49f), checkDir);
-            var result = Physics.RaycastAll(ray, 1.4f, groundMask);
-            foreach(var hit in result)
-            {
-                Debug.Log($"PushableObj: {name} moved. hitted {hit.collider.name}");
-                if (hit.collider.TryGetComponent<IEdgeColliderHandler>(out var targetHandler))
-                {
-                    targetHandler.DetectAndApplyFourEdge();
-                }
-            }
-        }
+        ////이동이 끝나고 나서 곧바로 내 주변 사방에 있는 타일에서 IEdgeColliderHandler 검출
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    Vector3 checkDir = i == 0 ? transform.forward : i == 1 ? -transform.right : i == 2 ? -transform.forward : transform.right;
+        //    Ray ray = new(transform.position - (Vector3.up * .49f), checkDir);
+        //    var result = Physics.RaycastAll(ray, 1.4f, groundMask);
+        //    foreach(var hit in result)
+        //    {
+        //        Debug.Log($"PushableObj: {name} moved. hitted {hit.collider.name}");
+        //        if (hit.collider.TryGetComponent<IEdgeColliderHandler>(out var targetHandler))
+        //        {
+        //            targetHandler.DetectAndApplyFourEdge();
+        //        }
+        //    }
+        //}
 
         //이동이 끝나고 나서 캐싱해놨던 핸들러들도 Inspect(); 호출.
-        foreach(var cached in cache)
+        foreach(var cached in startCache)
         {
             cached.DetectAndApplyFourEdge();
         }
@@ -296,7 +306,30 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         isMoving = false;
         isHoling = false;
         currHold = 0f;
+        StartCoroutine(RidingCoroutine());
+    }
 
+    IEnumerator RidingCoroutine()
+    {
+        Debug.Log($"PushableObj: 라이딩코루틴 실행");
+        List<IEdgeColliderHandler> myAdjHandlers = new();
+        if (TryGetComponent<IEdgeColliderHandler>(out var myHandler))
+        {
+        Debug.Log($"PushableObj: myHandler 할당함.");
+                myAdjHandlers = myHandler.DetectGrounds();
+            while (isRiding)
+            {
+                myAdjHandlers.ForEach((x) => x.DetectAndApplyFourEdge());
+                yield return null;
+            }
+        }
+        else yield break;
+        //이동이 다 끝났음.
+        yield return null;
+        myHandler.DetectAndApplyFourEdge();
+
+        //이번엔 이동이 끝난 위치에서의 내 인근 핸들러.
+        myHandler.DetectGrounds().ForEach((x) => x.DetectAndApplyFourEdge());
     }
 
     public void OnStopRiding()

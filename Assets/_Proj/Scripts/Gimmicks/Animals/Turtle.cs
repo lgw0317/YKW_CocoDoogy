@@ -150,6 +150,7 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
     // HACK : 이 부분은 움직일 수 있는 물체가 Turtle에 안 막히게 하면 될 것 같기도 한데 어떤 부분이 효율적일지 고민해봐야 함. 둘 다 처리 하는 게 안전한 방법일 수도.
     IEnumerator MoveSlideCoroutine(Vector3 dir, Vector3 startPos, Vector3 endPos)
     {
+        //아래 변수는 이동을 시작할 때 거북이 사방의 땅 블록 리스트임.
         List<IEdgeColliderHandler> startCache = GetComponent<IEdgeColliderHandler>().DetectGrounds();
         
         float dist = Vector3.Distance(startPos, endPos);
@@ -185,7 +186,7 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
 
         foreach (var col in ridables)
         {
-            Debug.Log($"[Trutle] {col.name} 탑승 감지됨.");
+            Debug.Log($"[Turtle] {col.name} 탑승 감지됨.");
 
             if (col.transform == transform) continue;
 
@@ -224,14 +225,22 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
             col.transform.SetParent(transform);
         }
 
+
+            //HACK: 1106 - 강욱: 터틀이 이동하는 동안, 머리 위에 타고 있는 객체의 위치를 동기화
+            //머리 위에 타고 있는 객체가 IEdgeColliderHandler인 경우도 감안하여 처리 => 해당 객체가 직접 처리하도록 하자. (콜백함수처럼)
         // 터틀과 탑승 물체 동시 이동
         while (elapsed < duration)
         {
+           
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
-            //HACK: 1106 - 강욱: 터틀이 이동하는 동안, 머리 위에 타고 있는 객체의 위치를 동기화
 
-            // 터틀 이동
+
+            //이동 시작 전...
+
+            ridableTrans.ForEach((x) => x.GetComponent<IRider>()?.OnStartRiding());
+
+            // 터틀 이동 중
             transform.position = Vector3.Lerp(startPos, endPos, t);
             if (dir.sqrMagnitude > 0.001f)
             {
@@ -243,10 +252,15 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
                     foreach(var trans in ridableTrans)
                     {
                         trans.position = transform.position;
+                        trans.rotation = transform.rotation;
                     }
                 }
-                GetComponent<IEdgeColliderHandler>().DetectAndApplyFourEdge();
-                startCache.ForEach((x) => x.DetectAndApplyFourEdge());
+                //0.5초 정도면 이미 첫 위치를 벗어났겠지
+                if (elapsed < .5f)
+                {
+                    GetComponent<IEdgeColliderHandler>().DetectAndApplyFourEdge();
+                    startCache.ForEach((x) => x.DetectAndApplyFourEdge());
+                }
             }
             yield return null;
         }
@@ -263,7 +277,7 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
             // 부모가 아직 이 거북이(this.transform)인지 확인 후 해제
             if (ridableTrans[i].parent == transform)
             {
-                // 부모 해제
+                //TODO: 부모 해제(아님, 부모를 원래의 부모로 설정해야 함.)
                 ridableTrans[i].SetParent(null);
 
                 // 하차 후 타깃 위치 설정
@@ -297,13 +311,14 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
             if (po != null)
             {
                 po.enabled = true;
+                
             }
         }
         isMoving = false;
 
 
-
         yield return null;
+        ridableTrans.ForEach((x) => x.GetComponent<IRider>()?.OnStopRiding());
         List<IEdgeColliderHandler> endCache = GetComponent<IEdgeColliderHandler>().DetectGrounds();
 
         GetComponent<IEdgeColliderHandler>().DetectAndApplyFourEdge();
