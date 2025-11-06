@@ -57,7 +57,7 @@ public class UserInteractionHandler : MonoBehaviour, IPointerClickHandler, IPoin
     public void OnPointerClick(PointerEventData eventData)
     {
         if (isPressing || isDragging) return;
-        interactable.OnLobbyInteract();
+        interactable.OnLobbyClick();
     }
 
     public void OnPointerDown(PointerEventData eventData)

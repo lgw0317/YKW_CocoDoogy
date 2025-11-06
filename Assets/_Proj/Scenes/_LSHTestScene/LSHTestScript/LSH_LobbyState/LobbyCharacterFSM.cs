@@ -14,14 +14,14 @@ public class LobbyCharacterFSM
     {
         if (nextState == currentState) return;
 
-        if (currentState != null) currentState.OnStateExit(); // 다음 state 가기 전에 저장 용도로?
+        if (currentState != null) currentState?.OnStateExit(); // 다음 state 가기 전에 저장 용도로?
 
         currentState = nextState;
-        currentState.OnStateEnter();
+        currentState?.OnStateEnter();
     }
 
     public void UpdateState()
     {
-        if (currentState != null) currentState.OnStateUpdate();
+        if (currentState != null) currentState?.OnStateUpdate();
     }
 }

@@ -6,6 +6,25 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
     //private int currentDecoIndex;
     private Transform targetDeco;
 
+    public override LobbyCharacterBaseState InitialState()
+    {
+        throw new System.NotImplementedException();
+    }
+    public override LobbyCharacterBaseState StopState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override LobbyCharacterBaseState MoveState()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override LobbyCharacterBaseState InteractState()
+    {
+        throw new System.NotImplementedException();
+    }
+    
     protected override void Awake()
     {
         base.Awake();
@@ -54,9 +73,9 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
         base.OnLobbyEndDrag(position);
         StartCoroutine(Move());
     }
-    public override void OnLobbyInteract()
+    public override void OnLobbyClick()
     {
-        base.OnLobbyInteract();
+        base.OnLobbyClick();
         charAnim.ClickMaster();
     }
     public override void InNormal()
@@ -68,40 +87,8 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
     {
         throw new System.NotImplementedException();
     }
-    protected override void HandleIdle()
-    {
-        throw new System.NotImplementedException();
-    }
 
-    protected override void HandleMove()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void HandleStuck()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void HandleInteraction()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void HandleAnimation()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void HandleCocoOther()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void ChangeState(LobbyCharacterState newState)
-    {
-        throw new System.NotImplementedException();
-    }
+    
 
     // public override void ExitScene()
     // {

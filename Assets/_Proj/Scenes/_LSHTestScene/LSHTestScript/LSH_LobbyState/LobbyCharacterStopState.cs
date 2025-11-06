@@ -1,9 +1,39 @@
 using UnityEngine;
+using UnityEngine.AI;
 
-public class LCharIdleState : LobbyCharacterBaseState
+public class LCocoDoogyStopState : LobbyCharacterBaseState
 {
-    public LCharIdleState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
+    private NavMeshAgent agent;
+
+    public LCocoDoogyStopState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, NavMeshAgent agent) : base(owner, fsm)
     {
+        this.agent = agent;
+    }
+
+    public override void OnStateEnter()
+    {
+        if (agent.enabled && !agent.isStopped) agent.isStopped = true;
+
+    }
+
+    public override void OnStateExit()
+    {
+        
+    }
+
+    public override void OnStateUpdate()
+    {
+        
+    }
+}
+
+public class LMasterStopState : LobbyCharacterBaseState
+{
+    private NavMeshAgent agent;
+
+    public LMasterStopState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, NavMeshAgent agent) : base(owner, fsm)
+    {
+        this.agent = agent;
     }
 
     public override void OnStateEnter()
@@ -22,32 +52,13 @@ public class LCharIdleState : LobbyCharacterBaseState
     }
 }
 
-public class LCharMoveState : LobbyCharacterBaseState
+public class LAnimalStopState : LobbyCharacterBaseState
 {
-    public LCharMoveState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
-    {
-    }
+    private NavMeshAgent agent;
 
-    public override void OnStateEnter()
+    public LAnimalStopState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, NavMeshAgent agent) : base(owner, fsm)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnStateExit()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void OnStateUpdate()
-    {
-        throw new System.NotImplementedException();
-    }
-}
-
-public class LCharInteractionState : LobbyCharacterBaseState
-{
-    public LCharInteractionState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
-    {
+        this.agent = agent;
     }
 
     public override void OnStateEnter()

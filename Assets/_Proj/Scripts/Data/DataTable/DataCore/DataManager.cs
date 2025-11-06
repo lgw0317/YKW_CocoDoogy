@@ -21,6 +21,7 @@ public class DataManager : MonoBehaviour
     public Shop_itemProvider ShopItem { get; private set; }
     public StageProvider Stage { get; private set; }
     public TreasureProvider Treasure { get; private set; }
+    public MainCharacterProvider mainChar { get; private set; }
 
     private void Awake()
     {
@@ -62,5 +63,7 @@ public class DataManager : MonoBehaviour
         Stage = new StageProvider(dataRegistry.stageDB, loader);
 
         Treasure = new TreasureProvider(dataRegistry.treasureDB, loader);
+
+        mainChar = new MainCharacterProvider(dataRegistry.mainCharDB, loader);
     }
 }

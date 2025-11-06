@@ -3,7 +3,7 @@ using UnityEngine;
 // 클릭, 드래그
 public interface ILobbyInteractable
 {
-    void OnLobbyInteract();
+    void OnLobbyClick();
 }
 public interface ILobbyDraggable
 {

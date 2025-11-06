@@ -3,11 +3,11 @@ using UnityEngine.AI;
 
 public class RandomWalker : MonoBehaviour, ILobbyInteractable, ILobbyDraggable, ILobbyPressable
 {
-    [SerializeField] float moveRadius = 10f; // ÀÌµ¿ ¹üÀ§
-    [SerializeField] float waitTime = 2f; // ¸ñÇ¥ ÁöÁ¡ µµ´Þ ÈÄ ´ë±â ½Ã°£
-    [SerializeField] float moveSpeed = 3.5f; // ÀÌµ¿ ¼Óµµ
-    [SerializeField] float angularSpeed = 120f; // ÅÏ ¼Óµµ
-    [SerializeField] float acceleration = 8f; // °¡¼Óµµ
+    [SerializeField] float moveRadius = 10f; // ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] float waitTime = 2f; // ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
+    [SerializeField] float moveSpeed = 3.5f; // ï¿½Ìµï¿½ ï¿½Óµï¿½
+    [SerializeField] float angularSpeed = 120f; // ï¿½ï¿½ ï¿½Óµï¿½
+    [SerializeField] float acceleration = 8f; // ï¿½ï¿½ï¿½Óµï¿½
 
     private NavMeshAgent agent;
     private Animator anim;
@@ -29,7 +29,7 @@ public class RandomWalker : MonoBehaviour, ILobbyInteractable, ILobbyDraggable, 
         MoveToRandomPosition();
     }
 
-    // ¾Æ¸¶ ·Îºñ¿¡ »ý¼ºµÇ´Â ¼ø°£¿¡´Â EnableÀÌ ¸ÂÀ»Áöµµ?
+    // ï¿½Æ¸ï¿½ ï¿½Îºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Enableï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
     //private void OnEnable()
     //{
     //    MoveToRandomPosition();
@@ -44,7 +44,7 @@ public class RandomWalker : MonoBehaviour, ILobbyInteractable, ILobbyDraggable, 
         float speed = agent.velocity.magnitude;
         animationController.MoveAnim(speed);
 
-        // ¸ñÀûÁö µµÂøÇßÀ¸¸é ÀÏÁ¤ ½Ã°£ ±â´Ù·È´Ù°¡ ´Ù½Ã ÀÌµ¿
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½Ù·È´Ù°ï¿½ ï¿½Ù½ï¿½ ï¿½Ìµï¿½
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             
@@ -68,7 +68,7 @@ public class RandomWalker : MonoBehaviour, ILobbyInteractable, ILobbyDraggable, 
         }
     }
 
-    public void OnLobbyInteract()
+    public void OnLobbyClick()
     {
         anim.Play("Jump");
     }

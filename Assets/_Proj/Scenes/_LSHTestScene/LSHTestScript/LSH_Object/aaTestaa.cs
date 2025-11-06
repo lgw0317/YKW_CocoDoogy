@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 // NavMeshAgent 이용 시 고려해야할 것 isStopped, pathPending, hasPath 
 
-[RequireComponent(typeof(UserInteractionHandler), typeof(Draggable), typeof(NavMeshAgent))]
-[RequireComponent(typeof(Animator))]
-public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInteractable, ILobbyDraggable, ILobbyPressable, ILobbyCharactersEmotion, ILobbyState
+[RequireComponent(typeof(GameObjectData), typeof(UserInteractionHandler), typeof(Draggable))]
+[RequireComponent(typeof(NavMeshAgent), typeof(Animator))]
+public abstract class aaTestaa : MonoBehaviour, ILobbyInteractable, ILobbyDraggable, ILobbyPressable, ILobbyCharactersEmotion, ILobbyState
 {
     [Header("NavMeshAgent")]
     [SerializeField] protected float moveSpeed = 3.5f;
@@ -44,18 +44,17 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     protected float stuckTimeB = 2;
 
     public bool IsCMRoutineComplete { get; protected set; }
-    public bool IsCARoutineComplete { get; protected set; }
-    public bool IsCMInteractComplete { get; protected set; }
-    public bool IsCAInteractComplete { get; protected set; }
+    public bool IsCARoutineComplete { get; private set; }
 
     /// <summary>
-    /// FSM 초기 상태를 각 자식들이 정의
+    /// FSM 초기 상태를 각 자식놈들이 정의
     /// </summary>
     /// <returns></returns>
-    public abstract LobbyCharacterBaseState InitialState();
-    public abstract LobbyCharacterBaseState StopState();
-    public abstract LobbyCharacterBaseState MoveState();
-    public abstract LobbyCharacterBaseState InteractState();
+    public abstract LobbyCharacterBaseState CreateInitialState();
+    public abstract LobbyCharacterBaseState CreateMoveState();
+    public abstract LobbyCharacterBaseState CreateInteractState();
+    public abstract LobbyCharacterBaseState CreateDraggableState(Vector3 pos);
+    public abstract LobbyCharacterBaseState CreatePressableState();
 
     protected virtual void Awake()
     {
@@ -86,22 +85,50 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
 
     protected virtual void Start()
     {
+        currentState = LobbyCharacterState.Idle;
+        if (gameObject.CompareTag("Animal"))
+        {
+            ChangeState(LobbyCharacterState.Move);
+        }
+        else
+        {
+            ChangeState(currentState);
+        }
         // 뉴 fsm
-        fsm = new LobbyCharacterFSM(InitialState());
+        fsm = new LobbyCharacterFSM(CreateInitialState());
     }
 
-    protected virtual void Update()
+    protected void Update()
     {
         charAnim.MoveAnim(charAgent.ValueOfMagnitude());
         if (!agent.hasPath) Debug.Log($"{gameObject.name} No path");
         else if (agent.pathStatus == NavMeshPathStatus.PathInvalid) Debug.Log($"{gameObject.name} Invalid path");
         else if (agent.isStopped) Debug.Log($"{gameObject.name} Agent is stopped");
         else if (agent.enabled == false) Debug.Log($"{gameObject.name} Agent doesn't enable");
-        if (InitialState() == null) Debug.Log($"Init 널");
-        if (StopState() == null) Debug.Log($"Stop 널");
-        if (MoveState() == null) Debug.Log($"Move 널");
-        if (InteractState() == null) Debug.Log($"Interact 널");
-        
+        // 구버전
+        switch (currentState)
+        {
+            case LobbyCharacterState.Idle:
+                HandleIdle();
+                break;
+            case LobbyCharacterState.Move:
+                HandleMove();
+                break;
+            case LobbyCharacterState.Stuck:
+                HandleStuck();
+                break;
+            case LobbyCharacterState.Recovering:
+                break;
+            case LobbyCharacterState.Dragging:
+                HandleInteraction();
+                break;
+            case LobbyCharacterState.Animation:
+                HandleAnimation();
+                break;
+            case LobbyCharacterState.CocoOther:
+                HandleCocoOther();
+                break;
+        }
         // 뉴 fsm
         fsm.UpdateState();
         //charAgent.MoveValueChanged();
@@ -114,13 +141,16 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         {
             case "CocoDoogy":
                 StopMoving();
+                ChangeState(LobbyCharacterState.Idle);
                 break;
             case "Master":
                 StopMoving();
+                ChangeState(LobbyCharacterState.Idle);
                 break;
             case "Animal":
                 Unregister();
                 StopMoving();
+                ChangeState(LobbyCharacterState.Idle);
                 break;
             default: throw new Exception("누구세요?");
         }
@@ -135,60 +165,67 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         }
     }
 
+    protected abstract void HandleIdle();
+
+    protected abstract void HandleMove();
+
+    protected abstract void HandleStuck();
+
+    protected abstract void HandleInteraction();
+
+    protected abstract void HandleAnimation();
+
+    protected abstract void HandleCocoOther();
+
+    // 구버전
+    protected abstract void ChangeState(LobbyCharacterState newState);
+
     // 뉴 fsm
-    /// <summary>
-    /// 코코두기, 마스터 루틴 끝
-    /// </summary>
-    public void EndRoutine()
-    {
-        IsCMRoutineComplete = true;
-    }
-    /// <summary>
-    /// 코코두기, 마스터 루틴 리셋
-    /// </summary>
-    public void ResetRoutine()
-    {
-        IsCMRoutineComplete = false;
-    }
     /// <summary>
     /// 코코두기 상호작용 루틴 끝
     /// </summary>
-    public void EndInteract(int i)
+    public void EndRoutine(int i)
     {
         if (i == 0)
         {
-            IsCMInteractComplete = true;
+            IsCMRoutineComplete = true;
         }
         else if (i == 1)
         {
-            IsCAInteractComplete = true;   
+            IsCARoutineComplete = true;   
         }
     }
     /// <summary>
     /// 코코두기 상호작용 루틴 리셋
     /// </summary>
-    public void ResetInteract(int i)
+    public void ResetRoutine(int i)
     {
         if (i == 0)
         {
-            IsCMInteractComplete = false;
+            IsCMRoutineComplete = false;
         }
         else if (i == 1)
         {
-            IsCAInteractComplete = false;   
+            IsCARoutineComplete = false;   
         }
     }
 
     // 애니메이션 시 에이전트 제어 근데 이곳에 쓰는게 맞나.
     public void FromAToB()
     {
+        // 구버전
+        ChangeState(LobbyCharacterState.Move);
         // 신버전
         StartCoroutine(EndAnim());
     }
     protected IEnumerator EndAnim()
     {
-        yield return new WaitForSeconds(1f);
-        fsm.ChangeState(InitialState());
+        yield return waitFS;
+        // 상태 전환
+        if (gameObject.GetComponent<CocoDoogyBehaviour>()) fsm.ChangeState(CreateMoveState());
+        else if (gameObject.GetComponent<MasterBehaviour>()) fsm.ChangeState(CreateMoveState());
+        else if (gameObject.GetComponent<AnimalBehaviour>()) fsm.ChangeState(CreateMoveState());
+        yield break;
     }
 
 
@@ -209,7 +246,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     /// <param name="position"></param>
     public void OnLobbyBeginDrag(Vector3 position)
     {
-        //ChangeState(LobbyCharacterState.Dragging);
+        ChangeState(LobbyCharacterState.Dragging);
 
         originalPos = transform.position;
         //StopMoving();
@@ -217,7 +254,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         charAnim.StopAnim();
         if (agent.enabled && !agent.isStopped) agent.isStopped = true;
         agent.enabled = false;
-        fsm.ChangeState(StopState());
+        fsm.ChangeState(CreateDraggableState(position));
     }
 
     /// <summary>
@@ -226,8 +263,6 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     /// <param name="position"></param>
     public void OnLobbyDrag(Vector3 position)
     {
-
-        fsm.ChangeState(StopState());
         interactionState = 1;
         if (!isDragging) return;
         Ray ray = mainCam.ScreenPointToRay(position);
@@ -239,6 +274,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
             pos.y = yValue;
             transform.position = pos;
         }
+        fsm.ChangeState(CreateDraggableState(position));
     }
 
     /// <summary>
@@ -264,7 +300,8 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         agent.Warp(transform.position);
         interactionState = 0;
         Debug.Log($"iState : {interactionState}");
-        fsm.ChangeState(InitialState());
+        ChangeState(LobbyCharacterState.Move);
+        fsm.ChangeState(CreateInitialState());
     }
 
     /// <summary>
@@ -272,6 +309,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     /// </summary>
     public virtual void OnLobbyClick()
     {
+        ChangeState(LobbyCharacterState.Animation);
         Debug.Log($"Click");
     }
 
@@ -280,6 +318,8 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     /// </summary>
     public void OnLobbyPress()
     {
+        ChangeState(LobbyCharacterState.Dragging);
+
         Debug.Log($"Press");
         if (agent.enabled && !agent.isStopped) agent.isStopped = true;
         charAnim.StopAnim();
@@ -304,7 +344,6 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         //StopMoving();
         if (agent.enabled && !agent.isStopped) agent.isStopped = true;
         if (!agent.enabled) agent.enabled = false;
-        fsm.ChangeState(StopState());
     }
 
     /// <summary>
