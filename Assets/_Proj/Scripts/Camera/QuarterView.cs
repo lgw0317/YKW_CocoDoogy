@@ -54,6 +54,13 @@ public class QuarterView : MonoBehaviour
     [SerializeField, Tooltip("편집모드 컨트롤러를 직접 연결하지 않으면 처음 한 번만 자동 검색")]
     private EditModeController editController;
 
+    [Header("편집모드 팬 제한")]
+    [SerializeField] private bool limitEditPan = true;         // 제한 사용 여부
+    [SerializeField, Min(0f)] private float panLimitRadius = 12f; // 원형 반경(미터)
+
+    [SerializeField] private bool useRectLimit = false;         // 직사각형으로 제한하고 싶으면 켜기
+    [SerializeField] private Vector2 panHalfSize = new Vector2(12f, 12f); // 가로/세로 반측(미터)
+
     #endregion
 
     #region === Internals ===
@@ -330,18 +337,29 @@ public class QuarterView : MonoBehaviour
         if (!_editPanPivot) return;
         if (!_cam) _cam = Camera.main;
 
+        // 현재 카메라-피벗 거리 기반 스케일링 (현행 유지)
         var o = _follow.FollowOffset;
         float dist = Mathf.Max(1f, CurrentDistance(in o));
         float scale = dist * panBaseScale * panSpeed;
 
+        // 화면 기준 좌/앞 벡터를 XZ 평면에 투영 (현행 유지)
         Vector3 right = _cam.transform.right; right.y = 0f; right.Normalize();
         Vector3 fwd = _cam.transform.forward; fwd.y = 0f; fwd.Normalize();
 
+        // 드래그 방향 반전 옵션 (현행 유지)
         float sign = invertEditPan ? -1f : 1f;
+
+        // 월드에서 이동량 계산
         Vector3 worldMove = (right * screenDelta.x + fwd * screenDelta.y) * (scale * sign);
 
-        _editPanPivot.localPosition += worldMove;
+        // ✅ 핵심: 월드에서 계산했으니 월드 위치로 적용
+        Vector3 targetPos = _editPanPivot.position + worldMove;
+        _editPanPivot.position = ClampEditPanWorld(targetPos);
+
+        // (참고) 이전 코드에서 localPosition으로 더하면 부모 회전에 따라 방향이 뒤집히는 느낌이 발생
+        // _editPanPivot.localPosition += worldMove; // ❌ 사용 금지
     }
+
 
     private void RotateByDelta(Vector2 delta)
     {
@@ -393,6 +411,36 @@ public class QuarterView : MonoBehaviour
         {
             o.z = -Z_EPS;
             _follow.FollowOffset = o;
+        }
+    }
+    private Vector3 ClampEditPanWorld(Vector3 desiredWorldPos)
+    {
+        if (!limitEditPan) return desiredWorldPos;
+
+        // 제한의 기준 중심은 "원래 FollowTarget"의 위치
+        Vector3 center =
+            _origFollowTarget ? _origFollowTarget.position :
+            (_editPanPivot ? _editPanPivot.position : Vector3.zero);
+
+        float y = desiredWorldPos.y; // y는 그대로 유지
+        Vector3 offset = desiredWorldPos - center;
+        offset.y = 0f; // 평면 기준으로 제한
+
+        if (useRectLimit)
+        {
+            // 직사각형 AABB 제한
+            float clampedX = Mathf.Clamp(offset.x, -panHalfSize.x, panHalfSize.x);
+            float clampedZ = Mathf.Clamp(offset.z, -panHalfSize.y, panHalfSize.y);
+            return new Vector3(center.x + clampedX, y, center.z + clampedZ);
+        }
+        else
+        {
+            // 원형(반경) 제한
+            float mag = offset.magnitude;
+            if (mag <= panLimitRadius) return desiredWorldPos;
+
+            Vector3 clamped = offset.normalized * panLimitRadius;
+            return new Vector3(center.x + clamped.x, y, center.z + clamped.z);
         }
     }
 

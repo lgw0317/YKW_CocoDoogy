@@ -159,7 +159,7 @@ public partial class EditModeController
 #if UNITY_2022_2_OR_NEWER
         var tags = FindObjectsByType<PlaceableTag>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 #else
-        var tags = FindObjectsOfType<PlaceableTag>();
+    var tags = FindObjectsOfType<PlaceableTag>();
 #endif
         for (int i = 0; i < tags.Length; i++)
         {
@@ -173,20 +173,26 @@ public partial class EditModeController
             // baseline에 있던 오브젝트는 유지
             if (baselineIds.Contains(tr.GetInstanceID())) continue;
 
-            // ✅ baseline 이후 새로 생긴 확정 배치물 → 제거 + 인벤 복귀
+            // ✅ baseline 이후 새로 생긴 확정 배치물 → 제거
             switch (tag.category)
             {
                 case PlaceableCategory.Deco:
-                    DecoInventoryRuntime.I?.Add(tag.id, 1);
+                    DecoInventoryRuntime.I?.Add(tag.id, 1); // 수량 환원
                     break;
+
                 case PlaceableCategory.Animal:
-                    EditModeController.AnimalReturnedToInventory?.Invoke(tag.id);
+                    EditModeController.AnimalReturnedToInventory?.Invoke(tag.id); // 슬롯 되살림
+                    break;
+
+                case PlaceableCategory.Home:
+                    // 홈은 인벤 개념 없음: 단순 제거만
                     break;
             }
 
             Destroy(tr.gameObject);
         }
     }
+
 
     // ✅ 최종 버전
     private void CleanupInventoryTemps()

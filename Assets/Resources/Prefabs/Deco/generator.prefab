@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4248587133844968}
   - component: {fileID: 33607778771441168}
   - component: {fileID: 23958074183723294}
-  - component: {fileID: 65408783543569994}
   - component: {fileID: 2137494443550152570}
+  - component: {fileID: 2217355723097369131}
   m_Layer: 6
   m_Name: generator
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -88,27 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &65408783543569994
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1219636415632212}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.62942815, y: 0.7650932, z: 0.72018635}
-  m_Center: {x: 0.000000029802322, y: 0.3825466, z: 0.008996561}
 --- !u!114 &2137494443550152570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,3 +109,24 @@ MonoBehaviour:
   useMaterialPropertyBlock: 1
   colorPropName: _Color
   useFullTransformPathForKey: 0
+--- !u!65 &2217355723097369131
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219636415632212}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.62942815, y: 0.7650932, z: 0.72018635}
+  m_Center: {x: 0.000000029802322, y: 0.3825466, z: 0.008996561}

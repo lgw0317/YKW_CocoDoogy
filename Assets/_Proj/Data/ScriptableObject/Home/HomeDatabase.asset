@@ -31,7 +31,7 @@ MonoBehaviour:
       \uC9D1\uC785\uB2C8\uB2E4"
   - home_id: 40003
     home_name: "\uB530\uB73B\uD55C \uC6B0\uB9AC\uC758 \uC9D1"
-    home_prefab: Prefabs/Home/building-apartment-china
+    home_prefab: Prefabs/Home/SM_Bld_Preset_House_09_B_Optimized
     home_icon: Icons/Home/home_sweet_home 2
     home_tag: 0
     home_acquire: 0
