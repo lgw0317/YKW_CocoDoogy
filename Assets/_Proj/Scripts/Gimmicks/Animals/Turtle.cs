@@ -167,7 +167,7 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
 
         // 탑승 가능한 오브젝트 감지
         Vector3 overlapOrigin = transform.position - Vector3.up * (tileSize / 2f);
-        Vector3 halfExtents = new Vector3(tileSize * 0.45f, tileSize * 0.75f, tileSize * 0.45f);
+        Vector3 halfExtents = new Vector3(tileSize * 0.45f, tileSize * 10f, tileSize * 0.45f);
 
         Collider[] ridables = Physics.OverlapBox(
             overlapOrigin,
@@ -251,7 +251,7 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
                 {
                     foreach(var trans in ridableTrans)
                     {
-                        trans.position = transform.position;
+                        //trans.position = transform.position;
                         trans.rotation = transform.rotation;
                     }
                 }
