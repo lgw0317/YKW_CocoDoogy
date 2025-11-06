@@ -189,7 +189,7 @@ public class StageManager : MonoBehaviour
             if (block is IEdgeColliderHandler handlerBlock)
             {
                 handlerBlock.Inject();
-                //handlerBlock.Inspect();
+                handlerBlock.DetectAndApplyFourEdge();
             }
         }
     }
