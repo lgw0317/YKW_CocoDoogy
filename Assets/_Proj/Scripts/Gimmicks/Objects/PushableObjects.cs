@@ -251,7 +251,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         //}
 
         //이동이 끝나고 나서 캐싱해놨던 핸들러들도 Inspect(); 호출.
-        foreach(var cached in cache)
+        foreach(var cached in startCache)
         {
             cached.DetectAndApplyFourEdge();
         }
