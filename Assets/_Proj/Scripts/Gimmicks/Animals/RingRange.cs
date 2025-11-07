@@ -30,7 +30,7 @@ public class RingRange : MonoBehaviour
     public float rippleWidthMul = 2.1f;
     public float rippleDuration = 0.2f;
 
-    LineRenderer lr; // 외곽 라인
+    public LineRenderer lr; // 외곽 라인
     MeshFilter mf; // 채워진 링
     MeshRenderer mr;
     Mesh fillMesh;

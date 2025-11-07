@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class ShockDetectionTower : MonoBehaviour, ISignalSender
+public class ShockDetectionTower : MonoBehaviour, ISignalSender, ISignalReceiver
 {
     [Header("Relay Settings")]
     public float relayRadius = 4f;
@@ -12,7 +12,10 @@ public class ShockDetectionTower : MonoBehaviour, ISignalSender
     [Header("Occlusion")]
     public bool useOcclusion = true;
     public LayerMask occluderMask;
+    [Tooltip("신호를 전송시킬 레이어. Door레이어도 포함돼야 함")]
     public LayerMask towerLayer;
+
+    public bool IsOn { get; set; } // 그냥 ISignalReceiver 구현용
 
     void Awake()
     {
@@ -35,6 +38,29 @@ public class ShockDetectionTower : MonoBehaviour, ISignalSender
 
     private bool isCooling = false;
 
+
+    void Start()
+    {
+        TryAutoConnect();
+    }
+
+    void TryAutoConnect()
+    {
+        if (Receiver != null) return;
+
+        var cols = Physics.OverlapSphere(transform.position, relayRadius, ~0);
+        foreach (var c in cols)
+        {
+            var receiver = c.GetComponentInParent<ISignalReceiver>();
+            if (receiver != null)
+            {
+                Receiver = receiver;
+                Debug.Log($"[Tower] {name}: {receiver} 자동 연결 완료");
+                break;
+            }
+        }
+    }
+
     // 충격파 수신
     public void ReceiveShock(Vector3 origin)
     {
@@ -43,12 +69,18 @@ public class ShockDetectionTower : MonoBehaviour, ISignalSender
             Debug.Log($"[Tower] {name}: 쿨타임 중, 무시됨");
             return;
         }
-
+        if (Receiver == null) TryAutoConnect();
         Debug.Log($"[Tower] {name}: 충격파 감지!");
 
-        // ISignalSender 인터페이스 연결된 리시버에 신호 전송
-        SendSignal();
-
+        if (Receiver is DoorBlock door)
+        {
+            door.OpenPermanently();
+        }
+        else
+        {
+            // 다른 타워로 신호 릴레이(Door 아닌 경우)
+            SendSignal();
+        }
         // 쿨타임 진입
         StartCoroutine(CooldownTimer());
 
@@ -103,6 +135,12 @@ public class ShockDetectionTower : MonoBehaviour, ISignalSender
         {
             Debug.Log($"[Tower] {name}: 연결된 수신기가 없음");
         }
+    }
+
+    public void ReceiveSignal()
+    {
+        // 다른 Tower가 나한테 신호 보낼 때
+        ReceiveShock(Vector3.zero);
     }
 
     public void ConnectReceiver(ISignalReceiver receiver)

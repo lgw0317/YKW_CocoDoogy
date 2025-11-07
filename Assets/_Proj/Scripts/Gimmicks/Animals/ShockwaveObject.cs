@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// 충격파 판정/이동용 태그 컴포넌트
+/// 충격파 판정/이동용 태그 컴포넌트 필수 컴포넌트는 아님. 없어도 Shockwave.cs에서 처리 됨.
 /// </summary>
 [DisallowMultipleComponent]
 public class ShockwaveObject : MonoBehaviour

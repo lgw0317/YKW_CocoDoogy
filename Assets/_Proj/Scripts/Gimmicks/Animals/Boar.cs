@@ -13,20 +13,17 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
     [SerializeField] Button down;
     [SerializeField] Button left;
     [SerializeField] Button right;
-    [SerializeField] Image typeIcon;
+    [SerializeField] Image typeIcon; // 그냥 무슨 스킬인지 알려주는 이미지용임.
 
     [Header("Player Detection")]
     public float detectRadius = 3f; // 플레이어 감지 범위
-    public LayerMask playerLayer; // 플레이어 레이어 마스크
     private Transform playerTrans; // 감지된 플레이어의 Transform
 
     [Header("Boar Dash Settings")]
-    private LayerMask collisionMask;
     public LayerMask pushableLayer;
     [Tooltip("돌진 속도를 조정하려면 여기를 수정")]
     public float dashSpeed = 0.08f; // 돌진 속도
     public float rotateLerp = 10f;
-    //[SerializeField] float gridYawDeg = 45f; // 45도 다이아 격자로 사용하려고 할 경우 필요
 
     [Header("HitStop")]
     public bool useGlobalTimeScale = true; // 전체 일시정지(0.06s)로 타격감
@@ -41,7 +38,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
     protected override void Awake()
     {
         base.Awake();
-        collisionMask = blockingMask | pushableLayer;
 
         // 버튼 그룹의 방향 버튼에 돌진 로직 연결
         up.onClick.AddListener(() => { GetDirection(new Vector2Int(0, 1)); btnGroup.SetActive(false); });
@@ -54,10 +50,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         // 플레이어 transform 찾기
         // NOTE : 플레이어 Tag를 Player로 설정
         var playerGO = GameObject.FindGameObjectWithTag("Player");
-        if (playerGO != null)
-        {
-            playerTrans = playerGO.transform;
-        }
+        if (playerGO) playerTrans = playerGO.transform;
     }
 
     void Update()
@@ -67,7 +60,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             currHold += Time.deltaTime;
             if (currHold >= requiredHoldtime)
             {
-                TryPush(holdDir);
+                TryPush(holdDir); // 홀드 시간 충족 시 밀기 시도
                 currHold = 0f;
                 isHoling = false;
             }
@@ -75,15 +68,10 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         DetectPlayer();
     }
 
-    // HACK : 카메라 세팅에 따라 카메라 정면을 조금 따라가도록 수정하는 것이 나은 방법일 수도 있음. 추후 joystick, camera 변경 후 다시 생각.
     private void LateUpdate()
     {
         // 멧돼지(부모)의 회전에 상관없이 UI가 월드 축에 고정되게 유지
-        if (btnGroup != null)
-        {
-            // TODO : UI 변경 시 회전 값 변경.
-            btnGroup.transform.rotation = Quaternion.Euler(90f, 0, 0);
-        }
+        if (btnGroup) btnGroup.transform.rotation = Quaternion.Euler(60f, 0, 0);
     }
 
     // 플레이어 감지
@@ -98,42 +86,28 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             }
             return;
         }
+
+        // 감지 기준 위치
         Vector3 checkOrigin = transform.position + Vector3.up * 1f;
 
         // 플레이어까지의 거리 체크
         float distance = Vector3.Distance(checkOrigin, playerTrans.position);
 
-        if (distance <= detectRadius) // 범위 안에 들어옴
-        {
-            if (!btnGroup.activeSelf)
-            {
-                btnGroup.SetActive(true);
-            }
-        }
-        else // 범위에서 나감
-        {
-            if (btnGroup.activeSelf)
-            {
-                btnGroup.SetActive(false);
-            }
-        }
+        // 플레이어가 범위 안에 있을 때만 팝업 켜줌.
+        btnGroup.SetActive(distance <= detectRadius);
     }
 
     public void GetDirection(Vector2Int dashDir)
     {
         if (isMoving || isFalling) return;
 
-        // NOTE : 카메라만 돌리는 게 아니라 타일 자체를 마름모 격자 스타일로 사용하려고 하면 아래 주석을 해제하고 테스트 시도.
-        //var q = Quaternion.Euler(0f, gridYawDeg, 0f);
-        //Vector3 gx = q * Vector3.right; // 회전된 X axis
-        //Vector3 gz = q * Vector3.forward; // 회전된 Z axis
-        //Vector3 moveDir = gx * dashDir.x + gz * dashDir.y; ; // 회전 축으로 방향 합성
-
-        Vector3 moveDir = new Vector3(dashDir.x, 0, dashDir.y); // 위 주석 켜면 이 줄 삭제
+        Vector3 moveDir = new Vector3(dashDir.x, 0, dashDir.y);
         StartCoroutine(DashCoroutine(moveDir, dashDir));
 
     }
 
+    #region Dash
+    // 이동 및 회전(한 칸 이동)
     protected IEnumerator DashMoveTo(Vector3 target, Vector3 moveDir)
     {
         Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
@@ -144,22 +118,26 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 
         while (elapsed < dashSpeed)
         {
+            // 회전 및 이동
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotateLerp * Time.deltaTime);
             transform.position = Vector3.Lerp(start, target, elapsed / dashSpeed);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
+        // 최종 위치, 회전값 설정
         transform.rotation = targetRot;
         transform.position = target;
         isMoving = false;
     }
 
+    // ==== 한 칸 이동을 반복되게 처리, 충돌 및 밀기 처리 ====
     private IEnumerator DashCoroutine(Vector3 moveDir, Vector2Int dashDir)
     {
         isMoving = true;
         btnGroup.SetActive(false);
 
+        // 돌진 시작 시 회전
         Quaternion initTargetRot = Quaternion.LookRotation(moveDir, Vector3.up);
         float rotateTime = 0.1f;
         float rotElapsed = 0f;
@@ -171,108 +149,132 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             transform.rotation = Quaternion.Slerp(startRot, initTargetRot, rotElapsed / rotateTime);
             yield return null;
         }
+        yield return null;
 
-        Vector3 boarNextPos = transform.position;
-
+        // 멧돼지가 위치한 층 계산(PushableObjects 수집 기준)
+        float baseY = Mathf.Floor(transform.position.y / tileSize + 1e-4f);
         int stepGuard = 0;
+
+        // === 돌진 ===
         while (true)
         {
-            if(++stepGuard > 10)
+            if (++stepGuard > 10)
             {
-                Debug.LogWarning("[Boar] 무한 루프 빠질 뻔");
-                break;
+                Debug.LogWarning("[Boar] 무한 루프 강제 종료");
+                isMoving = false;
+                yield break;
             }
+
             Vector3 currentPos = transform.position;
             Vector3 nextPos = currentPos + moveDir * tileSize;
+            Vector3 boxCenter = nextPos + Vector3.up * 0.5f;
+            Vector3 halfExt = new Vector3(0.45f, 0.6f, 0.45f); // 충돌 검사용 박스 크기
 
-            // 다음 칸에 무언가 있는지 (block + pushable 모두 체크 해야 함)
-            var hits = Physics.OverlapBox(nextPos + Vector3.up * 0.5f,
-                               new Vector3(0.45f, tileSize * 0.25f, 0.45f),
-                               Quaternion.identity,
-                               collisionMask,
-                               QueryTriggerInteraction.Collide);
+            // blocking 우선 검사(다음 칸에 뭐 있는지)
+            Collider[] blockHits = Physics.OverlapBox(boxCenter, halfExt, Quaternion.identity, blockingMask);
 
-            // 콜라이더가 있으면 막힘(!isTrigger)
-            bool anySolid = false;
+            bool hasBlocking = false;
 
-            foreach (var h in hits)
+            foreach (var h in blockHits)
             {
-                if (h == null) continue;
-                if (h.isTrigger) continue; // 트리거는 무시
-                anySolid = true; break;
+                if (!h || h.isTrigger) continue;
+                if (h.transform == transform) continue;
+                hasBlocking = true;
+                break;
             }
 
-            if (!anySolid)
+            if (hasBlocking)
             {
-                // hits가 비었거나 트리거만 있었음 == 통과
-                if (!HasGround(nextPos)) { isMoving = false; yield break; }
-                yield return StartCoroutine(DashMoveTo(nextPos, moveDir));
-                boarNextPos = nextPos;
-                continue;
+                transform.position = currentPos;
+                HitStop(gameObject);
+                isMoving = false;
+                yield break;
             }
 
-            float yFloor = Mathf.Floor(transform.position.y / tileSize + 1e-4f);
+            // pushables 감지
+            bool hasPushable = Physics.BoxCast(
+                currentPos + Vector3.up * 0.5f, // 시작 위치
+                halfExt * 0.9f, // 충돌체 크기
+                moveDir, // 이동 방향
+                out RaycastHit hit, // 충돌 정보
+                Quaternion.identity,
+                tileSize * 1.1f, // 검사 거리
+                pushableLayer
+            );
 
-            // Pushable이 하나라도 있나?
-            List<PushableObjects> verticalStack = CollectVerticalStack(nextPos, yFloor);
-
-            if (verticalStack.Count > 0)
+            if (hasPushable)
             {
-                if (!CollectChain(verticalStack[0].transform.position, dashDir, yFloor, out var horizonChainStacks, out Vector3 tailNextWorld))
+                // Pushable 오브젝트 감지되면 밀기 실행
+                PushableObjects headPush = hit.collider?.GetComponent<PushableObjects>();
+
+                // 같은 층 기준 스택 수집
+                List<PushableObjects> vstack = CollectVerticalStack(headPush.transform.position, baseY);
+
+                // 연속된 Pushable 체인 전체 수집. 체인 뒤에 blocking 없는지 확인
+                if (!CollectChain(headPush.transform.position, dashDir, baseY, out var chainStacks, out Vector3 tailNextWorld))
                 {
-                    // 밀 수 없으면 종료
-                    HitStop(verticalStack[0].gameObject);
+                    // 막히면 정지
+                    HitStop(vstack[0].gameObject);
+                    isMoving = false;
                     break;
                 }
 
-                // 꼬리 다음칸 검사 - 막히면 끝
+                // 꼬리 다음칸(이동할 위치에) blocking 있는지 검사
                 bool tailBlocked = Physics.CheckBox(
                     tailNextWorld + Vector3.up * 0.5f,
-                    new Vector3(0.45f, 0.5f, 0.45f),
+                    halfExt,
                     Quaternion.identity,
-                    blockingMask,
-                    QueryTriggerInteraction.Collide
+                    blockingMask
                 );
 
                 if (tailBlocked)
                 {
-                    HitStop(verticalStack[0].gameObject);
-                    Debug.Log($"[Boar] {verticalStack[0].name} 뒤 막힘. 밀기 실패");
+                    // 막히면 정지
+                    HitStop(vstack[0].gameObject);
+                    isMoving = false;
                     break;
                 }
 
-                // 꼬리 칸 비었으면 체인 밀기
-                yield return StartCoroutine(ChainShiftOneCell(horizonChainStacks, dashDir));
-                HitStop(verticalStack[0].gameObject);
+                // 밀기
+                yield return StartCoroutine(ChainShiftOneCell(chainStacks, dashDir));
 
-                // 밑 검사 및 낙하 처리
-                // 꼬리부터 머리까지 순서대로(아래가 바닥으로 먼저 인식되도록)
-                for (int i = horizonChainStacks.Count - 1; i >= 0; i--)
+                // 돼지 전진(밀고 나서 자신도 한 칸 전진)
+                var posAfterPush = transform.position + new Vector3(dashDir.x, 0, dashDir.y);
+                yield return StartCoroutine(DashMoveTo(posAfterPush, new Vector3(dashDir.x, 0, dashDir.y)));
+
+                HitStop(vstack[0].gameObject);
+
+                // 낙하 처리 (꼬리부터)
+                for (int i = chainStacks.Count - 1; i >= 0; i--)
                 {
-                    var stack = horizonChainStacks[i];
-                    foreach (var p in stack)
-                    {
-                        // groundMask에는 Pushable도 포함돼야 함
+                    foreach (var p in chainStacks[i])
                         yield return StartCoroutine(p.CheckFall());
-                    }
                 }
-
-                // 리스트 리셋
-                horizonChainStacks.Clear();
+                chainStacks.Clear();
                 break;
             }
+
+            if (!HasGround(nextPos))
+            {
+                // 다음 칸 바닥 검사
+                isMoving = false;
+                yield break;
+            }
+            yield return StartCoroutine(DashMoveTo(nextPos, moveDir));
         }
-        
         isMoving = false;
         yield return StartCoroutine(CheckFall());
     }
+    #endregion
 
+    #region Stack Chain
+    // 수펑 위치 기준으로 수직으로 쌓인 PushableObjects 수집
     List<PushableObjects> CollectVerticalStack(Vector3 baseWorldPos, float yFloor)
     {
         List<PushableObjects> stack = new List<PushableObjects>();
         Vector3 cursor = baseWorldPos;
 
-        // 최대 높이까지 탐색
+        // 최대 높이(일단 10층)까지 탐색
         for (int i = 0; i < 10; i++)
         {
             Vector3 checkPos = cursor + Vector3.up * (0.5f + i * tileSize);
@@ -313,7 +315,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
     }
 
 
-    // 연속된 PushableObjects 체인 수집
+    // 연속된 PushableObjects 체인 수평 방향 수집, 체인 중간에 blocking 없는지 검사
     bool CollectChain(Vector3 headWorldPos, Vector2Int dir, float yFloor, out List<List<PushableObjects>> chainOfStacks, out Vector3 tailNextWorld)
     {
         chainOfStacks = new List<List<PushableObjects>>();
@@ -343,20 +345,20 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 }
             }
 
-            // Pushable이 아닌 충돌체를 검사
+            // Pushable이 아닌 충돌체(blocking)를 검사
             bool nonPushBlocking = false;
             var cols = Physics.OverlapBox(
                 cursor + Vector3.up * 0.5f,
                 new Vector3(0.45f, 0.5f, 0.45f),
                 Quaternion.identity,
-                blockingMask, // blockingMask만 체크
+                blockingMask, // blockingLayer만 체크
                 QueryTriggerInteraction.Collide
             );
 
             foreach (var c in cols)
             {
                 if (c == null || c.isTrigger) continue;
-                // blockingMask에 포함된 충돌체가 있으면 밀기 실패
+                // blockingLayer에 포함된 충돌체가 있으면 밀기 실패
                 if (((1 << c.gameObject.layer) & blockingMask.value) != 0)
                 {
                     nonPushBlocking = true;
@@ -366,6 +368,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 
             if (nonPushBlocking)
             {
+                // 체인 중간에 뭐 있으면 밀기 실패
                 return false;
             }
 
@@ -375,7 +378,9 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             cursor += step;
         }
     }
+    #endregion
 
+    #region Move Pushables
     // 연속된 pushables를 동시에 1칸 이동시키는 메서드
     IEnumerator ChainShiftOneCell(List<List<PushableObjects>> chainOfStacks, Vector2Int dir)
     {
@@ -435,7 +440,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 
         // NOTE: 낙하 검사는 DashCoroutine에서 한 번에 처리
     }
-
+    #endregion
 
 
     void HitStop(GameObject hit = null)
@@ -500,37 +505,37 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
     }
 
 
-    void OnTriggerEnter(Collider other)
-    {
-        Vector3 moveDir = Vector3.up * 0.5f;
-        Vector3 currPos = transform.position;
-        Vector3 nextPos = currPos + moveDir * tileSize;
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    Vector3 moveDir = Vector3.up * 0.5f;
+    //    Vector3 currPos = transform.position;
+    //    Vector3 nextPos = currPos + moveDir * tileSize;
 
 
-        StartCoroutine(DashMoveTo(nextPos, moveDir));
+    //    StartCoroutine(DashMoveTo(nextPos, moveDir));
 
-    }
+    //}
 
 #if UNITY_EDITOR
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
-        if (Application.isPlaying)
-        {
-            Vector3 dir = transform.forward;
-            Vector3 nextPos = transform.position + dir.normalized * tileSize;
+        // OverlapBox
+        Vector3 dir = transform.forward;
+        Vector3 nextPos = transform.position + dir * tileSize;
+        Vector3 boxCenter = nextPos + Vector3.up * 0.5f;
+        Vector3 halfExt = new Vector3(0.45f, 0.6f, 0.45f);
 
-            float half = Mathf.Min(0.45f, tileSize * 0.25f);
-            Vector3 halfExtents = new Vector3(half, 0.05f, half);
-            Vector3 origin = nextPos + Vector3.up * (tileSize * 0.25f);
+        // OverlapBox (blocking 검사 영역)
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(boxCenter, halfExt * 2f);
 
-            Gizmos.color = Color.cyan;
-            // 시작 박스
-            Gizmos.DrawWireCube(origin, halfExtents * 2f);
-            // 끝 위치(아래) 표시
-            Vector3 end = origin + Vector3.down * (tileSize * 1.25f);
-            Gizmos.DrawLine(origin, end);
-            Gizmos.DrawWireCube(end, halfExtents * 2f);
-        }
+        // Boar 위치
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireCube(transform.position + Vector3.up * 0.5f, halfExt * 2f);
+
+        // 방향 표시
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position + Vector3.up * 0.5f, boxCenter);
     }
 #endif
 }
