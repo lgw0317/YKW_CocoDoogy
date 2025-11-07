@@ -183,6 +183,6 @@ MonoBehaviour:
   maxPitch: 90
   editController: {fileID: 0}
   limitEditPan: 1
-  panLimitRadius: 40
+  panLimitRadius: 60
   useRectLimit: 0
-  panHalfSize: {x: 30, y: 30}
+  panHalfSize: {x: 50, y: 50}

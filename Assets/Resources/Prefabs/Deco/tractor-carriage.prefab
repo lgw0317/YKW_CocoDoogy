@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33379244102975932}
   - component: {fileID: 23309476227772832}
   - component: {fileID: 64030509694824316}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: tractor-carriag-wheels_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 33138418675260436}
   - component: {fileID: 23256237893624134}
   - component: {fileID: 64060193122971544}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: tractor-carriage-base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 33275454214409268}
   - component: {fileID: 23189877115643250}
   - component: {fileID: 64303775725955976}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: tractor-carriag-wheels_F
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -341,9 +341,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4523900657312626}
   - component: {fileID: 839629308672607466}
-  - component: {fileID: 6002736480430263520}
-  - component: {fileID: 1733528100277999351}
-  - component: {fileID: 4357307869317981196}
+  - component: {fileID: 1787387857007548979}
   m_Layer: 6
   m_Name: tractor-carriage
   m_TagString: Untagged
@@ -390,10 +388,10 @@ MonoBehaviour:
   loadSavedTransformOnStart: 1
   customSaveKey: 
   useMaterialPropertyBlock: 1
-  colorPropName: _Color
+  colorPropName: _BaseColor
   useFullTransformPathForKey: 0
---- !u!64 &6002736480430263520
-MeshCollider:
+--- !u!65 &1787387857007548979
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -410,51 +408,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300002, guid: 6f153a981208c43058cb2fb22bf3e0ba, type: 3}
---- !u!64 &1733528100277999351
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1929669125073500}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 6f153a981208c43058cb2fb22bf3e0ba, type: 3}
---- !u!64 &4357307869317981196
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1929669125073500}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300004, guid: 6f153a981208c43058cb2fb22bf3e0ba, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 1.57, y: 1.13, z: 3.12}
+  m_Center: {x: 0, y: 0.89, z: 0}

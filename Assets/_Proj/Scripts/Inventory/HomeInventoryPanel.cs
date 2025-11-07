@@ -33,8 +33,13 @@ public class HomeInventoryPanel : MonoBehaviour
             {
                 if (_edit == null) _edit = FindFirstObjectByType<EditModeController>();
                 if (_edit == null) return;
+
+                // ✅ 프리뷰 중이면 클릭 무시
+                if (_edit.IsHomePreviewActive) return;
+
                 _edit.PreviewSwapHome(new HomePlaceable(data));
             });
+
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(content);

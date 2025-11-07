@@ -107,7 +107,7 @@ MonoBehaviour:
   loadSavedTransformOnStart: 1
   customSaveKey: 
   useMaterialPropertyBlock: 1
-  colorPropName: _Color
+  colorPropName: _BaseColor
   useFullTransformPathForKey: 0
 --- !u!65 &6079268428012351114
 BoxCollider:

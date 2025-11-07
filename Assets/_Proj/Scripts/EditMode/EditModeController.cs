@@ -76,6 +76,10 @@ public partial class EditModeController : MonoBehaviour
     [SerializeField, Tooltip("무조건 Ground 위에서만 배치")]
     private bool requireGround = true;
 
+    private Transform homeCandidate;
+    public static System.Action<bool> HomePreviewActiveChanged;
+    public bool IsHomePreviewActive => homePreview != null;
+    private bool homePreviewConfirmed = false;
     #endregion
 
 
@@ -289,11 +293,19 @@ public partial class EditModeController : MonoBehaviour
             return;
         }
 
+        if (homePreview != null)
+        {
+            Debug.Log("[Home] 이미 프리뷰/확정 대기 중인 집이 있습니다. 저장 또는 취소 먼저!");
+            return;
+        }
+
         if (_homeSwapBusy) return; // 중복 호출 가드
         _homeSwapBusy = true;
 
         try
         {
+            if (!IsEditMode) SetEditMode(true, keepTarget: false);
+
             int targetId = data.Id;
             int previewId = homePreview ? GetPlaceableId(homePreview) : 0;
             int currentId = homePrev ? homePrevId : 0;
@@ -316,14 +328,10 @@ public partial class EditModeController : MonoBehaviour
                 return;
             }
 
-            // 3) 이전 프리뷰가 있으면 제거 (한 번에 하나만 유지)
-            if (homePreview)
-            {
-                Destroy(homePreview.gameObject);
-                homePreview = null;
-            }
+            // 이전 프리뷰 제거
+            if (homePreview) { Destroy(homePreview.gameObject); homePreview = null; }
 
-            // 4) 현재 확정 집 캐시 + 겹침 방지를 위해 비활성
+            // 기존 확정 집 캐시 후 "비활성화만"
             if (!homePrev) TryCacheExistingHome();
             if (homePrev) homePrev.gameObject.SetActive(false);
 
@@ -356,7 +364,10 @@ public partial class EditModeController : MonoBehaviour
             SetLongPressTarget(preview.transform);
 
             homePreview = preview.transform;
+            homePreviewConfirmed = false;
             hasUnsavedChanges = true; // Cancel 시 해제됨
+
+            HomePreviewActiveChanged?.Invoke(true);
         }
         finally
         {

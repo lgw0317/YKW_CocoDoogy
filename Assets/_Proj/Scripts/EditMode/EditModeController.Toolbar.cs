@@ -261,14 +261,11 @@ public partial class EditModeController
         // Home 프리뷰 확정
         if (IsHome(CurrentTarget) && IsInventoryTempObject(CurrentTarget))
         {
-            if (homePrev) Destroy(homePrev.gameObject);
+            MarkAsInventoryTemp(CurrentTarget, false);  // 임시 → 정식 후보
+            homePreview = CurrentTarget;                // ★ 유지 (null로 만들지 않음)
+            homePreviewConfirmed = true;                // ★ OK 눌렀음을 표시
 
-            MarkAsInventoryTemp(CurrentTarget, false);
-            homePreview = null;
-            homePrev = CurrentTarget;
-
-            if (homePrev.TryGetComponent<PlaceableTag>(out var t)) homePrevId = t.id;
-
+            // 기존 확정 집(homePrev)은 계속 비활성 상태로 유지 (저장 전까지)
             // 선택 해제 + 툴바 숨김
             SelectTarget(null);
             actionToolbar?.Hide();
@@ -277,6 +274,7 @@ public partial class EditModeController
             pendingFromInventory = null;
             return;
         }
+        HomePreviewActiveChanged?.Invoke(false);
 
         // Animal/Deco 프리뷰 확정
         bool valid = IsOverGround(CurrentTarget.position) && !OverlapsOthers(CurrentTarget);
@@ -311,10 +309,11 @@ public partial class EditModeController
 
             if (homePrev)
             {
-                homePrev.gameObject.SetActive(true);
+                homePrev.gameObject.SetActive(true); // 원래 집 복귀 (보이게)
                 SelectTarget(homePrev);
                 SetLongPressTarget(homePrev);
             }
+            HomePreviewActiveChanged?.Invoke(false);
 
             homePreview = null;
             hasUnsavedChanges = false;
