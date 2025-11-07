@@ -90,7 +90,8 @@ public class DoorBlock : Block, ISignalReceiver
         {
             var sender = c.GetComponentInParent<ISignalSender>();
             if (sender == null) continue;
-            if (sender.Receiver != this) continue;
+            //if (sender.Receiver != this) continue;
+            if ((DoorBlock)sender.Receiver != this) continue;
 
             if (sender is SwitchBlock)
                 connectedType = GimmickType.Switch;

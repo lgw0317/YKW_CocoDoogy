@@ -53,12 +53,13 @@ MonoBehaviour:
   visibleAngle: 360
   forwardDir: {x: 0, y: 0, z: 1}
   lineWidth: 0.05
-  lineColor: {r: 1, g: 0.2, b: 0.6, a: 0.9}
-  fillColor: {r: 1, g: 0.2, b: 0.6, a: 0.18}
-  softEdge: 0.12
+  lineColor: {r: 1, g: 1, b: 1, a: 0}
+  fillColor: {r: 1, g: 1, b: 1, a: 0.79607844}
+  softEdge: 0.174
   rippleOnShock: 0
   rippleWidthMul: 2.1
   rippleDuration: 0.2
+  lr: {fileID: 0}
 --- !u!120 &7987451020054968228
 LineRenderer:
   serializedVersion: 2
@@ -127,8 +128,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 1, g: 1, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -152,7 +153,7 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
@@ -392,8 +393,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 1, g: 1, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -417,7 +418,7 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0

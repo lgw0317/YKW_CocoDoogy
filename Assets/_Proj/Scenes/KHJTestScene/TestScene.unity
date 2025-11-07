@@ -1222,8 +1222,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 0}
+      key1: {r: 1, g: 1, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1247,7 +1247,7 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
@@ -7873,42 +7873,6 @@ PrefabInstance:
     - target: {fileID: 1730454832842237255, guid: 064d7f9da163a2940be4875c5f8425d4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6656029803528446295, guid: 064d7f9da163a2940be4875c5f8425d4, type: 3}
-      propertyPath: softEdge
-      value: 0.174
-      objectReference: {fileID: 0}
-    - target: {fileID: 6656029803528446295, guid: 064d7f9da163a2940be4875c5f8425d4, type: 3}
-      propertyPath: fillColor.a
-      value: 0.79607844
-      objectReference: {fileID: 0}
-    - target: {fileID: 6656029803528446295, guid: 064d7f9da163a2940be4875c5f8425d4, type: 3}
-      propertyPath: fillColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6656029803528446295, guid: 064d7f9da163a2940be4875c5f8425d4, type: 3}
-      propertyPath: fillColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6656029803528446295, guid: 064d7f9da163a2940be4875c5f8425d4, type: 3}
-      propertyPath: fillColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6656029803528446295, guid: 064d7f9da163a2940be4875c5f8425d4, type: 3}
-      propertyPath: lineColor.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6656029803528446295, guid: 064d7f9da163a2940be4875c5f8425d4, type: 3}
-      propertyPath: lineColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6656029803528446295, guid: 064d7f9da163a2940be4875c5f8425d4, type: 3}
-      propertyPath: lineColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6656029803528446295, guid: 064d7f9da163a2940be4875c5f8425d4, type: 3}
-      propertyPath: lineColor.r
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7072201222257460831, guid: 064d7f9da163a2940be4875c5f8425d4, type: 3}
       propertyPath: m_Name

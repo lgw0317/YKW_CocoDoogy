@@ -18,4 +18,6 @@ public class DataRegistry : ScriptableObject
     public Shop_itemDatabase shop_itemDB;
     public StageDatabase stageDB;
     public TreasureDatabase treasureDB;
+    //public DialogueDatabase dialogueDB;
+    //public SpeakerDatabase speakerDB;
 }

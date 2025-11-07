@@ -21,6 +21,8 @@ public class DataManager : MonoBehaviour
     public Shop_itemProvider ShopItem { get; private set; }
     public StageProvider Stage { get; private set; }
     public TreasureProvider Treasure { get; private set; }
+    public DialogueProvider Dialogue { get; private set; }
+    public SpeakerProvider Speaker { get; private set; }
 
     private void Awake()
     {
@@ -62,5 +64,9 @@ public class DataManager : MonoBehaviour
         Stage = new StageProvider(dataRegistry.stageDB, loader);
 
         Treasure = new TreasureProvider(dataRegistry.treasureDB, loader);
+
+        //Dialogue = new DialogueProvider(dataRegistry.dialogueDB, loader);
+
+        //Speaker = new SpeakerProvider(dataRegistry.speakerDB, loader);
     }
 }
