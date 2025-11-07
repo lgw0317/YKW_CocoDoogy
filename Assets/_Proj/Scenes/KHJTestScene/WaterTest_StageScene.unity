@@ -168,9 +168,10 @@ MonoBehaviour:
   playerPrefab: {fileID: 5291992017778968749, guid: c4c522c376ad1b745b54524b0a7cded8, type: 3}
   joystickPrefab: {fileID: 8076522967414642225, guid: e70ee23931c899d429b2f8a615b74827, type: 3}
   joystickRoot: {fileID: 484405798}
-  mapNameToLoad: WaterTest_4
+  mapNameToLoad: WaterTest_5
   blockPositions: []
   blocks: []
+  currentStageId: 
   factory: {fileID: 1415150933}
 --- !u!1 &326605716
 GameObject:
@@ -525,6 +526,7 @@ MonoBehaviour:
   stageManager: {fileID: 0}
   currentMapData:
     blocks: []
+  selectStageID: 
 --- !u!4 &621961145
 Transform:
   m_ObjectHideFlags: 0

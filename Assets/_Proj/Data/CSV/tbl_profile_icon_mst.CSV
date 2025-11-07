@@ -1,6 +1,6 @@
-﻿icon_id,icon_name,icon_image,icon_acquire,icon_desc
-120001,[icon_01],Icons/Profile/icon_01,quest,기본 지급 아이콘 입니다.
-120002,[icon_02],Icons/Profile/icon_02,quest,기본 지급 아이콘 입니다.
+icon_id,icon_name,icon_image,icon_acquire,icon_desc
+120001,[icon_01],Icons/Profile/icon_01,quest,"기본 지급 아이콘 입니다."
+120002,[icon_02],Icons/Profile/icon_02,quest,"기본 지급 아이콘 입니다."
 120003,[icon_03],Icons/Profile/icon_03,quest,"멧돼지 친구 처음 조우 시, 획득 가능한 아이콘입니다."
 120004,[icon_04],Icons/Profile/icon_04,quest,"거북이 친구 처음 조우 시, 획득 가능한 아이콘입니다."
 120005,[icon_05],Icons/Profile/icon_05,quest,"버팔로 친구 처음 조우 시, 획득 가능한 아이콘입니다."

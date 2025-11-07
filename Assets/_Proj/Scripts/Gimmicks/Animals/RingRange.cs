@@ -13,6 +13,10 @@ public class RingRange : MonoBehaviour
     [Tooltip("0=완전 채움 1=아웃라인만 남음")][Range(0f, 0.99f)] public float innerGap = 0.55f;
     [Tooltip("n각형")][Range(8, 128)] public int segments = 96;
 
+    [Header("Optional Angle Limit")]
+    [Range(0f, 360f)] public float visibleAngle = 360f;
+    public Vector3 forwardDir = Vector3.forward;
+
     [Header("Outline")]
     [Min(0.001f)] public float lineWidth = 0.05f;
     public Color lineColor = new(1f, 0.2f, 0.6f, 0.9f);
@@ -26,7 +30,7 @@ public class RingRange : MonoBehaviour
     public float rippleWidthMul = 2.1f;
     public float rippleDuration = 0.2f;
 
-    LineRenderer lr; // 외곽 라인
+    public LineRenderer lr; // 외곽 라인
     MeshFilter mf; // 채워진 링
     MeshRenderer mr;
     Mesh fillMesh;
@@ -88,21 +92,25 @@ public class RingRange : MonoBehaviour
         lr.material.color = baseC;
     }
 
-    void RebuildAll()
+    public void RebuildAll()
     {
         // 외곽 라인
         lr.positionCount = segments;
         for (int i = 0; i < segments; i++)
         {
-            float a = (i / (float)segments) * Mathf.PI * 2f;
-            Vector3 p = new(Mathf.Cos(a) * radius, 0f, Mathf.Sin(a) * radius);
+            float half = visibleAngle * 0.5f * Mathf.Deg2Rad;
+            float aLimited = Mathf.Lerp(-half, half, i / (float)segments);
+            Vector3 dir = Quaternion.AngleAxis(Mathf.Rad2Deg * aLimited, Vector3.up) * forwardDir;
+            Vector3 p = dir * radius;
+
             lr.SetPosition(i, transform.position + p);
         }
         lr.material.color = lineColor;
 
         // 채워진 링(도넛) 메시
         if (fillMesh == null) fillMesh = new Mesh { name = "RingFillMesh" };
-        BuildFilledRing(ref fillMesh, radius * Mathf.Clamp01(1f - softEdge), radius, segments, innerGap);
+        float halfRad = visibleAngle * 0.5f * Mathf.Deg2Rad;
+        BuildFilledArc(ref fillMesh, radius * Mathf.Clamp01(1f - softEdge), radius, segments, innerGap, -halfRad, halfRad);
         mf.sharedMesh = fillMesh;
 
         // vertex color로 알파 주기(소프트 엣지)
@@ -122,23 +130,59 @@ public class RingRange : MonoBehaviour
     }
 
     // rSoft/rOuter는 소프트엣지 영역, innerGap으로 가운데 구멍
-    void BuildFilledRing(ref Mesh mesh, float rSoft, float rOuter, int seg, float inner)
+    //void BuildFilledRing(ref Mesh mesh, float rSoft, float rOuter, int seg, float inner)
+    //{
+    //    float rInner = Mathf.Clamp(rOuter * inner, 0f, rOuter * 0.999f);
+    //    int ringVerts = (seg + 1) * 2; // inner/outer
+    //    List<Vector3> v = new(ringVerts);
+    //    List<int> tri = new(seg * 6);
+    //    List<Vector2> uv = new(ringVerts);
+
+    //    for (int i = 0; i <= seg; i++)
+    //    {
+    //        float a = (i / (float)seg) * Mathf.PI * 2f;
+    //        float ca = Mathf.Cos(a), sa = Mathf.Sin(a);
+    //        Vector3 pOuter = new(ca * rOuter, 0f, sa * rOuter);
+    //        Vector3 pInner = new(ca * rInner, 0f, sa * rInner);
+    //        v.Add(pInner); uv.Add(new Vector2(0, i / (float)seg));
+    //        v.Add(pOuter); uv.Add(new Vector2(1, i / (float)seg));
+    //    }
+    //    for (int i = 0; i < seg; i++)
+    //    {
+    //        int i0 = i * 2;
+    //        tri.Add(i0); tri.Add(i0 + 1); tri.Add(i0 + 3);
+    //        tri.Add(i0); tri.Add(i0 + 3); tri.Add(i0 + 2);
+    //    }
+
+    //    mesh.Clear();
+    //    mesh.SetVertices(v);
+    //    mesh.SetUVs(0, uv);
+    //    mesh.SetTriangles(tri, 0);
+    //    mesh.RecalculateNormals();
+    //    mesh.RecalculateBounds();
+    //}
+
+    void BuildFilledArc(ref Mesh mesh, float rSoft, float rOuter, int seg, float inner, float startRad, float endRad)
     {
         float rInner = Mathf.Clamp(rOuter * inner, 0f, rOuter * 0.999f);
-        int ringVerts = (seg + 1) * 2; // inner/outer
+        int ringVerts = (seg + 1) * 2;
         List<Vector3> v = new(ringVerts);
         List<int> tri = new(seg * 6);
         List<Vector2> uv = new(ringVerts);
 
         for (int i = 0; i <= seg; i++)
         {
-            float a = (i / (float)seg) * Mathf.PI * 2f;
-            float ca = Mathf.Cos(a), sa = Mathf.Sin(a);
-            Vector3 pOuter = new(ca * rOuter, 0f, sa * rOuter);
-            Vector3 pInner = new(ca * rInner, 0f, sa * rInner);
-            v.Add(pInner); uv.Add(new Vector2(0, i / (float)seg));
-            v.Add(pOuter); uv.Add(new Vector2(1, i / (float)seg));
+            float t = i / (float)seg;
+            float a = Mathf.Lerp(startRad, endRad, t);
+            Vector3 dir = Quaternion.AngleAxis(Mathf.Rad2Deg * a, Vector3.up) * forwardDir;
+
+            Vector3 pOuter = dir * rOuter;
+            Vector3 pInner = dir * rInner;
+
+            v.Add(pInner); uv.Add(new Vector2(0, t));
+            v.Add(pOuter); uv.Add(new Vector2(1, t));
         }
+
         for (int i = 0; i < seg; i++)
         {
             int i0 = i * 2;

@@ -100,17 +100,33 @@ public partial class EditModeController
         }
     }
 
+
     /// <summary>저장 안 하고 나가기 (필요하면 baseline 으로 복구)</summary>
     private void ExitWithoutSave(bool restore)
     {
-        // 임시 오브젝트 정리
         CleanupInventoryTemps();
 
         if (restore)
         {
+            // ✅ 집 복구 규칙
+            if (homePreview != null)
+            {
+                Destroy(homePreview.gameObject);
+                homePreview = null;
+                homePreviewConfirmed = false;
+            }
+
+            if (homePrev)
+            {
+                homePrev.gameObject.SetActive(true);
+
+                // ✅ 여기 추가
+                SetLongPressTarget(homePrev);
+            }
+
             RemoveNewlyCreatedSinceBaseline();
-            RestoreBaseline();               // 오브젝트 + 인벤토리 복구
-            SaveAllDraggablePositions();     // 복구된 위치로 다시 저장
+            RestoreBaseline();
+            SaveAllDraggablePositions();
             DecoInventoryRuntime.I?.SaveAll();
         }
 
@@ -123,15 +139,34 @@ public partial class EditModeController
         pendingFromInventory = null;
     }
 
+
+
+
     private void OnSaveClicked()
     {
         // 0) OK 안 된 임시물 제거/반환
         CleanupInventoryTemps();
 
-        // 1) 씬의 Draggable 전부 저장
+        // ✅ Home 확정 처리: 저장 시에만 기존 집 제거 → candidate 승격
+        if (homePreview != null && homePreviewConfirmed)
+        {
+            // 이전 확정집 제거
+            if (homePrev) Destroy(homePrev.gameObject);
+
+            // 프리뷰 → 정식
+            homePrev = homePreview;
+            var ptag = homePrev.GetComponent<PlaceableTag>();
+            homePrevId = ptag ? ptag.id : 0;
+
+            // 상태 리셋
+            homePreview = null;
+            homePreviewConfirmed = false;
+        }
+
+        // 1) 씬 Draggable 저장
         SaveAllDraggablePositions();
 
-        // 2) 씬에 배치 완료한 Placeable 들 저장
+        // 2) 씬 Placeable 저장
         PlaceableStore.I?.SaveAllFromScene();
 
         // 3) 인벤 수량 저장
@@ -139,15 +174,14 @@ public partial class EditModeController
 
         // 4) 상태 정리
         hasUnsavedChanges = false;
-        CaptureBaseline(); // 저장 후 상태를 baseline으로
+        CaptureBaseline();
 
-        // 🔹 선택된 오브젝트 해제 → 툴바도 자동으로 Hide됨
+        // 선택 해제
         SelectTarget(null);
 
-        // 5) 저장 완료 패널 표시
-        if (savedInfoPanel)
-            savedInfoPanel.SetActive(true);
+        if (savedInfoPanel) savedInfoPanel.SetActive(true);
     }
+
 
     #endregion
 
@@ -159,7 +193,7 @@ public partial class EditModeController
 #if UNITY_2022_2_OR_NEWER
         var tags = FindObjectsByType<PlaceableTag>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 #else
-        var tags = FindObjectsOfType<PlaceableTag>();
+    var tags = FindObjectsOfType<PlaceableTag>();
 #endif
         for (int i = 0; i < tags.Length; i++)
         {
@@ -173,20 +207,26 @@ public partial class EditModeController
             // baseline에 있던 오브젝트는 유지
             if (baselineIds.Contains(tr.GetInstanceID())) continue;
 
-            // ✅ baseline 이후 새로 생긴 확정 배치물 → 제거 + 인벤 복귀
+            // ✅ baseline 이후 새로 생긴 확정 배치물 → 제거
             switch (tag.category)
             {
                 case PlaceableCategory.Deco:
-                    DecoInventoryRuntime.I?.Add(tag.id, 1);
+                    DecoInventoryRuntime.I?.Add(tag.id, 1); // 수량 환원
                     break;
+
                 case PlaceableCategory.Animal:
-                    EditModeController.AnimalReturnedToInventory?.Invoke(tag.id);
+                    EditModeController.AnimalReturnedToInventory?.Invoke(tag.id); // 슬롯 되살림
+                    break;
+
+                case PlaceableCategory.Home:
+                    // 홈은 인벤 개념 없음: 단순 제거만
                     break;
             }
 
             Destroy(tr.gameObject);
         }
     }
+
 
     // ✅ 최종 버전
     private void CleanupInventoryTemps()
@@ -327,7 +367,7 @@ public partial class EditModeController
 #if UNITY_2022_2_OR_NEWER
         var drags = FindObjectsByType<Draggable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 #else
-        var drags = Resources.FindObjectsOfTypeAll<Draggable>();
+    var drags = Resources.FindObjectsOfTypeAll<Draggable>();
 #endif
         foreach (var d in drags)
         {
@@ -349,7 +389,7 @@ public partial class EditModeController
 #if UNITY_2022_2_OR_NEWER
         var cols = FindObjectsByType<Collider>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 #else
-        var cols = Resources.FindObjectsOfTypeAll<Collider>();
+    var cols = Resources.FindObjectsOfTypeAll<Collider>();
 #endif
         foreach (var c in cols)
         {
@@ -360,6 +400,23 @@ public partial class EditModeController
 
             var tr = c.transform;
             if (tr && set.Add(tr.GetInstanceID()))
+            {
+                baseline.Add(new ObjSnapshot
+                {
+                    t = tr,
+                    pos = tr.position,
+                    rot = tr.rotation,
+                    activeSelf = tr.gameObject.activeSelf
+                });
+            }
+        }
+
+        // [2.5] Home은 무조건 baseline에 포함 (Draggable/레이어에 안 걸려도)
+        TryCacheExistingHome(); // 필요 시 homePrev 캐시
+        if (homePrev)
+        {
+            var tr = homePrev;
+            if (set.Add(tr.GetInstanceID()))
             {
                 baseline.Add(new ObjSnapshot
                 {
@@ -388,6 +445,7 @@ public partial class EditModeController
             }
         }
     }
+
 
     /// <summary>baseline 에서 다시 씬을 복구</summary>
     private void RestoreBaseline()
@@ -470,7 +528,7 @@ public partial class EditModeController
         SelectTarget(go.transform);
 
         // ✅ 스폰 위치: (0, 0, -10)
-        go.transform.position = new Vector3(0f, 0f, -10f);
+        go.transform.position = new Vector3(0f, 0f, -20f);
         go.transform.rotation = Quaternion.identity;
 
         // 그리드 스냅 옵션

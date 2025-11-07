@@ -1,21 +1,21 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// µå·¡±× ÀÌµ¿, ±×¸®µå ½º³À, °ãÄ§ Ã¼Å©, ¹Ù´Ú(Layer) Ã¼Å©, Undo ½ºÅÃ
+/// ë“œë˜ê·¸ ì´ë™, ê·¸ë¦¬ë“œ ìŠ¤ëƒ…, ê²¹ì¹¨ ì²´í¬, ë°”ë‹¥(Layer) ì²´í¬, Undo ìŠ¤íƒ
 /// </summary>
 public partial class EditModeController
 {
-    // µå·¡±× ½ÃÀÛ Á÷Àü ½º³À
+    // ë“œë˜ê·¸ ì‹œì‘ ì§ì „ ìŠ¤ëƒ…
     private Snap? lastBeforeDrag;
 
-    // ¦¡¦¡ Overlap ÀÓ½Ã ¹öÆÛ(¹«ÇÒ´ç) ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
-    // ÇÊ¿ä ½Ã ÀÚµ¿ È®Àå
+    // â”€â”€ Overlap ì„ì‹œ ë²„í¼(ë¬´í• ë‹¹) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // í•„ìš” ì‹œ ìë™ í™•ì¥
     private static Collider[] _ovlBuf = new Collider[64];
 
     #region ===== Move Plane & Drag =====
 
-    /// <summary>µå·¡±×¿ë Æò¸é »ı¼º(Y °íÁ¤)</summary>
+    /// <summary>ë“œë˜ê·¸ìš© í‰ë©´ ìƒì„±(Y ê³ ì •)</summary>
     private void PrepareMovePlane()
     {
         float y = fixedY;
@@ -27,7 +27,7 @@ public partial class EditModeController
         movePlaneReady = true;
     }
 
-    /// <summary>½ºÅ©¸° ÁÂÇ¥ ±â¹İÀ¸·Î ½ÇÁ¦ ¿ùµå ÀÌµ¿</summary>
+    /// <summary>ìŠ¤í¬ë¦° ì¢Œí‘œ ê¸°ë°˜ìœ¼ë¡œ ì‹¤ì œ ì›”ë“œ ì´ë™</summary>
     private void DragMove(Vector2 screenPos)
     {
         if (!cam) return;
@@ -40,7 +40,7 @@ public partial class EditModeController
         Vector3 hit = ray.GetPoint(enter);
         hit.y = movePlaneY;
 
-        // ±×¸®µå ½º³À
+        // ê·¸ë¦¬ë“œ ìŠ¤ëƒ…
         if (snapToGrid)
             hit = SnapToGrid(hit);
 
@@ -49,7 +49,7 @@ public partial class EditModeController
         CurrentTarget.position = hit;
         movedDuringDrag = true;
 
-        // ¹èÄ¡ À¯È¿¼º °Ë»ç(ºü¸¥ Å»Ãâ + ¹«ÇÒ´ç)
+        // ë°°ì¹˜ ìœ íš¨ì„± ê²€ì‚¬(ë¹ ë¥¸ íƒˆì¶œ + ë¬´í• ë‹¹)
         bool onGround = IsOverGround(hit);
         bool noOverlap = !OverlapsOthers(CurrentTarget);
         bool valid = onGround && noOverlap;
@@ -62,19 +62,19 @@ public partial class EditModeController
         }
     }
 
-    /// <summary>µå·¡±× Á¾·á ½Ã È£Ãâ</summary>
+    /// <summary>ë“œë˜ê·¸ ì¢…ë£Œ ì‹œ í˜¸ì¶œ</summary>
     private void FinishDrag()
     {
         if (!IsEditMode || !CurrentTarget) return;
 
-        // 1) À¯È¿ÇÏÁö ¾ÊÀº À§Ä¡¸é ¿ø·¡´ë·Î
+        // 1) ìœ íš¨í•˜ì§€ ì•Šì€ ìœ„ì¹˜ë©´ ì›ë˜ëŒ€ë¡œ
         if (!currentPlacementValid)
         {
             if (lastBeforeDrag.HasValue)
             {
                 CurrentTarget.position = lastBeforeDrag.Value.pos;
                 CurrentTarget.rotation = lastBeforeDrag.Value.rot;
-                Physics.SyncTransforms(); // ¹°¸®/Ãæµ¹ µ¿±âÈ­
+                Physics.SyncTransforms(); // ë¬¼ë¦¬/ì¶©ëŒ ë™ê¸°í™”
             }
 
             if (CurrentTarget.TryGetComponent<Draggable>(out var drag0))
@@ -83,7 +83,7 @@ public partial class EditModeController
                 drag0.SetHighlighted(true);
             }
         }
-        // 2) À¯È¿ + ½ÇÁ¦·Î ¿òÁ÷¿´À¸¸é Undo ±â·Ï
+        // 2) ìœ íš¨ + ì‹¤ì œë¡œ ì›€ì§ì˜€ìœ¼ë©´ Undo ê¸°ë¡
         else if (movedDuringDrag && lastBeforeDrag.HasValue)
         {
             var stack = GetOrCreateHistory(CurrentTarget);
@@ -104,7 +104,7 @@ public partial class EditModeController
 
     #region ===== Grid & Ground =====
 
-    /// <summary>±×¸®µå ½º³À</summary>
+    /// <summary>ê·¸ë¦¬ë“œ ìŠ¤ëƒ…</summary>
     private Vector3 SnapToGrid(Vector3 world)
     {
         float Snap(float v, float origin) => Mathf.Round((v - origin) / gridSize) * gridSize + origin;
@@ -114,7 +114,7 @@ public partial class EditModeController
         return world;
     }
 
-    /// <summary>ÇØ´ç À§Ä¡°¡ Ground ·¹ÀÌ¾î À§ÀÎÁö</summary>
+    /// <summary>í•´ë‹¹ ìœ„ì¹˜ê°€ Ground ë ˆì´ì–´ ìœ„ì¸ì§€</summary>
     private bool IsOverGround(Vector3 worldPos)
     {
         if (!requireGround) return true;
@@ -131,9 +131,9 @@ public partial class EditModeController
     #region ===== Overlap Check (NonAlloc) =====
 
     /// <summary>
-    /// ´Ù¸¥ ¿ÀºêÁ§Æ®¿Í °ãÄ¡´ÂÁö °Ë»ç (¹«ÇÒ´ç ¹öÀü)
-    /// - OverlapBoxNonAlloc ·Î ÈÄº¸ ¼öÁı ¡æ ÇÊ¿ä ½Ã ¹öÆÛ È®Àå
-    /// - ½ÇÁ¦ Ãæµ¹Àº ComputePenetration À¸·Î È®Á¤
+    /// ë‹¤ë¥¸ ì˜¤ë¸Œì íŠ¸ì™€ ê²¹ì¹˜ëŠ”ì§€ ê²€ì‚¬ (ë¬´í• ë‹¹ ë²„ì „)
+    /// - OverlapBoxNonAlloc ë¡œ í›„ë³´ ìˆ˜ì§‘ â†’ í•„ìš” ì‹œ ë²„í¼ í™•ì¥
+    /// - ì‹¤ì œ ì¶©ëŒì€ ComputePenetration ìœ¼ë¡œ í™•ì •
     /// </summary>
     private bool OverlapsOthers(Transform t)
     {
@@ -146,7 +146,7 @@ public partial class EditModeController
         var center = myBounds.center;
         var half = myBounds.extents;
 
-        // ÈÄº¸ ¼öÁı (draggableMask¸¸)
+        // í›„ë³´ ìˆ˜ì§‘ (draggableMaskë§Œ)
         int count = Physics.OverlapBoxNonAlloc(
             center,
             half,
@@ -156,7 +156,7 @@ public partial class EditModeController
             QueryTriggerInteraction.Ignore
         );
 
-        // ¹öÆÛ°¡ ¸ğÀÚ¶ó¸é 2¹è·Î È®ÀåÇØ ÇÑ ¹ø ´õ
+        // ë²„í¼ê°€ ëª¨ìë¼ë©´ 2ë°°ë¡œ í™•ì¥í•´ í•œ ë²ˆ ë”
         if (count == _ovlBuf.Length)
         {
             _ovlBuf = new Collider[_ovlBuf.Length * 2];
@@ -172,10 +172,10 @@ public partial class EditModeController
             if (!other || !other.enabled) continue;
             if (IsSameRootOrChild(t, other.transform)) continue;
 
-            // Æ®¸®°Å Á¦¿Ü
+            // íŠ¸ë¦¬ê±° ì œì™¸
             if (other.isTrigger) continue;
 
-            // ¼¼ºÎ Ãæµ¹ Ã¼Å©
+            // ì„¸ë¶€ ì¶©ëŒ ì²´í¬
             for (int m = 0; m < myCols.Length; m++)
             {
                 var my = myCols[m];
@@ -227,16 +227,16 @@ public partial class EditModeController
         {
             Snap prev = stack.Peek();
 
-            // ÇöÀç°ª ¹é¾÷
+            // í˜„ì¬ê°’ ë°±ì—…
             Vector3 curPos = CurrentTarget.position;
             Quaternion curRot = CurrentTarget.rotation;
 
-            // µÇµ¹¸®±â
+            // ë˜ëŒë¦¬ê¸°
             CurrentTarget.position = prev.pos;
             CurrentTarget.rotation = prev.rot;
             Physics.SyncTransforms();
 
-            // µÇµ¹·È´õ´Ï ¶Ç °ãÄ¡¸é Ãë¼Ò
+            // ë˜ëŒë ¸ë”ë‹ˆ ë˜ ê²¹ì¹˜ë©´ ì·¨ì†Œ
             if (OverlapsOthers(CurrentTarget))
             {
                 CurrentTarget.position = curPos;
@@ -248,7 +248,7 @@ public partial class EditModeController
                     dragFail.SetInvalid(true);
                     dragFail.SetHighlighted(true);
                 }
-                Debug.Log("[Undo] ÀÌÀü »óÅÂ°¡ °ãÃÄ¼­ µÇµ¹¸± ¼ö ¾ø½À´Ï´Ù.");
+                Debug.Log("[Undo] ì´ì „ ìƒíƒœê°€ ê²¹ì³ì„œ ë˜ëŒë¦´ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
                 return;
             }
 
@@ -261,7 +261,7 @@ public partial class EditModeController
             }
 
             hasUnsavedChanges = true;
-            Debug.Log("[Undo] µÇµ¹¸®±â ¼º°ø");
+            Debug.Log("[Undo] ë˜ëŒë¦¬ê¸° ì„±ê³µ");
         }
 
         UpdateUndoUI();
@@ -290,7 +290,7 @@ public partial class EditModeController
         if (undoMax <= 0) return;
         if (stack.Count <= undoMax) return;
 
-        // ÃÖ½Å(Top) À¯Áö, ¿À·¡µÈ °ÍºÎÅÍ Á¦°Å
+        // ìµœì‹ (Top) ìœ ì§€, ì˜¤ë˜ëœ ê²ƒë¶€í„° ì œê±°
         var tmp = stack.ToArray();        // [old ... new]
         System.Array.Reverse(tmp);        // [new ... old]
         int keep = Mathf.Min(undoMax, tmp.Length);

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1168481590866113439}
   - component: {fileID: 1168481590864210940}
   - component: {fileID: 1769902134812951349}
+  - component: {fileID: 7583942555774744159}
   m_Layer: 6
   m_Name: home_sweet_home
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -135,5 +136,19 @@ MonoBehaviour:
   loadSavedTransformOnStart: 1
   customSaveKey: 
   useMaterialPropertyBlock: 1
-  colorPropName: _Color
+  colorPropName: _BaseColor
   useFullTransformPathForKey: 0
+--- !u!114 &7583942555774744159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168481590864178527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b85bcb0d7505e64fba5f795b690e130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  category: 0
+  id: 40005

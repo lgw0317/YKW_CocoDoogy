@@ -23,7 +23,10 @@ public class BlockFactory : MonoBehaviour
         Quaternion rotation = block.rotation;
         
         //블록 프리팹 찾기 => 블록타입이 노멀이면 이름으로 찾고, 아니면 타입으로 찾기.
-        var blockPrefab = block.blockType == BlockType.Normal ? FindBlockPrefab(block.blockType, block.blockName) : FindBlockPrefab(block.blockType);
+        var blockPrefab =
+            (block.blockType == BlockType.Normal || block.blockType == BlockType.Treasure)
+            ? FindBlockPrefab(block.blockType, block.blockName)
+            : FindBlockPrefab(block.blockType);
         
         var go = Instantiate(blockPrefab, position, rotation);
 
@@ -82,7 +85,7 @@ public class BlockFactory : MonoBehaviour
     public GameObject FindBlockPrefab(BlockType blockType, string blockName = null)
     {
         //블록타입이 노멀이면 이름으로 찾고, 아니면 타입으로 찾기.
-        BlockData data = blockType == BlockType.Normal ? allBlocks.Find(x => x.blockName == blockName) : allBlocks.Find(x => x.blockType == blockType);
+        BlockData data = blockType == BlockType.Normal ? allBlocks.Find(x => x.blockName == blockName) : blockType == BlockType.Treasure? allBlocks.Find(x=> x.blockName == blockName) : allBlocks.Find(x => x.blockType == blockType);
         if (data == null)
         {
             Debug.LogWarning($"BlockFactory: '{blockName}' 데이터를 찾을 수 없습니다.");

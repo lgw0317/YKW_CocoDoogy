@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 24160761897559753}
   - component: {fileID: 2860103918794887683}
   - component: {fileID: -6111006077162349682}
+  - component: {fileID: 2514291882370031981}
   m_Layer: 6
   m_Name: Fireplace_10
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -106,5 +107,26 @@ MonoBehaviour:
   loadSavedTransformOnStart: 1
   customSaveKey: 
   useMaterialPropertyBlock: 1
-  colorPropName: _Color
+  colorPropName: _BaseColor
   useFullTransformPathForKey: 0
+--- !u!65 &2514291882370031981
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4373519895860048854}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.90023077, y: 2.506606, z: 0.56682056}
+  m_Center: {x: 0, y: 1.253303, z: 0.00000011920929}

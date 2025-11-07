@@ -24,15 +24,21 @@ public static class CodexParser
 
             var v = System.Text.RegularExpressions.Regex.Split(line, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-            if (v.Length < 5)
+            if (v.Length < 7)
             {
                 Debug.LogWarning($"[CodexParser] {i}행 데이터 부족 → 스킵");
                 continue;
             }
 
+            for (int j = 0; j < v.Length; j++)
+            {
+                v[j] = v[j].Trim().Trim('"');
+            }
+
             string id = v[0].Trim('\uFEFF');
             if (string.IsNullOrEmpty(id))
             {
+                Debug.LogWarning($"[CodexParser] ID 누락 → {i}행");
                 continue;
             }
 
@@ -40,14 +46,21 @@ public static class CodexParser
 
             int.TryParse(v[2], out int item_id);
 
+            string rawLore = v[3];
+            string finalLore = TextParser.Resolve(rawLore, textDict);
+
+            string rawName = v[6];
+            string finalName = TextParser.Resolve(rawName, textDict);
 
             db.codexList.Add(new CodexData
             {
                 codex_id = id,
                 codex_type = category,
                 item_id = item_id,
-                codex_lore = v[3],
+                codex_lore = finalLore,
                 codex_display = v[4],
+                codex_icon = v[5],
+                codex_name = finalName,
             });
         }
 

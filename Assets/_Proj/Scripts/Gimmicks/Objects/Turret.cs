@@ -1,16 +1,152 @@
-﻿//using UnityEngine;
+﻿using System.Security.Cryptography;
+using UnityEngine;
 
-//// 경계탑(감시탑)
-///*
-// * TODO : 버팔로처럼 뭔가 물체에 막히면 감지 못해야 함.
-// * '플레이어'와 '동물NPC'를 감지 하면 문에 감지 됐음을 전달해서 문을 닫도록 해야 함.
-// * 감지 하지 못했으면 문 열어두게 해야 함.
-// * 
-// * 다른 건 기믹이 발동 됐을 때 여는 건데, 얘만 반대임. 문과 연결된 기믹이 혼용될 경우, 우선순위 처리에 관한 내용 필요해 보임. 아니면 규칙상 문과 연결된 기믹은 스테이지 당 단 하나만 사용해야 함.
-// * 
-// * 시야는 고정각. 설치된 localRotation의 forward를 보고, 중심으로부터 90도 부채꼴 모양 시야범위. RadiusDist는 4칸
-// */
-//public class Turret : MonoBehaviour
-//{
-   
-//}
+[DisallowMultipleComponent]
+public class Turret : MonoBehaviour, ISignalSender
+{
+    [Header("Detection Settings")]
+    public float detectRadius = 4f;
+    [Range(30f, 180f)] public float fov = 90f;
+    public LayerMask targetMask;
+    public LayerMask occluderMask;
+    public bool useOcclusion = true;
+
+    [Header("Signal Settings")]
+    public ISignalReceiver Receiver { get; set; }
+
+    [Header("Visual Range")]
+    [SerializeField] private RingRange ring;
+    [Tooltip("감지중일 때 색상")]
+    public Color detectedColor;
+    [Tooltip("기본 상태 색상")]
+    public Color idleColor;
+
+    private bool targetInside; // 현재 감지 중인지
+    private float myYLevel; // 자기 층 높이
+    private const float heightTolerance = 0.4f; // 층 오차 허용
+    private bool doorShouldBeClosed; // 현재 문이 닫혀 있어야 하는지
+
+    void Start()
+    {
+        myYLevel = Mathf.Round(transform.position.y / 1f); // tileHeight 1기준
+        AutoConnectReceiver();
+        if (ring)
+        {
+            ring.visibleAngle = fov;
+            ring.forwardDir = transform.forward;
+            ring.SetRadius(detectRadius);
+            ring.fillColor = idleColor;
+            ring.lineColor = idleColor;
+            ring.RebuildAll();
+            ring.lr.material.color = idleColor;
+        }
+    }
+    void AutoConnectReceiver()
+    {
+        float searchRadius = 30f;
+        Collider[] cols = Physics.OverlapSphere(transform.position, searchRadius, ~0);
+
+        foreach (var c in cols)
+        {
+            var recv = c.GetComponentInParent<ISignalReceiver>();
+            if (recv == null) continue;
+
+            // DoorBlock만 연결 대상으로 필터링
+            if (recv is DoorBlock door)
+            {
+                Receiver = recv;
+                Debug.Log($"[Turret] {name} → {door.name} 자동 연결 완료 (거리 {Vector3.Distance(transform.position, door.transform.position):F1})");
+                return;
+            }
+        }
+
+        Debug.LogWarning($"[Turret] {name}: {searchRadius}m 안에 연결 가능한 Door를 찾지 못함");
+    }
+    void Update()
+    {
+        bool nowDetected = DetectTarget();
+
+        // 감지 상태 변화만 처리
+        if (nowDetected && !targetInside)
+        {
+            targetInside = true;
+            if (!doorShouldBeClosed)
+            {
+                doorShouldBeClosed = true;
+                Debug.Log("[Turret] Target detected -> Send CLOSE signal");
+                SendSignal(); // Door 토글 -> 닫힘
+            }
+            UpdateRingColour(true);
+        }
+        // 감지 해제 -> 열기 명령 (문이 닫혀 있을 때만)
+        else if (!nowDetected && targetInside)
+        {
+            targetInside = false;
+            if (doorShouldBeClosed)
+            {
+                doorShouldBeClosed = false;
+                Debug.Log("[Turret] Target lost -> Send OPEN signal");
+                SendSignal(); // Door 토글 -> 열림
+            }
+            UpdateRingColour(false);
+        }
+    }
+
+    void UpdateRingColour(bool detected)
+    {
+        if (!ring) return;
+        ring.fillColor = detected ? detectedColor : idleColor;
+        ring.lineColor = detected ? detectedColor : idleColor;
+        ring.RebuildAll();
+    }
+
+    public void ConnectReceiver(ISignalReceiver receiver)
+    {
+        Receiver = receiver;
+    }
+
+    public void SendSignal()
+    {
+        if (Receiver != null)
+            Receiver.ReceiveSignal();
+    }
+
+    bool DetectTarget()
+    {
+        Collider[] cols = Physics.OverlapSphere(transform.position, detectRadius, targetMask, QueryTriggerInteraction.Ignore);
+        if (cols.Length == 0) return false;
+
+        foreach (var c in cols)
+        {
+            // 같은 층인지 확인
+            float targetY = Mathf.Round(c.transform.position.y / 1f);
+            if (Mathf.Abs(targetY - myYLevel) > heightTolerance) continue;
+
+            // 부채꼴(FOV) 각도 체크
+            Vector3 dir = (c.transform.position - transform.position).normalized;
+            float angle = Vector3.Angle(transform.forward, dir);
+            if (angle > fov * 0.5f) continue;
+
+            // 차폐 여부
+            if (useOcclusion && IsLineBlocked(transform.position, c, occluderMask))
+                continue;
+
+            return true; // 감지 성공
+        }
+        return false;
+    }
+
+    bool IsLineBlocked(Vector3 origin, Collider target, LayerMask blockMask)
+    {
+        Vector3 dir = target.bounds.center - origin;
+        float dist = dir.magnitude;
+        if (dist < 0.01f) return false;
+
+        if (Physics.Raycast(origin, dir.normalized, out RaycastHit hit, dist, blockMask, QueryTriggerInteraction.Ignore))
+        {
+            if (hit.collider != target)
+                return true;
+        }
+        return false;
+    }
+}

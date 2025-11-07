@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -44,7 +45,10 @@ public class StageManager : MonoBehaviour
     private MapData currentMapData; //맵데이터는 늘 기억되고 있을 것임.
 
     private List<IPlayerFinder> finders = new();
-     
+
+
+    private HashSet<string> collectedTreasures = new();
+
     [SerializeField] BlockFactory factory;
 
 
@@ -64,6 +68,7 @@ public class StageManager : MonoBehaviour
         {
             await Task.Delay(200); //이거 왜 하냐면 파이어베이스매니저가 아직 초기화가 안된 상황일 가능성이 높기 때문임
             currentMapData = await FirebaseManager_FORTEST.Instance.LoadMapFromFirebase(mapNameToLoad);
+            currentStageId = mapNameToLoad;
         }
 
 
@@ -112,14 +117,11 @@ public class StageManager : MonoBehaviour
 
         StageUIManager.Instance.stageName.text = data.stage_name;
 
-        //Todo : 이하 코드들은 유물 획득 여부에 따라 값 변경되어야함
-        //StageUIManager.Instance.star[0].sprite = star;
-        //StageUIManager.Instance.stageImage.sprite = stage;
-        //StageUIManager.Instance.stageText.text = text;
-        //StageUIManager.Instance.reward[0].sprite = DataManager.Instance.Stage.GetIcon(data.treasure_01_id);
-        //StageUIManager.Instance.reward[1].sprite = DataManager.Instance.Stage.GetIcon(data.treasure_02_id);
-        //StageUIManager.Instance.reward[2].sprite = DataManager.Instance.Stage.GetIcon(data.treasure_03_id);
-
+        StageUIManager.Instance.UpdateTreasureIcons(
+           IsTreasureCollected(data.treasure_01_id),
+           IsTreasureCollected(data.treasure_02_id),
+           IsTreasureCollected(data.treasure_03_id)
+       );
     }
 
     void SpawnPlayer()
@@ -141,11 +143,12 @@ public class StageManager : MonoBehaviour
 
     void LoadStage(MapData loaded)
     {
-        
+        currentStageId = FirebaseManager_FORTEST.Instance.selectStageID;
+
+        var data = DataManager.Instance.Stage.GetMapNameData(currentStageId);
+
         foreach (var block in loaded.blocks)
         {
-            //TODO: 트레져블록은 무시.
-            if (block.blockType == BlockType.Treasure) continue;
 
 
             print($"[StageManager] {block.blockName}: {block.blockType} [{block.position.x}],[{block.position.y}],[{block.position.z}]");
@@ -163,6 +166,22 @@ public class StageManager : MonoBehaviour
                 go.GetComponent<EndBlock>().Init(this);
             if (BlockType.Hog <= block.blockType && block.blockType <= BlockType.Buffalo)
                 finders.Add(go.GetComponent<IPlayerFinder>());
+
+            //보물 블록 처리
+            if (block.blockType == BlockType.Treasure)
+            {
+                var treasure = go.GetComponent<Treasure>();
+
+                // blockName으로 구분
+                if (block.blockName.Contains("1"))
+                    treasure.Init(data.treasure_01_id);
+                else if (block.blockName.Contains("2"))
+                    treasure.Init(data.treasure_02_id);
+                else if (block.blockName.Contains("3"))
+                    treasure.Init(data.treasure_03_id);
+                else
+                    Debug.LogWarning($"Treasure 블록 이름 인식 실패: {block.blockName}");
+            }
             //GetComponent<Block>().Init(block);
             EnlistBlock(go.GetComponent<Block>());
             if (loaded.blocks.Find(x => x.blockType == BlockType.Start) == null) //스타트 없는 스테이지다?
@@ -185,7 +204,7 @@ public class StageManager : MonoBehaviour
             if (block is IEdgeColliderHandler handlerBlock)
             {
                 handlerBlock.Inject();
-                handlerBlock.Inspect();
+                handlerBlock.DetectAndApplyFourEdge();
             }
         }
     }
@@ -216,5 +235,23 @@ public class StageManager : MonoBehaviour
             blockDictionary.Add(target.gridPosition, new() { target });
         else
             blockDictionary[target.gridPosition].Add(target);
+    }
+
+    public void OnTreasureCollected(string treasureId)
+    {
+        if (!collectedTreasures.Contains(treasureId))
+        {
+            collectedTreasures.Add(treasureId);
+            Debug.Log($"보물 획득: {treasureId}");
+        }
+    }
+
+    public bool IsTreasureCollected(string treasureId)
+    {
+        return collectedTreasures.Contains(treasureId);
+    }
+    public IEnumerable<string> GetCollectedTreasures()
+    {
+        return collectedTreasures;
     }
 }

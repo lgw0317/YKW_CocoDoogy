@@ -77,6 +77,7 @@ public class Shockwave : MonoBehaviour
         var all = new List<(Collider col, Component pushable, int h, int gx, int gz, float ts)>();
         foreach (var c in cols)
         {
+            if (c.transform == transform) continue;
             // PushableObejcts.cs를 찾거나 상속 클래스 컴포넌트 찾음
             var p = (Component)c.GetComponent(typeof(PushableObjects));
             float ts = p != null ? GetTileSize(p, tile) : tile; // !pushables는 기본 타일 높이

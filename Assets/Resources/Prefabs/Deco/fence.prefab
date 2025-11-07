@@ -183,6 +183,7 @@ GameObject:
   - component: {fileID: 4799482893661092}
   - component: {fileID: 205881955009992410}
   - component: {fileID: -3786531359292282838}
+  - component: {fileID: 2204730733620157145}
   m_Layer: 6
   m_Name: fence
   m_TagString: Untagged
@@ -200,7 +201,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4267328244199940}
@@ -256,8 +257,29 @@ MonoBehaviour:
   loadSavedTransformOnStart: 1
   customSaveKey: 
   useMaterialPropertyBlock: 1
-  colorPropName: _Color
+  colorPropName: _BaseColor
   useFullTransformPathForKey: 0
+--- !u!65 &2204730733620157145
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585448642735056}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.79, y: 0.72, z: 0.27}
+  m_Center: {x: -0.12, y: 0.39, z: 0.12}
 --- !u!1 &1633259469285146
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,6 +30,10 @@
       "type": "SO"
     },
     {
+      "name": "tbl_goods_mst",
+      "type": "SO"
+    },
+    {
       "name": "tbl_home_mst",
       "type": "SO"
     },

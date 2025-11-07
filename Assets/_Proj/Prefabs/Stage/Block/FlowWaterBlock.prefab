@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4375664181801846647}
   - component: {fileID: 3611670483546518127}
   - component: {fileID: 7724905600106164592}
+  - component: {fileID: 5130774834560676477}
   m_Layer: 4
   m_Name: FlowWaterBlock
   m_TagString: Untagged
@@ -76,6 +77,22 @@ MonoBehaviour:
     property:
       isOn: 0
       linkedPos: {x: 2147483647, y: 2147483647, z: 2147483647}
+--- !u!114 &5130774834560676477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4989480202343424376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1956ffc446d861346ae5fca4793b0f3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flowInterval: 0.5
+  pushableMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &7509723137891210488
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,7 +105,6 @@ GameObject:
   - component: {fileID: 4583380614809521469}
   - component: {fileID: 6954321394907291656}
   - component: {fileID: 7612571704490388045}
-  - component: {fileID: 526847530306874677}
   m_Layer: 4
   m_Name: water_cube
   m_TagString: Untagged
@@ -185,16 +201,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 0.1, z: 1}
   m_Center: {x: 0, y: -0.45, z: 0}
---- !u!114 &526847530306874677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7509723137891210488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1956ffc446d861346ae5fca4793b0f3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flowTime: 10

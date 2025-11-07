@@ -2,11 +2,13 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System;
 
 public class StageUIManager : MonoBehaviour
 {
     public static StageUIManager Instance {  get; private set; }
 
+    public StageManager stageManager;
 
     [Header("Button")]
     public Button OptionOpenButton;
@@ -14,7 +16,7 @@ public class StageUIManager : MonoBehaviour
     public Button RetryButton;
     public Button QuitButton;
     public Button ExitButton;
-    public Button TreasureQuitButton;
+    public Button TreasureConfirmButton;
 
     [Header("Panel")]
     public GameObject OptionPanel;
@@ -38,6 +40,10 @@ public class StageUIManager : MonoBehaviour
     public Image CocoDoogyImage;
     public TextMeshProUGUI CocoDoogyDesc;
 
+    public Sprite collectedSprite; // 획득된 보물 아이콘
+    public Sprite notCollectedSprite; // 미획득 상태 아이콘
+    public Action OnTreasureConfirm;
+
     private string currentChapter;
 
     void Awake()
@@ -55,7 +61,11 @@ public class StageUIManager : MonoBehaviour
         RetryButton.onClick.AddListener(Retry);
         QuitButton.onClick.AddListener(Quit);
         ExitButton.onClick.AddListener(Exit);
-        TreasureQuitButton.onClick.AddListener(Close);
+        TreasureConfirmButton.onClick.AddListener(() =>
+        {
+            OnTreasureConfirm?.Invoke();
+            OnTreasureConfirm = null;
+        });
 
         Overlay.SetActive(false);
         OptionOpenButton.gameObject.SetActive(true);
@@ -97,9 +107,16 @@ public class StageUIManager : MonoBehaviour
         SceneManager.LoadScene("Lobby");
     }
 
-    void Close()
+    public void UpdateTreasureIcons(bool t1, bool t2, bool t3)
     {
-        TreasurePanel.SetActive(false);
-        OptionOpenButton.gameObject.SetActive(true);
+        if (reward == null || reward.Length < 3) return;
+
+        star[0].sprite = t1 ? collectedSprite : notCollectedSprite;
+        star[1].sprite = t2 ? collectedSprite : notCollectedSprite;
+        star[2].sprite = t3 ? collectedSprite : notCollectedSprite;
+
+        //reward[0].sprite = t1 ? : notCollectedSprite;
+        //reward[0].sprite = t2 ? : notCollectedSprite;
+        //reward[0].sprite = t3 ? : notCollectedSprite;
     }
 }

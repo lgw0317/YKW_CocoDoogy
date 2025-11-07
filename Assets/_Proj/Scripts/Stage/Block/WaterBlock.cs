@@ -11,6 +11,6 @@ public class WaterBlock : Block
     protected override void OnEnable()
     {
         base.OnEnable();
-        flow.enabled = false;
+        //flow.enabled = false;
     }
 }

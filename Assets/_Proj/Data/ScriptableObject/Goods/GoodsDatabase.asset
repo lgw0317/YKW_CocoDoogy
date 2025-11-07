@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b670efd82a5878248b6d328b1df6c131, type: 3}
+  m_Name: GoodsDatabase
+  m_EditorClassIdentifier: 
+  goodsList:
+  - goods_id: 110001
+    goods_name: '[goods_energy]'
+    goods_icon: System/icon_energy
+    goods_desc: "\uC2A4\uD14C\uC774\uC9C0 \uC9C4\uC785\uC2DC \uC18C\uBAA8\uB418\uB294
+      \uD589\uB3D9\uB825\uC785\uB2C8\uB2E4."
+  - goods_id: 110002
+    goods_name: '[goods_cap]'
+    goods_icon: System/icon_cap
+    goods_desc: "\uC0C1\uC810\uC5D0\uC11C \uC0AC\uC6A9 \uAC00\uB2A5\uD55C \uBB34\uB8CC
+      \uC7AC\uD654\uC785\uB2C8\uB2E4."
+  - goods_id: 110003
+    goods_name: '[goods_coin]'
+    goods_icon: System/icon_coin
+    goods_desc: "\uC0C1\uC810\uC5D0\uC11C \uC0AC\uC6A9 \uAC00\uB2A5\uD55C \uC720\uB8CC
+      \uC7AC\uD654\uC785\uB2C8\uB2E4."

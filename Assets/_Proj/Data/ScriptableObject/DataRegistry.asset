@@ -19,6 +19,7 @@ MonoBehaviour:
   codexDB: {fileID: 11400000, guid: e4ee84fcac1475c45a34ccec400ae50f, type: 2}
   costumeDB: {fileID: 11400000, guid: 03068cb0a80eace408fa4bf98760f6c5, type: 2}
   decoDB: {fileID: 11400000, guid: 5410dd22bd0bdc34faa6c298c0d0e778, type: 2}
+  goodsDB: {fileID: 11400000, guid: 5c4cccaf89f5bea4f81abc522b5e7688, type: 2}
   homeDB: {fileID: 11400000, guid: 9408dfcbcac6d0345a2f26fceb060264, type: 2}
   profile_iconDB: {fileID: 11400000, guid: 6c1d6365b9e5cda48819182dea8a9350, type: 2}
   questDB: {fileID: 11400000, guid: 3f4ad7d5eaba5db448cb78c661265ce2, type: 2}

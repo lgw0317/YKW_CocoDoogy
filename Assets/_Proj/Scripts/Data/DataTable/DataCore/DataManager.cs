@@ -14,6 +14,7 @@ public class DataManager : MonoBehaviour
     public CodexProvider Codex { get; private set; }
     public CostumeProvider Costume { get; private set; }
     public DecoProvider Deco { get; private set; }
+    public GoodsProvider Goods { get; private set; }
     public HomeProvider Home { get; private set; }
     public Profile_iconProvider Profile { get; private set; }
     public QuestProvider Quest { get; private set; }
@@ -22,6 +23,8 @@ public class DataManager : MonoBehaviour
     public StageProvider Stage { get; private set; }
     public TreasureProvider Treasure { get; private set; }
     public MainCharacterProvider mainChar { get; private set; }
+    public DialogueProvider Dialogue { get; private set; }
+    public SpeakerProvider Speaker { get; private set; }
 
     private void Awake()
     {
@@ -50,6 +53,8 @@ public class DataManager : MonoBehaviour
 
         Deco = new DecoProvider(dataRegistry.decoDB, loader);
 
+        Goods = new GoodsProvider(dataRegistry.goodsDB, loader);
+
         Home = new HomeProvider(dataRegistry.homeDB, loader);
 
         Profile = new Profile_iconProvider(dataRegistry.profile_iconDB, loader);
@@ -63,7 +68,5 @@ public class DataManager : MonoBehaviour
         Stage = new StageProvider(dataRegistry.stageDB, loader);
 
         Treasure = new TreasureProvider(dataRegistry.treasureDB, loader);
-
-        mainChar = new MainCharacterProvider(dataRegistry.mainCharDB, loader);
     }
 }

@@ -1,0 +1,4 @@
+goods_id,goods_name,goods_icon,goods_desc
+110001,[goods_energy],System/icon_energy,스테이지 진입시 소모되는 행동력입니다.
+110002,[goods_cap],System/icon_cap,상점에서 사용 가능한 무료 재화입니다.
+110003,[goods_coin],System/icon_coin,상점에서 사용 가능한 유료 재화입니다.

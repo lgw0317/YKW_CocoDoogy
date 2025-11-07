@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/_Proj/Prefabs/Treasure/Treasure1.prefab.meta
+guid: 4be6ef2ec2cd79841aebd6597f40f2db
+========
 guid: 4bfa932ef5d0e1a4989c88de2f934ca4
+>>>>>>>> origin/LSH_Test:Assets/Resources/Prefabs/MainCharacter/CocoDoogy.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

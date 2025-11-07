@@ -8,9 +8,10 @@ public class TreasureData
     public TreasureType treasureType;
     public int reward_id;
     public int count;
+    public string view_codex_id;
     public string coco_coment;
 }
 public enum TreasureType 
 {
-    coin, cap, deco, costune, artifact
+    coin, cap, deco, costume, artifact
 }
