@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1237434933766878636}
   - component: {fileID: 3528951864627452903}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_frame_metal_single
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 3035689097041189984}
   - component: {fileID: 2490648585655543432}
   - component: {fileID: 9018293856627568675}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_hinges_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 6680675458360787956}
   - component: {fileID: 3280131783755064890}
   - component: {fileID: 1394170082000124849}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_hinges_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -244,7 +244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 139738923215645623}
   - component: {fileID: -5253530330751395769}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DoorBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 904187575022392023}
   - component: {fileID: 2759892991167634217}
   - component: {fileID: 7083917414425074031}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_metal_left_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 1855041545745898908}
   - component: {fileID: 4804872975573294009}
   - component: {fileID: 8776533222873619119}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_handles_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -474,7 +474,7 @@ GameObject:
   - component: {fileID: 4870376647115339788}
   - component: {fileID: 204559430907119332}
   - component: {fileID: 985766006599636948}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_frame_metal_single_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 3269975101384243887}
   - component: {fileID: 5078835208760591891}
   - component: {fileID: 1000444771435129961}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_hinges_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 2954622954547158757}
   - component: {fileID: 5259626578498129097}
   - component: {fileID: 7588413137891857279}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_metal_left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -742,7 +742,7 @@ GameObject:
   - component: {fileID: 89058521683024495}
   - component: {fileID: 6149212965375961231}
   - component: {fileID: 5987982686736506537}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_frame_metal_single_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -828,7 +828,7 @@ GameObject:
   - component: {fileID: 2979730233455090547}
   - component: {fileID: 71994414408448447}
   - component: {fileID: 2343066662431483735}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_frame_metal_single_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -914,7 +914,7 @@ GameObject:
   - component: {fileID: 3952504212055570293}
   - component: {fileID: 6079923593842053583}
   - component: {fileID: 6785223032929879497}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_handles_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1000,7 +1000,7 @@ GameObject:
   - component: {fileID: 7137727174745860070}
   - component: {fileID: 1920083855115803054}
   - component: {fileID: 5392086296578607424}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_metal_left_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1086,7 +1086,7 @@ GameObject:
   - component: {fileID: 1510002186186479553}
   - component: {fileID: 4797464112200491868}
   - component: {fileID: 1654648549578258518}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_handles_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1172,7 +1172,7 @@ GameObject:
   - component: {fileID: 8093462708612888567}
   - component: {fileID: 2312822160084841939}
   - component: {fileID: 5667270960334402693}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: door_metal_left_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1307,9 +1307,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2940558695374745545, guid: 8cede31731e7d98419bd745d4ad5989c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 2940558695374745547, guid: 8cede31731e7d98419bd745d4ad5989c, type: 3}
       propertyPath: m_Name
       value: scifi-door-metal
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940558695374745547, guid: 8cede31731e7d98419bd745d4ad5989c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940558695374745549, guid: 8cede31731e7d98419bd745d4ad5989c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940558695374745551, guid: 8cede31731e7d98419bd745d4ad5989c, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

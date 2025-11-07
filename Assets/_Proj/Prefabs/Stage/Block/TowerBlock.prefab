@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 3888148696481358895}
   - component: {fileID: 1526117717789278995}
   - component: {fileID: -3959518151991366463}
-  m_Layer: 0
+  - component: {fileID: 4621019697306101368}
+  m_Layer: 12
   m_Name: TowerBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,6 +77,28 @@ MonoBehaviour:
     property:
       isOn: 0
       linkedPos: {x: 2147483647, y: 2147483647, z: 2147483647}
+--- !u!114 &4621019697306101368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2166673052020822408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbac09f3a83121449eddbcae6fc9ba5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  relayRadius: 4
+  relayDelay: 1
+  towerCooldown: 10
+  useOcclusion: 1
+  occluderMask:
+    serializedVersion: 2
+    m_Bits: 22400
+  towerLayer:
+    serializedVersion: 2
+    m_Bits: 12288
 --- !u!1001 &1374621501454975376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -87,6 +110,10 @@ PrefabInstance:
     - target: {fileID: 2684322372248105105, guid: 930de3d727d2b8e4aba89b1e639f6a47, type: 3}
       propertyPath: m_Name
       value: scifi-pole-light
+      objectReference: {fileID: 0}
+    - target: {fileID: 2684322372248105105, guid: 930de3d727d2b8e4aba89b1e639f6a47, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3317869061648099883, guid: 930de3d727d2b8e4aba89b1e639f6a47, type: 3}
       propertyPath: m_LocalScale.y

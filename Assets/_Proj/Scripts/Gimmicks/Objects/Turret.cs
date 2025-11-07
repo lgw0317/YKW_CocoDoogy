@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Security.Cryptography;
+using UnityEngine;
+
+[DisallowMultipleComponent]
 public class Turret : MonoBehaviour, ISignalSender
 {
     [Header("Detection Settings")]
@@ -9,60 +12,106 @@ public class Turret : MonoBehaviour, ISignalSender
     public bool useOcclusion = true;
 
     [Header("Signal Settings")]
-    [SerializeField] private MonoBehaviour receiverObject;
     public ISignalReceiver Receiver { get; set; }
-
-    private bool wasDetected;
 
     [Header("Visual Range")]
     [SerializeField] private RingRange ring;
-    [Tooltip("감지 중일 때 색상")] public Color detectedColor = new(1f, 0.3f, 0.3f, 0.4f);
-    [Tooltip("기본 상태 색상")] public Color idleColor = new(0.3f, 1f, 0.3f, 0.2f);
+    [Tooltip("감지중일 때 색상")]
+    public Color detectedColor;
+    [Tooltip("기본 상태 색상")]
+    public Color idleColor;
+
+    private bool targetInside; // 현재 감지 중인지
+    private float myYLevel; // 자기 층 높이
+    private const float heightTolerance = 0.4f; // 층 오차 허용
+    private bool doorShouldBeClosed; // 현재 문이 닫혀 있어야 하는지
 
     void Awake()
     {
-        if (receiverObject is ISignalReceiver recv)
-            Receiver = recv;
+
     }
 
     void Start()
     {
-        ring.visibleAngle = fov;
-        ring.forwardDir = transform.forward;
-        ring.SetRadius(detectRadius);
-    }
-
-    void Update()
-    {
-        bool detected = DetectTarget();
-
-        if (detected != wasDetected)
+        myYLevel = Mathf.Round(transform.position.y / 1f); // tileHeight 1기준
+        AutoConnectReceiver();
+        if (ring)
         {
-            SendSignal();
-            wasDetected = detected;
+            ring.visibleAngle = fov;
+            ring.forwardDir = transform.forward;
+            ring.SetRadius(detectRadius);
+            ring.fillColor = idleColor;
+            ring.lineColor = idleColor;
+        }
+    }
+    void AutoConnectReceiver()
+    {
+        float searchRadius = 30f;
+        Collider[] cols = Physics.OverlapSphere(transform.position, searchRadius, ~0);
 
-            // 색상 전환
-            if (ring != null)
+        foreach (var c in cols)
+        {
+            var recv = c.GetComponentInParent<ISignalReceiver>();
+            if (recv == null) continue;
+
+            // DoorBlock만 연결 대상으로 필터링
+            if (recv is DoorBlock door)
             {
-                ring.fillColor = detected ? detectedColor : idleColor;
-                ring.lineColor = detected ? detectedColor : idleColor;
-                ring.RebuildAll();
+                Receiver = recv;
+                Debug.Log($"[Turret] {name} → {door.name} 자동 연결 완료 (거리 {Vector3.Distance(transform.position, door.transform.position):F1})");
+                return;
             }
         }
+
+        Debug.LogWarning($"[Turret] {name}: {searchRadius}m 안에 연결 가능한 Door를 찾지 못함");
+    }
+    void Update()
+    {
+        bool nowDetected = DetectTarget();
+
+        // 감지 상태 변화만 처리
+        if (nowDetected && !targetInside)
+        {
+            targetInside = true;
+            if (!doorShouldBeClosed)
+            {
+                doorShouldBeClosed = true;
+                Debug.Log("[Turret] Target detected -> Send CLOSE signal");
+                SendSignal(); // Door 토글 -> 닫힘
+            }
+            UpdateRingColour(true);
+        }
+        // 감지 해제 -> 열기 명령 (문이 닫혀 있을 때만)
+        else if (!nowDetected && targetInside)
+        {
+            targetInside = false;
+            if (doorShouldBeClosed)
+            {
+                doorShouldBeClosed = false;
+                Debug.Log("[Turret] Target lost -> Send OPEN signal");
+                SendSignal(); // Door 토글 -> 열림
+            }
+            UpdateRingColour(false);
+        }
+    }
+
+    void UpdateRingColour(bool detected)
+    {
+        if (!ring) return;
+        ring.fillColor = detected ? detectedColor : idleColor;
+        ring.lineColor = detected ? detectedColor : idleColor;
+        ring.RebuildAll();
     }
 
     public void ConnectReceiver(ISignalReceiver receiver)
     {
         Receiver = receiver;
-        receiverObject = receiver as MonoBehaviour;
     }
 
     public void SendSignal()
     {
         if (Receiver != null)
             Receiver.ReceiveSignal();
-        else
-            Debug.Log("[Turret] 연결된 수신자 없음.");
     }
 
     bool DetectTarget()
@@ -72,14 +121,20 @@ public class Turret : MonoBehaviour, ISignalSender
 
         foreach (var c in cols)
         {
+            // 같은 층인지 확인
+            float targetY = Mathf.Round(c.transform.position.y / 1f);
+            if (Mathf.Abs(targetY - myYLevel) > heightTolerance) continue;
+
+            // 부채꼴(FOV) 각도 체크
             Vector3 dir = (c.transform.position - transform.position).normalized;
             float angle = Vector3.Angle(transform.forward, dir);
             if (angle > fov * 0.5f) continue;
 
+            // 차폐 여부
             if (useOcclusion && IsLineBlocked(transform.position, c, occluderMask))
                 continue;
 
-            return true;
+            return true; // 감지 성공
         }
         return false;
     }
