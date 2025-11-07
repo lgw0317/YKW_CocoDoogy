@@ -16,7 +16,7 @@ public class SpeakerProvider : IDataProvider<string, SpeakerData>
         return database.speakerList.Find(s => s.speaker_id == id);
     }
 
-    public Sprite GetPortrait(string id, string emotion)
+    public Sprite GetPortrait(string id, EmotionType emotion)
     {
         var data = GetData(id);
         return data?.GetPortrait(emotion, loader);
