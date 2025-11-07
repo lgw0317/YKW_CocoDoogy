@@ -53,9 +53,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iconImage: {fileID: 3890547323032140401}
-  selectedFrame: {fileID: 9074740852959818474}
-  selectedBadge: {fileID: 6197045434061503453}
   button: {fileID: 6760806641137581161}
+  selectedMarker: {fileID: 6197045434061503453}
 --- !u!114 &6760806641137581161
 MonoBehaviour:
   m_ObjectHideFlags: 0
