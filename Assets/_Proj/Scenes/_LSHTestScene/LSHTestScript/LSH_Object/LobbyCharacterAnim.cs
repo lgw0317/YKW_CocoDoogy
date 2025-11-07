@@ -32,20 +32,25 @@ public class LobbyCharacterAnim
         int number = UnityEngine.Random.Range(0, lobbyInteractionAnimalAnimsName.Length);
 
         anim.Play(lobbyInteractionAnimalAnimsName[number]);
-        anim.speed = 0.8f;
+        anim.speed = 0.6f;
     }
 
     public void ClickMaster()
     {
         int number = UnityEngine.Random.Range(0, masterClick.Length);
         anim.Play(masterClick[number]);
-        anim.speed = 4;
+        anim.speed = 3f;
         
     }
-    
+
     public void StopAnim()
     {
-        
+        anim.Play("Idle_A");
+    }
+    
+    public void DefaultAnimSpeed()
+    {
+        anim.speed = 1f;
     }
 
 }

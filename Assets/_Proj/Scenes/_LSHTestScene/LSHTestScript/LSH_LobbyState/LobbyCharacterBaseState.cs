@@ -2,11 +2,13 @@ using UnityEngine;
 
 public abstract class LobbyCharacterBaseState
 {
-    protected BaseLobbyCharacterBehaviour _baseChar;
+    protected BaseLobbyCharacterBehaviour owner;
+    protected LobbyCharacterFSM fsm;
 
-    protected LobbyCharacterBaseState(BaseLobbyCharacterBehaviour baseChar)
+    protected LobbyCharacterBaseState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm)
     {
-        _baseChar = baseChar;
+        this.owner = owner;
+        this.fsm = fsm;
     }
 
     public abstract void OnStateEnter();

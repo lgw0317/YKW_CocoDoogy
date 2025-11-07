@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LCharIdleState : LobbyCharacterBaseState
 {
-    public LCharIdleState(BaseLobbyCharacterBehaviour baseChar) : base(baseChar)
+    public LCharIdleState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
     {
     }
 
@@ -24,7 +24,7 @@ public class LCharIdleState : LobbyCharacterBaseState
 
 public class LCharMoveState : LobbyCharacterBaseState
 {
-    public LCharMoveState(BaseLobbyCharacterBehaviour baseChar) : base(baseChar)
+    public LCharMoveState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
     {
     }
 
@@ -46,7 +46,7 @@ public class LCharMoveState : LobbyCharacterBaseState
 
 public class LCharInteractionState : LobbyCharacterBaseState
 {
-    public LCharInteractionState(BaseLobbyCharacterBehaviour baseChar) : base(baseChar)
+    public LCharInteractionState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
     {
     }
 

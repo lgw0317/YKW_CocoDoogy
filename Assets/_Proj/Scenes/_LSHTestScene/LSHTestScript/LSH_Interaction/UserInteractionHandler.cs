@@ -57,7 +57,7 @@ public class UserInteractionHandler : MonoBehaviour, IPointerClickHandler, IPoin
     public void OnPointerClick(PointerEventData eventData)
     {
         if (isPressing || isDragging) return;
-        interactable.OnLobbyInteract();
+        interactable.OnLobbyClick();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -76,7 +76,7 @@ public class UserInteractionHandler : MonoBehaviour, IPointerClickHandler, IPoin
     {
         while (isPressing)
         {
-            if (Time.time - pressTime >= 0.2f)
+            if (Time.time - pressTime >= 0.1f)
             {
                 longPressable?.OnLobbyPress();
                 isPressing = false;

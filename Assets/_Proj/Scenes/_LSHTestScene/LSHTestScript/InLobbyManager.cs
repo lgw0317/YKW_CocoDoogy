@@ -1,8 +1,9 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using Unity.AI.Navigation;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 // Surface���� : ������ ���⿡ �� ���� �ְ����� ���߿� �����ϰڽ���.
 // [Serializable]
 // public class  NavMeshSaveData
@@ -18,19 +19,23 @@ using System.Collections.Generic;
 //     public Vector3 scale;
 // }
 // //
-
 public class InLobbyManager : MonoBehaviour
 {
     [SerializeField] GameObject plane;
     [SerializeField] EditModeController editController;
-    
+    [SerializeField] float interactDistance = 2f;
+    [SerializeField] float routineDelay = 3f;
+
+    private CocoDoogyBehaviour coco;
+    private MasterBehaviour master;
+
     private NavMeshSurface planeSurface;
     public Transform[] cocoWaypoints;
 
     public bool isEditMode { get; private set; } // 에딧컨트롤러에서 받아오기
     private int originalLayer; // 평상 시 레이어
     private int editableLayer; // 편집모드 시 레이어
-    
+
 
     public static InLobbyManager Instance { get; private set; }
     private List<ILobbyState> lobbyCharacter = new(); // 맵에 활성화 된 캐릭터들 모음
@@ -57,30 +62,32 @@ public class InLobbyManager : MonoBehaviour
     private void Start() // 깨끗한 프리팹에 붙여주는 방법이 인게임 아웃게임 전환에서 좋지 않을 깝숑
     {
         planeSurface.BuildNavMesh();
-        GameObject gObj = Instantiate(DataManager.Instance.Animal.GetPrefab(30002), cocoWaypoints[0].position, Quaternion.identity);
-        gObj.AddComponent<CocoDoogyBehaviour>();
-        gObj.tag = "CocoDoogy";
-        gObj.layer = LayerMask.NameToLayer("InLobbyObject");
 
-        // GameObject gObj2 = Instantiate(DataManager.Instance.Animal.GetPrefab(30001), cocoWaypoints[5].position, Quaternion.identity);
-        // gObj2.AddComponent<AnimalBehaviour>();
-        // gObj2.tag = "Animal";
+        // GameObject gObj = Instantiate(DataManager.Instance.mainChar.GetPrefab(99999), cocoWaypoints[0].position, Quaternion.identity);
+        // gObj.tag = "CocoDoogy";
+        // gObj.layer = LayerMask.NameToLayer("InLobbyObject");
+        // gObj.AddComponent<CocoDoogyBehaviour>();
+        //coco = gObj.GetComponent<CocoDoogyBehaviour>();
+        //coco.gameObject.SetActive(false);
+
+        // GameObject gObj2 = Instantiate(DataManager.Instance.mainChar.GetPrefab(99998), cocoWaypoints[5].position, Quaternion.identity);
+        // gObj2.AddComponent<MasterBehaviour>();
+        // gObj2.tag = "Master";
         // gObj2.layer = LayerMask.NameToLayer("InLobbyObject");
+        // master = gObj2.GetComponent<MasterBehaviour>();
+        // master.gameObject.SetActive(false);
 
-        // GameObject gObj3 = Instantiate(DataManager.Instance.Animal.GetPrefab(30003), cocoWaypoints[6].position, Quaternion.identity);
-        // gObj3.AddComponent<MasterBehaviour>();
-        // gObj3.tag = "Master";
-        // gObj3.layer = LayerMask.NameToLayer("InLobbyObject");
+        //StartCoroutine(MainCharRoutineLoop());
 
-        foreach (var lC in lobbyCharacter)
-        {
-            if (lC == null) Debug.Log($"{lC} null");
-            if (lC != null)
-            {
-                lC.StartScene();
-                Debug.Log($"{lC} StartScene");
-            }
-        }
+        // foreach (var lC in lobbyCharacter)
+        // {
+        //     if (lC == null) Debug.Log($"{lC} null");
+        //     if (lC != null)
+        //     {
+        //         lC.StartScene();
+        //         Debug.Log($"{lC} StartScene");
+        //     }
+        // }
     }
 
     private void Update()
@@ -117,9 +124,21 @@ public class InLobbyManager : MonoBehaviour
                         //lC.InUpdate();
                     }
                 }
-                Debug.Log("일반보드 진입");
+                Debug.Log("일반모드 진입");
             }
         }
+
+        // 코코두기 안드로이드 거리 감지 및 상호작용 이벤트
+        // 1회성만 가능하게 만들어야함
+        // if (coco.gameObject.activeSelf && master.gameObject.activeSelf)
+        // {
+        //     float dist = Vector3.Distance(coco.transform.position, master.transform.position);
+        //     if (dist < interactDistance)
+        //     {
+        //         coco.OnCocoMasterEmotion();
+        //         master.OnCocoMasterEmotion();
+        //     }
+        // }
     }
 
     private void OnDestroy()
@@ -133,6 +152,61 @@ public class InLobbyManager : MonoBehaviour
         //     }
         // }
     }
+
+    private IEnumerator MainCharRoutineLoop()
+    {
+        // while (true)
+        // {
+        //     // 루틴 시작
+        //     float activeDelay = UnityEngine.Random.Range(2, 5);
+
+        //     if (!coco.gameObject.activeSelf) coco.gameObject.SetActive(true);
+        //     yield return new WaitForSeconds(activeDelay);
+        //     if (!master.gameObject.activeSelf) master.gameObject.SetActive(true);
+
+        //     if (coco.IsRoutineComplete) coco.gameObject.SetActive(false);
+        //     if (master.IsRoutineComplete) master.gameObject.SetActive(false);
+        //     yield return new WaitUntil(() => coco.IsRoutineComplete);
+        // }
+        StartCoroutine(CocoRoutine());
+        //StartCoroutine(MasterRoutine());
+
+        yield return new WaitForSeconds(1f);
+    }
+
+    private IEnumerator CocoRoutine()
+    {
+        while (true)
+        {
+            if (!coco.gameObject.activeSelf) coco.gameObject.SetActive(true);
+            yield return new WaitUntil(() => coco.IsCMRoutineComplete);
+
+            coco.gameObject.SetActive(false);
+            yield return new WaitForSeconds(routineDelay);
+
+            coco.ResetRoutine();
+            coco.ResetInteract(0);
+            coco.ResetInteract(1);
+        }
+    }
+
+    private IEnumerator MasterRoutine()
+    {
+        while (true)
+        {
+            float activeDelay = UnityEngine.Random.Range(2, 5);
+            yield return new WaitForSeconds(activeDelay);
+            if (!master.gameObject.activeSelf) master.gameObject.SetActive(true);
+            yield return new WaitUntil(() => master.IsCMRoutineComplete);
+
+            master.gameObject.SetActive(false);
+            yield return new WaitForSeconds(routineDelay);
+
+            master.ResetRoutine();
+            master.ResetInteract(0);
+        }
+    }
+
 
     // 등록 및 삭제
     public void RegisterLobbyChar(ILobbyState gObj)

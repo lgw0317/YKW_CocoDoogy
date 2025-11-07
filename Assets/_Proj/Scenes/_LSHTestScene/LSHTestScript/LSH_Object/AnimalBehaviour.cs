@@ -6,6 +6,12 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
     [SerializeField] float decoDetectRadius = 20f; // 데코 오브젝트 탐색 범위
     private Transform targetDeco;
 
+    protected override void InitStates()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    
     protected override void Awake()
     {
         base.Awake();
@@ -18,25 +24,25 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
         targetDeco = null;
     }
 
-    private IEnumerator Move()
-    {
-        isMoving = true;
-        while (isMoving)
-        {
-            FindNearestDeco();
-            if (targetDeco != null)
-            {
-                charAgent.MoveToRandomTransPoint(targetDeco);
-            }
-            else
-            {
-                charAgent.MoveToRandomTransPoint(transform);
-            }
+    // private IEnumerator Move()
+    // {
+    //     isMoving = true;
+    //     while (isMoving)
+    //     {
+    //         FindNearestDeco();
+    //         if (targetDeco != null)
+    //         {
+    //             charAgent.MoveToRandomTransPoint(targetDeco);
+    //         }
+    //         else
+    //         {
+    //             charAgent.MoveToRandomTransPoint(transform);
+    //         }
 
-            if (!agent.hasPath) charAgent.MoveToRandomTransPoint(transform);
-            yield return waitU;
-        }
-    }
+    //         if (!agent.hasPath) charAgent.MoveToRandomTransPoint(transform);
+    //         yield return waitU;
+    //     }
+    // }
 
     private void FindNearestDeco()
     {
@@ -72,58 +78,20 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
     public override void OnLobbyEndDrag(Vector3 position)
     {
         base.OnLobbyEndDrag(position);
-        StartCoroutine(Move());
     }
-    public override void OnLobbyInteract()
+    public override void OnLobbyClick()
     {
-        base.OnLobbyInteract();
+        base.OnLobbyClick();
         charAnim.InteractionAnim();
         AudioEvents.Raise(SFXKey.CocodoogyFootstep, pooled: true, pos: transform.position); // 각 동물 소리로
     }
     public override void InNormal()
     {
         base.InNormal();
-        StartCoroutine(Move());
-    }
-    public override void StartScene()
-    {
-        throw new System.NotImplementedException();
     }
 
-    protected override void HandleIdle()
-    {
-        throw new System.NotImplementedException();
-    }
+    
 
-    protected override void HandleMove()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void HandleStuck()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void HandleInteraction()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void HandleAnimation()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void HandleCocoOther()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    protected override void ChangeState(LobbyCharacterState newState)
-    {
-        throw new System.NotImplementedException();
-    }
     // public override void ExitScene()
     // {
 

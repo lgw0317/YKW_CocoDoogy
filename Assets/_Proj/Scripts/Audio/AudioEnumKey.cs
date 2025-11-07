@@ -1,4 +1,4 @@
-// Å° °ªÀÔ´Ï´Ù.
+// Å° ï¿½ï¿½ï¿½Ô´Ï´ï¿½.
 
 public enum AudioType
 {
@@ -8,7 +8,8 @@ public enum AudioType
     Cutscene,
     Voice,
     UI,
-    Master
+    Master,
+    Dialogue
 }
 
 public enum BGMKey
@@ -54,4 +55,11 @@ public enum UIKey
     UIClick = 0,
     UIOpen,
     UIClose
+}
+
+public enum DialogueKey
+{
+    BGM = 0,
+    SFX,
+    Voice
 }

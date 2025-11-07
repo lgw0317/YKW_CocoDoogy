@@ -3,7 +3,7 @@ using UnityEngine;
 // 클릭, 드래그
 public interface ILobbyInteractable
 {
-    void OnLobbyInteract();
+    void OnLobbyClick();
 }
 public interface ILobbyDraggable
 {
@@ -30,6 +30,14 @@ public interface ILobbyState
     void Unregister(); // 로비에 삭제되면 로비매니저에게 삭제 요청
     void InNormal();
     void InEdit();
-    void StartScene();
-    // void ExitScene();
+    //void StartScene();
+    //void ExitScene();
+}
+
+// DragState에 붙일 인터페이스
+public interface IDragState
+{
+    void OnBeginDrag(Vector3 pos);
+    void OnDrag(Vector3 pos);
+    void OnEndDrag(Vector3 pos);
 }
