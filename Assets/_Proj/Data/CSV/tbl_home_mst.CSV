@@ -1,2 +1,5 @@
 home_id,home_name,home_prefab,home_icon,home_tag,home_acquire,home_desc
-40001,[home_sweet_home],Prefabs/Home/home_sweet_home,Icons/Home/icon_home_sweet_home,basic,ingame,"두 주인의 손길과 온기가 느껴지는 집입니다"
+40001,[home_small_home],Prefabs/Home/house-medieval-small,Icons/Home/icon_home_small_home,basic,ingame,"두 주인의 손길과 온기가 느껴지는 집입니다."
+40002,[home_camping_car],Prefabs/Home/car-caravan-small-standing-b,Icons/Home/icon_home_camping_car,basic,quest,"여행자나 탐험가의 아늑한 임시 거처입니다."
+40003,[home_green_roof_home],Prefabs/Home/building-house-middle,Icons/Home/icon_home_green_roof_home,basic,ingame,"대가족이 살았던 초록 지붕이 매력적인 집입니다."
+40004,[home_red_home],Prefabs/Home/hotel-western,Icons/Home/icon_home_red_home,basic,shop,"상점을 개조한 붉은색 외관의 집입니다."

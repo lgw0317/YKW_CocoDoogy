@@ -40,7 +40,6 @@ public class StageUIManager : MonoBehaviour
     public Image CocoDoogyImage;
     public TextMeshProUGUI CocoDoogyDesc;
 
-    public Image[] rewardIcons; // [0], [1], [2] 각각 보물 아이콘
     public Sprite collectedSprite; // 획득된 보물 아이콘
     public Sprite notCollectedSprite; // 미획득 상태 아이콘
     public Action OnTreasureConfirm;
@@ -110,10 +109,14 @@ public class StageUIManager : MonoBehaviour
 
     public void UpdateTreasureIcons(bool t1, bool t2, bool t3)
     {
-        if (rewardIcons == null || rewardIcons.Length < 3) return;
+        if (reward == null || reward.Length < 3) return;
 
-        rewardIcons[0].sprite = t1 ? collectedSprite : notCollectedSprite;
-        rewardIcons[1].sprite = t2 ? collectedSprite : notCollectedSprite;
-        rewardIcons[2].sprite = t3 ? collectedSprite : notCollectedSprite;
+        star[0].sprite = t1 ? collectedSprite : notCollectedSprite;
+        star[1].sprite = t2 ? collectedSprite : notCollectedSprite;
+        star[2].sprite = t3 ? collectedSprite : notCollectedSprite;
+
+        //reward[0].sprite = t1 ? : notCollectedSprite;
+        //reward[0].sprite = t2 ? : notCollectedSprite;
+        //reward[0].sprite = t3 ? : notCollectedSprite;
     }
 }

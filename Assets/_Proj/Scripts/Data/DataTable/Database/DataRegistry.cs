@@ -11,6 +11,7 @@ public class DataRegistry : ScriptableObject
     public CodexDatabase codexDB;
     public CostumeDatabase costumeDB;
     public DecoDatabase decoDB;
+    public GoodsDatabase goodsDB;
     public HomeDatabase homeDB;
     public Profile_iconDatabase profile_iconDB;
     public QuestDatabase questDB;

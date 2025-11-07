@@ -1,6 +1,9 @@
 kr_text_id,kr_text
 string,string
 [home_sweet_home],따뜻한 우리의 집
+[home_camping_car],캠핑카
+[home_green_roof_home],초록지붕집
+[home_red_home],붉은 외벽집
 [deco_white_fence],흰색 울타리
 [deco_fence],나무 울타리
 [deco_ground_planks],나무 바닥판
@@ -64,3 +67,6 @@ string,string
 [background_basic],기본 배경
 [background_winter],크리스마스 겨울 배경
 [background_summer],시원한 여름 배경
+[goods_energy],행동력
+[goods_cap],병뚜껑
+[goods_coin],유료 코인

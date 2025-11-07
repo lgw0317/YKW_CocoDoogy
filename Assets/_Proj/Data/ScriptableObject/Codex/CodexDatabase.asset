@@ -194,8 +194,8 @@ MonoBehaviour:
   - codex_id: codex_deco_mini_pot
     codex_type: 0
     item_id: 10017
-    codex_lore: "\uD06C\uAE30\uB9CC \uC791\uC744 \uBFD0,\n\uC548\uC5D0 \uC790\uB77C\uB294
-      \uC2DD\uBB3C\uC758 \uBFCC\uB9AC\uB294 \uAE4A\uC2B5\uB2C8\uB2E4. \uB204\uAD70\uAC00\uC758
+    codex_lore: "\uD06C\uAE30\uB9CC \uC791\uC744 \uBFD0,\uC548\uC5D0 \uC790\uB77C\uB294
+      \uC2DD\uBB3C\uC758 \uBFCC\uB9AC\uB294 \uAE4A\uC2B5\uB2C8\uB2E4. \n\uB204\uAD70\uAC00\uC758
       \uC190\uB54C\uAC00 \uBB3B\uC740 \uC791\uC740 \uC138\uACC4\uC785\uB2C8\uB2E4."
     codex_display: Img/Codex_display/Deco/codex_display_mini_pot
     codex_icon: Icons/Deco/icon_deco_mini_pot
@@ -257,7 +257,7 @@ MonoBehaviour:
     item_id: 20001
     codex_lore: "1\uC138\uAE30\uB3C4 \uC804\uC5D0 \uC720\uD589\uD588\uB358 \uBAA8\uC790\uB77C\uACE0\uD569\uB2C8\uB2E4.\n\uC774
       \uBAA8\uC790\uB97C \uC4F0\uBA74 \uC5B4\uB518\uAC00\uC5D0\uC11C \uD53C\uB9AC\uC18C\uB9AC\uAC00
-      \uB4E4\uB9AC\uB294 \uAC83 \uAC19\uB124\uC694"
+      \uB4E4\uB9AC\uB294 \uAC83 \uAC19\uB124\uC694."
     codex_display: Img/Codex_display/Costume/codex_display_cowboy
     codex_icon: Icons/Costume/icon_cowboy_hat
     codex_name: "\uCE74\uC6B0\uBCF4\uC774 \uBAA8\uC790"
@@ -266,8 +266,8 @@ MonoBehaviour:
     item_id: 20002
     codex_lore: "\uBC15\uBB3C\uAD00\uC5D0\uC11C \uBCF4\uC774\uB358 \uC655\uAD00\uC785\uB2C8\uB2E4.\n\uC5B4\uB9B0\uC544\uC774\uB4E4\uC774
       \uC774 \uBAA8\uC790\uB97C \uC4F0\uACE0 \uC7A5\uB09C\uCE58\uB294 \uC18C\uB9AC\uAC00
-      \uB4E4\uB9AC\uB294 \uB4EF \uD569\uB2C8\uB2E4 '\uC655\uC774 \uB204\uAD6C\uB0D0!?
-      \uB098\uB2E4!'"
+      \uB4E4\uB9AC\uB294 \uB4EF \uD569\uB2C8\uB2E4. -\uC655\uC774 \uB204\uAD6C\uB0D0!?
+      \uB098\uB2E4!-"
     codex_display: Img/Codex_display/Costume/codex_display_crown
     codex_icon: Icons/Costume/icon_crown_hat
     codex_name: "\uC655\uAD00"
@@ -348,13 +348,53 @@ MonoBehaviour:
     codex_display: Img/Codex_display/Animal/codex_display_chick
     codex_icon: Icons/Animal/icon_animal_chick
     codex_name: "\uB2ED"
-  - codex_id: codex_home_homesweathome
+  - codex_id: codex_home_small_home
     codex_type: 3
     item_id: 40001
-    codex_lore: "\uC8FC\uC778\uACFC \uC624\uB798 \uC0B4\uB358 \uC9D1\uC785\uB2C8\uB2E4"
-    codex_display: Img/Codex_display/Home/codex_display_homesweathome
-    codex_icon: Icons/Home/icon_home_sweet_home
-    codex_name: "\uB530\uB73B\uD55C \uC6B0\uB9AC\uC758 \uC9D1"
+    codex_lore: "\uBCBD\uB9C8\uB2E4 \uC138\uC6D4\uC758 \uD754\uC801\uC774 \uBC30\uC5B4
+      \uC788\uACE0, \uBCBD\uB09C\uB85C \uC55E\uC5D4 \uB204\uAD70\uAC00 \uB0A8\uAE34
+      \uC624\uB798\uB41C \uBA38\uADF8\uC794\uC774 \uB193\uC5EC \uC788\uC2B5\uB2C8\uB2E4.\n\uB2E8\uC21C\uD558\uC9C0\uB9CC
+      \uB9C8\uC74C\uC774 \uD3B8\uC548\uD574\uC9C0\uB294 \uCCAB \uBCF4\uAE08\uC790\uB9AC\uC785\uB2C8\uB2E4."
+    codex_display: Img/Codex_display/Home/codex_display_small_home
+    codex_icon: Icons/Home/icon_home_small_home
+    codex_name: '[home_small_home]'
+  - codex_id: codex_home_camping_car
+    codex_type: 3
+    item_id: 40002
+    codex_lore: "\u201C\uAE38 \uC704\uC5D0\uC11C \uB9CC\uB4E4\uC5B4\uC9C4 \uC9D1\uC785\uB2C8\uB2E4.\n\uCEA0\uD551\uCE74
+      \uC548\uC5D0\uB294 \uC5EC\uD589\uC790\uC640 \uD0D0\uD5D8\uAC00\uAC00 \uBCC4\uBE5B
+      \uC544\uB798\uC5D0\uC11C \uBC24\uC744 \uBCF4\uB0C8\uB358 \uD754\uC801\uC774
+      \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4.\n \uB0AF\uC120 \uB545\uC5D0\uC11C\uB3C4
+      \uC7A0\uC2DC \uC228\uC744 \uACE0\uB97C \uC218 \uC788\uC5C8\uB358 \uB530\uB73B\uD55C
+      \uC548\uC2DD\uCC98\uC785\uB2C8\uB2E4.\u201D"
+    codex_display: Img/Codex_display/Home/codex_display_camping_car
+    codex_icon: Icons/Home/icon_home_camping_car
+    codex_name: "\uCEA0\uD551\uCE74"
+  - codex_id: codex_home_green_roof_home
+    codex_type: 3
+    item_id: 40003
+    codex_lore: "\uB300\uAC00\uC871\uC774 \uD568\uAC8C \uC0B4\uB358 \uCD08\uB85D
+      \uC9C0\uBD95\uC9D0 \uC548, \uBCBD\uACFC \uB9C8\uB8E8\uC5D0\uB294 \uADF8\uB4E4\uC758
+      \uBC1C\uC790\uAD6D\uACFC \uC6C3\uC74C\uC18C\uB9AC\uAC00 \uC5EC\uC804\uD788
+      \uB0A8\uC544 \uC788\uC2B5\uB2C8\uB2E4.\n\uB0A1\uC740 \uC2DD\uD0C1\uACFC \uD754\uB4E4\uB9AC\uB294
+      \uC758\uC790\uB9C8\uB2E4 \uC9C0\uB09C\uB0A0\uC758 \uCD94\uC5B5\uC774 \uAE43\uB4E4\uC5B4
+      \uC788\uC2B5\uB2C8\uB2E4."
+    codex_display: Img/Codex_display/Home/codex_display_green_roof_home
+    codex_icon: Icons/home/icon_home_green_roof_home
+    codex_name: "\uCD08\uB85D\uC9C0\uBD95\uC9D1"
+  - codex_id: codex_home_red_home
+    codex_type: 3
+    item_id: 40004
+    codex_lore: "\uBD80\uBD80\uAC00 \uB0A1\uC740 \uC0C1\uC810\uC744 \uAC1C\uC870\uD574
+      \uB9CC\uB4E4\uC5C8\uC2B5\uB2C8\uB2E4.\n\uC6D0\uB798\uB294 \uAE08\uC774 \uAC04
+      \uD770\uC0C9 \uBCBD\uC774\uC5C8\uC9C0\uB9CC, \uC0C8\uBE68\uAC04 \uD398\uC778\uD2B8\uB97C
+      \uBC1C\uB77C \uB2E4\uC2DC \uC0B4\uC544\uB09C \uC9D1\uC785\uB2C8\uB2E4.\n\uC624\uB798\uB41C
+      \uAC04\uD310 \uC790\uAD6D\uC774 \uC544\uC9C1 \uB0A8\uC544 \uC788\uACE0, \uBB38\uC744
+      \uC5F4\uBA74 \uC5EC\uC804\uD788 \uB530\uB73B\uD55C \uBE75 \uB0C4\uC0C8\uAC00
+      \uD37C\uC9D1\uB2C8\uB2E4."
+    codex_display: Img/Codex_display/Home/codex_display_red_home
+    codex_icon: Icons/Home/icon_home_red_home
+    codex_name: "\uBD89\uC740 \uC678\uBCBD\uC9D1"
   - codex_id: codex_artifact_travelbag
     codex_type: 4
     item_id: 50001
@@ -417,8 +457,8 @@ MonoBehaviour:
     item_id: 50006
     codex_lore: "\uACE0\uC18D\uB3C4\uB85C\uC5D0\uC11C \uC5BB\uC740 \uC2E0\uBB38\uC9C0.
       \uCC28 \uC548\uC5D0\uC11C \uB204\uAD70\uAC00 \uBCF8 \uB4EF\uD558\uB2E4.\n\uCC22\uACA8\uC838\uC11C
-      \uB274\uC2A4 \uC81C\uBAA9\uB9CC \uBCF4\uC778\uB2E4.\n\u201C2\uB144\uC9F8 \uC774\uC5B4\uC9C4
-      \uB300\uC804\uC7C1\u2026 \uB300\uCCB4 \uC5B8\uC81C\uAE4C\uC9C0?\u201D"
+      \uB274\uC2A4 \uC81C\uBAA9\uB9CC \uBCF4\uC778\uB2E4.\n'2\uB144\uC9F8 \uC774\uC5B4\uC9C4
+      \uB300\uC804\uC7C1\u2026 \uB300\uCCB4 \uC5B8\uC81C\uAE4C\uC9C0?'"
     codex_display: Img/Codex_display/Artifact/codex_display_tornnewspaper
     codex_icon: Icons/Artifact/icon_artifact_tornnewspaper
     codex_name: "\uCC22\uC5B4\uC9C4 \uB274\uC2A4"
@@ -428,10 +468,10 @@ MonoBehaviour:
     codex_lore: "\uACE0\uC18D\uB3C4\uB85C\uC5D0\uC11C \uC5BB\uC740 \uD3EC\uC2A4\uD130
       \uC870\uAC01. \uBC14\uB78C\uC5D0 \uD769\uB0A0\uB824 \uC774\uACF3\uAE4C\uC9C0
       \uB0A0\uC544\uC628 \uB4EF\uD558\uB2E4.\n\uBCD1\uAE30\uC6A9 \uC548\uB4DC\uB85C\uC774\uB4DC\uAC00
-      \uC190\uC744 \uB4E4\uACE0 \uC788\uB294 \uBAA8\uC2B5\uACFC \u201C\uC778\uB958\uB97C
-      \uC9C0\uD0A4\uB294 \uAC15\uCCA0\uC758 \uC6A9\uC0AC, \uBCD1\uAE30 \uC548\uB4DC\uB85C\uC774\uB4DC!\u201D
+      \uC190\uC744 \uB4E4\uACE0 \uC788\uB294 \uBAA8\uC2B5\uACFC '\uC778\uB958\uB97C
+      \uC9C0\uD0A4\uB294 \uAC15\uCCA0\uC758 \uC6A9\uC0AC, \uBCD1\uAE30 \uC548\uB4DC\uB85C\uC774\uB4DC!'
       \uBB38\uAD6C\uAC00 \uC801\uD600\uC788\uB2E4. \uADF8 \uBB38\uAD6C \uC704\uC5D0
-      \u201C\uC9C0\uD0A8 \uAC8C \uC544\uB2C8\uB77C, \uBE7C\uC5C8\uC5B4!\u201D \uBD89\uC740
+      '\uC9C0\uD0A8 \uAC8C \uC544\uB2C8\uB77C, \uBE7C\uC5C8\uC5B4!' \uBD89\uC740
       \uAE00\uC528\uB85C \uB099\uC11C \uB418\uC5B4\uC788\uB2E4."
     codex_display: Img/Codex_display/Artifact/codex_display_posterfragment
     codex_icon: Icons/Artifact/icon_artifact_posterfragment
@@ -477,3 +517,28 @@ MonoBehaviour:
     codex_display: Img/Codex_display/Artifact/codex_display_flowerbouquet
     codex_icon: Icons/Artifact/icon_artifact_flowerbouquet
     codex_name: "\uAF43\uB2E4\uBC1C"
+  - codex_id: codex_artifact_energy
+    codex_type: 4
+    item_id: 110001
+    codex_lore: "\u3141\u3134\u3147\u313B\u3134\u3147\u313B\u3134\u3147\u3139asd"
+    codex_display: System/icon_energy
+    codex_icon: System/icon_energy
+    codex_name: "\uD589\uB3D9\uB825"
+  - codex_id: codex_artifact_cap
+    codex_type: 4
+    item_id: 110002
+    codex_lore: "\uC138\uC0C1\uC774 \uBA78\uB9DD\uD558\uACE0 \uC0AC\uB78C\uB4E4\uC774
+      \uD654\uD3D0 \uB300\uC6A9\uC73C\uB85C \uC0AC\uC6A9\uD558\uAE30 \uC2DC\uC791\uD588\uC2B5\uB2C8\uB2E4"
+    codex_display: System/icon_cap
+    codex_icon: System/icon_cap
+    codex_name: "\uBCD1\uB69C\uAED1"
+  - codex_id: codex_artifact_coin
+    codex_type: 4
+    item_id: 110003
+    codex_lore: "\uC608\uC804\uC5D0\uB294 \uC774\uAC70\uB85C \uBB3C\uAC74\uC744 \uC0AC\uACE0
+      \uD314\uC558\uB2E4\uB124\uC694? \uBCD1\uB69C\uAED1\uC774 \uC788\uB294\uB370!
+      \uADF8\uB798\uB3C4 \uC790\uD310\uAE30 \uAC19\uC740 \uACF3\uC5D0 \uC0AC\uC6A9\uD560
+      \uC218 \uC788\uC744\uAC70\uC5D0\uC694"
+    codex_display: System/icon_coin
+    codex_icon: System/icon_coin
+    codex_name: "\uC720\uB8CC \uCF54\uC778"

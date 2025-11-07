@@ -24,7 +24,7 @@ public static class TreasureParser
 
             var v = System.Text.RegularExpressions.Regex.Split(line, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-            if (v.Length < 5)
+            if (v.Length < 6)
             {
                 Debug.LogWarning($"[TreasureParser] {i}행 데이터 부족 → 스킵");
                 continue;
@@ -48,7 +48,8 @@ public static class TreasureParser
                 treasureType = type,
                 reward_id = reward_id,
                 count = count,
-                coco_coment = v[4],
+                view_codex_id = v[4],
+                coco_coment = v[5],
             });
         }
 

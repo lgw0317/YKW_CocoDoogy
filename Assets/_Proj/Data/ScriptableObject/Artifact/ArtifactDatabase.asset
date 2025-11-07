@@ -13,14 +13,6 @@ MonoBehaviour:
   m_Name: ArtifactDatabase
   m_EditorClassIdentifier: 
   artifactList:
-  - artifact_id: -1
-    artifact_name: "\uB3D9\uC804"
-    artifact_icon: Icons/Artifact/icon_artifact_coin
-    artifact_type: 0
-  - artifact_id: -2
-    artifact_name: "\uBCD1\uB69C\uAED1"
-    artifact_icon: Icons/Artifact/icon_artifact_cap
-    artifact_type: 0
   - artifact_id: 50001
     artifact_name: "\uC5EC\uD589 \uAC00\uBC29"
     artifact_icon: Icons/Artifact/icon_artifact_travelbag

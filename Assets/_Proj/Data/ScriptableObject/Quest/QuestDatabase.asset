@@ -408,7 +408,7 @@ MonoBehaviour:
     quest_reward_item: 0
     quest_reward_item_count: 0
     quest_desc: "\"\uC77C\uC77C \uD018\uC2A4\uD2B8\uB97C 1\uAC1C \uD074\uB9AC\uC5B4
-      \uD574\uC57C\uD55C\uB2E4\""
+      \uD574\uC57C\uD55C\uB2E4.\""
   - quest_id: 70036
     quest_name: "\uC77C3\uD68C"
     quest_type: 0
@@ -419,7 +419,7 @@ MonoBehaviour:
     quest_reward_item: 0
     quest_reward_item_count: 0
     quest_desc: "\"\uC77C\uC77C \uD018\uC2A4\uD2B8\uB97C 3\uAC1C \uD074\uB9AC\uC5B4
-      \uD574\uC57C\uD55C\uB2E4\""
+      \uD574\uC57C\uD55C\uB2E4.\""
   - quest_id: 70037
     quest_name: "\uC77C5\uD68C"
     quest_type: 0
@@ -430,7 +430,7 @@ MonoBehaviour:
     quest_reward_item: 0
     quest_reward_item_count: 0
     quest_desc: "\"\uC77C\uC77C \uD018\uC2A4\uD2B8\uB97C 5\uAC1C \uD074\uB9AC\uC5B4
-      \uD574\uC57C\uD55C\uB2E4\""
+      \uD574\uC57C\uD55C\uB2E4.\""
   - quest_id: 70038
     quest_name: "\uC8FC1\uD68C"
     quest_type: 0
@@ -441,7 +441,7 @@ MonoBehaviour:
     quest_reward_item: 0
     quest_reward_item_count: 0
     quest_desc: "\"\uC8FC\uAC04 \uD018\uC2A4\uD2B8\uB97C 1\uAC1C \uD074\uB9AC\uC5B4
-      \uD574\uC57C\uD55C\uB2E4\""
+      \uD574\uC57C\uD55C\uB2E4.\""
   - quest_id: 70039
     quest_name: "\uC8FC3\uD68C"
     quest_type: 0
@@ -452,7 +452,7 @@ MonoBehaviour:
     quest_reward_item: 0
     quest_reward_item_count: 0
     quest_desc: "\"\uC8FC\uAC04 \uD018\uC2A4\uD2B8\uB97C 3\uAC1C \uD074\uB9AC\uC5B4
-      \uD574\uC57C\uD55C\uB2E4\""
+      \uD574\uC57C\uD55C\uB2E4.\""
   - quest_id: 70040
     quest_name: "\uC8FC5\uD68C"
     quest_type: 0
@@ -463,7 +463,7 @@ MonoBehaviour:
     quest_reward_item: 0
     quest_reward_item_count: 0
     quest_desc: "\"\uC8FC\uAC04 \uD018\uC2A4\uD2B8\uB97C 5\uAC1C \uD074\uB9AC\uC5B4
-      \uD574\uC57C\uD55C\uB2E4\""
+      \uD574\uC57C\uD55C\uB2E4.\""
   - quest_id: 70041
     quest_name: "\uCF54\uCF54\uB450\uAE30\uC640 \uCE5C\uAD6C\uD558\uAE30"
     quest_type: 2

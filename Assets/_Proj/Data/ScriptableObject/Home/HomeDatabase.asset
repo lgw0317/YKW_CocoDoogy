@@ -14,10 +14,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   homeList:
   - home_id: 40001
-    home_name: "\uB530\uB73B\uD55C \uC6B0\uB9AC\uC758 \uC9D1"
-    home_prefab: Prefabs/Home/home_sweet_home
-    home_icon: Icons/Home/icon_home_sweet_home
+    home_name: '[home_small_home]'
+    home_prefab: Prefabs/Home/house-medieval-small
+    home_icon: Icons/Home/icon_home_small_home
     home_tag: 0
     home_acquire: 0
     home_desc: "\"\uB450 \uC8FC\uC778\uC758 \uC190\uAE38\uACFC \uC628\uAE30\uAC00
-      \uB290\uAEF4\uC9C0\uB294 \uC9D1\uC785\uB2C8\uB2E4\""
+      \uB290\uAEF4\uC9C0\uB294 \uC9D1\uC785\uB2C8\uB2E4.\""
+  - home_id: 40002
+    home_name: "\uCEA0\uD551\uCE74"
+    home_prefab: Prefabs/Home/car-caravan-small-standing-b
+    home_icon: Icons/Home/icon_home_camping_car
+    home_tag: 0
+    home_acquire: 0
+    home_desc: "\"\uC5EC\uD589\uC790\uB098 \uD0D0\uD5D8\uAC00\uC758 \uC544\uB291\uD55C
+      \uC784\uC2DC \uAC70\uCC98\uC785\uB2C8\uB2E4.\""
+  - home_id: 40003
+    home_name: "\uCD08\uB85D\uC9C0\uBD95\uC9D1"
+    home_prefab: Prefabs/Home/building-house-middle
+    home_icon: Icons/Home/icon_home_green_roof_home
+    home_tag: 0
+    home_acquire: 0
+    home_desc: "\"\uB300\uAC00\uC871\uC774 \uC0B4\uC558\uB358 \uCD08\uB85D \uC9C0\uBD95\uC774
+      \uB9E4\uB825\uC801\uC778 \uC9D1\uC785\uB2C8\uB2E4.\""
+  - home_id: 40004
+    home_name: "\uBD89\uC740 \uC678\uBCBD\uC9D1"
+    home_prefab: Prefabs/Home/hotel-western
+    home_icon: Icons/Home/icon_home_red_home
+    home_tag: 0
+    home_acquire: 0
+    home_desc: "\"\uC0C1\uC810\uC744 \uAC1C\uC870\uD55C \uBD89\uC740\uC0C9 \uC678\uAD00\uC758
+      \uC9D1\uC785\uB2C8\uB2E4.\""

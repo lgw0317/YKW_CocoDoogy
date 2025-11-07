@@ -1,6 +1,4 @@
 artifact_id,artifact_name,artifact_icon,artifact_type
--1,[coin],Icons/Artifact/icon_artifact_coin,money
--2,[cap],Icons/Artifact/icon_artifact_cap,money
 50001,[artifact_travelbag],Icons/Artifact/icon_artifact_travelbag,oldstuff
 50002,[artifact_leafcrown],Icons/Artifact/icon_artifact_leafcrown,oldstuff
 50003,[artifact_smallmetal],Icons/Artifact/icon_artifact_smallmetal,oldstuff

@@ -15,31 +15,37 @@ MonoBehaviour:
   treasureList:
   - treasure_id: treasure_1_1_1
     treasureType: 0
-    reward_id: -1
-    count: 50
+    reward_id: 110003
+    count: 100
+    view_codex_id: codex_artifact_coin
     coco_coment: '[coco_get_coin]'
   - treasure_id: treasure_1_1_2
     treasureType: 1
-    reward_id: -2
-    count: 50
+    reward_id: 110002
+    count: 500
+    view_codex_id: codex_artifact_cap
     coco_coment: '[coco_get_cap]'
   - treasure_id: treasure_1_1_3
     treasureType: 2
     reward_id: 10001
     count: 1
+    view_codex_id: codex_deco_tree_lime
     coco_coment: "\"\uAC00\uAD6C\uB97C \uBA39\uC5C8\uC5B4!\""
   - treasure_id: treasure_1_2_1
     treasureType: 0
     reward_id: 20001
     count: 1
+    view_codex_id: codex_costume_cowboy
     coco_coment: "\"\uCF54\uC2A4\uD2AC\uC744 \uBA39\uC5C8\uC5B4!\""
   - treasure_id: treasure_1_2_2
     treasureType: 4
     reward_id: 50001
     count: 1
+    view_codex_id: codex_artifact_travelbag
     coco_coment: "\"\uC720\uBB3C\uC744 \uBA39\uC5C8\uC5B4!\""
   - treasure_id: treasure_1_2_3
     treasureType: 1
-    reward_id: -2
-    count: 50
+    reward_id: 110002
+    count: 500
+    view_codex_id: codex_artifact_coin
     coco_coment: '[coco_get_cap]'

@@ -22,6 +22,10 @@ public class Treasure : MonoBehaviour
             StageUIManager.Instance.TreasurePanel.SetActive(true);
             StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(false);
 
+            var data = DataManager.Instance.Treasure.GetData(treasureId);
+
+            StageUIManager.Instance.TreasureName.text = data.treasure_id;
+
             // 플레이어 이동 막기
             other.GetComponent<PlayerMovement>().enabled = false;
 
