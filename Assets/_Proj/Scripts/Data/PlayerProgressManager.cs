@@ -1,12 +1,31 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerProgressManager : MonoBehaviour
 {
     public static PlayerProgressManager Instance;
-    private Dictionary<string, StageProgressData> stageProgressDict = new();
 
+    public static event Action OnProgressUpdated;
+
+    private Dictionary<string, StageProgressData> stageProgressDict = new();
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // ì”¬ì´ ë¡œë“œë  ë•Œë§ˆë‹¤ ì§„í–‰ë„ ì•Œë¦¼ ì¬ë°œí–‰
+        LoadProgress();
+        OnProgressUpdated?.Invoke();
+    }
     void Awake()
     {
         if (Instance == null)
@@ -34,21 +53,38 @@ public class PlayerProgressManager : MonoBehaviour
                 progress.treasureCollected[i] = true;
         }
         SaveProgress();
+        Debug.Log($"[PlayerProgressManager] OnProgressUpdated Invoke â€” stageId:{stageId}");
+        OnProgressUpdated?.Invoke();
     }
 
     void SaveProgress()
     {
-        //Todo : Firebase ¿¬µ¿½Ã º¯°æÇØ¾ß ÇÒ ºÎºĞ
-        PlayerPrefs.SetString("StageProgress", JsonUtility.ToJson(new Wrapper(stageProgressDict)));
+        //Todo : Firebase ì—°ë™ì‹œ ë³€ê²½í•´ì•¼ í•  ë¶€ë¶„
+
+        var wrapper = new Wrapper(stageProgressDict);
+        string json = JsonUtility.ToJson(wrapper, true);
+        PlayerPrefs.SetString("StageProgress", json);
+        PlayerPrefs.Save(); // ë°˜ë“œì‹œ ì €ì¥
+        Debug.Log($"[SaveProgress] ì €ì¥ë¨:\n{json}");
     }
 
-    void LoadProgress()
+    public void LoadProgress()
     {
-        //Todo : Firebase ¿¬µ¿½Ã º¯°æÇØ¾ß ÇÒ ºÎºĞ
+        //Todo : Firebase ì—°ë™ì‹œ ë³€ê²½í•´ì•¼ í•  ë¶€ë¶„
         if (PlayerPrefs.HasKey("StageProgress"))
         {
-            var json = PlayerPrefs.GetString("StageProgress");
-            stageProgressDict = JsonUtility.FromJson<Wrapper>(json).ToDictionary();
+            string json = PlayerPrefs.GetString("StageProgress");
+            Debug.Log($"[LoadProgress] ë¡œë“œëœ JSON:\n{json}");
+
+            var wrapper = JsonUtility.FromJson<Wrapper>(json);
+            if (wrapper != null && wrapper.list != null)
+                stageProgressDict = wrapper.ToDictionary();
+            else
+                stageProgressDict = new Dictionary<string, StageProgressData>();
+        }
+        else
+        {
+            stageProgressDict = new Dictionary<string, StageProgressData>();
         }
     }
 
@@ -56,11 +92,19 @@ public class PlayerProgressManager : MonoBehaviour
     private class Wrapper
     {
         public List<StageProgressData> list = new();
-        public Wrapper(Dictionary<string, StageProgressData> dict) => list.AddRange(dict.Values);
+
+        public Wrapper() { }
+
+        public Wrapper(Dictionary<string, StageProgressData> dict)
+        {
+            list = new List<StageProgressData>(dict.Values);
+        }
+
         public Dictionary<string, StageProgressData> ToDictionary()
         {
             var d = new Dictionary<string, StageProgressData>();
-            foreach (var e in list) d[e.stageId] = e;
+            foreach (var e in list)
+                d[e.stageId] = e;
             return d;
         }
     }

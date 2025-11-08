@@ -116,7 +116,7 @@ public class StageManager : MonoBehaviour
         StageUIManager.Instance.stageName.text = data.stage_name;
 
         // 스테이지 클리어 시 진행 데이터 저장
-        PlayerProgressManager.Instance.UpdateStageTreasure(currentStageId, collectedTreasures);
+        PlayerProgressManager.Instance.UpdateStageTreasure(data.stage_id, collectedTreasures);
 
         StageUIManager.Instance.UpdateTreasureIcons(
             collectedTreasures[0],
@@ -152,7 +152,7 @@ public class StageManager : MonoBehaviour
         {
 
 
-            print($"[StageManager] {block.blockName}: {block.blockType} [{block.position.x}],[{block.position.y}],[{block.position.z}]");
+            //print($"[StageManager] {block.blockName}: {block.blockType} [{block.position.x}],[{block.position.y}],[{block.position.z}]");
             //여기서 팩토리가 들고 있는 프리팹으로 인스턴시에이트.
             
             //생성 후 블록의 타입으로 컴포넌트 붙여주는 처리는 BlockFactory에서 담당.

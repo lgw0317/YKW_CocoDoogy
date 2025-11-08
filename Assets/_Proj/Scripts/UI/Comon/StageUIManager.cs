@@ -97,14 +97,14 @@ public class StageUIManager : MonoBehaviour
     {
         //Todo : 챕터에 따라 스테이지 선택화면 분기
         //currentChapter
-        SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("Main");
     }
 
     void Exit()
     {
         //Todo : 챕터에 따라 스테이지 선택화면 분기
         //currentChapter
-        SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("Main");
     }
 
     public void UpdateTreasureIcons(bool t1, bool t2, bool t3)

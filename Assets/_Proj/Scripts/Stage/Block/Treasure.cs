@@ -29,24 +29,28 @@ public class Treasure : MonoBehaviour
             {
                 case TreasureType.deco:
                     var deco = DataManager.Instance.Deco.GetData(data.reward_id);
+                    StageUIManager.Instance.TreasureImage.sprite = DataManager.Instance.Deco.GetIcon(data.reward_id);
                     StageUIManager.Instance.TreasureName.text = deco.deco_name;
                     StageUIManager.Instance.TreasureDesc.text = deco.deco_desc;
                     TreasureUI(data);
                     break;
                 case TreasureType.costume:
                     var costume = DataManager.Instance.Costume.GetData(data.reward_id);
+                    StageUIManager.Instance.TreasureImage.sprite = DataManager.Instance.Costume.GetIcon(data.reward_id);
                     StageUIManager.Instance.TreasureName.text = costume.costume_name;
                     StageUIManager.Instance.TreasureDesc.text = costume.costume_desc;
                     TreasureUI(data);
                     break;
                 case TreasureType.artifact:
                     var artifact = DataManager.Instance.Artifact.GetData(data.reward_id);
+                    StageUIManager.Instance.TreasureImage.sprite = DataManager.Instance.Artifact.GetIcon(data.reward_id);
                     StageUIManager.Instance.TreasureName.text = artifact.artifact_name;
                     StageUIManager.Instance.TreasureDesc.text = artifact.artifact_name;
                     TreasureUI(data);
                     break;
                 case TreasureType.coin:
                 case TreasureType.cap:
+                    StageUIManager.Instance.TreasureImage.sprite = DataManager.Instance.Codex.GetCodexIcon(data.view_codex_id); ;
                     StageUIManager.Instance.TreasureName.text = "보물이지롱";
                     StageUIManager.Instance.TreasureDesc.text = "사실아니지롱";
                     TreasureUI(data);
@@ -70,7 +74,6 @@ public class Treasure : MonoBehaviour
 
     private static void TreasureUI(TreasureData data)
     {
-        StageUIManager.Instance.TreasureImage.sprite = DataManager.Instance.Deco.GetIcon(data.reward_id);
         StageUIManager.Instance.TreasureType.text = data.treasureType.ToString();
         StageUIManager.Instance.TreasureCount.text = data.count.ToString();
         StageUIManager.Instance.CocoDoogyDesc.text = data.coco_coment;
