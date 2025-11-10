@@ -168,7 +168,8 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             Vector3 currentPos = transform.position;
             Vector3 nextPos = currentPos + moveDir * tileSize;
             Vector3 boxCenter = nextPos + Vector3.up * 0.5f;
-            Vector3 halfExt = new Vector3(0.45f, 0.6f, 0.45f); // 충돌 검사용 박스 크기
+            //Vector3 halfExt = new Vector3(0.45f, 0.6f, 0.45f); // 충돌 검사용 박스 크기
+            Vector3 halfExt = new Vector3(0.2f, 0.2f, 0.2f); // 충돌 검사용 박스 크기
 
             // blocking 우선 검사(다음 칸에 뭐 있는지)
             Collider[] blockHits = Physics.OverlapBox(boxCenter, halfExt, Quaternion.identity, blockingMask);
@@ -519,7 +520,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         float half = Mathf.Min(0.45f, tileSize * 0.45f);
         Vector3 halfExt = new Vector3(half, 0.05f, half);
 
-        float castDist = tileSize * 1.25f;
+        float castDist = tileSize /* * 1.25f*/;
         Vector3 origin = worldPos + Vector3.up * (tileSize * 0.5f);
 
         return Physics.BoxCast(
