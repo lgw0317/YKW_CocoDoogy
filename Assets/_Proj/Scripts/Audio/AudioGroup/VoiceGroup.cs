@@ -7,7 +7,7 @@ public class VoiceGroup : MonoBehaviour, IAudioController
     private AudioMixerGroup group;
     private VoicePlayer player;
 
-    private void Awake()
+    public void Init()
     {
         mixer = AudioManager.AudioGroupProvider.GetMixer();
         group = AudioManager.AudioGroupProvider.GetGroup(AudioType.Voice);
@@ -15,7 +15,9 @@ public class VoiceGroup : MonoBehaviour, IAudioController
         player = new VoicePlayer(mixer, transform);
     }
 
-    // ¿Àµð¿À ½ÇÇà
+    public void PostInit() { }
+
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void PlayVoice(AudioClip clip)
     {
         player.PlayAudio(clip, group);

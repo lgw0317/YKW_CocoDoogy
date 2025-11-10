@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using System.Collections.Generic;
 using System;
+using UnityEngine.SceneManagement;
 /// <summary>
 /// BGM, Cutscene 합칠 것,
 /// SFX, Ambient 합칠 것
@@ -15,7 +16,7 @@ public struct AudioGroupMapping
     public AudioType type;
     public AudioMixerGroup group;
 }
-[DefaultExecutionOrder(-99)]
+//[DefaultExecutionOrder(-99)]
 public class AudioManager : MonoBehaviour, IAudioGroupSetting
 {
     public static AudioManager Instance { get; private set; }
@@ -45,8 +46,9 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
     private AudioLibraryProvider libraryProvider;
     private AudioVolumeHandler volumeHandler;
     private IAudioController[] audioGroups;
+    private SceneAudio sAudio;
 
-    void Awake()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -77,7 +79,23 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
 
         audioGroups = new IAudioController[6] { bgmGroup, sfxGroup, ambientGroup, cutsceneGroup, voiceGroup, uiGroup };
 
-        // ���� �ҷ�����
+        // 볼륨 불러오기
+        // if (SettingManager.Instance == null)
+        // {
+        //     var settingGO = new GameObject("SettingManager");
+        //     settingGO.AddComponent<SettingManager>();
+        // }
+        // var volumeData = SettingManager.Instance.settingData;
+        // volumeHandler.ApplyVolumes(volumeData.audio);
+        //
+        foreach (var aG in audioGroups)
+        {
+            aG.Init();
+        }
+    }
+
+    private void OnEnable()
+    {
         if (SettingManager.Instance == null)
         {
             var settingGO = new GameObject("SettingManager");
@@ -85,9 +103,13 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
         }
         var volumeData = SettingManager.Instance.settingData;
         volumeHandler.ApplyVolumes(volumeData.audio);
-        //
-        
 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     public AudioMixer GetMixer()
@@ -100,7 +122,7 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
         return groupMap[type];
     }
 
-    // ���
+    // 재생
     public void PlayAudio(Enum key, int index = -1, float fadeIn = 0, float fadeOut = 0, bool loop = false, bool pooled = false, Vector3? pos = null)
     {
         switch (key)
@@ -127,7 +149,17 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
         }
     }
 
-    #region ���������б�
+    // 각 씬에 있는 메인 BGM을 이벤트로 재생
+    private void OnSceneLoaded(Scene scne, LoadSceneMode mode)
+    {
+        sAudio = FindFirstObjectByType<SceneAudio>();
+        if (sAudio != null)
+        {
+            sAudio.StartBGM();
+        }
+    }
+
+    #region 오디오 재생 분기
     private void PlayAudio(BGMKey key, int index = -1, float fadeIn = 1f, float fadeOut = 1f, bool loop = true)
     {
         var clip = libraryProvider.GetClip(AudioType.BGM, key, index);

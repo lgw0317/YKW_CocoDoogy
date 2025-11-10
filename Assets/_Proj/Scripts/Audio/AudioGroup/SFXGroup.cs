@@ -11,7 +11,7 @@ public class SFXGroup : MonoBehaviour, IAudioController
     private SFXPlayer player;
     private AudioPool audioPool;
 
-    private void Awake()
+    public void Init()
     {
         mixer = AudioManager.AudioGroupProvider.GetMixer();
         group = AudioManager.AudioGroupProvider.GetGroup(AudioType.SFX);
@@ -20,13 +20,15 @@ public class SFXGroup : MonoBehaviour, IAudioController
         player = new SFXPlayer(mixer, transform, audioPool);
     }
 
-    // ¿Àµð¿À ½ÇÇà
+    public void PostInit() { }
+
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void PlaySFX(AudioClip clip, bool loop, bool pooled, Vector3? pos = null)
     {
         player.PlayAudio(clip, group, loop, pooled, pos);
     }
 
-    // ¿Àµð¿À Á¦¾î
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void PlayPlayer()
     {
         player.PlayAll();

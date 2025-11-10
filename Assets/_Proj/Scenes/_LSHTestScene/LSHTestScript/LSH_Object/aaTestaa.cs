@@ -384,4 +384,14 @@ public abstract class aaTestaa : MonoBehaviour, ILobbyInteractable, ILobbyDragga
         InLobbyManager.Instance.UnregisterLobbyChar(this);
         Debug.Log($"{this} 삭제");
     }
+
+    public void Init()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void PostInit()
+    {
+        throw new NotImplementedException();
+    }
 }

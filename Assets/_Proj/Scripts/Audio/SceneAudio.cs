@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-// BGMÀº SFX¿Í ´Þ¸® ¿©±â¼­ À½¾ÇÆÄÀÏÀ» ³Ö°í ½ÇÇàÇÏ´Â ±¸Á¶
-// Æ¯È÷ AudioManager´Â DDOLÀÌ´Ï ÀÌ ½ºÅ©¸³Æ®°¡ ºÙÀº ¿ÀºêÁ§Æ®¸¦ ´Ù¸¥ ¾À ¸¶´Ù ³Ö¾î¼­ ´Ù¸¥ ³ë·¡¸¦ Áý¾î ³ÖÀ¸¸é ¾Ë¾Æ¼­ Àç»ý ÇØÁÜ.
-// SFX´Â ½ºÅ©¸³ÅÍºí ¿ÀºêÁ§Æ®·Î ÇÒ »ý°¢, ÀÌ ½ºÅ©¸³Æ®´Â ÇØ´ç ¾À ¹è°æÀ½ ¼³Á¤ÇÏ´Â °ÍÀÓ
+// BGMï¿½ï¿½ SFXï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
+// Æ¯ï¿½ï¿½ AudioManagerï¿½ï¿½ DDOLï¿½Ì´ï¿½ ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾î¼­ ï¿½Ù¸ï¿½ ï¿½ë·¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¾Æ¼ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+// SFXï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½ï¿½Íºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 public class SceneAudio : MonoBehaviour
 {
@@ -15,42 +15,42 @@ public class SceneAudio : MonoBehaviour
     [SerializeField] bool loop;
 
     [Header("IntroBGM")]
-    [SerializeField] AudioClip introBGM;
+    [SerializeField] int introClipIndex;
     [SerializeField] float introDuration;
     [SerializeField] bool useIntro;
 
-    //[Header("SceneMainCamera")]
-    //[SerializeField] private Camera cam;
+    // [Header("SceneMainCamera")]
+    // [SerializeField] private Camera cam;
 
-    //void Start()
-    //{
-    //    if (AudioManager.Instance != null)
-    //    {
-    //        if (useIntro && introBGM != null)
-    //        {
-    //            StartCoroutine(PlayIntroBGM());
-    //        }
-    //        else
-    //        {
-    //            AudioManager.Instance.PlayBGM<BGMKey>(AudioType.BGM, key, bgmClipIndex, fadeInTime, fadeOutTime, loop);
-    //        }
-    //    }
-    //}
+    public void StartBGM()
+    {
+       if (AudioManager.Instance != null)
+       {
+           if (useIntro)
+           {
+               StartCoroutine(PlayIntroBGM());
+           }
+           else
+           {
+               AudioManager.Instance.PlayAudio(key, bgmClipIndex, fadeInTime, fadeOutTime, loop);
+           }
+       }
+    }
 
-    //private IEnumerator PlayIntroBGM()
-    //{
-    //    AudioManager.Instance.PlayBGM<BGMKey>(AudioType.BGM, key, bgmClipIndex, fadeInTime, fadeOutTime, false);
+    private IEnumerator PlayIntroBGM()
+    {
+       AudioManager.Instance.PlayAudio(key, introClipIndex, fadeInTime, fadeOutTime, false);
 
-    //    yield return new WaitForSeconds(introDuration);
+       yield return new WaitForSeconds(introDuration);
 
-    //    AudioManager.Instance.PlayBGM<BGMKey>(AudioType.BGM, key, bgmClipIndex, fadeInTime, fadeOutTime, loop);
-    //    //if (cam != null)
-    //    //{
-    //    //    new WaitForSeconds(1f);
-    //    //    var aL = cam.GetComponent<AudioListener>();
-    //    //    aL.enabled = false;
-    //    //}
-    //}
+       AudioManager.Instance.PlayAudio(key, bgmClipIndex, fadeInTime, fadeOutTime, loop);
+       //if (cam != null)
+       //{
+       //    new WaitForSeconds(1f);
+       //    var aL = cam.GetComponent<AudioListener>();
+       //    aL.enabled = false;
+       //}
+    }
 }
 
 

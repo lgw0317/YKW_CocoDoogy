@@ -11,7 +11,7 @@ public class AmbientGroup : MonoBehaviour, IAudioController
     private AmbientPlayer player;
     private AudioPool audioPool;
 
-    private void Awake()
+    public void Init()
     {
         mixer = AudioManager.AudioGroupProvider.GetMixer();
         Debug.Log($"AmbientGroup Mixer : {mixer.name}");
@@ -21,13 +21,14 @@ public class AmbientGroup : MonoBehaviour, IAudioController
         player = new AmbientPlayer(mixer, transform, audioPool);
     }
 
-    // ¿Àµð¿À ½ÇÇà
+    public void PostInit() { }
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void PlayAmbient(AudioClip clip, bool loop, bool pooled, Vector3? pos = null)
     {
         player.PlayAudio(clip, group, loop, pooled, pos);
     }
 
-    // ¿Àµð¿À Á¦¾î
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void PlayPlayer()
     {
         player.PlayAll();
@@ -52,4 +53,5 @@ public class AmbientGroup : MonoBehaviour, IAudioController
     {
         player.ResetAll();
     }
+
 }

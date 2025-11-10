@@ -63,11 +63,13 @@ public class DataManager : MonoBehaviour
 
         Shop = new ShopProvider(dataRegistry.shopDB, loader);
 
-        ShopItem= new Shop_itemProvider(dataRegistry.shop_itemDB, loader);
+        ShopItem = new Shop_itemProvider(dataRegistry.shop_itemDB, loader);
 
         Stage = new StageProvider(dataRegistry.stageDB, loader);
 
         Treasure = new TreasureProvider(dataRegistry.treasureDB, loader);
+
+        mainChar = new MainCharacterProvider(dataRegistry.mainCharDB, loader);
 
         //Dialogue = new DialogueProvider(dataRegistry.dialogueDB, loader);
 
