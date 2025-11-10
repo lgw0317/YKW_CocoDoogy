@@ -7178,6 +7178,52 @@ Transform:
   - {fileID: 1250758925}
   m_Father: {fileID: 1198059367}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &659112600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 659112601}
+  - component: {fileID: 659112602}
+  m_Layer: 0
+  m_Name: ProfileService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &659112601
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659112600}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4200819470041082668}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &659112602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659112600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52a9d7a9765cf8846ba712698db80e5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sourceBehaviour: {fileID: 3858880227464372570}
+  progressStoreBehaviour: {fileID: 1064008961}
 --- !u!1 &667203874
 GameObject:
   m_ObjectHideFlags: 0
@@ -10762,6 +10808,50 @@ LODGroup:
     renderers:
     - renderer: {fileID: 1061959230}
   m_Enabled: 1
+--- !u!1 &1064008959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1064008960}
+  - component: {fileID: 1064008961}
+  m_Layer: 0
+  m_Name: FirebaseProfileProgressStore
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1064008960
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064008959}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4200819470041082668}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1064008961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064008959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bcfad8bb73462e4884d9c1479ddf232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1064196833
 GameObject:
   m_ObjectHideFlags: 0
@@ -11388,6 +11478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageManager: {fileID: 0}
+  <IsInitialized>k__BackingField: 0
   currentMapData:
     blocks: []
   selectStageID: 
@@ -25735,8 +25826,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccd40ae244e50ac44b32ebf368d46382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profilePanel: {fileID: 9067849459850259246}
-  targetImage: {fileID: 5702314794982574927}
+  iconImage: {fileID: 0}
+  button: {fileID: 0}
+  panel: {fileID: 0}
 --- !u!114 &162661853570337943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25992,7 +26084,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &320106619791100356
 GameObject:
   m_ObjectHideFlags: 0
@@ -27147,9 +27239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c5243fc19330db468a34e4c848dad92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  category: "\uCE58\uC7A5\uD488"
-  categoryIcon: {fileID: 6247625943782908533}
-  categoryButton: {fileID: 4048938532703312295}
+  iconImage: {fileID: 6247625943782908533}
+  button: {fileID: 4048938532703312295}
 --- !u!114 &809145341893208450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32212,9 +32303,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c5243fc19330db468a34e4c848dad92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  category: "\uC720\uBB3C"
-  categoryIcon: {fileID: 1672637712873227926}
-  categoryButton: {fileID: 2181601956344671635}
+  iconImage: {fileID: 1672637712873227926}
+  button: {fileID: 2181601956344671635}
 --- !u!114 &2521520051002718484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32968,7 +33058,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uCE74\uD14C\uACE0\uB9AC"
+  m_text: "\uB3D9\uBB3C\uCE5C\uAD6C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c03ffc3b90d65ee40afede3d7457a081, type: 2}
   m_sharedMaterial: {fileID: -8507963353169818553, guid: c03ffc3b90d65ee40afede3d7457a081, type: 2}
@@ -33094,7 +33184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   root: {fileID: 6030094712263965508}
   slotParent: {fileID: 4390502442019919241}
-  slotPrefab: {fileID: 3332349910535162869, guid: 9d0460e63b1bf7a458a3a2bba2f3cfdb, type: 3}
+  iconSlotPrefab: {fileID: -6016796354581370912, guid: 9d0460e63b1bf7a458a3a2bba2f3cfdb, type: 3}
   applyButton: {fileID: 7966698322858677125}
   closeButton: {fileID: 3713659484127188321}
   titleText: {fileID: 3896466686907478368}
@@ -33359,7 +33449,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -4, y: 30}
+  m_SizeDelta: {x: -4, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2922880074079037133
 MonoBehaviour:
@@ -33568,10 +33658,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3656064874284589834}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 550, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -40.07}
+  m_SizeDelta: {x: 550, y: 40.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3014421853364384649
 CanvasRenderer:
@@ -34179,7 +34269,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4290895081
+    rgba: 4290565358
   m_fontColor: {r: 0.93207544, g: 0.83196867, b: 0.7368672, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -35329,7 +35419,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -608, y: 0}
+  m_SizeDelta: {x: -608, y: 80.14}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &3660661270547839719
 RectTransform:
@@ -35522,7 +35612,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &3713659484127188321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35862,11 +35952,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a828053d38201344bdff90e2ecbe257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animalDatabase: {fileID: 11400000, guid: cf238dff9788eed47831c21b58e8c07e, type: 2}
-  decoDatabase: {fileID: 11400000, guid: 5410dd22bd0bdc34faa6c298c0d0e778, type: 2}
-  costumeDatabase: {fileID: 11400000, guid: 03068cb0a80eace408fa4bf98760f6c5, type: 2}
-  artifactDatabase: {fileID: 11400000, guid: a54830c91f91a76448d894ea23cc2244, type: 2}
-  profileIconDatabase: {fileID: 11400000, guid: 6c1d6365b9e5cda48819182dea8a9350, type: 2}
 --- !u!114 &3858973009595439421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36759,7 +36844,9 @@ RectTransform:
   - {fileID: 1539134200838014707}
   - {fileID: 2821390204746793424}
   - {fileID: 358490935885687263}
+  - {fileID: 659112601}
   - {fileID: 5914815830784376839}
+  - {fileID: 1064008960}
   m_Father: {fileID: 3345842392688339868}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -37047,7 +37134,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4469547711939673266}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9067849459850259246}
+        m_TargetAssemblyTypeName: ProfilePanelController, Assembly-CSharp
+        m_MethodName: OpenProfileIconPopup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4307796260942425525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37917,7 +38016,7 @@ RectTransform:
   m_Father: {fileID: 1676502743563272685}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -39196,7 +39295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   root: {fileID: 7556223094338978699}
   slotParent: {fileID: 2885122916859187510}
-  slotPrefab: {fileID: 3035471614086128709, guid: 022a8672ddf366e4a9ef8e97e2766519, type: 3}
+  slotPrefab: {fileID: 5864524988379339755, guid: 022a8672ddf366e4a9ef8e97e2766519, type: 3}
   applyButton: {fileID: 7675888820211003440}
   closeButton: {fileID: 849709715490471681}
   titleText: {fileID: 2813799988975032138}
@@ -41070,8 +41169,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9131969980849423506}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -863.0213, y: -540, z: 15596.903}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41267,7 +41366,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &6030685068385525724
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -41372,7 +41471,7 @@ RectTransform:
   m_Father: {fileID: 8346656107606977100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -42663,9 +42762,9 @@ RectTransform:
   m_Father: {fileID: 3584053303265405427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -12, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &6924608965888070921
 RectTransform:
@@ -44158,9 +44257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c5243fc19330db468a34e4c848dad92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  category: "\uC870\uACBD\uD488"
-  categoryIcon: {fileID: 2079253032455041138}
-  categoryButton: {fileID: 2190104999875544228}
+  iconImage: {fileID: 2079253032455041138}
+  button: {fileID: 2190104999875544228}
 --- !u!222 &7621183879257703565
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -45699,9 +45797,9 @@ RectTransform:
   m_Father: {fileID: 2012587099676178063}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -12, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8444368202923272787
 MonoBehaviour:
@@ -45816,20 +45914,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4640391170102296319}
   m_CullTransparentMesh: 1
---- !u!114 &8501859840116580683
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9174983872659083083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a982b707995926a40a9b6fbe647dddd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  profileIcon: {fileID: 4469547711939673266}
-  button: {fileID: 4303028193764118868}
 --- !u!224 &8513726541563222046
 RectTransform:
   m_ObjectHideFlags: 0
@@ -46109,9 +46193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c5243fc19330db468a34e4c848dad92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  category: "\uB3D9\uBB3C\uCE5C\uAD6C"
-  categoryIcon: {fileID: 3634254876842375817}
-  categoryButton: {fileID: 3692907215019650722}
+  iconImage: {fileID: 3634254876842375817}
+  button: {fileID: 3692907215019650722}
 --- !u!114 &8624807131663203427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47502,21 +47585,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5650715684ed948bd0b95a0f2ac432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profileIcon: {fileID: 8501859840116580683}
+  profileService: {fileID: 659112602}
   nicknameText: {fileID: 3423985686882696739}
   uidText: {fileID: 2848744469765796738}
-  joinDateText: {fileID: 5976054279376459487}
-  artifactProgress: {fileID: 7822371181823340293}
-  stageProgress: {fileID: 7479130720877465803}
-  codexProgress: {fileID: 3030749277276295093}
-  achievementProgress: {fileID: 456023821078714194}
   animalIcon: {fileID: 8621832376883094271}
   decoIcon: {fileID: 7616142886246071399}
   costumeIcon: {fileID: 798552112712858823}
   artifactIcon: {fileID: 2515236439186811853}
-  favoriteIconPopup: {fileID: 5103733869726884297}
-  profileIconPopup: {fileID: 2832686448111389808}
-  profileSource: {fileID: 3858880227464372570}
+  itemSelectorPopup: {fileID: 5103733869726884297}
+  iconSelectorPopup: {fileID: 2832686448111389808}
 --- !u!224 &9113676540503235090
 RectTransform:
   m_ObjectHideFlags: 0
@@ -47589,7 +47666,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &9132126647914540051
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -47719,7 +47796,6 @@ GameObject:
   - component: {fileID: 8749057059529730939}
   - component: {fileID: 4590345867788626662}
   - component: {fileID: 4303028193764118868}
-  - component: {fileID: 8501859840116580683}
   m_Layer: 5
   m_Name: ProfileIcon
   m_TagString: Untagged
