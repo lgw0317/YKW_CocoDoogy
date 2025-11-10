@@ -33,10 +33,18 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     public bool IsMoving => isMoving;
     public bool IsFalling => isFalling;
 
-
     private static Dictionary<int, float> gloablShockImmunity = new();
     [Tooltip("충격파 맞은 오브젝트가 다시 반응하기까지 쿨타임")]
     public float immuneTime = 5f;
+
+    [Header("Shockwave Lift Override [If it doesn't have Shockwave.cs]")]
+    public bool overrideLiftTiming = false;
+    [Tooltip("재정의 시 사용되는 상승 시간")]
+    public float overrideRiseSec = 0.5f;
+    [Tooltip("재정의 시 사용되는 홀딩 시간")]
+    public float overrideHangSec = 0.2f;
+    [Tooltip("재정의 시 사용되는 하강 시간")]
+    public float overrideFallSec = 0.5f;
 
     #endregion
 
@@ -387,7 +395,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
     // ========== 공중 띄우기용 ==========
     // 충격파 맞았을 때 y+1 duration 동안 띄우기
-    public void WaveLift(float rise, float hold, float fall)
+    public void WaveLift(float shockRise, float shockHold, float shockFall)
     {
         int id = GetInstanceID();
         float now = Time.time;
@@ -399,6 +407,10 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
             }
         }
         gloablShockImmunity[id] = now;
+        // box의 경우 충격파를 발생시키는 주체가 아니기 때문에 rise, hold, fall을 직접적으로 조정할 수 있도록 override변수를 추가
+        float rise = overrideLiftTiming ? overrideRiseSec : shockRise;
+        float hold = overrideLiftTiming ? overrideHangSec : shockHold;
+        float fall = overrideLiftTiming ? overrideFallSec : shockFall;
 
         if (isMoving || isFalling || IsImmuneToWaveLift()) return;
         StartCoroutine(WaveLiftCoroutine(rise, hold, fall));

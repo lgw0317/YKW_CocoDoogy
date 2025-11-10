@@ -64,6 +64,10 @@ MonoBehaviour:
   throughLayer:
     serializedVersion: 2
     m_Bits: 16
+  overrideLiftTiming: 0
+  overrideRiseSec: 0.5
+  overrideHangSec: 0.2
+  overrideFallSec: 0.5
   requiredHoldtime: 0.9
   allowFall: 1
   allowSlope: 0
@@ -115,9 +119,9 @@ MonoBehaviour:
   occluderMask:
     serializedVersion: 2
     m_Bits: 55176
-  riseSec: 1
+  riseSec: 0.5
   hangSec: 0.4
-  fallSec: 1
+  fallSec: 0.2
   affectSameFloorOnly: 0
   alsoAffectStackedAbove: 0
 --- !u!114 &8611777253475136124

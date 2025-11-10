@@ -61,7 +61,7 @@ public class DoorBlock : Block, ISignalReceiver
         rightClosedPos = right.localPosition;
 
         // 열릴 때 이동할 방향 (로컬 기준)
-        float offset = 0.75f;
+        float offset = 0.95f;
         leftOpenPos = leftClosedPos + Vector3.right * offset;
         rightOpenPos = rightClosedPos + Vector3.left * offset;
     }
@@ -83,7 +83,7 @@ public class DoorBlock : Block, ISignalReceiver
     // (스테이지 별로 문을 열게 해주는 기믹이 다르고 동작 방식과 기본 세팅이 다르기 때문에)
     void DetectConnectedGimmick()
     {
-        float searchRadius = 30f;
+        float searchRadius = 60f;
         Collider[] cols = Physics.OverlapSphere(transform.position, searchRadius, ~0);
 
         foreach (var c in cols)
@@ -174,5 +174,12 @@ public class DoorBlock : Block, ISignalReceiver
     protected override void OnEnable()
     {
         base.OnEnable();
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        float searchRadius = 60f; // DetectConnectedGimmick에서 사용되는 searchRadius와 동일하게 설정
+        Gizmos.DrawWireSphere(transform.position, searchRadius);
     }
 }

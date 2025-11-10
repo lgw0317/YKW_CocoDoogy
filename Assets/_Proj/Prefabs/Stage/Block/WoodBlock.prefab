@@ -388,7 +388,11 @@ MonoBehaviour:
   requiredHoldtime: 0.4
   allowFall: 1
   allowSlope: 1
-  immuneTime: 5
+  immuneTime: 1
+  overrideLiftTiming: 1
+  overrideRiseSec: 0.5
+  overrideHangSec: 0.4
+  overrideFallSec: 0.2
 --- !u!114 &-6961232074567143049
 MonoBehaviour:
   m_ObjectHideFlags: 0
