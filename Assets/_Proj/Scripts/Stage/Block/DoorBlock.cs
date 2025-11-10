@@ -97,7 +97,7 @@ public class DoorBlock : Block, ISignalReceiver
                 connectedType = GimmickType.Switch;
             else if (sender is ShockDetectionTower)
                 connectedType = GimmickType.Tower;
-            else if (sender is Turret)
+            else if (sender is Turret || sender is TurretBlock)
                 connectedType = GimmickType.Turret;
 
             Debug.Log($"[Door] 연결된 기믹 감지됨: {connectedType} ({sender})");
