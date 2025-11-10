@@ -7,7 +7,7 @@ public class CutsceneGroup : MonoBehaviour, IAudioController
     private AudioMixerGroup group;
     private CutscenePlayer player;
 
-    private void Awake()
+    public void Init()
     {
         mixer = AudioManager.AudioGroupProvider.GetMixer();
         group = AudioManager.AudioGroupProvider.GetGroup(AudioType.Cutscene);
@@ -15,7 +15,9 @@ public class CutsceneGroup : MonoBehaviour, IAudioController
         player = new CutscenePlayer(mixer, transform);
     }
 
-    // ¿Àµð¿À ½ÇÇà
+    public void PostInit() { }
+
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void PlayCutscene(AudioClip clip, float fadeIn, float fadeOut, bool loop)
     {
         player.PlayAudio(clip, group, fadeIn, fadeOut, loop);

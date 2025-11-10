@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.Audio;
 
 /// <summary>
-/// Audio Key = 5°¡Áö
-/// Audio Type = 5°¡Áö 
-/// Å°¸¦ ÀÔ·Â ¹ÞÀ¸¸é ¿Àµð¿À Å¸ÀÔÀÌ Á¤ÇØÁö´Â°Ô ÁÁÀ» °Í °°Áö.
+/// Audio Key = 5ï¿½ï¿½ï¿½ï¿½
+/// Audio Type = 5ï¿½ï¿½ï¿½ï¿½ 
+/// Å°ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 /// </summary>
 
 public interface IAudioLibrary
@@ -34,6 +34,9 @@ public interface IAudioGroupSetting
 
 public interface IAudioController
 {
+    void Init();
+    void PostInit();
+
     void PlayPlayer();
     void PausePlayer();
     void ResumePlayer();

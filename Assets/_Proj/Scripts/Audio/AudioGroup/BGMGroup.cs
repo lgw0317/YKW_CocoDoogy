@@ -8,7 +8,7 @@ public class BGMGroup : MonoBehaviour, IAudioController
     private BGMPlayer player;
     private AudioSource audioS;
 
-    private void Awake()
+    public void Init()
     {
         mixer = AudioManager.AudioGroupProvider.GetMixer();
         group = AudioManager.AudioGroupProvider.GetGroup(AudioType.BGM);
@@ -16,13 +16,15 @@ public class BGMGroup : MonoBehaviour, IAudioController
         player = new BGMPlayer(mixer, transform);
     }
 
-    // ¿Àµð¿À ½ÇÇà
+    public void PostInit() { }
+
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void PlayBGM(AudioClip clip, float fadeIn, float fadeOut, bool loop)
     {
         player.PlayAudio(clip, group, fadeIn, fadeOut, loop);
     }
 
-    // ¿Àµð¿À »óÅÂ Á¦¾î
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void PlayPlayer()
     {
         player.PlayAll();
@@ -47,4 +49,5 @@ public class BGMGroup : MonoBehaviour, IAudioController
     {
         player.ResetAll();
     }
+
 }

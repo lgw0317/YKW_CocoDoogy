@@ -26,6 +26,8 @@ public interface ILobbyCharactersEmotion
 // 일반모드, 편집모드 시 전환
 public interface ILobbyState
 {
+    void Init(); // 초기화 Awake 비슷한
+    void PostInit(); // Init 후 초기화 Start 비슷한
     void Register(); // 로비에 소환되면 로비매니저에게 등록 요청
     void Unregister(); // 로비에 삭제되면 로비매니저에게 삭제 요청
     void InNormal();

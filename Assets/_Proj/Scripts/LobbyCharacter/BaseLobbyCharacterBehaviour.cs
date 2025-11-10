@@ -53,27 +53,16 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-        agent.height = 1f;
-        // agent
         charAgent = new NavMeshAgentControl(agent, moveSpeed, angularSpeed, acceleration, moveRadius, trans);
-        // charAnim
         charAnim = new LobbyCharacterAnim(anim);
         MainCam = Camera.main;
-        //waitU = new WaitUntil(() => !agent.pathPending && agent.remainingDistance <= 0.5f);
         fsm = new LobbyCharacterFSM(null);
-        InitStates();
+        
     }
 
-    protected virtual void OnEnable()
-    {
-        Register();
-        YValue = transform.position.y;
-    }
+    protected virtual void OnEnable() {}
 
-    protected virtual void Start()
-    {
-        fsm.ChangeState(IdleState);
-    }
+    protected virtual void Start() {}
 
     protected virtual void Update()
     {
@@ -261,7 +250,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         InLobbyManager.Instance.RegisterLobbyChar(this);
         Debug.Log($"{this} 등록");
     }
-    
+
     /// <summary>
     /// ILobbyState, 오브젝트 삭제 시 취소
     /// </summary>
@@ -275,5 +264,24 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         if (gameObject.CompareTag("CocoDoogy") || gameObject.CompareTag("Master")) return;
         InLobbyManager.Instance.UnregisterLobbyChar(this);
         Debug.Log($"{this} 삭제");
+    }
+
+    /// <summary>
+    /// 처음 생성 시 초기화
+    /// </summary>
+    public virtual void Init()
+    {
+        Register();
+        InitStates();
+        agent.height = 1f;
+        YValue = transform.position.y;
+    }
+
+    /// <summary>
+    /// Init() 후 초기화 어찌보면 Start와 비슷?
+    /// </summary>
+    public virtual void PostInit()
+    {
+        fsm.ChangeState(IdleState);
     }
 }

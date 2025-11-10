@@ -8,7 +8,7 @@ public class SettingData // 게임 설정처럼 옵션 저장하고 싶으면 �
     public AudioVolumeData audio = new AudioVolumeData();
 }
 
-[DefaultExecutionOrder(-100)]
+//[DefaultExecutionOrder(-100)]
 public class SettingManager : MonoBehaviour
 {
     public SettingData settingData;

@@ -22,9 +22,9 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
 
     protected override void Awake()
     {
+        gameObject.tag = "CocoDoogy";
+        gameObject.layer = LayerMask.NameToLayer("InLobbyObject");
         base.Awake();
-        agent.avoidancePriority = 99;
-        
     }
 
     protected override void OnEnable()
@@ -35,7 +35,6 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
         // {
         //     waypoints[i] = InLobbyManager.Instance.cocoWaypoints[i];
         // }
-
     }
 
     protected override void Start()
@@ -204,6 +203,15 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
     public override void Unregister()
     {
         base.Unregister();
+    }
+    public override void Init()
+    {
+        base.Init();
+        agent.avoidancePriority = 99;
+    }
+    public override void PostInit()
+    {
+        base.PostInit();
     }
 
 }

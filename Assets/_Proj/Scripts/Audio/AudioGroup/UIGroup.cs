@@ -7,21 +7,23 @@ public class UIGroup : MonoBehaviour, IAudioController
     private AudioMixerGroup group;
     private UIPlayer player;
 
-    private void Awake()
+    public void Init()
     {
         mixer = AudioManager.AudioGroupProvider.GetMixer();
         group = AudioManager.AudioGroupProvider.GetGroup(AudioType.UI);
-        Debug.Log($"UIGroup.cs : {group}, SFX±×·ìÀÌ¸é OK");
+        Debug.Log($"UIGroup.cs : {group}, SFXï¿½×·ï¿½ï¿½Ì¸ï¿½ OK");
         player = new UIPlayer(mixer, transform);
     }
 
-    // ¿Àµð¿À ½ÇÇà
+    public void PostInit() { }
+
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void PlayVoice(AudioClip clip)
     {
         player.PlayAudio(clip, group);
     }
 
-    // UI ºÎºÐÀº ¾î¶² »óÅÂµç Á¦¾î¿¡¼­ ÀÚÀ¯·Î¿î ¸öÀÌ´Ï ±»ÀÌ ÇÊ¿ä¾øÀ» µí? ±×·¡µµ ³Ö±ä ÇÕ½Ã´Ù
+    // UI ï¿½Îºï¿½ï¿½ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½Âµï¿½ ï¿½ï¿½ï¿½î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½? ï¿½×·ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½ ï¿½Õ½Ã´ï¿½
     public void PlayPlayer()
     {
         //player.PlayAll();
