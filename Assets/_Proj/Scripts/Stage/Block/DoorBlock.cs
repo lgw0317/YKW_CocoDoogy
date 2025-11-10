@@ -89,6 +89,7 @@ public class DoorBlock : Block, ISignalReceiver
         foreach (var c in cols)
         {
             var sender = c.GetComponentInParent<ISignalSender>();
+
             if (sender == null) continue;
             //if (sender.Receiver != this) continue;
             if ((DoorBlock)sender.Receiver != this) continue;
@@ -97,7 +98,7 @@ public class DoorBlock : Block, ISignalReceiver
                 connectedType = GimmickType.Switch;
             else if (sender is ShockDetectionTower)
                 connectedType = GimmickType.Tower;
-            else if (sender is Turret)
+            else if (sender is Turret || sender is TurretBlock)
                 connectedType = GimmickType.Turret;
 
             Debug.Log($"[Door] 연결된 기믹 감지됨: {connectedType} ({sender})");

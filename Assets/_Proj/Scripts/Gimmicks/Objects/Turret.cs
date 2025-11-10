@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [DisallowMultipleComponent]
-public class Turret : MonoBehaviour, ISignalSender
+public class Turret : MonoBehaviour
 {
     [Header("Detection Settings")]
     public float detectRadius = 4f;
@@ -11,8 +11,7 @@ public class Turret : MonoBehaviour, ISignalSender
     public LayerMask occluderMask;
     public bool useOcclusion = true;
 
-    [Header("Signal Settings")]
-    public ISignalReceiver Receiver { get; set; }
+    
 
     [Header("Visual Range")]
     [SerializeField] private RingRange ring;
@@ -29,7 +28,7 @@ public class Turret : MonoBehaviour, ISignalSender
     void Start()
     {
         myYLevel = Mathf.Round(transform.position.y / 1f); // tileHeight 1기준
-        AutoConnectReceiver();
+        //ConnectReceiver();
         if (ring)
         {
             ring.visibleAngle = fov;
@@ -41,27 +40,46 @@ public class Turret : MonoBehaviour, ISignalSender
             ring.lr.material.color = idleColor;
         }
     }
-    void AutoConnectReceiver()
-    {
-        float searchRadius = 30f;
-        Collider[] cols = Physics.OverlapSphere(transform.position, searchRadius, ~0);
 
-        foreach (var c in cols)
-        {
-            var recv = c.GetComponentInParent<ISignalReceiver>();
-            if (recv == null) continue;
+    //void ConnectReceiver()
+    //{
+    //    Vector3Int linkedPos = GetComponent<TurretBlock>().origin.property.linkedPos;
+    //    Collider[] cols = Physics.OverlapBox(linkedPos, new(.2f, .2f, .2f));
+    //    foreach (var c in cols)
+    //    {
+    //        if (c.transform.parent.name != "Stage") continue; //최상위 오브젝트만 감지
+    //        var receiver = c.GetComponent<ISignalReceiver>();
+    //        ConnectReceiver(receiver);
+    //        print($"[{this.GetType()}]:[{this.name}] - [{receiver.GetType()}]:[{c.name}]");
+    //        //if (receiver is DoorBlock door)
+    //        //{
+    //        //    Receiver = receiver;
+    //        //    Debug.Log($"[Turret] {name} → {door.name} 자동 연결 완료 (거리 {Vector3.Distance(transform.position, door.transform.position):F1})");
+    //        //    return;
+    //        //}
+    //    }
+    //}
+    //void AutoConnectReceiver()
+    //{
+    //    float searchRadius = 30f;
+    //    Collider[] cols = Physics.OverlapSphere(transform.position, searchRadius, ~0);
 
-            // DoorBlock만 연결 대상으로 필터링
-            if (recv is DoorBlock door)
-            {
-                Receiver = recv;
-                Debug.Log($"[Turret] {name} → {door.name} 자동 연결 완료 (거리 {Vector3.Distance(transform.position, door.transform.position):F1})");
-                return;
-            }
-        }
+    //    foreach (var c in cols)
+    //    {
+    //        var recv = c.GetComponentInParent<ISignalReceiver>();
+    //        if (recv == null) continue;
 
-        Debug.LogWarning($"[Turret] {name}: {searchRadius}m 안에 연결 가능한 Door를 찾지 못함");
-    }
+    //        // DoorBlock만 연결 대상으로 필터링
+    //        if (recv is DoorBlock door)
+    //        {
+    //            Receiver = recv;
+    //            Debug.Log($"[Turret] {name} → {door.name} 자동 연결 완료 (거리 {Vector3.Distance(transform.position, door.transform.position):F1})");
+    //            return;
+    //        }
+    //    }
+
+    //    Debug.LogWarning($"[Turret] {name}: {searchRadius}m 안에 연결 가능한 Door를 찾지 못함");
+    //}
     void Update()
     {
         bool nowDetected = DetectTarget();
@@ -74,7 +92,7 @@ public class Turret : MonoBehaviour, ISignalSender
             {
                 doorShouldBeClosed = true;
                 Debug.Log("[Turret] Target detected -> Send CLOSE signal");
-                SendSignal(); // Door 토글 -> 닫힘
+                GetComponent<ISignalSender>().SendSignal(); // Door 토글 -> 닫힘
             }
             UpdateRingColour(true);
         }
@@ -86,7 +104,7 @@ public class Turret : MonoBehaviour, ISignalSender
             {
                 doorShouldBeClosed = false;
                 Debug.Log("[Turret] Target lost -> Send OPEN signal");
-                SendSignal(); // Door 토글 -> 열림
+                GetComponent<ISignalSender>().SendSignal(); // Door 토글 -> 열림
             }
             UpdateRingColour(false);
         }
@@ -100,16 +118,6 @@ public class Turret : MonoBehaviour, ISignalSender
         ring.RebuildAll();
     }
 
-    public void ConnectReceiver(ISignalReceiver receiver)
-    {
-        Receiver = receiver;
-    }
-
-    public void SendSignal()
-    {
-        if (Receiver != null)
-            Receiver.ReceiveSignal();
-    }
 
     bool DetectTarget()
     {
