@@ -57,6 +57,8 @@ public class Dialogue : MonoBehaviour
             var dialogueText = StageUIManager.Instance.DialogueText;
             StopAllCoroutines();
             StartCoroutine(TypeText(dialogueText, data.text, data.char_delay));
+            
+            //Todo : data.seq 가지고 다음 대화 가져오고, 마지막 대사인지 판단
         }
     }
 
