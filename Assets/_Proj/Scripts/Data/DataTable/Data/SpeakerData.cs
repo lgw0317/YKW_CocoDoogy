@@ -16,7 +16,7 @@ public class SpeakerData
     }
 
 
-    public Sprite GetPortrait(IResourceLoader loader)
+    public Sprite GetPortrait(IResourceLoader loader, string portrait_set_prefix)
     {
         if (icon == null && !string.IsNullOrEmpty(portrait_set_prefix))
             icon = loader.LoadSprite(portrait_set_prefix);

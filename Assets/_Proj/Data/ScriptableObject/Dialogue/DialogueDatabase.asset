@@ -25,7 +25,7 @@ MonoBehaviour:
   - dialogue_id: dialogue_1_1_1
     seq: 1
     speaker_position: 1
-    speaker_id: 0
+    speaker_id: 3
     emotion: 3
     text: '"!!!!!!"'
     char_delay: 0.04
@@ -53,7 +53,7 @@ MonoBehaviour:
   - dialogue_id: dialogue_1_1_2
     seq: 1
     speaker_position: 1
-    speaker_id: 0
+    speaker_id: 3
     emotion: 3
     text: "\"\uBB50\uB77C..?!\""
     char_delay: 0.04
