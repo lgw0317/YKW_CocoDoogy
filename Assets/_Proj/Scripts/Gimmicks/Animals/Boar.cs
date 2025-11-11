@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // 10/29 TODO : 카메라 세팅 후 팝업 UI 조정 76라인
-
 public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 {
     [Header("Canvas")]
@@ -332,14 +331,11 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         return stack;
     }
 
-
     // 연속된 PushableObjects 체인 수평 방향 수집, 체인 중간에 blocking 없는지 검사
     bool CollectChain(Vector3 headWorldPos, Vector2Int dir, float yFloor, out List<List<PushableObjects>> chainOfStacks, out Vector3 tailNextWorld)
     {
         chainOfStacks = new List<List<PushableObjects>>();
         tailNextWorld = Vector3.zero;
-        Debug.Log($"[Boar.CollectChain] 호출. 헤드 위치: {headWorldPos}, 방향: {dir}, Y층: {yFloor}");
-
 
         Vector3 step = new Vector3(dir.x, 0, dir.y) * tileSize;
         Vector3 cursor = headWorldPos;
@@ -354,7 +350,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 // 현재 칸이 비었거나 Pushable이 없다면
                 if (chainOfStacks.Count == 0)
                 {
-                    Debug.Log("[Boar.CollectChain] 체인 헤드에서 Pushable 못 찾음. 실패.");
                     // headWorldPos에서부터 Pushable을 못 찾으면 실패
                     return false;
                 }
@@ -362,7 +357,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 {
                     // 체인 끝. 꼬리 뒤 칸은 cursor가 됨
                     tailNextWorld = new Vector3(cursor.x, yFloor * tileSize, cursor.z);
-                    Debug.Log($"[Boar.CollectChain] 체인 끝에 도달. 총 {chainOfStacks.Count}개 스택 수집. 꼬리 다음 칸: {tailNextWorld}");
                     return true;
                 }
             }
@@ -390,14 +384,12 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
 
             if (nonPushBlocking)
             {
-                Debug.Log($"[Boar.CollectChain] 체인 중간({cursor})에 Blocking Layer 오브젝트 감지. 실패.");
                 // 체인 중간에 뭐 있으면 밀기 실패
                 return false;
             }
 
             // pushable 체인에 수직 스택 누적
             chainOfStacks.Add(verticalStack);
-            Debug.Log($"[Boar.CollectChain] 위치 {cursor}의 수직 스택 {verticalStack.Count}개 체인에 추가. 다음 칸 검사.");
             // 다음 칸으로 이동
             cursor += step;
         }
@@ -447,8 +439,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                     foreach (var b in collLists[j])
                         if (a && b) Physics.IgnoreCollision(a, b, true);
 
-        Debug.Log("[Boar.ChainShiftOneCell] 체인 내 모든 오브젝트 간 충돌 무시 설정 완료.");
-
         // 타깃 좌표 계산
         Vector3 step = new Vector3(dir.x, 0, dir.y) * tileSize;
         var startPos = new Vector3[n];
@@ -462,7 +452,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         // 동시에 1칸 이동
         float dur = Mathf.Max(0.05f, dashSpeed);
         float t = 0f;
-        Debug.Log($"[Boar.ChainShiftOneCell] Pushable 체인 1칸 이동 시작. 이동 시간(dur): {dur:F3}");
+
         while (t < dur)
         {
             t += Time.deltaTime;
@@ -481,8 +471,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                     foreach (var b in collLists[j])
                         if (a && b) Physics.IgnoreCollision(a, b, false);
 
-        Debug.Log("[Boar.ChainShiftOneCell] 체인 내 모든 오브젝트 간 충돌 원복 완료.");
-
         //이동이 끝났으므로 저장해놨던 IEdgeColliderHandlers가 각각 검사.
         foreach (var handler in startingIEdgeColliderHandlers)
         {
@@ -490,7 +478,9 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             handler.DetectAndApplyFourEdge();
 
         }
+
         foreach (var po in allChainObjects)
+        {
             if (po.TryGetComponent<IEdgeColliderHandler>(out var handler))
             {
                 //이 핸들러는 체인된 오브젝트(함께 밀린 모든 오브젝트)에서 검출한 투명벽 핸들러를 의미함.
@@ -499,10 +489,10 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
                 //해당 핸들러 사방의 객체의 투명벽도 재설정
                 handler.DetectGrounds().ForEach(x => x.DetectAndApplyFourEdge());
             }
+        }
         // NOTE: 낙하 검사는 DashCoroutine에서 한 번에 처리
     }
     #endregion
-
 
     void HitStop(GameObject hit = null)
     {
@@ -568,7 +558,6 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
          Debug.Log($"[Boar.HasGround] 위치 {worldPos}에서 바닥 검사 결과: {hasGround}");
         return hasGround;
     }
-
 
     //void OnTriggerEnter(Collider other)
     //{
