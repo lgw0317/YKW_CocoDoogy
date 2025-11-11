@@ -41,21 +41,6 @@ public class NavMeshAgentControl
 
     }
 
-    // WaitUntil이나 WaitFS를 사용할 것이니 필요 없을 듯
-    // public void WaitAndMove(Transform point, ref float waitTime)
-    // {
-    //     if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-    //     {
-
-    //         timer += Time.deltaTime;
-    //         if (timer >= waitTime)
-    //         {
-    //             MoveToTransPoint(point);
-    //             timer = 0;
-    //         }
-    //     }
-    // }
-
     /// <summary>
     /// Trans일 시 위치 이동
     /// </summary>
@@ -64,7 +49,7 @@ public class NavMeshAgentControl
     {
         if (agent.isStopped) agent.isStopped = false;
         Vector3 pos = point.position;
-        float speed = Random.Range(2f, 4f);
+        float speed = Random.Range(3f, 7f);
         agent.SetDestination(pos);
         agent.speed = speed;
         agent.acceleration = Random.Range(speed, 10f);
@@ -77,7 +62,7 @@ public class NavMeshAgentControl
     public void MoveToVectorPoint(Vector3 point)
     {
         if (agent.isStopped) agent.isStopped = false;
-        float speed = Random.Range(2f, 5f);
+        float speed = Random.Range(3f, 7f);
         agent.SetDestination(point);
         agent.speed = speed;
         agent.acceleration = Random.Range(speed, 10f);
@@ -106,7 +91,7 @@ public class NavMeshAgentControl
         Vector3 randomDir = point.position + Random.insideUnitSphere * moveRadius;
         randomDir.y = point.position.y;
         //randomDir += transform.position;
-        if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, 0.3f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, 3f, NavMesh.AllAreas))
         {
             //randomDir = hit.position;
             //agent.SetDestination(hit.position);
@@ -133,17 +118,4 @@ public class NavMeshAgentControl
         if (agent.enabled == false) agent.enabled = true;
         if (agent.isStopped) agent.isStopped = false;
     }
-
-    // 이 부분은 각 Behaviour 쪽 agent를 사용해서 관리하기로 함
-    // public void AgentIsStop(bool which)
-    // {
-    //     if (which == true) agent.isStopped = true;
-    //     else agent.isStopped = false;
-    // }
-    // public void EnableAgent(bool which)
-    // {
-    //     if (which == true) agent.enabled = true;
-    //     else agent.enabled = false;
-    // }
-
 }

@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 2405922195156987521}
   m_Layer: 6
   m_Name: Hog
-  m_TagString: Untagged
+  m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -179,7 +179,7 @@ Animator:
   m_GameObject: {fileID: 3863027491269863588}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 434ffe68bbe5d5b49b417181e5b0cc65, type: 3}
-  m_Controller: {fileID: 9100000, guid: 3e1137daf289b734ab69d7bcbcd9a580, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9e5b69e1e9b5aa44a8813416e97ca931, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

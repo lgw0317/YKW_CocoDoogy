@@ -14,7 +14,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     [SerializeField] protected float angularSpeed = 120f;
     [SerializeField] protected float acceleration = 8f;
     [Header("Move")]
-    [SerializeField] protected float moveRadius = 8f; // 웨이포인트에서 범위
+    [SerializeField] protected float moveRadius = 10f; // Random.insideUnitSphere 범위
 
     protected NavMeshAgent agent;
     protected Animator anim;
@@ -71,7 +71,10 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         InitStates();
     }
 
-    protected virtual void OnEnable() {}
+    protected virtual void OnEnable()
+    {
+        if (fsm.CurrentState == EditState) fsm.ChangeState(IdleState);
+    }
 
     protected virtual void Start() {}
 
@@ -228,7 +231,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     }
     IEnumerator Pressing()
     {
-        yield return new WaitForSeconds(0.12f);
+        yield return new WaitForSeconds(0.06f);
         fsm.ChangeState(DragState);
         yield break;
     }

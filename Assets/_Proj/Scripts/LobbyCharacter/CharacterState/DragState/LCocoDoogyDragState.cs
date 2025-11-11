@@ -44,6 +44,7 @@ public class LCocoDoogyDragState : LobbyCharacterBaseState, IDragState
         Debug.Log($"originalPos : {originalPos}, transPos : {trans.position}");
         isDragging = true;
         anim.Play("Idle_A");
+        anim.speed = 1f;
         //StopMoving();
         //fsm.ChangeState(StopState());
     }

@@ -76,7 +76,7 @@ public class UserInteractionHandler : MonoBehaviour, IPointerClickHandler, IPoin
     {
         while (isPressing)
         {
-            if (Time.time - pressTime >= 0.1f)
+            if (Time.time - pressTime >= 0.07f)
             {
                 longPressable?.OnLobbyPress();
                 isPressing = false;

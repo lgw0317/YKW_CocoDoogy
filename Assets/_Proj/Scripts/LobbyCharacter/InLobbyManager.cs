@@ -19,7 +19,7 @@ public class InLobbyManager : MonoBehaviour
     private MasterBehaviour master;
 
     private NavMeshSurface planeSurface;
-    public Transform[] cocoWaypoints;
+    public Transform[] waypoints;
 
     public bool isEditMode { get; private set; } // 에딧컨트롤러에서 받아오기
     private int originalLayer; // 평상 시 레이어
@@ -56,13 +56,13 @@ public class InLobbyManager : MonoBehaviour
     {
         planeSurface.BuildNavMesh();
 
-        GameObject gObj = Instantiate(DataManager.Instance.mainChar.GetPrefab(99999), cocoWaypoints[0].position, Quaternion.identity);
-        gObj.transform.localScale = new Vector3(4, 4, 4);
+        GameObject gObj = Instantiate(DataManager.Instance.mainChar.GetPrefab(99999), waypoints[0].position, Quaternion.identity);
+        gObj.transform.localScale = new Vector3(3, 3, 3);
         gObj.AddComponent<CocoDoogyBehaviour>();
 
-        GameObject gObj2 = Instantiate(DataManager.Instance.Animal.GetPrefab(30001), cocoWaypoints[1].position, Quaternion.identity);
-        gObj2.transform.localScale = new Vector3(4, 4, 4);
-        gObj2.AddComponent<AnimalBehaviour>();
+        GameObject gObj2 = Instantiate(DataManager.Instance.mainChar.GetPrefab(99998), waypoints[0].position, Quaternion.identity);
+        gObj2.transform.localScale = new Vector3(3, 3, 3);
+        gObj2.AddComponent<MasterBehaviour>();
 
         foreach (var lC in lobbyCharacter)
         {

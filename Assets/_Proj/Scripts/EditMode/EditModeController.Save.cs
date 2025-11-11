@@ -540,12 +540,11 @@ public partial class EditModeController
         switch (cat)
         {
             case PlaceableCategory.Home:
-                go.AddComponent<NavMeshObstacle>();
-                var nO = go.GetComponent<NavMeshObstacle>();
+                var nO = go.GetComponent<NavMeshObstacle>() ?? go.AddComponent<NavMeshObstacle>();
                 nO.carving = true;
                 break;
             case PlaceableCategory.Animal:
-                go.AddComponent<AnimalBehaviour>();
+                if(go.GetComponent<AnimalBehaviour>() == null) go.AddComponent<AnimalBehaviour>();
                 break;
             case PlaceableCategory.Deco:
                 go.tag = "Decoration";

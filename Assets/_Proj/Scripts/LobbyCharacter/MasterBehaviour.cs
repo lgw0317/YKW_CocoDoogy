@@ -4,17 +4,23 @@ using UnityEngine;
 public class MasterBehaviour : BaseLobbyCharacterBehaviour
 {
     //private int currentDecoIndex;
-    //private Transform targetDeco;
+    public Transform StartPoint { get; private set; }
 
     protected override void InitStates()
     {
-        throw new System.NotImplementedException();
+        IdleState = new LMasterIdleState(this, fsm);
+        MoveState = new LMasterMoveState(this, fsm, charAgent);
+        InteractState = new LMasterInteractState(this, fsm);
+        ClickSate = new LMasterClickState(this, fsm, charAnim);
+        DragState = new LMasterDragState(this, fsm);
+        EditState = new LMasterEditState(this, fsm);
+        StuckState = new LMasterStuckState(this, fsm);
     }
 
     protected override void Awake()
     {
+        gameObject.tag = "Master";
         base.Awake();
-        agent.avoidancePriority = 98;
         //currentDecoIndex = 0;
     }
 
@@ -22,12 +28,10 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
     {
         base.OnEnable();
     }
-
     protected override void Start()
     {
         base.Start();
     }
-
     protected override void Update()
     {
         base.Update();
@@ -57,7 +61,6 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
     public override void OnLobbyClick()
     {
         base.OnLobbyClick();
-        charAnim.ClickMaster();
     }
     public override void OnLobbyPress()
     {
@@ -83,6 +86,7 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
     {
         base.Init();
         agent.avoidancePriority = 10;
+        StartPoint = InLobbyManager.Instance.waypoints[0];
     }
     public override void PostInit()
     {

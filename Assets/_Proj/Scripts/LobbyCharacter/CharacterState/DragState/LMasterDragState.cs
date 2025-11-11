@@ -28,6 +28,8 @@ public class LMasterDragState : LobbyCharacterBaseState, IDragState
         Debug.Log("Drag 진입");
         if (agent.enabled && !agent.isStopped) agent.isStopped = true;
         if (agent.enabled) agent.enabled = false;
+        anim.Play("Idle_A");
+        anim.speed = 1f;
     }
     public override void OnStateUpdate() { }
     public override void OnStateExit()
@@ -43,7 +45,7 @@ public class LMasterDragState : LobbyCharacterBaseState, IDragState
         originalPos = trans.position;
         Debug.Log($"originalPos : {originalPos}, transPos : {trans.position}");
         isDragging = true;
-        anim.Play("Idle_A");
+        
         //StopMoving();
         //fsm.ChangeState(StopState());
     }
