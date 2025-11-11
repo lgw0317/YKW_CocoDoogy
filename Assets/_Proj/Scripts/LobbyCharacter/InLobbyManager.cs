@@ -28,6 +28,7 @@ public class InLobbyManager : MonoBehaviour
 
 
     public static InLobbyManager Instance { get; private set; }
+    public static event Action<BaseLobbyCharacterBehaviour> OnRequestDeactive;
     private List<ILobbyState> lobbyCharacter = new(); // 맵에 활성화 된 캐릭터들 모음
 
     private void Awake()
