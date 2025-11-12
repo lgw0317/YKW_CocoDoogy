@@ -22,7 +22,7 @@ public static class ShopParser
 
             if (string.IsNullOrWhiteSpace(line)) continue;
 
-            var v = line.Split(',');
+            var v = System.Text.RegularExpressions.Regex.Split(line, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
             if (v.Length < 10)
             {
@@ -47,12 +47,15 @@ public static class ShopParser
             string rawName = v[1];
             string finalName = TextParser.Resolve(rawName, textDict);
 
+            string rawDesc = v[3];
+            string finalDesc = TextParser.Resolve(rawDesc, textDict);
+
             db.shopDataList.Add(new ShopData
             {
                 shop_id = id,
-                shop_name = v[1],
+                shop_name = finalName,
                 shop_icon = v[2],
-                shop_desc = v[3],
+                shop_desc = finalDesc,
                 shop_item = item,
                 shop_type = type,
                 shop_price = price,
