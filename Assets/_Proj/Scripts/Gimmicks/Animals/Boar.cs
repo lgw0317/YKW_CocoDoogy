@@ -62,20 +62,15 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         if (flowWater == null)
         {
             flowWater = FindAnyObjectByType<Flow>(FindObjectsInactive.Include);
-            if (flowWater == null)
-                Debug.LogError($"[{name}] FlowWater not found!");
-            else
-                Debug.Log($"[{name}] FlowWater found! interval={flowWater.flowInterval}");
         }
     }
 
     void Update()
     {
-        if (isHoling && !isMoving && flowWater != null)
+        if ((isHoling || !isMoving) && flowWater != null)
         {
             currHold += Time.deltaTime;
-            float holdThreshold = Mathf.Max(requiredHoldtime, flowWater.flowInterval + 0.5f);
-
+            float holdThreshold = Mathf.Max(requiredHoldtime, flowWater.flowInterval + 1f);
             if (currHold >= holdThreshold)
             {
                 TryPush(holdDir);
