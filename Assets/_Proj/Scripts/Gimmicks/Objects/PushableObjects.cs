@@ -236,6 +236,11 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         transform.position = target;
 
         isMoving = false;
+        if (!IsOnFlowWater() && isRiding)
+        {
+            Debug.Log($"[PushableObjects] {name} : 물 밖으로 이동했으므로 OnStopRiding() 호출");
+            OnStopRiding();
+        }
 
         // 탑승 해제
         foreach (var rider in riders)
@@ -349,6 +354,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
     {
         if (isMoving || isFalling) return;
         TryPush(dir);
+        OnStopRiding();
     }
 
     protected virtual bool IsImmuneToWaveLift()
@@ -436,28 +442,28 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
 
     public void OnStopRiding()
     {
+        Debug.Log($"[OnStopRiding] called on {name}, parent = {(transform.parent ? transform.parent.name : "null")}");
         isRiding = false;
         Transform p = transform.parent;
-
-        if (p == null)
+        Transform stage = GameObject.Find(STAGE_NAME)?.transform;
+        if (p != null)
         {
-            StartCoroutine(CheckFall());
-            return;
+            transform.SetParent(stage, true);
         }
 
-        // 부모가 IRider면 낙하 안 함 (즉, 다른 Pushable 위)
-        if (p.TryGetComponent<IRider>(out _))
-            return;
-
-        // 부모가 Stage면 낙하
-        if (p.name == STAGE_NAME)
-        {
-            StartCoroutine(CheckFall());
-            return;
-        }
-
-        // 그 외 예외 부모도 기본적으로 낙하 처리
         StartCoroutine(CheckFall());
+    }
+
+    IEnumerator BreakStackCoroutine()
+    {
+        // Stack쌓듯이 반대로 내 부모의 부모의 부모 ... 를 찾아서 FlowWater를 감지하고 있지 않으면 chian을 끊어버리는 로직을 짜면 되지 않을까....
+        // 내 조상중에 flow water안에 있는 obj를 찾아서...
+        // if(flow water 찾았으면) Coroutine 실행 X
+        // if(flow water 찾았으면) Coroutine 실행해서 체인 끊기
+        // 아니면...지금 Flow에서 ImmediatePush를 호출해서 실행시켜주는데, flowInterval이 넘었는데도 ImmmidataPush가 호출이 안 되면 체인을 끊어주는 걸로...? <- 근데 이러면 그냥 가만히 두다가 다시 어떠한 방식으로 ImmediatePush가 호출되면 체인 이미 끊어져서 다시 안 따라갈 수도 있음.
+        // 물에 들어간 상태면 Update에서 실시간으로 계속 물에 있는지 없는지 감지하고 물이 아니라면 감지 정지..? <- 너무 메모리 많이 잡아먹는 비효율적 방법같음...
+
+        yield return null;
     }
 
     // ========== 공중 띄우기용 ==========
@@ -534,5 +540,38 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         {
             yield return StartCoroutine(CheckFall());
         }
+    }
+
+    private bool IsOnFlowWater()
+    {
+        // 자신의 중심 기준 아래 방향으로 Raycast
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 1.5f))
+        {
+            return hit.collider.gameObject.layer == LayerMask.NameToLayer("Water");
+        }
+        return false;
+    }
+
+    private bool HasFlowWaterAncestor()
+    {
+        Transform current = transform;
+        int safety = 0; // 무한루프 방지용
+
+        while (current != null && safety < 20)
+        {
+            safety++;
+            if (current.TryGetComponent(out PushableObjects po))
+            {
+                if (po.IsOnFlowWater())
+                {
+                    return true;
+                }
+            }
+            current = current.parent;
+        }
+
+        // 위로 올라가도 FlowWater 위에 있는 부모가 없음 -> 해제 필요
+        return false;
     }
 }
