@@ -11,10 +11,10 @@ public class LMasterUniqueState : LobbyCharacterBaseState
     private bool isComplete = false;
     private bool oneShot = false;
 
-    public LMasterUniqueState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
+    public LMasterUniqueState(MasterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
     {
         agent = owner.GetComponent<NavMeshAgent>();
-        startPoint = (owner as MasterBehaviour).StartPoint;
+        startPoint = owner.Waypoints[0].transform;
     }
 
     public override void OnStateEnter()

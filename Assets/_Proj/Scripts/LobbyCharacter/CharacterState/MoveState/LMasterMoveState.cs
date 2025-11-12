@@ -9,16 +9,14 @@ public class LMasterMoveState : LobbyCharacterBaseState
     private readonly NavMeshAgent agent;
     private readonly NavMeshAgentControl charAgent;
     private LMasterRouteManager route;
-    private Transform startPoint;
-    private WaitUntil waitU;
+    private Transform startPoint; // 지금은 마스터의 포지션으로 되어있는데 로비매니저 정리되면 스타트 포인트로
 
     public LMasterMoveState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, NavMeshAgentControl charAgent) : base(owner, fsm)
     {
         agent = owner.GetComponent<NavMeshAgent>();
         this.charAgent = charAgent;
-        route = new LMasterRouteManager(owner.transform);
-        waitU = new WaitUntil(() => !agent.pathPending && agent.remainingDistance <= 0.5f);
-        startPoint = owner.transform; // 로비매니저가 0번째 웨이포인트로 소환하니 상관없겠지?
+        startPoint = owner.Waypoints[0].transform;
+        route = new LMasterRouteManager(startPoint);
     }
 
     public override void OnStateEnter()
@@ -27,13 +25,18 @@ public class LMasterMoveState : LobbyCharacterBaseState
         if (agent.enabled && agent.isStopped) agent.isStopped = false;
 
         Debug.Log($"{owner.gameObject.name} Move 진입");
+
+        // 루틴 초기화
+        route.RefreshDecoList();
         //owner.EndRoutine();
         owner.StartCoroutine(MoveRoutine());
+        
     }
     public override void OnStateUpdate()
     {
         if (owner.gameObject.IsDestroyed()) owner.StopAllCoroutines();
         
+        // 코코두기 상호작용
         if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
         {
             //fsm.ChangeState(new LCocoDoogyInteractState(owner, fsm, waypoints));
@@ -56,36 +59,23 @@ public class LMasterMoveState : LobbyCharacterBaseState
     public override void OnStateExit()
     {
         owner.StopAllCoroutines();
+        agent.ResetPath();
     }
 
     private IEnumerator MoveRoutine()
     {
         while (true)
         {
-            route.RefreshDecoList();
-
             Transform next = route.GetNextDeco();
-            if (next == null)
-            {
-                Debug.Log("(decoList == null || decoList.Count == 0 || hasComplete == true, 스타트 지점으로 감");
-                agent.SetDestination(startPoint.position);
-                yield return waitU;
-
-                fsm.ChangeState(owner.IdleState);
-                yield break;
-            }
-
-            Vector3 randDir = Random.insideUnitSphere * 2f;
-            randDir.y = owner.YValue;
-            Vector3 moveDir = randDir + next.position;
-            agent.SetDestination(moveDir);
-            yield return waitU;
 
             if (route.hasComplete)
             {
                 // 루틴 끝
-                agent.SetDestination(startPoint.position);
-                yield return waitU;
+                charAgent.MoveToLastPoint(startPoint);
+                while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
+                {
+                    yield return null;
+                }
 
                 fsm.ChangeState(owner.EditState);
                 // 로비 매니저에게 나 끝났어요 호출 하면 로비매니저가 SetActive false 처리
@@ -93,6 +83,27 @@ public class LMasterMoveState : LobbyCharacterBaseState
                 yield break;
             }
 
+            if (next == null)
+            {
+                Debug.Log("(decoList == null || decoList.Count == 0 || hasComplete == true, 스타트 지점으로 감");
+                charAgent.MoveToLastPoint(startPoint);
+
+                while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
+                {
+                    yield return null;
+                }
+
+                fsm.ChangeState(owner.IdleState);
+                yield break;
+            }
+            else
+            {
+                charAgent.MoveToTransPoint(next);
+                while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
+                {
+                    yield return null;
+                }
+            }
         }
     }
     // 로비매니저에 있는 데코리스트들을 받아서 자신에게 가까운 순으로 정렬한 뒤 움직이기

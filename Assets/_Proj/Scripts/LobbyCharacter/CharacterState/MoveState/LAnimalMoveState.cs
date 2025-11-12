@@ -54,6 +54,7 @@ public class LAnimalMoveState : LobbyCharacterBaseState
     public override void OnStateExit()
     {
         owner.StopAllCoroutines();
+        agent.ResetPath();
     }
     
     private IEnumerator Move()
@@ -69,7 +70,6 @@ public class LAnimalMoveState : LobbyCharacterBaseState
             {
                 charAgent.MoveToRandomTransPoint(owner.transform);
             }
-            if (!agent.hasPath) charAgent.MoveToRandomTransPoint(owner.transform);
             
             while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
             {

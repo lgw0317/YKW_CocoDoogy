@@ -1,19 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class LCocoDoogyMoveState : LobbyCharacterBaseState
 {
     private readonly NavMeshAgent agent;
-    //private NavMeshAgentControl AgentControl;
-    private Transform[] waypoints;
-    private int currentIndex = 0;
+    private readonly NavMeshAgentControl charAgent;
+    private LCocoDoogyRouteManager route;
     //private int savedIndex = -1;
 
-    public LCocoDoogyMoveState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, ref Transform[] waypoints, ref int currentIndex) : base(owner, fsm)
+    public LCocoDoogyMoveState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, NavMeshAgentControl charAgent, List<LobbyWaypoint> waypoints) : base(owner, fsm)
     {
-        this.waypoints = waypoints;
-        this.currentIndex = currentIndex;
         agent = owner.GetComponent<NavMeshAgent>();
+        this.charAgent = charAgent;
+        route = new LCocoDoogyRouteManager(waypoints);
         //AgentControl = owner.GetComponent<NavMeshAgentControl>();
     }
 
@@ -67,7 +67,7 @@ public class LCocoDoogyMoveState : LobbyCharacterBaseState
     {
         //savedIndex = currentIndex; // 1
         //owner.StopAllCoroutines();
-        
+        agent.ResetPath();
     }
 
 }

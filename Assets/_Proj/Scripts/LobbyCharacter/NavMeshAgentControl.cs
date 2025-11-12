@@ -7,26 +7,21 @@ public class NavMeshAgentControl
 {
     // 필요한 기본 이동 로직들을 만들고 각 스크립트에 조립하는 형식이 좋겠지? 코루틴을 사용하는게 더 좋으니
     private readonly NavMeshAgent agent;
-    private float moveSpeed; // �̵� �ӵ�
-    private float angularSpeed; // �� �ӵ�
-    private float acceleration; // ���ӵ�
+    private float moveSpeed; // agent 스피드
+    private float angularSpeed; // agent 회전 스피드
+    private float acceleration; // agent 가속
+    private float moveRadius; // Random.insideUnitSphere 범위 설정
 
-    // �� ��
-    private float moveRadius; // �̵� ����
-    private float timer;
-    private Transform transform;
-
-    public NavMeshAgentControl(NavMeshAgent agent, float moveSpeed, float angularSpeed, float acceleration, float moveRadius, Transform transform)
+    public NavMeshAgentControl(NavMeshAgent agent, float moveSpeed, float angularSpeed, float acceleration, float moveRadius)
     {
         this.agent = agent;
         this.moveSpeed = moveSpeed;
         this.angularSpeed = angularSpeed;
         this.acceleration = acceleration;
         this.moveRadius = moveRadius;
-        this.transform = transform;
     }
 
-    // 캐릭터 움직일 때 걷거나 뛰는 애니메이션 속도 값 리턴
+    // 캐릭터 움직일 때 걷거나 뛰는 애니메이션 속도 값 리턴 // 이젠사용안할듯?
     public float ValueOfMagnitude()
     {
         return agent.velocity.magnitude;
@@ -49,7 +44,7 @@ public class NavMeshAgentControl
     {
         if (agent.isStopped) agent.isStopped = false;
         Vector3 pos = point.position;
-        float speed = Random.Range(3f, 7f);
+        float speed = Random.Range(2.4f, 6f);
         agent.SetDestination(pos);
         agent.speed = speed;
         agent.acceleration = Random.Range(speed, 10f);
@@ -62,7 +57,7 @@ public class NavMeshAgentControl
     public void MoveToVectorPoint(Vector3 point)
     {
         if (agent.isStopped) agent.isStopped = false;
-        float speed = Random.Range(3f, 7f);
+        float speed = Random.Range(2.4f, 6f);
         agent.SetDestination(point);
         agent.speed = speed;
         agent.acceleration = Random.Range(speed, 10f);
@@ -91,7 +86,7 @@ public class NavMeshAgentControl
         Vector3 randomDir = point.position + Random.insideUnitSphere * moveRadius;
         randomDir.y = point.position.y;
         //randomDir += transform.position;
-        if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, 3f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, 0.1f, NavMesh.AllAreas))
         {
             //randomDir = hit.position;
             //agent.SetDestination(hit.position);
@@ -106,7 +101,7 @@ public class NavMeshAgentControl
         Vector3 randomDir = point.position + Random.insideUnitSphere * 1f;
         randomDir.y = point.position.y;
         //randomDir += transform.position;
-        if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, 0.1f, NavMesh.AllAreas))
         {
             //randomDir = hit.position;
             MoveToVectorPoint(hit.position);

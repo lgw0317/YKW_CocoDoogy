@@ -1,10 +1,10 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MasterBehaviour : BaseLobbyCharacterBehaviour
 {
-    //private int currentDecoIndex;
-    public Transform StartPoint { get; private set; }
+    public LMasterUniqueState UniqueState { get; private set; }
 
     protected override void InitStates()
     {
@@ -31,10 +31,20 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
     protected override void Start()
     {
         base.Start();
+        UniqueState = new LMasterUniqueState(this, fsm);
     }
     protected override void Update()
     {
         base.Update();
+    }
+
+    public void PlayStun()
+    {
+        anim.Play("Stunned");
+    }
+    public void ChangeUniqueState()
+    {
+        fsm.ChangeState(UniqueState);
     }
 
     // 인터페이스 영역
@@ -86,7 +96,6 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
     {
         base.Init();
         agent.avoidancePriority = 10;
-        StartPoint = InLobbyManager.Instance.waypoints[0];
     }
     public override void PostInit()
     {

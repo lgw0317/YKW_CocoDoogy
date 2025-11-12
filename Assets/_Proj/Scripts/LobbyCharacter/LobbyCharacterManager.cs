@@ -9,7 +9,7 @@ using UnityEngine.AI;
 // 저장되어있는 동물 오브젝트, 데코 오브젝트, 집 오브젝트를 어떻게 분리할까
 
 
-public class InLobbyManager : MonoBehaviour
+public class LobbyCharacterManager : MonoBehaviour
 {
     [SerializeField] GameObject plane;
     [SerializeField] EditModeController editController;
@@ -17,22 +17,22 @@ public class InLobbyManager : MonoBehaviour
     //[SerializeField] float interactDistance = 2f;
     [SerializeField] float routineDelay = 3f;
 
-    private CocoDoogyBehaviour coco;
-    private MasterBehaviour master;
-
-    private NavMeshSurface planeSurface;
-    public Transform[] waypoints;
-
-    public bool isEditMode { get; private set; } // 에딧컨트롤러에서 받아오기
+    private LMCharacterInit lmChar; // 씬 시작시 초기화
+    private CocoDoogyBehaviour coco; // 코코두기 제어 용
+    private MasterBehaviour master; // 안드로이드 제어 용
+    private LMWaypoints lmWaypoints; // 웨이포인트 얻기
+    private NavMeshSurface planeSurface; // Bake 용
+    public bool IsEditMode { get; private set; } // 에딧컨트롤러에서 받아오기
     private int originalLayer; // 평상 시 레이어
     private int editableLayer; // 편집모드 시 레이어
     //private bool oneForInit = false;
 
-
-    public static InLobbyManager Instance { get; private set; }
+    public List<LobbyWaypoint> Waypoints { get; private set; }
+    private List<ILobbyState> lobbyCharacter = new(); // 맵에 활성화 된 캐릭터들 모음
+    
+    public static LobbyCharacterManager Instance { get; private set; }
     // 나중에 생각할 것
     //public static event Action<BaseLobbyCharacterBehaviour> OnRequestDeactive;
-    private List<ILobbyState> lobbyCharacter = new(); // 맵에 활성화 된 캐릭터들 모음
 
     private void Awake()
     {
@@ -43,13 +43,16 @@ public class InLobbyManager : MonoBehaviour
         }
         Instance = this;
 
+        lmWaypoints = new LMWaypoints();
+        lmChar = new LMCharacterInit(this, lobbyCharacter);
+
         if (planeSurface == null)
         {
             planeSurface = FindFirstObjectByType<NavMeshSurface>();
         }
 
         if (editController == null) editController = FindFirstObjectByType<EditModeController>();
-        isEditMode = false;
+        IsEditMode = false;
 
         originalLayer = LayerMask.NameToLayer("InLobbyObject");
         editableLayer = LayerMask.NameToLayer("Editable");
@@ -58,61 +61,25 @@ public class InLobbyManager : MonoBehaviour
 
     private void Start() // 깨끗한 프리팹에 붙여주는 방법이 인게임 아웃게임 전환에서 좋지 않을 깝숑
     {
+        Waypoints = lmWaypoints.GetWaypoints();
         planeSurface.BuildNavMesh();
-
-        GameObject gObj = Instantiate(DataManager.Instance.mainChar.GetPrefab(99999), waypoints[0].position, Quaternion.identity);
-        gObj.transform.localScale = new Vector3(3, 3, 3);
-        gObj.AddComponent<CocoDoogyBehaviour>();
-
-        GameObject gObj2 = Instantiate(DataManager.Instance.mainChar.GetPrefab(99998), waypoints[0].position, Quaternion.identity);
-        gObj2.transform.localScale = new Vector3(3, 3, 3);
-        gObj2.AddComponent<MasterBehaviour>();
-
-        int priority = 50;
-        foreach (var lC in lobbyCharacter)
-        {
-            lC.Init();
-            lC.PostInit();
-            lC.LoadInit();
-            var mono = lC as BaseLobbyCharacterBehaviour;
-            if (mono.tag == "Animal")
-            {
-                var agent = mono.GetComponent<NavMeshAgent>();
-                agent.avoidancePriority = priority;
-            }
-            lC.FinalInit();
-            priority++;
-        }
+        lmChar.Init();
+        coco = lmChar.CocoInit();
+        master = lmChar.MasterInit();
         //coco = gObj.GetComponent<CocoDoogyBehaviour>();
         //coco.gameObject.SetActive(false);
 
         //StartCoroutine(MainCharRoutineLoop());
-
-        // foreach (var lC in lobbyCharacter)
-        // {
-        //     if (lC == null) Debug.Log($"{lC} null");
-        //     if (lC != null)
-        //     {
-        //         lC.StartScene();
-        //         Debug.Log($"{lC} StartScene");
-        //     }
-        // }
-        // if (!oneForInit)
-        // {
-        //     초기화
-        //     oneForInit = true;
-        //     return;
-        // }
     }
 
     private void Update()
     {
         bool current = editController.IsEditMode;
         Debug.Log($"current 상태 : {current}");
-        if (current != isEditMode)
+        if (current != IsEditMode)
         {
-            isEditMode = current;
-            if (isEditMode)
+            IsEditMode = current;
+            if (IsEditMode)
             {
                 foreach (var lC in lobbyCharacter)
                 {
@@ -120,13 +87,12 @@ public class InLobbyManager : MonoBehaviour
                     {
                         lC.InEdit();
                         var mono = lC as BaseLobbyCharacterBehaviour;
-                        //gObj.InEdit();
                         mono.gameObject.layer = editableLayer;
                     }
                 }
                 Debug.Log("편집모드 진입");
             }
-            else if (!isEditMode)
+            else if (!IsEditMode)
             {
                 planeSurface.BuildNavMesh();
                 foreach (var lC in lobbyCharacter)
@@ -136,7 +102,6 @@ public class InLobbyManager : MonoBehaviour
                         lC.InNormal();
                         var mono = lC as BaseLobbyCharacterBehaviour;
                         mono.gameObject.layer = originalLayer;
-                        //lC.InUpdate();
                     }
                 }
                 Debug.Log("일반모드 진입");

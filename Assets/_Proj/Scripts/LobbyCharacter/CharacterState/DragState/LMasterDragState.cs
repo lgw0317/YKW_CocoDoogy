@@ -76,13 +76,13 @@ public class LMasterDragState : LobbyCharacterBaseState, IDragState
         {
             trans.position = originalPos;
             Debug.Log($"{owner.gameObject.name} : NavMesh 없음 기존 포지션으로");
+            fsm.ChangeState(owner.IdleState);
         }
         else
         {
             trans.position = navHit.position;
             Debug.Log($"{owner.gameObject.name} : NavMesh 있음 해당 포지션으로");
+            (owner as MasterBehaviour).PlayStun();
         }
-        // UniqueState로 바꿔야함
-        fsm.ChangeState((owner as MasterBehaviour).IdleState);
     }
 }

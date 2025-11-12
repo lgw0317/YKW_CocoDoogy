@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 using Game.Inventory;
@@ -562,13 +563,19 @@ public partial class EditModeController
         switch (cat)
         {
             case PlaceableCategory.Home:
-                var nO = go.GetComponent<NavMeshObstacle>() ?? go.AddComponent<NavMeshObstacle>();
-                nO.carving = true;
+                if (go.GetComponent<NavMeshModifier>() == null) go.AddComponent<NavMeshModifier>();
+                var nMM = go.AddComponent<NavMeshModifier>();
+                nMM.overrideArea = true;
+                nMM.area = 1; 
                 break;
             case PlaceableCategory.Animal:
                 if(go.GetComponent<AnimalBehaviour>() == null) go.AddComponent<AnimalBehaviour>();
                 break;
             case PlaceableCategory.Deco:
+                if (go.GetComponent<NavMeshModifier>() == null) go.AddComponent<NavMeshModifier>();
+                var nMM1 = go.AddComponent<NavMeshModifier>();
+                nMM1.overrideArea = true;
+                nMM1.area = 1; 
                 go.tag = "Decoration";
                 break;
         }
