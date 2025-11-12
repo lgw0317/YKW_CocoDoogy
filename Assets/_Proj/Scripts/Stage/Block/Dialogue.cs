@@ -50,10 +50,17 @@ public class Dialogue : MonoBehaviour
     void Update()
     {
         if (!isDialogueActive) return;
-        var touch = Touchscreen.current.touches[0];
-        if (touch.press.isPressed) //Todo : 너무 순식간에 지나감 이것도 수정해야함
+
+        if (Touchscreen.current != null)
         {
-            OnUserTap();
+            foreach (var touch in Touchscreen.current.touches)
+            {
+                if (touch.press.wasPressedThisFrame) // 터치 “시작” 순간만 true
+                {
+                    OnUserTap();
+                    break;
+                }
+            }
         }
     }
 
