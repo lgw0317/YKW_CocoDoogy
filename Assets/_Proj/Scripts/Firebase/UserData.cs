@@ -178,30 +178,129 @@ public class UserData : IUserData
         {
 
         }
-
-        public string ToValidFormat()
+        /// <summary>
+        /// 1) 씬에서 수집한 Placed 리스트 → Firebase 저장용 props 구조(Dictionary)로 변환
+        ///    - 저장 시 사용됨 (CollectPlacedFromScene → LoadFromPlacedList → Save())
+        /// </summary>
+        public void PlacedListToUserDataLobby(List<PlaceableStore.Placed> placedList)
         {
-            string resultJson = string.Empty;
-            List<PlaceableStore.Placed> Wrapper = new();
-            PlaceableCategory validCategory = 0;
-            foreach (var p in props)
+            // props가 null이면 새로 만들고, 기존 내용은 항상 비움
+            // 이유: 이번 저장에서 새롭게 채워야 하기 때문
+            props ??= new Dictionary<string, List<PlaceInfo>>();
+            props.Clear();
+
+            if (placedList == null) return;
+
+            foreach (var p in placedList)
             {
-                int idInt = int.Parse(p.Key);
-                if (10000 < idInt && idInt < 20000) validCategory = PlaceableCategory.Deco;
-                else if (30000 < idInt && idInt < 40000) validCategory = PlaceableCategory.Animal;
-                else if (40000 < idInt && idInt < 50000) validCategory = PlaceableCategory.Home;
-                else return null; //심각한 예외. 저장된 string의 카테고리가 처리 가능 범위를 벗어났음.
-                if (p.Value != null && p.Value.Count > 0)
+                // key는 id(문자열) — ex: "10001"
+                string key = p.id.ToString();
+
+                // key가 이미 있으면 기존 리스트 가져오고, 없으면 새 리스트 생성
+                if (!props.TryGetValue(key, out var list))
                 {
-                    foreach (var pi in p.Value)
+                    list = new List<PlaceInfo>();
+                    props.Add(key, list);
+                }
+
+                // Placed → PlaceInfo 구조로 변환
+                // x,z 좌표 + Y축 회전만 추출 (Firebase 저장 최소 데이터)
+                var pi = new PlaceInfo
+                {
+                    xPosition = Mathf.RoundToInt(p.pos.x),
+                    yPosition = Mathf.RoundToInt(p.pos.z),
+                    yAxisRotation = Mathf.RoundToInt(p.rot.eulerAngles.y)
+                };
+
+                // 동일 ID 아래에 여러 배치물이 들어갈 수 있음 → 리스트에 추가
+                list.Add(pi);
+            }
+        }
+
+
+        /// <summary>
+        /// 2) Firebase에서 내려온 props(Dictionary) → 게임에서 사용할 Placed 리스트로 변환
+        ///    - 불러오기 시 사용됨 (props → ToPlacedList → SpawnFromPlacedList)
+        /// </summary>
+        public List<PlaceableStore.Placed> ToPlacedList()
+        {
+            var result = new List<PlaceableStore.Placed>();
+
+            foreach (var kv in props)
+            {
+                // key(string) → id(int)
+                if (!int.TryParse(kv.Key, out int idInt))
+                {
+                    Debug.LogWarning($"[Lobby] 잘못된 id key: {kv.Key}");
+                    continue;
+                }
+
+                // ID 범위로 카테고리
+                // ID 규칙(10000~, 30000~, 40000~)
+                PlaceableCategory cat;
+                if (10000 < idInt && idInt < 20000) cat = PlaceableCategory.Deco;
+                else if (30000 < idInt && idInt < 40000) cat = PlaceableCategory.Animal;
+                else if (40000 < idInt && idInt < 50000) cat = PlaceableCategory.Home;
+                else
+                {
+                    Debug.LogWarning($"[Lobby] 지원 안 되는 id 범위: {idInt}");
+                    continue;
+                }
+
+                var list = kv.Value;
+                if (list == null || list.Count == 0) continue;
+
+                // PlaceInfo → Placed 변환 반복
+                foreach (var pi in list)
+                {
+                    var placed = new PlaceableStore.Placed
                     {
-                        var validFormat = new PlaceableStore.Placed() { cat = validCategory, id = idInt, pos = new Vector3(pi.xPosition, 0f, pi.yPosition), rot = Quaternion.Euler(0, pi.yAxisRotation, 0f) };
-                        Wrapper.Add(validFormat);
-                    }
+                        cat = cat,
+                        id = idInt,
+                        pos = new Vector3(pi.xPosition, 0f, pi.yPosition),
+                        rot = Quaternion.Euler(0f, pi.yAxisRotation, 0f)
+                    };
+
+                    result.Add(placed);
                 }
             }
-                resultJson = JsonConvert.SerializeObject(Wrapper);
-            return resultJson;
+
+            return result;
+        }
+        /// <summary>
+        /// 3) Firebase에 업로드할 최종 JSON 생성
+        ///    - 내부적으로 props → Placed 리스트를 만들고 직렬화
+        ///    - Firebase에서 받을 때도 동일 Placed 포맷을 사용해 양쪽 구조를 맞춤
+        /// </summary>
+        public string ToValidFormat()
+        {
+            // props → Placed 리스트 변환
+            var list = ToPlacedList();
+
+            // Firebase에는 이 JSON 문자열이 그대로 저장됨
+            return JsonConvert.SerializeObject(list);
+
+            //string resultJson = string.Empty;
+            //List<PlaceableStore.Placed> Wrapper = new();
+            //PlaceableCategory validCategory = 0;
+            //foreach (var p in props)
+            //{
+            //    int idInt = int.Parse(p.Key);
+            //    if (10000 < idInt && idInt < 20000) validCategory = PlaceableCategory.Deco;
+            //    else if (30000 < idInt && idInt < 40000) validCategory = PlaceableCategory.Animal;
+            //    else if (40000 < idInt && idInt < 50000) validCategory = PlaceableCategory.Home;
+            //    else return null; //심각한 예외. 저장된 string의 카테고리가 처리 가능 범위를 벗어났음.
+            //    if (p.Value != null && p.Value.Count > 0)
+            //    {
+            //        foreach (var pi in p.Value)
+            //        {
+            //            var validFormat = new PlaceableStore.Placed() { cat = validCategory, id = idInt, pos = new Vector3(pi.xPosition, 0f, pi.yPosition), rot = Quaternion.Euler(0, pi.yAxisRotation, 0f) };
+            //            Wrapper.Add(validFormat);
+            //        }
+            //    }
+            //}
+            //    resultJson = JsonConvert.SerializeObject(Wrapper);
+            //return resultJson;
         }
     }
 
