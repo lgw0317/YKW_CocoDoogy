@@ -339,6 +339,7 @@ MonoBehaviour:
   overrideRiseSec: 0.5
   overrideHangSec: 0.4
   overrideFallSec: 0.2
+  flow: {fileID: 5130774834560676477, guid: b4cd3f06419b67046b7fced9fed33f79, type: 3}
 --- !u!114 &-6961232074567143049
 MonoBehaviour:
   m_ObjectHideFlags: 0
