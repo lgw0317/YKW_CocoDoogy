@@ -17,11 +17,25 @@ public class FirebaseUITest : MonoBehaviour
         
     }
 
-    public void UpdateTest()
+    public async void UpdateTest()
     {
         if (!FirebaseManager.Instance && !FirebaseManager.Instance.IsInitialized) return;
         if (UserData.Local == null) return;
-        UserData.OnLocalUserDataUpdate();
+        switch (control_dropdown.value)
+        {
+            case 0:
+                await FirebaseManager.Instance.UpdateLocalUserDataCategory(UserData.Local.inventory);
+                break;
+            case 1:
+                await FirebaseManager.Instance.UpdateLocalUserDataCategory(UserData.Local.lobby);
+                break;
+            case 2:
+                await FirebaseManager.Instance.UpdateLocalUserDataCategory(UserData.Local.eventArchive);
+                break;
+            case 3:
+                await FirebaseManager.Instance.UpdateLocalUserDataCategory(UserData.Local.friends);
+                break;
+        }
     }
 
     public void ControlUserData()
@@ -59,7 +73,7 @@ public class FirebaseUITest : MonoBehaviour
                     }
                     else
                     {
-                        UserData.Local.lobby.props[control_InputField.text][0] = new() { xPosition = int.MaxValue, yPosition = int.MaxValue, yAxisRotation = 270};
+                        UserData.Local.lobby.props[control_InputField.text].Add( new() { xPosition = 10, yPosition = 10, yAxisRotation = 270});
                     }
                 }
                 else

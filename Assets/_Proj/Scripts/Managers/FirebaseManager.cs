@@ -5,8 +5,10 @@ using Firebase.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -29,7 +31,7 @@ public class FirebaseManager : MonoBehaviour
     async void Start()
     {
         DependencyStatus status = await FirebaseApp.CheckAndFixDependenciesAsync();
-        
+
         //TODO: 실제 게임용 파이어베이스로 바꾸게 될 경우 아래는 필요하지 않게 됨. 테스트용 파이어베이스 참조를 위한 코드임.
         //var options = new AppOptions()
         //{
@@ -55,13 +57,19 @@ public class FirebaseManager : MonoBehaviour
             //추가: 파이어베이스 인증 기능 활용을 위해 현재 App에서 Firebase Authentication 어플리케이션을 가져옵니다.
             Auth = FirebaseAuth.GetAuth(App);
             IsInitialized = true;
+
+            if (Auth.CurrentUser != null && Auth.CurrentUser.IsAnonymous)
+            {
+                await SignInAnonymouslyTest();
+            }
+            
             Debug.Log($"[파이어베이스 인증]로컬에 남아있는 유저 아이디 : {Auth.CurrentUser.UserId}");
-            
-            
+
+
         }
         else
         {
-            
+
             Debug.LogWarning($"파이어베이스 초기화 실패, 파이어베이스 앱 상태: {status}");
         }
     }
@@ -79,7 +87,7 @@ public class FirebaseManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    
+
     //삭제: 맵에디터에서만 사용하는 코드.
     //public async Task<List<string>> FetchMapNamesFromFirebase()
     //{
@@ -158,7 +166,7 @@ public class FirebaseManager : MonoBehaviour
     /// <param name="onSuccess"></param>
     /// <param name="onFailure"></param>
     /// <returns></returns>
-    public async Task SignInAnonymouslyTest(Action<FirebaseUser> onSuccess, Action<FirebaseException> onFailure) => await SignInAnonymously(onSuccess, onFailure);
+    public async Task SignInAnonymouslyTest(Action<FirebaseUser> onSuccess = null, Action<FirebaseException> onFailure = null) => await SignInAnonymously(onSuccess, onFailure);
 
 
 
@@ -179,6 +187,8 @@ public class FirebaseManager : MonoBehaviour
             //이곳에 이 익명유저의 uid를 키로 하는 UserData 자식의 값을 가져오도록 함.
             await FetchCurrentUserData();
             //가져온 값이 존재하면 UserData.Local에 대입, 만약 없다면 UserData.Local을 new()해줌... 맞나?
+            //로그인이므로 로그인용 하트비트 전송
+            await SendHeartbeatAsync(true);
         }
         catch (FirebaseException ex)
         {
@@ -227,7 +237,8 @@ public class FirebaseManager : MonoBehaviour
         {
             var result = await Auth.CurrentUser.LinkWithCredentialAsync(credential);
             onSuccess?.Invoke(result.User);
-        } catch (FirebaseException fe)
+        }
+        catch (FirebaseException fe)
         {
             onFailure?.Invoke(fe);
         }
@@ -280,10 +291,19 @@ public class FirebaseManager : MonoBehaviour
     //}
 
     //2. DB에 로컬 유저데이터를 저장하는 처리 (전체를 JSON으로)
+    /// <summary>
+    /// 로컬의 유저데이터 전체를 파이어베이스에 업로드합니다.
+    /// </summary>
+    /// <returns></returns>
     public async Task UpdateLocalUserData() => await UpdateUserData(Auth.CurrentUser.UserId, UserData.Local);
-    
-        
+
+
     //2-1. DB에 로컬 유저데이터의 한 카테고리만 저장하는 처리
+    /// <summary>
+    /// 로컬의 유저데이터 중 한 카테고리만 뽑아서 파이어베이스에 업로드합니다.
+    /// </summary>
+    /// <param name="category">데이터 카테고리 객체(예: UserData.Local.inventory)</param>
+    /// <returns></returns>
     public async Task UpdateLocalUserDataCategory(IUserDataCategory category) => await UpdateUserDataCategory(Auth.CurrentUser.UserId, category);
 
     private async Task UpdateUserData(string uid, UserData data)
@@ -302,20 +322,59 @@ public class FirebaseManager : MonoBehaviour
     }
     private async Task UpdateUserDataCategory(string uid, IUserDataCategory category)
     {
-        //if (Auth.CurrentUser == null || !Auth.CurrentUser.IsValid()) return;
+        if (Auth.CurrentUser == null || !Auth.CurrentUser.IsValid()) return;
+        string categoryName = category is UserData.Master ? "master" :
+                              category is UserData.Inventory ? "inventory" :
+                              category is UserData.Wallet ? "wallet" :
+                              category is UserData.Lobby ? "lobby" :
+                              category is UserData.EventArchive ? "eventArchive" :
+                              category is UserData.Friends ? "friends" :
+                              category is UserData ? "invalidNode" :
+                              "invalidNode";
 
-        
         try
         {
             string userDataJson = category.ToJson();
-            await UserDataRef.Child(uid).Child(category.GetType().ToString().ToLower()).SetRawJsonValueAsync(userDataJson);
-            Debug.Log($"{uid}: {category.GetType()}카테고리만 뽑아 DB에 저장.");
+            await UserDataRef.Child(uid).Child(categoryName).SetRawJsonValueAsync(userDataJson);
+            Debug.Log($"{uid}: {categoryName}카테고리만 뽑아 DB에 저장.");
         }
         catch (FirebaseException fe)
         {
-            Debug.LogError($"{uid}: {category.GetType()}카테고리만 뽑아 DB에 업로드 도중 오류 발생함. {fe.Message}");
+            Debug.LogError($"{uid}: {categoryName}카테고리만 뽑아 DB에 업로드 도중 오류 발생함. {fe.Message}");
         }
     }
     #endregion
 
+    private async Task SendHeartbeatAsync(bool isLogin = false)
+    {
+        if (Auth.CurrentUser == null || !Auth.CurrentUser.IsValid()) return;
+        long now = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
+
+        if (isLogin) UserData.Local.master.lastLoginAt = now;
+        UserData.Local.master.lastActiveTime = now;
+        try
+        {
+            if (isLogin) await CurrentUserDataRef.Child("master").Child("lastLoginAt").SetValueAsync(now);
+            await CurrentUserDataRef.Child("master").Child("lastActiveTime").SetValueAsync(now);
+            //서버에 마지막 활동 시간 기록.
+
+
+            //보고 나서 더티플래그를 확인함.
+            DataSnapshot snapshot = await CurrentUserDataRef.Child("flag").GetValueAsync();
+            if (snapshot.Exists)
+            {
+                UserDataDirtyFlag flag = (UserDataDirtyFlag)(int)(long)snapshot.Value;
+                Debug.Log($"{Auth.CurrentUser.UserId}: DB에 하트비트 기록하며 확인한 더티플래그: {flag}");
+                UserData.Local.flag = flag;
+            }
+            else
+            {
+                await CurrentUserDataRef.Child("flag").SetValueAsync(UserData.Local.flag);
+            }
+        }
+        catch (FirebaseException fe)
+        {
+            Debug.LogError($"{Auth.CurrentUser.UserId}: 하트비트 보내는 중 오류 발생");
+        }
+    }
 }

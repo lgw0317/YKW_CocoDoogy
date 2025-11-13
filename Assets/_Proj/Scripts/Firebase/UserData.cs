@@ -7,34 +7,50 @@ using UnityEngine;
 
 public static class UserDataExtensions
 {
-    public static string ToJson(this IUserDataCategory category) => JsonConvert.SerializeObject(category);
-    public static T FromJson<T>(this string json) where T : IUserDataCategory => JsonConvert.DeserializeObject<T>(json);
+    public static string ToJson(this IUserData data) => JsonConvert.SerializeObject(data);
+    public static T FromJson<T>(this string json) where T : IUserData => JsonConvert.DeserializeObject<T>(json);
     public async static void Save(this IUserDataCategory category) => await FirebaseManager.Instance.UpdateLocalUserDataCategory(category);
 
 
 }
 
-
-
-public interface IUserDataCategory
+public interface IUserData
 {
-    public virtual string ToValidFormat() { return null; }
+
+}
+
+public interface IUserDataCategory : IUserData
+{
+    public virtual string ToValidFormat() { throw new NotImplementedException("정의되지 않은 메서드입니다. 올바른 방법으로 사용해 주세요."); }
     
 }
 
 
+[Flags]
+public enum UserDataDirtyFlag
+{
+    None,
+    Master = 1,
+    Wallet = 1 << 1,
+    Inventory = 1 << 2,
+    Lobby = 1 << 3,
+    EventArchive = 1 << 4,
+    Friends = 1 << 5,   
+    Codex = 1 << 6,
+    All = Master | Wallet | Inventory | Lobby | EventArchive | Friends | Codex
 
+}
 
 /// <summary>
 /// <b>유저 데이터 관리용 클래스.</b>
 /// <br>[DB 루트 노드] -> [users] -> [(uid)] : [이 클래스의 JSON]</br>
 /// </summary>
 [Serializable]
-public class UserData : IUserDataCategory
+public class UserData : IUserData
 //유저 데이터 관리용 클래스.    
 {
-    
 
+    public UserDataDirtyFlag flag;
 
     
     
@@ -261,6 +277,7 @@ public class UserData : IUserDataCategory
         {
 
         }
+        //TODO: 수정할 것.
         public Dictionary<CodexType, HashSet<int>> LoadUnlocked()
         {
             var result = new Dictionary<CodexType, HashSet<int>>();
@@ -318,6 +335,7 @@ public class UserData : IUserDataCategory
         lobby = new Lobby();
         eventArchive = new EventArchive();
         friends = new Friends();
+        flag = 0;
     }
 
     //로비 배치 정보
@@ -347,8 +365,5 @@ public class UserData : IUserDataCategory
         
     }
 
-    public string ToValidFormat()
-    {
-        throw new NotImplementedException();
-    }
+
 }
