@@ -58,6 +58,7 @@ public class FirebaseManager : MonoBehaviour
             Auth = FirebaseAuth.GetAuth(App);
             IsInitialized = true;
 
+            if (Auth.CurrentUser == null) await SignInAnonymouslyTest((x)=>Debug.Log("익명로그인"));
             if (Auth.CurrentUser != null && Auth.CurrentUser.IsAnonymous)
             {
                 await SignInAnonymouslyTest();
@@ -257,7 +258,7 @@ public class FirebaseManager : MonoBehaviour
     //1. DB에서 UserData를 가져오는 처리.
     public async Task FetchCurrentUserData()
     {
-        if (Auth.CurrentUser == null || !Auth.CurrentUser.IsValid()) return;
+        if (Auth.CurrentUser == null /*|| !Auth.CurrentUser.IsValid()*/) return;
         try
         {
             DataSnapshot snapshot = await CurrentUserDataRef.GetValueAsync();
