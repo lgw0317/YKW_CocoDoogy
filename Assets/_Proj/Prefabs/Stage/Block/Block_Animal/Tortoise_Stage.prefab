@@ -831,7 +831,7 @@ MonoBehaviour:
   - {fileID: 8644030008661943175}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 17280
+    m_Bits: 148352
   rayOffsetY: 1.49
 --- !u!65 &5029050073780208364
 BoxCollider:
