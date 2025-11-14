@@ -32,7 +32,7 @@ public class LCocoDoogyInteractState : LobbyCharacterBaseState
     private IEnumerator WaitAndFinish()
     {
         yield return new WaitForSeconds(3f);
-        owner.EndInteract(0);
+        //owner.EndInteract(0);
         fsm.ChangeState(owner.IdleState);
         yield break;
     }
@@ -67,7 +67,7 @@ public class LMasterInteractState : LobbyCharacterBaseState
     private IEnumerator WaitAndFinish()
     {
         yield return new WaitForSeconds(3f);
-        owner.EndInteract(0);
+        //owner.EndInteract(0);
         fsm.ChangeState(owner.IdleState);
         yield break;
     }
@@ -102,7 +102,7 @@ public class LAnimalInteractState : LobbyCharacterBaseState
     private IEnumerator WaitAndFinish()
     {
         yield return new WaitForSeconds(3f);
-        owner.EndInteract(0);
+        //owner.EndInteract(0);
         fsm.ChangeState(owner.IdleState);
         yield break;
     }

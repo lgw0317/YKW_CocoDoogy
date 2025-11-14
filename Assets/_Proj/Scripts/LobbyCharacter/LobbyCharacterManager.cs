@@ -15,7 +15,6 @@ public class LobbyCharacterManager : MonoBehaviour
     [SerializeField] EditModeController editController;
     // 나중에 생각할 것
     //[SerializeField] float interactDistance = 2f;
-    [SerializeField] float routineDelay = 3f;
 
     private LMCharacterInit lobbyChracterInit; // 씬 시작시 초기화
     private LMWaypoints getWaypoints; // 웨이포인트 얻기
@@ -25,6 +24,7 @@ public class LobbyCharacterManager : MonoBehaviour
     private MasterBehaviour master; // 안드로이드 제어 용
 
     public bool IsEditMode { get; private set; } // 에딧컨트롤러에서 받아오기
+    public bool IsInitMode = true;
     private int originalLayer; // 평상 시 레이어
     private int editableLayer; // 편집모드 시 레이어
     //private bool oneForInit = false;
@@ -58,7 +58,6 @@ public class LobbyCharacterManager : MonoBehaviour
 
         originalLayer = LayerMask.NameToLayer("InLobbyObject");
         editableLayer = LayerMask.NameToLayer("Editable");
-
     }
 
     private void OnEnable()
@@ -66,18 +65,11 @@ public class LobbyCharacterManager : MonoBehaviour
         HeyManager += DeactivateChar;
     }
 
-    private void Start() // 깨끗한 프리팹에 붙여주는 방법이 인게임 아웃게임 전환에서 좋지 않을 깝숑
+    private void Start()
     {
         Waypoints = getWaypoints.GetWaypoints();
         planeSurface.BuildNavMesh();
-        lobbyChracterInit.Init();
-        coco = lobbyChracterInit.CocoInit();
-        master = lobbyChracterInit.MasterInit();
-        routineControl = new LMCharacterRoutineControl(coco, master);
-        //coco = gObj.GetComponent<CocoDoogyBehaviour>();
-        //coco.gameObject.SetActive(false);
-
-        //StartCoroutine(MainCharRoutineLoop());
+        StartCoroutine(StartGame());
     }
 
     private void Update()
@@ -93,9 +85,13 @@ public class LobbyCharacterManager : MonoBehaviour
                 {
                     if (lC != null)
                     {
-                        lC.InEdit();
                         var mono = lC as BaseLobbyCharacterBehaviour;
-                        mono.gameObject.layer = editableLayer;
+                        if (mono.isActiveAndEnabled)
+                        {
+                            lC.InEdit();
+                            mono.gameObject.layer = editableLayer;
+                        }
+                        
                     }
                 }
                 Debug.Log("편집모드 진입");
@@ -107,9 +103,12 @@ public class LobbyCharacterManager : MonoBehaviour
                 {
                     if (lC != null)
                     {
-                        lC.InNormal();
                         var mono = lC as BaseLobbyCharacterBehaviour;
-                        mono.gameObject.layer = originalLayer;
+                        if (mono.isActiveAndEnabled)
+                        {
+                            lC.InNormal();
+                            mono.gameObject.layer = originalLayer;
+                        }
                     }
                 }
                 Debug.Log("일반모드 진입");
@@ -117,7 +116,7 @@ public class LobbyCharacterManager : MonoBehaviour
         }
 
         // 코코두기 안드로이드 거리 감지 및 상호작용 이벤트
-        // 1회성만 가능하게 만들어야함
+        // 1회성으로 만들어야함 업데이트이니 여러번 될 수 있음
         // if (coco.gameObject.activeSelf && master.gameObject.activeSelf)
         // {
         //     float dist = Vector3.Distance(coco.transform.position, master.transform.position);
@@ -136,6 +135,7 @@ public class LobbyCharacterManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        StopAllCoroutines();
         // foreach (var lC in lobbyCharacter)
         // {
         //     if (lC != null)
@@ -146,58 +146,14 @@ public class LobbyCharacterManager : MonoBehaviour
         // }
     }
 
-    private IEnumerator MainCharRoutineLoop()
+    private IEnumerator StartGame()
     {
-        // while (true)
-        // {
-        //     // 루틴 시작
-        //     float activeDelay = UnityEngine.Random.Range(2, 5);
-
-        //     if (!coco.gameObject.activeSelf) coco.gameObject.SetActive(true);
-        //     yield return new WaitForSeconds(activeDelay);
-        //     if (!master.gameObject.activeSelf) master.gameObject.SetActive(true);
-
-        //     if (coco.IsRoutineComplete) coco.gameObject.SetActive(false);
-        //     if (master.IsRoutineComplete) master.gameObject.SetActive(false);
-        //     yield return new WaitUntil(() => coco.IsRoutineComplete);
-        // }
-        StartCoroutine(CocoRoutine());
-        //StartCoroutine(MasterRoutine());
-
-        yield return new WaitForSeconds(1f);
-    }
-
-    private IEnumerator CocoRoutine()
-    {
-        while (true)
-        {
-            if (!coco.gameObject.activeSelf) coco.gameObject.SetActive(true);
-            yield return new WaitUntil(() => coco.IsCMRoutineComplete);
-
-            coco.gameObject.SetActive(false);
-            yield return new WaitForSeconds(routineDelay);
-
-            coco.ResetRoutine();
-            coco.ResetInteract(0);
-            coco.ResetInteract(1);
-        }
-    }
-
-    private IEnumerator MasterRoutine()
-    {
-        while (true)
-        {
-            float activeDelay = UnityEngine.Random.Range(2, 5);
-            yield return new WaitForSeconds(activeDelay);
-            if (!master.gameObject.activeSelf) master.gameObject.SetActive(true);
-            yield return new WaitUntil(() => master.IsCMRoutineComplete);
-
-            master.gameObject.SetActive(false);
-            yield return new WaitForSeconds(routineDelay);
-
-            master.ResetRoutine();
-            master.ResetInteract(0);
-        }
+        yield return StartCoroutine(lobbyChracterInit.Init());
+        coco = lobbyChracterInit.CocoInit();
+        master = lobbyChracterInit.MasterInit();
+        routineControl = new LMCharacterRoutineControl(coco, master);
+        IsInitMode = false;
+        StartCoroutine(routineControl.MainCharRoutineLoop());
     }
 
     // 코코두기 안드로이드 전용 이벤트
@@ -210,7 +166,7 @@ public class LobbyCharacterManager : MonoBehaviour
         who.gameObject.SetActive(false);
     }
 
-    // 등록 및 삭제
+    // 로비 캐릭터들 등록 및 삭제
     public void RegisterLobbyChar(ILobbyState gObj)
     {
         lobbyCharacter.Add(gObj);

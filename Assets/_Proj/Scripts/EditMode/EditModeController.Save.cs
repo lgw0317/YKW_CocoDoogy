@@ -572,6 +572,7 @@ public partial class EditModeController
                 nMM.area = 1; 
                 break;
             case PlaceableCategory.Animal:
+                go.tag = "Animal";
                 if(go.GetComponent<AnimalBehaviour>() == null) go.AddComponent<AnimalBehaviour>();
                 break;
             case PlaceableCategory.Deco:

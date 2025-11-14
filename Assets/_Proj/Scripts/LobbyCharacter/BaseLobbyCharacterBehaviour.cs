@@ -23,20 +23,11 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     protected NavMeshAgentControl charAgent; // Agent 파츠
     protected LobbyCharacterAnim charAnim; // 애니 파츠
     public Camera MainCam { get; protected set; }
-    public float YValue { get; protected set; } // 생성 시 y축 얻고 드래그 시 해당 값 고정
-    public bool isInitComplete = false;
-
 
     public List<LobbyWaypoint> Waypoints { get; protected set; }
-
-    // Stuck
-    public float StuckTime { get; protected set; }
-
-    public bool IsLobbyEditMode { get; set; }
-    public bool IsCMRoutineComplete { get; set; }
-    public bool IsCARoutineComplete { get; set; }
-    public bool IsCMInteractComplete { get; set; }
-    public bool IsCAInteractComplete { get; set; }
+    public float YValue { get; protected set; } // 생성 시 y축 얻고 드래그 시 해당 값 고정
+    public float StuckTime { get; protected set; } // 멈칫둠칫
+    public bool hasBeenInit = false;
 
     /// <summary>
     /// FSM 초기 상태를 각 자식들이 정의
@@ -51,47 +42,32 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     public LobbyCharacterBaseState EditState { get; protected set; }
     public LobbyCharacterBaseState StuckState { get; protected set; }
 
-    protected virtual void Awake()
-    {
-        if (LobbyCharacterManager.Instance.IsEditMode)
-        {
-            gameObject.layer = LayerMask.NameToLayer("Editable");
-        }
-        else
-        {
-            gameObject.layer = LayerMask.NameToLayer("InLobbyObject");
-        }
-        agent = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>();
-        Waypoints = LobbyCharacterManager.Instance.Waypoints;
-        charAgent = new NavMeshAgentControl(agent, moveSpeed, angularSpeed, acceleration, moveRadius);
-        charAnim = new LobbyCharacterAnim(anim);
-        MainCam = Camera.main;
-        fsm = new LobbyCharacterFSM(null);
-        Register();
-        InitStates();
-    }
+    protected virtual void Awake() { }
 
     protected virtual void OnEnable()
     {
-        if (fsm != null && fsm.CurrentState == EditState) fsm.ChangeState(IdleState);
+        if (!LobbyCharacterManager.Instance.IsInitMode && !hasBeenInit)
+        {
+            Debug.Log($"{gameObject.name} : 내가 먼저 되냐?");
+            StartCoroutine(InitMode());
+        }
+        if (fsm != null && LobbyCharacterManager.Instance.IsEditMode) fsm.ChangeState(EditState);
+        if (fsm != null && !LobbyCharacterManager.Instance.IsEditMode) fsm.ChangeState(IdleState);
     }
 
-    protected virtual void Start()
-    {
-        
-    }
+    protected virtual void Start() { }
 
     protected virtual void Update()
     {
-        if (charAnim != null) charAnim.MoveAnim(charAgent.ValueOfMagnitude());
-        if (!agent.hasPath) Debug.Log($"{gameObject.name} No path, State : {fsm.CurrentState}");
-        else if (agent.pathStatus == NavMeshPathStatus.PathInvalid) Debug.Log($"{gameObject.name} Invalid path");
-        else if (agent.isStopped) Debug.Log($"{gameObject.name} Agent is stopped");
-        else if (agent.enabled == false) Debug.Log($"{gameObject.name} Agent doesn't enable");
-        
-        if (fsm != null) fsm.UpdateState();
-        //charAgent.MoveValueChanged();
+        // Walk Run 애니메이션
+        if (hasBeenInit)
+        {
+            //(charAnim != null)
+            charAnim?.MoveAnim(charAgent.ValueOfMagnitude());
+            //(fsm != null)
+            fsm.UpdateState();
+            //charAgent.MoveValueChanged();
+        }
     }
 
     protected void OnDisable()
@@ -127,50 +103,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         if (agent != null && agent.isActiveAndEnabled) agent.ResetPath();
     }
 
-    /// <summary>
-    /// 코코두기, 마스터 루틴 끝
-    /// </summary>
-    public void EndRoutine()
-    {
-        IsCMRoutineComplete = true;
-    }
-    /// <summary>
-    /// 코코두기, 마스터 루틴 리셋
-    /// </summary>
-    public void ResetRoutine()
-    {
-        IsCMRoutineComplete = false;
-    }
-    /// <summary>
-    /// 코코두기 상호작용 루틴 끝
-    /// </summary>
-    public void EndInteract(int i)
-    {
-        if (i == 0)
-        {
-            IsCMInteractComplete = true;
-        }
-        else if (i == 1)
-        {
-            IsCAInteractComplete = true;   
-        }
-    }
-    /// <summary>
-    /// 코코두기 상호작용 루틴 리셋
-    /// </summary>
-    public void ResetInteract(int i)
-    {
-        if (i == 0)
-        {
-            IsCMInteractComplete = false;
-        }
-        else if (i == 1)
-        {
-            IsCAInteractComplete = false;   
-        }
-    }
-
-    // 애니메이션 시 에이전트 제어 근데 이곳에 쓰는게 맞나.
+    // 애니메이션 이벤트 마지막 부분에
     public void FromAToB()
     {
         StartCoroutine(EndAnim());
@@ -292,37 +225,68 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     }
 
     /// <summary>
-    /// 처음 생성 시 초기화
+    /// 처음 생성 시 초기화 Awake 같은
     /// </summary>
     public virtual void Init()
+    {
+        Debug.Log($"{gameObject.name} : 아니 내가 먼저 되는데?");
+        
+        if (LobbyCharacterManager.Instance.IsEditMode)
+        {
+            gameObject.layer = LayerMask.NameToLayer("Editable");
+        }
+        else
+        {
+            gameObject.layer = LayerMask.NameToLayer("InLobbyObject");
+        }
+        agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
+        Waypoints = LobbyCharacterManager.Instance.Waypoints;
+        charAgent = new NavMeshAgentControl(agent, moveSpeed, angularSpeed, acceleration, moveRadius);
+        charAnim = new LobbyCharacterAnim(anim);
+        MainCam = Camera.main;
+        fsm = new LobbyCharacterFSM(null);
+    }
+    /// <summary>
+    /// Init 후 초기화 Awake 다음에 올
+    /// </summary>
+    public virtual void PostInit()
+    {
+        InitStates();
+    }
+    /// <summary>
+    /// PostInit 후 초기화 Start 같은
+    /// </summary>
+    public virtual void LoadInit()
     {
         agent.height = 1f;
         agent.angularSpeed = 160f;
         YValue = transform.position.y;
         Debug.Log($"{gameObject.name} yValue : {YValue}, agent height : {agent.height}");
-        IsLobbyEditMode = false;
         StuckTime = 2.5f;
-    }
-    /// <summary>
-    /// Init() 후 초기화
-    /// </summary>
-    public virtual void PostInit()
-    {
-        fsm.ChangeState(IdleState);
-        isInitComplete = true;
-    }
-    /// <summary>
-    /// PostInit() 후 초기화
-    /// </summary>
-    public void LoadInit()
-    {
-        
+        hasBeenInit = true;
     }
     /// <summary>
     /// LoadInit 후 초기화
     /// </summary>
-    public void FinalInit()
+    public virtual void FinalInit()
+    {        
+        if (isActiveAndEnabled && !LobbyCharacterManager.Instance.IsEditMode) fsm.ChangeState(IdleState);
+        else if(isActiveAndEnabled && LobbyCharacterManager.Instance.IsEditMode) fsm.ChangeState(EditState);
+    }
+    /// <summary>
+    /// 최초 로비 상태가 아닌 인벤토리에서 동물 생성 시 초기화
+    /// </summary>
+    /// <returns></returns>
+    protected IEnumerator InitMode()
     {
-        
+        Init();
+        yield return null;
+        PostInit();
+        yield return null;
+        LoadInit();
+        yield return null;
+        FinalInit();
+        yield break;
     }
 }

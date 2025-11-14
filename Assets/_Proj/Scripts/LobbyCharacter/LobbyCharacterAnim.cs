@@ -53,4 +53,9 @@ public class LobbyCharacterAnim
         anim.speed = 1f;
     }
 
+    // 인게임 영역
+    public void PushBox()
+    {
+        anim.SetTrigger("Push");
+    }
 }

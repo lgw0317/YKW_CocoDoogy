@@ -279,22 +279,22 @@ public class PlaceableStore : MonoBehaviour
             switch (p.cat)
             {
                 case PlaceableCategory.Home:
-                    go.AddComponent<NavMeshObstacle>();
-                    var hO = go.GetComponent<NavMeshObstacle>();
-                    hO.carving = true;
+                    go.AddComponent<NavMeshModifier>();
+                    var homeModifier = go.GetComponent<NavMeshModifier>();
+                    homeModifier.overrideArea = true;
+                    homeModifier.area = 1;
                     break;
 
                 case PlaceableCategory.Animal:
-                    if (go.GetComponent<AnimalBehaviour>() == null)
-                        go.AddComponent<AnimalBehaviour>();
                     go.tag = "Animal";
                     break;
 
                 case PlaceableCategory.Deco:
-                    if (go.GetComponent<AnimalBehaviour>() == null)
-                        go.AddComponent<NavMeshObstacle>();
-                    var dO = go.GetComponent<NavMeshObstacle>();
-                    dO.carving = true;
+                    if (go.GetComponent<NavMeshModifier>() == null)
+                        go.AddComponent<NavMeshModifier>();
+                    var decoModifier = go.GetComponent<NavMeshModifier>();
+                    decoModifier.overrideArea = true;
+                    decoModifier.area = 1;
                     go.tag = "Decoration";
                     break;
             }

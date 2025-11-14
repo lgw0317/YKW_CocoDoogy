@@ -19,9 +19,7 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
 
     protected override void Awake()
     {
-        gameObject.tag = "Master";
         base.Awake();
-        //currentDecoIndex = 0;
     }
 
     protected override void OnEnable()
@@ -32,7 +30,6 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
     protected override void Start()
     {
         base.Start();
-        UniqueState = new LMasterUniqueState(this, fsm);
     }
     protected override void Update()
     {
@@ -97,10 +94,19 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
     public override void Init()
     {
         base.Init();
-        agent.avoidancePriority = 10;
     }
     public override void PostInit()
     {
         base.PostInit();
+    }
+    public override void LoadInit()
+    {
+        UniqueState = new LMasterUniqueState(this, fsm);
+        base.LoadInit();
+        agent.avoidancePriority = 10;
+    }
+    public override void FinalInit()
+    {
+        base.FinalInit();
     }
 }

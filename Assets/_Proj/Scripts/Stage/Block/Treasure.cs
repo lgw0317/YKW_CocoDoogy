@@ -35,6 +35,7 @@ public class Treasure : MonoBehaviour
             isCollected = true;
             StageUIManager.Instance.TreasurePanel.SetActive(true);
             StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(false);
+            StageUIManager.Instance.CocoDoogyImage.sprite = StageUIManager.Instance.CoCoDoogySprite;
 
             var data = DataManager.Instance.Treasure.GetData(treasureId);
 

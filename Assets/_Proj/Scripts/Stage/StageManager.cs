@@ -284,6 +284,20 @@ public class StageManager : MonoBehaviour
                 starCount >= 2,
                 starCount >= 3
             );
+            switch(starCount)
+            {
+                case 0:
+                case 1:
+                    StageUIManager.Instance.stageImage.sprite = StageUIManager.Instance.ResultCoCoDoogySprite[0];
+                    break;
+                case 2:
+                    StageUIManager.Instance.stageImage.sprite = StageUIManager.Instance.ResultCoCoDoogySprite[1];
+                    break;
+                case 3:
+                    StageUIManager.Instance.stageImage.sprite = StageUIManager.Instance.ResultCoCoDoogySprite[2];
+                    break;
+
+            }
         }
     }
 

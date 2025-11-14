@@ -18,15 +18,13 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
 
     protected override void Awake()
     {
-        gameObject.tag = "Animal";
-        gameObject.layer = LayerMask.NameToLayer("InLobbyObject");
         base.Awake();
+        Register();
     }
     protected override void OnEnable()
     {
         base.OnEnable();
-        TargetDeco = null;
-        agent.avoidancePriority = Random.Range(70, 90);
+        if (!LobbyCharacterManager.Instance.IsInitMode) agent.avoidancePriority = Random.Range(70, 90);
     }
     protected override void Start()
     {
@@ -82,10 +80,20 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
     }
     public override void Init()
     {
+        gameObject.layer = LayerMask.NameToLayer("InLobbyObject");
         base.Init();
     }
     public override void PostInit()
     {
         base.PostInit();
+        TargetDeco = null;
+    }
+    public override void LoadInit()
+    {
+        base.LoadInit();
+    }
+    public override void FinalInit()
+    {
+        base.FinalInit();
     }
 }

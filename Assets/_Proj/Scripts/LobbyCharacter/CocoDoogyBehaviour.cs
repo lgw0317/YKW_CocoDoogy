@@ -11,6 +11,9 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
 {
     public Vector3 LastDragEndPos { get; private set; }
     public bool IsDragged { get; private set; }
+    public bool IsCMInteract { get; private set; }
+    public bool IsCAInteract { get; private set; }
+    public bool IsRoutineComplete { get; private set; }
 
     protected override void InitStates()
     {
@@ -25,7 +28,6 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
 
     protected override void Awake()
     {
-        gameObject.tag = "CocoDoogy";
         base.Awake();
     }
     protected override void OnEnable()
@@ -42,6 +44,40 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
     protected override void Update()
     {
         base.Update();
+    }
+
+    // 코코두기 루틴
+    public void SetIsRoutineComplete(bool trueorfalse)
+    {
+        if (trueorfalse)
+        {
+            IsRoutineComplete = true;
+        }
+        else
+        {
+            IsRoutineComplete = false;
+        }
+    }
+    /// <summary>
+    /// 코코두기의 상호작용. 0 = 마스터, 1 = 동물들
+    /// </summary>
+    /// <param name="i"></param>
+    public void SetTrueCharInteract(int i)
+    {
+        if (i == 0)
+        {
+            IsCMInteract = true;
+        }
+        else if (i == 1)
+        {
+            IsCAInteract = true;  
+        }
+    }
+    public void ResetRoutineComplete()
+    {
+        IsRoutineComplete = false;
+        IsCMInteract = false;
+        IsCAInteract = false;
     }
 
     public void SetLastDragEndPos(Vector3 pos)
@@ -101,11 +137,21 @@ public class CocoDoogyBehaviour : BaseLobbyCharacterBehaviour
     public override void Init()
     {
         base.Init();
-        agent.avoidancePriority = 80;
     }
     public override void PostInit()
     {
         base.PostInit();
+    }
+    public override void LoadInit()
+    {
+        base.LoadInit();
+        IsCMInteract = false;
+        IsCAInteract = false;
+        agent.avoidancePriority = 20;
+    }
+    public override void FinalInit()
+    {
+        base.FinalInit();
     }
 
 }

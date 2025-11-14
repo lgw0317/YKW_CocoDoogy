@@ -6,8 +6,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// BGM, Cutscene 합칠 것,
 /// SFX, Ambient 합칠 것
-/// 하지만 재생은 불할 할 생각
-/// 그래야 내 머리로서는 상태 제어가 편함
+/// 하지만 재생은 나눌 생각
 /// 
 /// </summary>
 [Serializable]

@@ -52,5 +52,7 @@ public class StageDetailInfo : MonoBehaviour
     {
         currentStageId = null;
         gameObject.SetActive(false);
+        GameObject obj = GameObject.Find("SelectStageDimOverlay");
+        obj.SetActive(false);
     }
 }
