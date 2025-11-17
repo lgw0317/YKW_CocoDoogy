@@ -9,6 +9,9 @@ public class VideoPlayerController : MonoBehaviour
 
     public VideoPlayer player;
 
+    //LSH 1117 추가
+    private AudioSource cutsceneSource;
+
     private bool isPlaying = false;
 
     void Awake()
@@ -54,9 +57,11 @@ public class VideoPlayerController : MonoBehaviour
     {
         Debug.Log("[Cutscene] Load: " + url);
 
+        cutsceneSource = AudioManager.Instance.GetAudioSourceForVideoPlayer();
+
         isPlaying = true;
 
-        AudioManager.Instance.StopAllAudioGroup();
+        AudioManager.Instance.EnterCutscene();
 
         player.Stop();
         player.source = VideoSource.Url;
@@ -74,9 +79,23 @@ public class VideoPlayerController : MonoBehaviour
             }
             yield return null;
         }
+        //LSH 1117 추가 좀더 생각해 보겠습니다.
+        // for (ushort i = 0; i < player.audioTrackCount; i++)
+        // {
+        //     player.EnableAudioTrack(i, true);
+        //     player.SetDirectAudioMute(i, true);
+        // }
+        // player.audioOutputMode = VideoAudioOutputMode.AudioSource;
+        // player.SetTargetAudioSource(0, cutsceneSource);
+        // int count = player.audioTrackCount;
+        //Debug.Log($"오디오 트랙 카운트 : {count}"):
 
         Debug.Log("[Cutscene] Playing: " + url);
         player.Play();
+        Debug.Log("Is track enabled: " + player.IsAudioTrackEnabled(0));
+
+
+        Debug.Log("Can set audio source? " + player.GetTargetAudioSource(0));
 
         if (waitUntilFinish)
         {
@@ -93,7 +112,7 @@ public class VideoPlayerController : MonoBehaviour
         isPlaying = false;
 
         StageUIManager.Instance.videoImage.SetActive(false);
-        AudioManager.Instance.ResetAllAudioGroup();
+        //AudioManager.Instance.ResetAllAudioGroup();
     }
 
     void OnError(VideoPlayer vp, string msg)

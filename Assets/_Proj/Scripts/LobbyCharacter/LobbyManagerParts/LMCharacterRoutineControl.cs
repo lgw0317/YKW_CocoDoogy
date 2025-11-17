@@ -12,7 +12,7 @@ public class LMCharacterRoutineControl
     //private ILobbyCharactersEmotion emotion;
     private WaitForSeconds delay;
     private WaitUntil wait;
-    private float interactDistance = 10f;
+    //private float interactDistance = 10f;
     //private float loading = 0f;
     //private float RoutineDelay = 5f;
 
