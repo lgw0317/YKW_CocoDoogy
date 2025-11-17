@@ -12,6 +12,8 @@ public class Dialogue : MonoBehaviour
     private Coroutine typingCoroutine;
     private bool isTyping = false;
     private bool isDialogueActive = false;
+    private bool hasLeftSpeaker = false;
+    private bool hasRightSpeaker = false;
 
     private int currentSeq = 0; // dialogue 내 순번
 
@@ -41,6 +43,7 @@ public class Dialogue : MonoBehaviour
         StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(false);
 
         currentSeq = 0;
+        AnalyzeDialogueSideUsage(dialogueId);
         ShowDialogue(dialogueId, currentSeq);
         isDialogueActive = true;
 
@@ -86,6 +89,7 @@ public class Dialogue : MonoBehaviour
     // 대사 출력
     private void ShowDialogue(string id, int seq)
     {
+        // 현재 데이터 불러오기
         currentData = DataManager.Instance.Dialogue.GetSeqData(id, seq);
         if (currentData == null)
         {
@@ -94,49 +98,107 @@ public class Dialogue : MonoBehaviour
             return;
         }
 
+        // 화자 정보
         var speakData = DataManager.Instance.Speaker.GetData(currentData.speaker_id);
+
+        // 스프라이트 prefix
         var basePrefix = $"Talk_portrait/{currentData.speaker_id}_{currentData.emotion}_{currentData.speaker_position}";
         var emotionSprite = GetEmotionSprite(currentData.speaker_id, basePrefix);
 
-        // 화자 이미지 갱신
-        if (currentData.speaker_position == SpeakerPosition.Left)
+        // 여기서 자동 UI 처리
+        UpdateSpeakerUI(currentData, emotionSprite);
+
+        // 이름 표시
+        StageUIManager.Instance.DialogueNameText.text = speakData.display_name;
+
+        // 텍스트 초기화
+        StageUIManager.Instance.DialogueText.text = "";
+
+        // 이전 타이핑 중단
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+
+        // 타이핑 시작
+        typingCoroutine = StartCoroutine(
+            TypeText(StageUIManager.Instance.DialogueText, currentData.text, currentData.char_delay)
+        );
+    }
+
+    private void UpdateSpeakerUI(DialogueData currentData, Sprite emotionSprite)
+    {
+        bool isLeft = currentData.speaker_position == SpeakerPosition.Left;
+
+        if (currentData.seq == 0)
         {
+            if (isLeft)
+                StageUIManager.Instance.DialogueSpeakerRight.gameObject.SetActive(false);
+            else
+                StageUIManager.Instance.DialogueSpeakerLeft.gameObject.SetActive(false);
+        }
+
+        // 다음 seq 화자
+        var nextData = DataManager.Instance.Dialogue.GetSeqData(dialogueId, currentData.seq + 1);
+        bool nextSameSide = nextData != null &&
+                            nextData.speaker_position == currentData.speaker_position;
+
+        // 왼쪽 화자 아예 없는 경우 처리
+        if (!hasLeftSpeaker)
+            StageUIManager.Instance.DialogueSpeakerLeft.gameObject.SetActive(false);
+
+        // 오른쪽 화자 아예 없는 경우 처리
+        if (!hasRightSpeaker)
+            StageUIManager.Instance.DialogueSpeakerRight.gameObject.SetActive(false);
+
+        // ===== 실제 UI 처리 =====
+        if (isLeft)
+        {
+            // 왼쪽 화자 표시
+            StageUIManager.Instance.DialogueSpeakerLeft.gameObject.SetActive(true);
             StageUIManager.Instance.DialogueSpeakerLeft.color = new Color(1, 1, 1, 1);
             StageUIManager.Instance.DialogueSpeakerLeft.sprite = emotionSprite;
-            if (currentData.seq == 0)
+            if (currentData.seq == 0) return;
+
+            // 오른쪽 처리
+            if (!hasRightSpeaker)
             {
+                // 오른쪽이 존재하지 않는 데이터라면 숨김
+                StageUIManager.Instance.DialogueSpeakerRight.gameObject.SetActive(false);
+            }
+            else if (nextSameSide)
+            {
+                // 다음도 왼쪽 → 오른쪽 숨김
                 StageUIManager.Instance.DialogueSpeakerRight.gameObject.SetActive(false);
             }
             else
             {
+                // 다음 화자가 오른쪽 → 흐리게 표시
                 StageUIManager.Instance.DialogueSpeakerRight.gameObject.SetActive(true);
-                StageUIManager.Instance.DialogueSpeakerLeft.gameObject.SetActive(true);
                 StageUIManager.Instance.DialogueSpeakerRight.color = new Color(1, 1, 1, 0.2f);
             }
         }
         else
         {
+            // 오른쪽 화자 표시
+            StageUIManager.Instance.DialogueSpeakerRight.gameObject.SetActive(true);
             StageUIManager.Instance.DialogueSpeakerRight.color = new Color(1, 1, 1, 1);
             StageUIManager.Instance.DialogueSpeakerRight.sprite = emotionSprite;
-            if (currentData.seq == 0)
+            if (currentData.seq == 0) return;
+
+            // 왼쪽 처리
+            if (!hasLeftSpeaker)
+            {
+                StageUIManager.Instance.DialogueSpeakerLeft.gameObject.SetActive(false);
+            }
+            else if (nextSameSide)
             {
                 StageUIManager.Instance.DialogueSpeakerLeft.gameObject.SetActive(false);
             }
             else
             {
-                StageUIManager.Instance.DialogueSpeakerRight.gameObject.SetActive(true);
                 StageUIManager.Instance.DialogueSpeakerLeft.gameObject.SetActive(true);
                 StageUIManager.Instance.DialogueSpeakerLeft.color = new Color(1, 1, 1, 0.2f);
             }
         }
-
-        // 이름, 텍스트 초기화
-        StageUIManager.Instance.DialogueNameText.text = speakData.display_name;
-        StageUIManager.Instance.DialogueText.text = "";
-
-        // 타자기 효과
-        if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-        typingCoroutine = StartCoroutine(TypeText(StageUIManager.Instance.DialogueText, currentData.text, currentData.char_delay));
     }
 
     //다음 대사 시도
@@ -193,5 +255,21 @@ public class Dialogue : MonoBehaviour
         StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(true);
         playerMovement.enabled = true;
         Debug.Log("[Dialogue] 대화 종료");
+    }
+
+    private void AnalyzeDialogueSideUsage(string id)
+    {
+        int seq = 0;
+        DialogueData data;
+
+        while ((data = DataManager.Instance.Dialogue.GetSeqData(id, seq)) != null)
+        {
+            if (data.speaker_position == SpeakerPosition.Left)
+                hasLeftSpeaker = true;
+            else
+                hasRightSpeaker = true;
+
+            seq++;
+        }
     }
 }

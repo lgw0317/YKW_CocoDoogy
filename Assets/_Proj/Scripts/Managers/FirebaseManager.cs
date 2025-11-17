@@ -58,7 +58,7 @@ public class FirebaseManager : MonoBehaviour
             Auth = FirebaseAuth.GetAuth(App);
             IsInitialized = true;
 
-            if (Auth.CurrentUser == null) await SignInAnonymouslyTest((x)=>Debug.Log("익명로그인"));
+            if (Auth.CurrentUser == null) await SignInAnonymouslyTest((x)=>Debug.Log("자동으로 익명로그인"));
             if (Auth.CurrentUser != null && Auth.CurrentUser.IsAnonymous)
             {
                 await SignInAnonymouslyTest();
@@ -332,7 +332,7 @@ public class FirebaseManager : MonoBehaviour
         if (Auth.CurrentUser == null || !Auth.CurrentUser.IsValid()) return;
         string categoryName = category is UserData.Master ? "master" :
                               category is UserData.Inventory ? "inventory" :
-                              category is UserData.Wallet ? "wallet" :
+                              category is UserData.Goods ? "goods" :
                               category is UserData.Lobby ? "lobby" :
                               category is UserData.EventArchive ? "eventArchive" :
                               category is UserData.Friends ? "friends" :

@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using Unity.AI.Navigation;
 using UnityEngine;
@@ -72,7 +72,7 @@ public class LobbyCharacterManager : MonoBehaviour
     private void Update()
     {
         bool current = editController.IsEditMode;
-        Debug.Log($"current 상태 : {current}");
+        //Debug.Log($"current 상태 : {current}");
         if (current != IsEditMode)
         {
             IsEditMode = current;
@@ -91,7 +91,7 @@ public class LobbyCharacterManager : MonoBehaviour
                         
                     }
                 }
-                Debug.Log("편집모드 진입");
+                //Debug.Log("편집모드 진입");
             }
             else if (!IsEditMode)
             {
@@ -108,7 +108,7 @@ public class LobbyCharacterManager : MonoBehaviour
                         }
                     }
                 }
-                Debug.Log("일반모드 진입");
+                //Debug.Log("일반모드 진입");
             }
         }
 

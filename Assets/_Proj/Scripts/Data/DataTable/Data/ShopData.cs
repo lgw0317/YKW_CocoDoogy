@@ -11,7 +11,7 @@ public class ShopData
     public int shop_item;
     public ShopType shop_type;
     public int shop_price;
-    public int shop_stack;
+    public int shop_stock;
     public ShopGroup shop_group;
     public ShopCategory shop_item_category;
 

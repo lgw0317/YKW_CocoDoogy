@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
 
 
@@ -51,7 +52,7 @@ public class UserData : IUserData
 //유저 데이터 관리용 클래스.    
 {
 
-    public UserDataDirtyFlag flag;
+    
 
     
     
@@ -107,23 +108,38 @@ public class UserData : IUserData
     /// <br>각각의 필드 값 = 해당 재화의 총량을 의미함.</br>
     /// </summary>
     [Serializable]
-    public class Wallet : IUserDataCategory
+    public class Goods : IUserDataCategory
     {
-
-        //병뚜껑 (무료 재화)
-        public int cap;
-
-        //코인 (유료 재화)
-        public int coin;
-
-        //에너지 (행동력)
-        public int energy;
-        
-        public Wallet()
+        public enum GoodsType
         {
-            cap = 0;
-            coin = 0;
-            energy = 0;
+            cap, coin, energy
+        }
+        public Dictionary<string, int> values;
+        ////병뚜껑 (무료 재화)
+        //public int cap;
+
+        ////코인 (유료 재화)
+        //public int coin;
+
+        ////에너지 (행동력)
+        //public int energy;
+
+        public int this[int goodsId]
+        {
+            get => goodsId == 110001 ? values["energy"] : goodsId == 110002 ? values["cap"] : values["coin"];
+            set
+            {
+                var targetKey = goodsId == 110001 ? "energy" : goodsId == 110002 ? "cap" : "coin";
+                values[targetKey] = value;
+            }
+        }
+
+        public Goods()
+        {
+            values = new();
+            values.Add(GoodsType.cap.ToString(), 0);
+            values.Add(GoodsType.coin.ToString(), 0);
+            values.Add(GoodsType.energy.ToString(), 0);
         }
     }
 
@@ -482,8 +498,12 @@ public class UserData : IUserData
     public static UserData Local { get; private set; }
 
 
+    public int passedTutorials;
+    //예) 친구추가 오면 이 더티플래그를 더럽게 만들어줌.
+    public UserDataDirtyFlag flag;
+
     public Master master;
-    public Wallet wallet;
+    public Goods goods;
     public Inventory inventory;
     public Lobby lobby;
     public EventArchive eventArchive;
@@ -491,16 +511,18 @@ public class UserData : IUserData
     public Codex codex;
     public Progress progress;
     
+
     public UserData()
     {
         master = new Master();
-        wallet = new Wallet();
+        goods = new Goods();
         inventory = new Inventory();
         lobby = new Lobby();
         eventArchive = new EventArchive();
         friends = new Friends();
         progress = new Progress();
         flag = 0;
+        passedTutorials = 0;
     }
 
     //로비 배치 정보

@@ -21,7 +21,7 @@ MonoBehaviour:
     shop_item: 90001
     shop_type: 0
     shop_price: 1000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 0
     shop_item_category: 6
   - shop_id: 80002
@@ -32,7 +32,7 @@ MonoBehaviour:
     shop_item: 90002
     shop_type: 0
     shop_price: 1000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 0
     shop_item_category: 7
   - shop_id: 80003
@@ -43,7 +43,7 @@ MonoBehaviour:
     shop_item: 90003
     shop_type: 0
     shop_price: 2000
-    shop_stack: 5
+    shop_stock: 5
     shop_group: 1
     shop_item_category: 2
   - shop_id: 80004
@@ -53,7 +53,7 @@ MonoBehaviour:
     shop_item: 90004
     shop_type: 0
     shop_price: 2000
-    shop_stack: 5
+    shop_stock: 5
     shop_group: 1
     shop_item_category: 4
   - shop_id: 80005
@@ -64,7 +64,7 @@ MonoBehaviour:
     shop_item: 90005
     shop_type: 0
     shop_price: 4000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 2
     shop_item_category: 9
   - shop_id: 80006
@@ -74,7 +74,7 @@ MonoBehaviour:
     shop_item: 90006
     shop_type: 0
     shop_price: 10022
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 2
     shop_item_category: 9
   - shop_id: 80007
@@ -85,7 +85,7 @@ MonoBehaviour:
     shop_item: 90007
     shop_type: 0
     shop_price: 15000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 2
     shop_item_category: 9
   - shop_id: 80008
@@ -96,7 +96,7 @@ MonoBehaviour:
     shop_item: 90008
     shop_type: 1
     shop_price: 1000
-    shop_stack: 10
+    shop_stock: 10
     shop_group: 5
     shop_item_category: 15
   - shop_id: 80009
@@ -107,7 +107,7 @@ MonoBehaviour:
     shop_item: 90009
     shop_type: 1
     shop_price: 1000
-    shop_stack: 10
+    shop_stock: 10
     shop_group: 5
     shop_item_category: 13
   - shop_id: 80010
@@ -118,7 +118,7 @@ MonoBehaviour:
     shop_item: 90010
     shop_type: 0
     shop_price: 15000
-    shop_stack: 10
+    shop_stock: 10
     shop_group: 5
     shop_item_category: 14
   - shop_id: 80011
@@ -128,7 +128,7 @@ MonoBehaviour:
     shop_item: 90011
     shop_type: 0
     shop_price: 1000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 4
     shop_item_category: 0
   - shop_id: 80012
@@ -139,7 +139,7 @@ MonoBehaviour:
     shop_item: 90012
     shop_type: 1
     shop_price: 2000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 4
     shop_item_category: 0
   - shop_id: 80013
@@ -150,7 +150,7 @@ MonoBehaviour:
     shop_item: 90013
     shop_type: 1
     shop_price: 2000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 4
     shop_item_category: 0
   - shop_id: 80014
@@ -161,7 +161,7 @@ MonoBehaviour:
     shop_item: 90014
     shop_type: 0
     shop_price: 20000
-    shop_stack: 3
+    shop_stock: 3
     shop_group: 6
     shop_item_category: 0
   - shop_id: 80015
@@ -172,7 +172,7 @@ MonoBehaviour:
     shop_item: 90015
     shop_type: 0
     shop_price: 20000
-    shop_stack: 3
+    shop_stock: 3
     shop_group: 6
     shop_item_category: 0
   - shop_id: 80016
@@ -183,7 +183,7 @@ MonoBehaviour:
     shop_item: 90016
     shop_type: 0
     shop_price: 5000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 3
     shop_item_category: 0
   - shop_id: 80017
@@ -194,7 +194,7 @@ MonoBehaviour:
     shop_item: 90017
     shop_type: 1
     shop_price: 2000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 3
     shop_item_category: 0
   - shop_id: 80018
@@ -205,7 +205,7 @@ MonoBehaviour:
     shop_item: 90018
     shop_type: 1
     shop_price: 2000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 3
     shop_item_category: 0
   - shop_id: 80019
@@ -215,7 +215,7 @@ MonoBehaviour:
     shop_item: 90001
     shop_type: 0
     shop_price: 1000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 0
     shop_item_category: 7
   - shop_id: 80020
@@ -225,7 +225,7 @@ MonoBehaviour:
     shop_item: 90003
     shop_type: 0
     shop_price: 2000
-    shop_stack: 5
+    shop_stock: 5
     shop_group: 1
     shop_item_category: 3
   - shop_id: 80021
@@ -235,7 +235,7 @@ MonoBehaviour:
     shop_item: 90005
     shop_type: 0
     shop_price: 4000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 2
     shop_item_category: 10
   - shop_id: 80022
@@ -245,7 +245,7 @@ MonoBehaviour:
     shop_item: 90001
     shop_type: 0
     shop_price: 1000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 0
     shop_item_category: 8
   - shop_id: 80023
@@ -255,7 +255,7 @@ MonoBehaviour:
     shop_item: 90003
     shop_type: 0
     shop_price: 2000
-    shop_stack: 5
+    shop_stock: 5
     shop_group: 1
     shop_item_category: 4
   - shop_id: 80024
@@ -265,7 +265,7 @@ MonoBehaviour:
     shop_item: 90005
     shop_type: 0
     shop_price: 4000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 2
     shop_item_category: 10
   - shop_id: 80025
@@ -275,7 +275,7 @@ MonoBehaviour:
     shop_item: 90001
     shop_type: 0
     shop_price: 1000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 0
     shop_item_category: 6
   - shop_id: 80026
@@ -285,7 +285,7 @@ MonoBehaviour:
     shop_item: 90003
     shop_type: 0
     shop_price: 2000
-    shop_stack: 5
+    shop_stock: 5
     shop_group: 1
     shop_item_category: 1
   - shop_id: 80027
@@ -295,7 +295,7 @@ MonoBehaviour:
     shop_item: 90005
     shop_type: 0
     shop_price: 4000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 2
     shop_item_category: 12
   - shop_id: 80028
@@ -305,7 +305,7 @@ MonoBehaviour:
     shop_item: 90001
     shop_type: 0
     shop_price: 1000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 0
     shop_item_category: 6
   - shop_id: 80029
@@ -315,7 +315,7 @@ MonoBehaviour:
     shop_item: 90003
     shop_type: 0
     shop_price: 2000
-    shop_stack: 5
+    shop_stock: 5
     shop_group: 1
     shop_item_category: 2
   - shop_id: 80030
@@ -325,7 +325,7 @@ MonoBehaviour:
     shop_item: 90005
     shop_type: 0
     shop_price: 4000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 2
     shop_item_category: 9
   - shop_id: 80031
@@ -335,7 +335,7 @@ MonoBehaviour:
     shop_item: 90001
     shop_type: 0
     shop_price: 1000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 0
     shop_item_category: 6
   - shop_id: 80032
@@ -345,7 +345,7 @@ MonoBehaviour:
     shop_item: 90003
     shop_type: 0
     shop_price: 2000
-    shop_stack: 5
+    shop_stock: 5
     shop_group: 1
     shop_item_category: 2
   - shop_id: 80033
@@ -355,6 +355,6 @@ MonoBehaviour:
     shop_item: 90005
     shop_type: 0
     shop_price: 4000
-    shop_stack: 1
+    shop_stock: 1
     shop_group: 2
     shop_item_category: 9
