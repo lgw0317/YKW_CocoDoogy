@@ -32,7 +32,7 @@ public class ToggleSwitch : MonoBehaviour
         UpdateVisual(true);
     }
 
-    public void Toggle()
+    public void Toggle() // 토글 버튼 이벤트에 추가
     {
         isOn = !isOn;
         UpdateVisual();
