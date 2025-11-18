@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ManualProvider : IDataProvider<int, ManualData>
 {
     private ManualDatabase database;
     private IResourceLoader loader;
+    public List<ManualData> AllData => database.manualList;
 
     public ManualProvider(ManualDatabase db, IResourceLoader resLoader)
     {

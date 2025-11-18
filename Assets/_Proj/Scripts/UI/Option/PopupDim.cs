@@ -2,11 +2,12 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+// Dim 테스트 후 이 컴포넌트 없이도 문제 없이 잘 작동된다면 삭제 할 것임.
 public class PopupDim : MonoBehaviour
 {
     [SerializeField] private GameObject optionPanelGroup; // OptionPanel 전체
     [SerializeField] private GameObject popupsGroup; // Popups 루트
-    [SerializeField] private Image dimBackground; // Dim layer
+    [SerializeField] private Image dimBackground; // Dim
 
     private List<Selectable> disabledSelectables = new List<Selectable>();
 
@@ -30,6 +31,7 @@ public class PopupDim : MonoBehaviour
 
         DisableOnlyOptionPanelUIs();
     }
+
     public void Unblock()
     {
         // Dim 끄기

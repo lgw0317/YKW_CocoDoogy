@@ -25,6 +25,23 @@ public class VideoPlayerController : MonoBehaviour
         // 이벤트 등록
         player.loopPointReached += OnFinished;
         player.errorReceived += OnError;
+
+        //LSH 1117 추가
+        GameObject gObj = new GameObject("VideoPlayerWTF");
+        gObj.transform.parent = gameObject.transform;
+        gObj.AddComponent<AudioSource>();
+        cutsceneSource = gObj.GetComponent<AudioSource>();
+        cutsceneSource.playOnAwake = false;
+        cutsceneSource.spatialBlend = 0f;
+        cutsceneSource.loop = false;
+        cutsceneSource.outputAudioMixerGroup = AudioManager.AudioGroupProvider.GetGroup(AudioType.Cutscene);
+    }
+    //LSH 1117 추가
+    void Start()
+    {
+        player.audioOutputMode = VideoAudioOutputMode.AudioSource;
+        player.EnableAudioTrack(0, true);
+        player.SetTargetAudioSource(0, cutsceneSource);
     }
 
     //-------------------------------------------
@@ -67,8 +84,6 @@ public class VideoPlayerController : MonoBehaviour
             yield return null;
         }
 
-        cutsceneSource = AudioManager.Instance.GetAudioSourceForVideoPlayer();
-
         isPlaying = true;
 
         AudioManager.Instance.EnterCutscene();
@@ -76,6 +91,7 @@ public class VideoPlayerController : MonoBehaviour
         player.Stop();
         player.source = VideoSource.Url;
         player.url = url;
+
         player.Prepare();
 
         float timeout = 5f;
@@ -91,16 +107,6 @@ public class VideoPlayerController : MonoBehaviour
             }
             yield return null;
         }
-        //LSH 1117 추가 좀더 생각해 보겠습니다.
-        // for (ushort i = 0; i < player.audioTrackCount; i++)
-        // {
-        //     player.EnableAudioTrack(i, true);
-        //     player.SetDirectAudioMute(i, true);
-        // }
-        // player.audioOutputMode = VideoAudioOutputMode.AudioSource;
-        // player.SetTargetAudioSource(0, cutsceneSource);
-        // int count = player.audioTrackCount;
-        //Debug.Log($"오디오 트랙 카운트 : {count}"):
 
         if (prepareFailed)
         {
