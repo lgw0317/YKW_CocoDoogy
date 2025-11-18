@@ -30,13 +30,6 @@ public class DialogueManager : MonoBehaviour
 
         Instance = this;
     }
-    void Start()
-    {
-        if (StageUIManager.Instance.stageManager.isTest)
-        {
-            dialogueId = "dialogue_1_5_1";
-        }
-    }
 
     public bool NewDialogueMethod(string id)
     {
@@ -212,6 +205,12 @@ public class DialogueManager : MonoBehaviour
     //다음 대사 시도
     private void TryNextDialogue(string id)
     {
+        if (currentData == null)
+        {
+            EndDialogue();
+            return;
+        }
+
         int nextSeq = currentData.seq + 1;
         var nextData = DataManager.Instance.Dialogue.GetSeqData(id, nextSeq);
 
@@ -258,6 +257,7 @@ public class DialogueManager : MonoBehaviour
     private void EndDialogue()
     {
         isDialogueActive = false;
+        isRead = false;
         StageUIManager.Instance.DialoguePanel.SetActive(false);
         StageUIManager.Instance.Overlay.SetActive(false);
         StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(true);
