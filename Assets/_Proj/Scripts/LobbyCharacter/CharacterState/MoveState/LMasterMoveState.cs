@@ -9,7 +9,7 @@ public class LMasterMoveState : LobbyCharacterBaseState
     private readonly NavMeshAgent agent;
     private readonly NavMeshAgentControl charAgent;
     private LMasterRouteManager route;
-    private Transform startPoint; // 지금은 마스터의 포지션으로 되어있는데 로비매니저 정리되면 스타트 포인트로
+    private Transform startPoint; // 지금은 마스터의 포지션으로 되어있는데 로비매니저 정리되면 스타트 
     private WaitForSeconds wait = new(1f);
     private float timeToStuck = 0;
 
@@ -23,10 +23,9 @@ public class LMasterMoveState : LobbyCharacterBaseState
 
     public override void OnStateEnter()
     {
+        base.OnStateEnter();
         if (!agent.enabled) agent.enabled = true;
         if (agent.enabled && agent.isStopped) agent.isStopped = false;
-
-        Debug.Log($"{owner.gameObject.name} Move 진입");
 
         // 루틴 초기화
         route.RefreshDecoList();
@@ -90,9 +89,8 @@ public class LMasterMoveState : LobbyCharacterBaseState
 
             if (next == null)
             {
-                Debug.Log("(decoList == null || decoList.Count == 0 || hasComplete == true, 스타트 지점으로 감");
+                Debug.Log("(decoList == null || decoList.Count == 0 스타트 지점으로 감");
                 charAgent.MoveToLastPoint(startPoint);
-
                 while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
                 {
                     yield return null;
@@ -103,10 +101,37 @@ public class LMasterMoveState : LobbyCharacterBaseState
             }
             else
             {
-                charAgent.MoveToTransPoint(next);
-                while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
+                if (route.firstTime)
                 {
-                    yield return null;
+                    for (int i = 0; i < 6; i++)
+                    {
+                        charAgent.MasterMoveToRandomTransPoint(owner, startPoint);
+                        while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
+                        {
+                            yield return null;
+                        }
+                    }
+
+                    charAgent.MoveToLastPoint(startPoint);
+                    while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
+                    {
+                        yield return null;
+                    }
+                    yield return wait;
+
+                    route.ResetFirstTime();
+                    fsm.ChangeState(owner.EditState);
+                    // 로비 매니저에게 나 끝났어요 호출 하면 로비매니저가 SetActive false 처리
+                    LobbyCharacterManager.RaiseCharacterEvent(owner);
+                    yield break;
+                }
+                else
+                {
+                    charAgent.MoveToTransPoint(next);
+                    while (agent.pathPending || agent.remainingDistance > agent.stoppingDistance)
+                    {
+                        yield return null;
+                    }
                 }
             }
         }

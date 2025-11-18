@@ -90,6 +90,30 @@ public class NavMeshAgentControl
             MoveToVectorPoint(hit.position);
         }
     }
+    // 코코두기 전용
+    public void CocoMove(Vector3 point)
+    {
+        if (agent.isStopped) agent.isStopped = false;
+        float speed = 7f;
+        agent.speed = speed;
+        agent.acceleration = Random.Range(speed * 1.5f, speed * 3f);
+        agent.angularSpeed = Random.Range(190, 300);
+        agent.autoBraking = false;
+        agent.stoppingDistance = Random.Range(0f, 1f);
+        agent.SetDestination(point);
+    }
+    // 마스터 전용
+    public void MasterMove(Vector3 point)
+    {
+        if (agent.isStopped) agent.isStopped = false;
+        float speed = 4f;
+        agent.speed = speed;
+        agent.acceleration = Random.Range(speed * 1.5f, speed * 3f);
+        agent.angularSpeed = Random.Range(190, 300);
+        agent.autoBraking = false;
+        agent.stoppingDistance = Random.Range(0f, 1f);
+        agent.SetDestination(point);
+    }
 
     public void CocoMoveToRandomTransPoint(BaseLobbyCharacterBehaviour owner, Transform point)
     {
@@ -102,17 +126,18 @@ public class NavMeshAgentControl
             CocoMove(hit.position);
         }
     }
-    public void CocoMove(Vector3 point)
+    public void MasterMoveToRandomTransPoint(BaseLobbyCharacterBehaviour owner, Transform point)
     {
         if (agent.isStopped) agent.isStopped = false;
-        float speed = 7f;
-        agent.speed = speed;
-        agent.acceleration = Random.Range(speed * 1.5f, speed * 3f);
-        agent.angularSpeed = Random.Range(190, 300);
-        agent.autoBraking = false;
-        agent.stoppingDistance = Random.Range(0f, 1f);
-        agent.SetDestination(point);
+        Vector3 pos = point.position + Random.onUnitSphere * 25f;
+        Vector3 ownerPos = owner.transform.position;
+        pos.y = ownerPos.y;
+        if (NavMesh.SamplePosition(pos, out NavMeshHit hit, 0.3f, NavMesh.AllAreas))
+        {
+            MasterMove(hit.position);
+        }
     }
+    
 
     public void RestAgent()
     {

@@ -59,7 +59,7 @@ public static class ShopParser
                 shop_item = item,
                 shop_type = type,
                 shop_price = price,
-                shop_stack = stack,
+                shop_stock = stack,
                 shop_group = group,
                 shop_item_category = category
             });

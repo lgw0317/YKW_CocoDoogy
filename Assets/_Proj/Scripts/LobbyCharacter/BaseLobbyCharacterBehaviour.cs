@@ -27,6 +27,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     public List<LobbyWaypoint> Waypoints { get; protected set; }
     public float YValue { get; protected set; } // 생성 시 y축 얻고 드래그 시 해당 값 고정
     public float StuckTime { get; protected set; } // 멈칫둠칫
+    public bool CMSetIsActive { get; protected set; }
     public bool hasBeenInit = false;
 
     /// <summary>
@@ -96,6 +97,10 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         }
     }
     
+    public void CocoMasterSetIsActive(bool which)
+    {
+        CMSetIsActive = which;
+    }
     protected void StopMoving()
     {
         //fsm.ChangeState(IdleState);
@@ -119,12 +124,18 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     /// <summary>
     /// 코코두기와 동물들 상호작용
     /// </summary>
-    public virtual void OnCocoAnimalEmotion() { }
+    public virtual void OnCocoAnimalEmotion()
+    {
+        if(!(fsm.CurrentState == MoveState)) return;
+    }
 
     /// <summary>
     /// 코코두기와 마스터 상호작용
     /// </summary>
-    public virtual void OnCocoMasterEmotion() { }
+    public virtual void OnCocoMasterEmotion()
+    {
+        if(!(fsm.CurrentState == MoveState)) return;
+    }
 
     /// <summary>
     /// ILobbyDraggable, 드래그 시작
@@ -174,7 +185,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     }
     IEnumerator Pressing()
     {
-        yield return new WaitForSeconds(0.06f);
+        yield return new WaitForSeconds(0.1f);
         fsm.ChangeState(DragState);
         yield break;
     }
@@ -275,7 +286,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
         else if(isActiveAndEnabled && LobbyCharacterManager.Instance.IsEditMode) fsm.ChangeState(EditState);
     }
     /// <summary>
-    /// 최초 로비 상태가 아닌 인벤토리에서 동물 생성 시 초기화
+    /// 
     /// </summary>
     /// <returns></returns>
     protected IEnumerator InitMode()

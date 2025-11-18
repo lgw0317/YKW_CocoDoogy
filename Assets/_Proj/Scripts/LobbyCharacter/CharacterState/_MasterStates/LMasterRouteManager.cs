@@ -8,6 +8,7 @@ public class LMasterRouteManager
     private List<Transform> decoList = new List<Transform>();
     private int currentIndex = 0;
     public bool hasComplete = false;
+    public bool firstTime = false;
 
 
     public LMasterRouteManager(Transform startPoint)
@@ -17,13 +18,23 @@ public class LMasterRouteManager
 
     public void RefreshDecoList()
     {
+        firstTime = false;
         List<Transform> oneShotList = new();
         GameObject[] decos = GameObject.FindGameObjectsWithTag("Decoration");
-        foreach (GameObject d in decos)
+        if (decos.Length == 0)
         {
-            oneShotList.Add(d.transform);
+            oneShotList.Add(startPoint);
+            firstTime = true;
         }
-        oneShotList.Sort((a, b) => Vector3.Distance(startPoint.transform.position, a.position).CompareTo(Vector3.Distance(startPoint.transform.position, b.position)));
+        else
+        {
+            foreach (GameObject d in decos)
+            {
+                oneShotList.Add(d.transform);
+            }
+            oneShotList.Sort((a, b) => Vector3.Distance(startPoint.transform.position, a.position).CompareTo(Vector3.Distance(startPoint.transform.position, b.position)));
+        }
+        
         decoList = oneShotList;
 
         currentIndex = 0;
@@ -42,8 +53,21 @@ public class LMasterRouteManager
             currentIndex = 0;
             return null;
         }
+
         Transform next = decoList[currentIndex];
+
+        if (firstTime)
+        {
+            return next;
+        }
+
         currentIndex++;
         return next;
+    }
+
+    public void ResetFirstTime()
+    {
+        firstTime = false;
+        hasComplete = false;
     }
 }

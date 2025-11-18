@@ -98,6 +98,9 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
                 currPushHandler = next;
             }
             currPushHandler.StartPushAttempt(dir4); // 고정 4방향
+
+            //NOTE: 테스트용. 밀고 있는 경우에는 클램프매그니튜드
+            return (Vector3.ClampMagnitude(moveDir, .05f), Vector3.zero);
         }
         else
         {
