@@ -16558,18 +16558,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa2493818f2e3244a2eaba394f23dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinText: {fileID: 0}
-  capText: {fileID: 0}
   energyText: {fileID: 0}
-  coinIcon: {fileID: 0}
-  capIcon: {fileID: 0}
+  capText: {fileID: 0}
+  coinText: {fileID: 0}
   energyIcon: {fileID: 0}
-  coinShopButton: {fileID: 0}
-  capShopButton: {fileID: 0}
+  capIcon: {fileID: 0}
+  coinIcon: {fileID: 0}
   energyShopButton: {fileID: 0}
-  coinId: 110003
-  capId: 110002
+  capShopButton: {fileID: 0}
+  coinShopButton: {fileID: 0}
   energyId: 110001
+  capId: 110002
+  coinId: 110003
   shopPanel: {fileID: 0}
 --- !u!4 &1430276656
 Transform:

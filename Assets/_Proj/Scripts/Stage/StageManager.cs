@@ -144,6 +144,17 @@ public class StageManager : MonoBehaviour
              collectedCount >= 2,
              collectedCount >= 3
         );
+
+        if (prev.bestTreasureCount < 0)   // 처음 클리어한 경우
+        {
+            prev.bestTreasureCount = collectedCount;  // 0~3
+        }
+        else
+        {
+            prev.bestTreasureCount = Mathf.Max(prev.bestTreasureCount, collectedCount);
+        }
+
+        PlayerProgressManager.Instance.SaveProgress();
     }
 
     void SpawnPlayer()

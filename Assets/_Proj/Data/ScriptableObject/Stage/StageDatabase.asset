@@ -18,10 +18,10 @@ MonoBehaviour:
     stage_img: Img/Stage/stage_1_1_main
     stage_desc: "\"\uD504\uB864\uB85C\uADF81\""
     map_id: map_0_1
-    start_cutscene: stage_1_1_start
+    start_cutscene: Movie/Stage/stage_1_1_start.mp4
     start_talk: -1
     end_talk: -1
-    end_cutscene: stage_1_1_end
+    end_cutscene: Movie/Stage/stage_1_1_end.mp4
     treasure_01_id: -1
     treasure_02_id: -1
     treasure_03_id: -1
@@ -30,6 +30,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_0_2
     stage_name: "\uD504\uB864\uB85C\uADF82"
     stage_img: Img/Stage/stage_1_1_main
@@ -47,6 +48,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_1_1
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 1\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_1_1_main
@@ -64,6 +66,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_1_2
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 2\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_1_1_main
@@ -81,6 +84,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_1_3
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 3\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_1_1_main
@@ -98,6 +102,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_1_4
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 4\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_1_1_main
@@ -115,6 +120,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_1_5
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 5\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_1_1_main
@@ -132,6 +138,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_1_6
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 6\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_1_1_main
@@ -149,6 +156,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_1_7
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 7\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_1_1_main
@@ -166,6 +174,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_1_8
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 8\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_1_1_main
@@ -183,6 +192,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_1_9
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 9\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_1_1_main
@@ -200,6 +210,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_1_10
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 10\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_1_1_main
@@ -217,6 +228,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_2_1
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 1\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_2_1_main
@@ -234,6 +246,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_2_2
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 2\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_2_1_main
@@ -251,6 +264,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_2_3
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 3\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_2_1_main
@@ -268,6 +282,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_2_4
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 4\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_2_1_main
@@ -285,6 +300,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_2_5
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 5\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_2_1_main
@@ -302,6 +318,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_2_6
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 6\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_2_1_main
@@ -319,6 +336,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_2_7
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 7\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_2_1_main
@@ -336,6 +354,7 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
   - stage_id: stage_2_8
     stage_name: "\uC2A4\uD14C\uC774\uC9C0 8\uC774\uB984 \uD14C\uC2A4\uD2B8 \uC58D\uC58D"
     stage_img: Img/Stage/stage_2_1_main
@@ -353,3 +372,4 @@ MonoBehaviour:
     dialogue_box_3: -1
     dialogue_box_4: -1
     dialogue_box_5: -1
+    stage_bgm: 
