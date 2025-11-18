@@ -28,7 +28,9 @@ public class GoodsManager : MonoBehaviour
     private void Awake()
     {
         // UserData(Local).wallet을 이용하는 GoodsStore
-        goodsService = new GoodsService(new UserDataGoodsStore(110001, 110002, 110003));
+        goodsService = new GoodsService(
+    new UserDataGoodsStore(energyId, capId, coinId)
+);
 
         if (energyShopButton)
             energyShopButton.onClick.AddListener(() =>
