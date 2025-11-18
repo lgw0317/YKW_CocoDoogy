@@ -20664,6 +20664,10 @@ PrefabInstance:
       propertyPath: optionPanel
       value: 
       objectReference: {fileID: 1385025589}
+    - target: {fileID: 2803817006107396069, guid: ac45a80dcbdf0ae4ca029cabf931764f, type: 3}
+      propertyPath: selectStageDimOverlay
+      value: 
+      objectReference: {fileID: 1523153565}
     - target: {fileID: 2946260355621667478, guid: ac45a80dcbdf0ae4ca029cabf931764f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

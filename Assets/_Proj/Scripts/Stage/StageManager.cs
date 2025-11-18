@@ -225,6 +225,12 @@ public class StageManager : MonoBehaviour
                         dialogue.Init(data.dialogue_box_1);
                     else if (block.blockName.Contains("2"))
                         dialogue.Init(data.dialogue_box_2);
+                    else if (block.blockName.Contains("3"))
+                        dialogue.Init(data.dialogue_box_3);
+                    else if (block.blockName.Contains("4"))
+                        dialogue.Init(data.dialogue_box_4);
+                    else if (block.blockName.Contains("5"))
+                        dialogue.Init(data.dialogue_box_5);
                 }
             }
             //GetComponent<Block>().Init(block);
