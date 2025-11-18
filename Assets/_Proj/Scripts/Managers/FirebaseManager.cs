@@ -248,73 +248,85 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    public async Task GoogleLogin()
+    public async Task GoogleLogin(Action succeedCallback = null, Action failCallback = null)
     {
-        
-        if (!isGoogleReady)
+        try
         {
-            GoogleSignIn.Configuration = new GoogleSignInConfiguration
+            if (!isGoogleReady)
             {
-                RequestIdToken = true,
-                WebClientId = GoogleAPI,
-                RequestEmail = true
-            };
-
-            isGoogleReady = true;
-        }
-        //GoogleSignIn.Configuration = new GoogleSignInConfiguration
-        //{
-        //    RequestIdToken = true,
-        //    WebClientId = GoogleAPI
-        //};
-        //GoogleSignIn.Configuration.RequestEmail = true;
-
-        Task<GoogleSignInUser> signIn = GoogleSignIn.DefaultInstance.SignIn();
-
-        TaskCompletionSource<FirebaseUser> signInCompleted = new TaskCompletionSource<FirebaseUser>();
-        await signIn.ContinueWith(task =>
-        {
-            if (task.IsCanceled)
-            {
-                signInCompleted.SetCanceled();
-                Debug.Log("Cancelled");
-            }
-            else if (task.IsFaulted)
-            {
-                signInCompleted.SetException(task.Exception);
-
-                Debug.Log("Faulted " + task.Exception);
-            }
-            else
-            {
-                Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(((Task<GoogleSignInUser>)task).Result.IdToken, null);
-                Auth.SignInWithCredentialAsync(credential).ContinueWith(authTask =>
+                GoogleSignIn.Configuration = new GoogleSignInConfiguration
                 {
-                    if (authTask.IsCanceled)
-                    {
-                        signInCompleted.SetCanceled();
-                    }
-                    else if (authTask.IsFaulted)
-                    {
-                        signInCompleted.SetException(authTask.Exception);
-                        Debug.Log("Faulted In Auth " + task.Exception);
-                    }
-                    else
-                    {
-                        signInCompleted.SetResult(((Task<FirebaseUser>)authTask).Result);
-                        Debug.Log("Success");
-                        FetchCurrentUserData();
+                    RequestIdToken = true,
+                    WebClientId = GoogleAPI,
+                    RequestEmail = true
+                };
 
-                        //user = Auth.CurrentUser;
-                        //Username.text = user.DisplayName;
-                        //UserEmail.text = user.Email;
-
-                        //StartCoroutine(LoadImage(CheckImageUrl(user.PhotoUrl.ToString())));
-                    }
-                });
+                isGoogleReady = true;
             }
-        });
-    }
+            //GoogleSignIn.Configuration = new GoogleSignInConfiguration
+            //{
+            //    RequestIdToken = true,
+            //    WebClientId = GoogleAPI
+            //};
+            //GoogleSignIn.Configuration.RequestEmail = true;
+
+            Task<GoogleSignInUser> signIn = GoogleSignIn.DefaultInstance.SignIn();
+
+            TaskCompletionSource<FirebaseUser> signInCompleted = new TaskCompletionSource<FirebaseUser>();
+            await signIn.ContinueWith(task =>
+            {
+                if (task.IsCanceled)
+                {
+                    signInCompleted.SetCanceled();
+                    Debug.Log("Cancelled");
+
+                }
+                else if (task.IsFaulted)
+                {
+                    signInCompleted.SetException(task.Exception);
+
+                    Debug.Log("Faulted " + task.Exception);
+                    failCallback?.Invoke();
+                }
+                else
+                {
+                    Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(((Task<GoogleSignInUser>)task).Result.IdToken, null);
+                    Auth.SignInWithCredentialAsync(credential).ContinueWith(authTask =>
+                    {
+                        if (authTask.IsCanceled)
+                        {
+                            signInCompleted.SetCanceled();
+                        }
+                        else if (authTask.IsFaulted)
+                        {
+                            signInCompleted.SetException(authTask.Exception);
+                            Debug.Log("Faulted In Auth " + task.Exception);
+                            failCallback?.Invoke();
+                        }
+                        else
+                        {
+                            signInCompleted.SetResult(((Task<FirebaseUser>)authTask).Result);
+                            Debug.Log("Success");
+                            succeedCallback?.Invoke();
+                            FetchCurrentUserData();
+
+                            //user = Auth.CurrentUser;
+                            //Username.text = user.DisplayName;
+                            //UserEmail.text = user.Email;
+
+                            //StartCoroutine(LoadImage(CheckImageUrl(user.PhotoUrl.ToString())));
+                        }
+                    });
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+            failCallback?.Invoke();
+        }
+        }
+
     //public async Task fdasf()
     //{
     //    try

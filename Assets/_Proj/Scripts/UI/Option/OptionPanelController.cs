@@ -58,11 +58,9 @@ public class OptionPanelController : MonoBehaviour
         gameQuitPopup.Open();
     }
 
-    public void TryGoogleLogin()
-    {
-        Debug.Log("구글 로그인 시도!");
-        // TODO : 구글 로그인
-    }
+    public async void TryGoogleLogin() => await FirebaseManager.Instance.GoogleLogin(OnGoogleLoginSuccess, OnGoogleLoginFail);
+
+
 
     // 로그인 성공/실패 콜백
     public void OnGoogleLoginSuccess()

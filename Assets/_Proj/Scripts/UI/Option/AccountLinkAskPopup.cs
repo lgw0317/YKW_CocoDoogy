@@ -4,7 +4,7 @@ using UnityEngine;
 public class AccountLinkAskPopup : MonoBehaviour
 {
     [SerializeField] private GameObject dim;
-    OptionPanelController optionPanelController;
+    [SerializeField] OptionPanelController optionPanelController;
 
     public void Open()
     {
