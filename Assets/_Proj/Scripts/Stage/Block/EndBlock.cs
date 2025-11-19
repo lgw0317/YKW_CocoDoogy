@@ -2,13 +2,13 @@
 
 public class EndBlock : Block
 {
-    StageManager stage;
+    IStageManager stage;
     protected override void OnEnable()
     {
         base.OnEnable();
     }
 
-    public void Init(StageManager stage)
+    public void Init(IStageManager stage)
     {
         this.stage = stage;
     }
@@ -21,7 +21,8 @@ public class EndBlock : Block
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            stage.ClearStage();
+            if (stage is StageManager stageM)
+            stageM.ClearStage();
         }
     }
 

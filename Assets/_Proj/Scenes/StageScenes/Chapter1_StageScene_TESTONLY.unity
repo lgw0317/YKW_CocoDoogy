@@ -315,22 +315,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 111397210}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d585c2bf3e68834a940bb86e3fbb016, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c999e7804dae1049be56864ac88c73c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTest: 1
   stageRoot: {fileID: 2035390002}
   playerPrefab: {fileID: 5291992017778968749, guid: c4c522c376ad1b745b54524b0a7cded8, type: 3}
   joystickPrefab: {fileID: 8076522967414642225, guid: e70ee23931c899d429b2f8a615b74827, type: 3}
   joystickRoot: {fileID: 484405798}
   playerObject: {fileID: 0}
   camControl: {fileID: 1722618159}
-  mapNameToLoad: map_1_2
+  mapNameToLoad: WaterTest_4_2
   blockPositions: []
   blocks: []
-  currentStageId: 
-  cutsceneUrl: 
-  hasCutscene: 0
   factory: {fileID: 1415150933}
 --- !u!1 &122804043
 GameObject:
@@ -1587,7 +1583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 649f433eb5655bc4192bcec3c53576af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageManager: {fileID: 111397212}
+  stageManager: {fileID: 0}
   currentMapData:
     blocks: []
   selectStageID: 
@@ -2867,7 +2863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe42a3e83b3da0c49becd69fb3e42307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageManager: {fileID: 111397212}
+  stageManager: {fileID: 0}
   OptionOpenButton: {fileID: 450938582}
   OptionCloseButton: {fileID: 992448782}
   RetryButton: {fileID: 1837709685}
