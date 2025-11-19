@@ -28,6 +28,9 @@ public class CamControl : MonoBehaviour
 
     public void FindWayPoint()
     {
+        if (wayPoint == null || wayPoint.Length < 2)
+            wayPoint = new Transform[2];
+
         wayPoint[0] = stage.GetComponentInChildren<EndBlock>().transform;
         wayPoint[1] = stage.GetComponentInChildren<StartBlock>().transform;
     }
