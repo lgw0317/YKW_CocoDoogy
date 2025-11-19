@@ -119,14 +119,15 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         isCooldown = false;
 
         // 다시 플레이어가 가까우면 버튼 활성화
-        if (!isMoving)
-        {
-            up.enabled = true;
-            down.enabled = true;
-            left.enabled = true;
-            right.enabled = true;
-            //btnGroup.SetActive(true);
-        }
+        //if (!isMoving)
+        //{
+        Debug.Log($"[Boar] 버튼 활성화 isMoving : {isMoving}");
+        up.enabled = true;
+        down.enabled = true;
+        left.enabled = true;
+        right.enabled = true;
+        //btnGroup.SetActive(true);
+        //}
     }
 
     public void GetDirection(Vector2Int dashDir)
