@@ -119,14 +119,15 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         isCooldown = false;
 
         // 다시 플레이어가 가까우면 버튼 활성화
-        if (!isMoving)
-        {
-            up.enabled = true;
-            down.enabled = true;
-            left.enabled = true;
-            right.enabled = true;
-            //btnGroup.SetActive(true);
-        }
+        //if (!isMoving)
+        //{
+        Debug.Log($"[Boar] 버튼 활성화 isMoving : {isMoving}");
+        up.enabled = true;
+        down.enabled = true;
+        left.enabled = true;
+        right.enabled = true;
+        //btnGroup.SetActive(true);
+        //}
     }
 
     public void GetDirection(Vector2Int dashDir)
@@ -200,24 +201,26 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             Vector3 nextPos = currentPos + moveDir * tileSize;
             Vector3 boxCenter = nextPos + Vector3.up * 0.5f;
             //Vector3 halfExt = new Vector3(0.45f, 0.6f, 0.45f); // 충돌 검사용 박스 크기
-            Vector3 halfExt = new Vector3(0.2f, 0.2f, 0.2f); // 충돌 검사용 박스 크기
+            Vector3 halfExt = new Vector3(0.4f, 0.2f, 0.4f); // 충돌 검사용 박스 크기
 
             // blocking 우선 검사(다음 칸에 뭐 있는지)
             Collider[] blockHits = Physics.OverlapBox(boxCenter, halfExt, Quaternion.identity, blockingMask);
 
             bool hasBlocking = false;
-
+            int detectedLayerNumber = -1;
             foreach (var h in blockHits)
             {
                 if (!h || h.isTrigger) continue;
                 if (h.transform == transform) continue;
                 hasBlocking = true;
+                detectedLayerNumber = h.gameObject.layer;
                 break;
             }
 
             if (hasBlocking)
             {
-                Debug.Log($"[Boar.DashCoroutine] 다음 칸({nextPos})에 Blocking 오브젝트 감지. 돌진 정지.");
+                string layerName = LayerMask.LayerToName(detectedLayerNumber);
+                Debug.Log($"[Boar.DashCoroutine] 다음 칸({nextPos})에 Blocking=>{layerName} 감지. 돌진 정지.");
                 transform.position = currentPos;
                 HitStop(gameObject);
                 isMoving = false;
@@ -626,7 +629,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
         Vector3 dir = transform.forward;
         Vector3 nextPos = transform.position + dir * tileSize;
         Vector3 boxCenter = nextPos + Vector3.up * 0.5f;
-        Vector3 halfExt = new Vector3(0.45f, 0.6f, 0.45f);
+        Vector3 halfExt = new Vector3(0.4f, 0.2f, 0.4f);
 
         // OverlapBox (blocking 검사 영역)
         Gizmos.color = Color.red;

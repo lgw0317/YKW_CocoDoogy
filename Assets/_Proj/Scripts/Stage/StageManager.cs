@@ -80,6 +80,9 @@ public class StageManager : MonoBehaviour, IStageManager
     }
     IEnumerator StageStart()
     {
+        //가림막쳐주기
+        var fp = StageUIManager.Instance.FadePanel;
+        fp.SetActive(true);
         //stageRoot.name = mapNameToLoad;
         //2. 가져온 맵 정보로 이 씬의 블록팩토리가 맵을 생성하도록 함.
         //2-1. 블록팩토리가 맵을 생성
@@ -90,7 +93,7 @@ public class StageManager : MonoBehaviour, IStageManager
         LinkSignals();
 
         //가림막치워주기
-
+        fp.GetComponent<FadeController>().FadeOut();
         //if (isTest)
         //{
         //    var dataTest = DataManager.Instance.Stage.GetMapNameData(mapNameToLoad);
@@ -110,9 +113,12 @@ public class StageManager : MonoBehaviour, IStageManager
             yield return PlayCutscene(data_start_cutscene);
         }
         //TODO: 3. 가져온 맵 정보로 모든 블록이 생성되고 연결까지 끝나면 가리고 있던 부분을 치워줌.
+        AudioClip bgmClip = DataManager.Instance.Stage.GetAudioClip(currentStageId);
+        AudioEvents.RaiseStageBGM(bgmClip);
 
         camControl.FindWayPoint();
         yield return camControl.StartCoroutine(camControl.CameraWalking(5f));
+
 
         //Todo : 컷씬 지난후 대화가 있다면 여기서 실행
         if (data.start_talk != "-1")

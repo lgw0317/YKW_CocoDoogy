@@ -24,6 +24,7 @@ public class StageUIManager : MonoBehaviour
     public GameObject TreasurePanel;
     public GameObject DialoguePanel;
     public GameObject Overlay;
+    public GameObject FadePanel;
 
     [Header("ResultPanel")]
     public TextMeshProUGUI stageName;
@@ -78,7 +79,7 @@ public class StageUIManager : MonoBehaviour
         });
 
         Overlay.SetActive(false);
-        OptionOpenButton.gameObject.SetActive(true);
+        //OptionOpenButton.gameObject.SetActive(true);
         OptionPanel.SetActive(false);
         ResultPanel.SetActive(false);
     }

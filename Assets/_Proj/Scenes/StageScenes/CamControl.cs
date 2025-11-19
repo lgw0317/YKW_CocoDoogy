@@ -8,16 +8,16 @@ public class CamControl : MonoBehaviour
     public GameObject playerObj;
     public GameObject stage;
 
-    [HideInInspector]public Transform[] wayPoint;
+    public Transform[] wayPoint;
 
     private Vector3 startPosition;
     private Vector3 endPosition;
-    private Vector3 offset;
+    public Vector3 offset;
 
-    void Start()
-    {
-        offset = transform.position;
-    }
+    //void Start()
+    //{
+    //    //offset = transform.position;//(4,9,-5)
+    //}
 
     void Update()
     {

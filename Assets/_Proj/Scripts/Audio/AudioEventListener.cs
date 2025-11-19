@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,12 +28,22 @@ public class AudioEventListener : MonoBehaviour
     {
         AudioEvents.OnPlayAudio += HandlePlayAudio;
         AudioEvents.OnPlayDialogue += HandlePlayDialogueSound;
+        AudioEvents.OnPlayStageBGM += HandleStageBGM;
+
     }
 
     private void OnDisable()
     {
         AudioEvents.OnPlayAudio -= HandlePlayAudio;
         AudioEvents.OnPlayDialogue -= HandlePlayDialogueSound;
+        AudioEvents.OnPlayStageBGM -= HandleStageBGM;
+
+    }
+
+
+    private void HandleStageBGM(AudioClip clip)
+    {
+        AudioManager.Instance.PlayStageBGM(clip);
     }
 
     private void HandlePlayAudio(Enum key, int index = -1, float fadeIn = 0, float fadeOut = 0, bool loop = false, bool pooled = false, Vector3? pos = null)
