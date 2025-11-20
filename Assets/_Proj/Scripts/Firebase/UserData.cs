@@ -196,14 +196,21 @@ public class UserData : IUserData
             get => items.TryGetValue(id.ToString(), out int value) ? value : 0;
             set
             {
-                if (items.TryGetValue(id.ToString(), out int v))
-                {
-                    v = value;
-                }
+                string key = id.ToString();
+                // 있으면 업데이트, 없으면 추가
+                if (items.ContainsKey(key))
+                    items[key] = value; 
                 else
-                {
-                    items.Add(id.ToString(), value);
-                }
+                    items.Add(key, value);
+                
+                //if (items.TryGetValue(id.ToString(), out int v))
+                //{
+                //    v = value;
+                //}
+                //else
+                //{
+                //    items.Add(id.ToString(), value);
+                //}
 
             }
         }
