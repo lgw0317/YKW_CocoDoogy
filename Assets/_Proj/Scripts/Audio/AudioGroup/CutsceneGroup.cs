@@ -1,12 +1,9 @@
 using UnityEngine;
-using UnityEngine.Audio;
 
 // 영상으로 대체. 이제 오디오소스만 관리해야함
 
-public class CutsceneGroup : MonoBehaviour, IAudioController
+public class CutsceneGroup : BaseAudioGroup
 {
-    private AudioMixer mixer;
-    private AudioMixerGroup group;
     private CutscenePlayer player;
 
     public AudioSource GetCutsceneSource()
@@ -15,39 +12,39 @@ public class CutsceneGroup : MonoBehaviour, IAudioController
     }
 
     // IAudioController 영역
-    public void Init()
+    public override void Init()
     {
-        mixer = AudioManager.AudioGroupProvider.GetMixer();
+        base.Init();
         group = AudioManager.AudioGroupProvider.GetGroup(AudioType.Cutscene);
         Debug.Log($"CutsceneGroup : {group}");
         player = new CutscenePlayer(mixer, transform, group);
     }
-    public void PostInit() { }
-    public void PlayPlayer()
+    public override void PostInit() { }
+    public override void PlayPlayer()
     {
         player.PlayAll();
     }
-    public void PausePlayer()
+    public override void PausePlayer()
     {
         player.PauseAll();
     }
-    public void ResumePlayer()
+    public override void ResumePlayer()
     {
         player.ResumeAll();
     }
-    public void StopPlayer()
+    public override void StopPlayer()
     {
         player.StopAll();
     }
-    public void ResetPlayer()
+    public override void ResetPlayer()
     {
         player.ResetAll();
     }
-    public void SetVolumeHalf()
+    public override void SetVolumeHalf()
     {
         
     }
-    public void SetVolumeNormal()
+    public override void SetVolumeNormal()
     {
         
     }

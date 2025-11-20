@@ -3,6 +3,7 @@ using UnityEngine.Audio;
 using System.Collections.Generic;
 using System;
 using UnityEngine.SceneManagement;
+using System.Linq;
 /// <summary>
 /// BGM, Cutscene 합칠 것,
 /// SFX, Ambient 합칠 것
@@ -15,6 +16,8 @@ using UnityEngine.SceneManagement;
 /// 2. 오디오 시스템 칼질 => 모든 Voice영역 삭제 - DialogueGroup에 DialogueSFX로 대체
 /// 3. Cutscene은 영상 재생이니 해당 영역 오디오소스 만 만들고 나머지 다 삭제.
 /// 4. 오디오믹서 그룹도 3개로 축소 => Master, BGM, SFX 근데 일단 다른 것들 삭제는 안함
+/// 
+/// 그룹을 추상화로 상속 받아서 스크립터블오브젝트로 필드 만들고 IAudioController에서 그 스크립터블오브젝트 파일을 참조하는
 /// </summary>
 [Serializable]
 public struct AudioGroupMapping
@@ -38,19 +41,20 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
     [SerializeField] private AmbientLibrary ambientLibrary;
     [SerializeField] private UILibrary uiLibrary;
 
-    [Header("AudioGroupChildren")]
+
+    private Dictionary<AudioType, AudioMixerGroup> groupMap;
+    private AudioLibraryProvider libraryProvider;
+    private AudioVolumeHandler volumeHandler;
+    private BaseAudioGroup[] audioGroups;
+    private SceneAudio sAudio;
+
     private BGMGroup bgmGroup;
     private SFXGroup sfxGroup;
     private AmbientGroup ambientGroup;
     private CutsceneGroup cutsceneGroup;
     private UIGroup uiGroup;
     private DialogueGroup diaGroup;
-
-    private Dictionary<AudioType, AudioMixerGroup> groupMap;
-    private AudioLibraryProvider libraryProvider;
-    private AudioVolumeHandler volumeHandler;
-    private IAudioController[] audioGroups;
-    private SceneAudio sAudio;
+    private AudioGroupController AudioGroupController; // 오디오 그룹 제어
 
     public AudioClip BGMClip { get; private set;}
 
@@ -76,15 +80,17 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
         libraryProvider = new AudioLibraryProvider(bgmLibrary, sfxLibrary, ambientLibrary, uiLibrary);
         volumeHandler = new AudioVolumeHandler(mixer);
 
-        // AudioGroupMapping
-        bgmGroup = GetComponentInChildren<BGMGroup>();
-        sfxGroup = GetComponentInChildren<SFXGroup>();
-        ambientGroup = GetComponentInChildren<AmbientGroup>();
-        cutsceneGroup = GetComponentInChildren<CutsceneGroup>();
-        uiGroup = GetComponentInChildren<UIGroup>();
-        diaGroup = GetComponentInChildren<DialogueGroup>();
+        audioGroups = GetComponentsInChildren<BaseAudioGroup>(true);
+        // 캐싱구조가 별로면 해당 스크립트 맨 아래 Get메서드로?
+        bgmGroup = audioGroups.OfType<BGMGroup>().FirstOrDefault();
+        sfxGroup = audioGroups.OfType<SFXGroup>().FirstOrDefault();
+        ambientGroup = audioGroups.OfType<AmbientGroup>().FirstOrDefault();
+        cutsceneGroup = audioGroups.OfType<CutsceneGroup>().FirstOrDefault();
+        uiGroup = audioGroups.OfType<UIGroup>().FirstOrDefault();
+        diaGroup = audioGroups.OfType<DialogueGroup>().FirstOrDefault();
 
-        audioGroups = new IAudioController[6] { bgmGroup, sfxGroup, ambientGroup, cutsceneGroup, uiGroup, diaGroup };
+        AudioGroupController = new AudioGroupController(audioGroups);
+
         // 각 오디오 그룹 초기화 작업
         foreach (var aG in audioGroups)
         {
@@ -123,6 +129,7 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
     // VideoPlayer에서 CutsceneGroup 영역 오디오 소스 가져오기
     public AudioSource GetAudioSourceForVideoPlayer()
     {
+        CutsceneGroup cutsceneGroup = audioGroups.OfType<CutsceneGroup>().FirstOrDefault();
         return cutsceneGroup.GetCutsceneSource();
     }
 
@@ -146,25 +153,32 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
             default: throw new Exception("Key: BGMKey, SFXKey, AmbientKey, CutsceneKey, VoiceKey, UIKey");
         }
     }
-
     public void PlayDialogueAudio(AudioType type, string audioFileName)
     {
         diaGroup.PlayDialogue(type, audioFileName);
     }
-
     public void PlayBGMForResources(AudioClip clip, float fadeIn, float fadeOut, bool loop)
     {
         bgmGroup.PlayBGMForResources(clip, fadeIn, fadeOut, loop);
     }
 
+    // 오디오 그룹 제어
+    public void EnterDialogue() => AudioGroupController.SetDialogueState(true);
+    public void ExitDialogue() => AudioGroupController.SetDialogueState(false);
+
+    public void EnterCutscene() => AudioGroupController.SetCutsceneState(true);
+    public void ExitCutscene() => AudioGroupController.SetCutsceneState(false);
+
     // 각 씬에 있는 메인 BGM을 이벤트로 재생
     private void OnSceneLoaded(Scene scne, LoadSceneMode mode)
     {
-        sAudio = FindFirstObjectByType<SceneAudio>();
-        if (sAudio != null)
-        {
-            sAudio.StartBGM();
-        }
+        // sAudio = FindFirstObjectByType<SceneAudio>();
+        // if (sAudio != null)
+        // {
+        //     sAudio.StartBGM();
+        // }
+        AudioGroupController.ResetAllAudioGroup();
+        Debug.Log("오디오 그룹 초기화 완료");
     }
 
     #region 오디오 재생 분기
@@ -173,110 +187,31 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
         var clip = libraryProvider.GetClip(AudioType.BGM, key, index);
         if (clip == null) return;
         BGMClip = clip;
-        // ����
         bgmGroup.PlayBGM(clip, fadeIn, fadeOut, loop);
     }
     private void PlayAudio(SFXKey key, int index = -1, bool loop = false, bool pooled = false, Vector3? pos = null)
     {
         var clip = libraryProvider.GetClip(AudioType.SFX, key, index);
         if (clip == null) return;
-        // ����
         sfxGroup.PlaySFX(clip, loop, pooled, pos);
     }
     private void PlayAudio(AmbientKey key, int index = -1, bool loop = false, bool pooled = false, Vector3? pos = null)
     {
         var clip = libraryProvider.GetClip(AudioType.Ambient, key, index);
         if (clip == null) return;
-        // ����
         ambientGroup.PlayAmbient(clip, loop, pooled, pos);
     }
     private void PlayAudio(UIKey key, int index = -1)
     {
         var clip = libraryProvider.GetClip(AudioType.UI, key, index);
         if (clip == null) return;
-        // ����
-        uiGroup.PlayVoice(clip);
+        uiGroup.PlayUI(clip);
     }
     #endregion
 
     public AudioClip GetBGMClip()
     {
         return BGMClip;
-    }
-
-    // 오디오 그룹 제어
-    public void PlayAllAudioGroup()
-    {
-        foreach (var aG in audioGroups)
-        {
-            aG.PlayPlayer();
-        }
-    }
-    public void PauseAllAudioGroup()
-    {
-        foreach (var aG in audioGroups)
-        {
-            aG.PausePlayer();
-        }
-    }
-    public void ResumeAllAudioGroup()
-    {
-        foreach (var aG in audioGroups)
-        {
-            aG.ResumePlayer();
-        }
-    }
-    public void StopAllAudioGroup()
-    {
-        foreach (var aG in audioGroups)
-        {
-            aG.StopPlayer();
-        }
-    }
-    public void ResetAllAudioGroup()
-    {
-        foreach (var aG in audioGroups)
-        {
-            aG.ResetPlayer();
-        }
-    }
-    public void EnterDialogue()
-    {
-        foreach (var aG in audioGroups)
-        {
-            if (aG is DialogueGroup == false) aG.SetVolumeHalf();
-            else aG.ResetPlayer();
-        }
-    }
-    public void ExitDialogue()
-    {
-        foreach (var aG in audioGroups)
-        {
-            if (aG is DialogueGroup == false) aG.SetVolumeNormal();
-            else aG.ResetPlayer();
-        }
-    }
-    public void EnterCutscene()
-    {
-        foreach (var aG in audioGroups)
-        {
-            if (aG is CutsceneGroup == false) aG.PausePlayer();
-        }
-    }
-    public void ExitCutscene()
-    {
-        foreach (var aG in audioGroups)
-        {
-            if (aG is CutsceneGroup == true)
-            {
-                aG.PausePlayer();
-                aG.ResetPlayer();
-            }
-            else
-            {
-                aG.ResumePlayer();
-            }
-        }
     }
 
     // ����
@@ -337,6 +272,11 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
         bgmGroup.PlayBGMForResources(clip, 0, 0, true);
     }
 
+    // 만약 Awake에서 각 그룹들을 캐싱해서 사용하는 것이 별로면 이 방식으로
+    // private T GetGroup<T>() where T : BaseAudioGroup
+    // {
+    //     return audioGroups.OfType<T>().FirstOrDefault();
+    // }
 
 }
 

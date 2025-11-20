@@ -1,13 +1,11 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class SFXGroup : MonoBehaviour, IAudioController
+public class SFXGroup : BaseAudioGroup
 {
     [Header("Pooling Settings")]
     [SerializeField] private int poolSize = 10;
 
-    private AudioMixer mixer;
-    private AudioMixerGroup group;
     private SFXPlayer player;
     private AudioPool audioPool;
 
@@ -17,46 +15,41 @@ public class SFXGroup : MonoBehaviour, IAudioController
     }
 
     // IAudioController 영역
-    public void Init()
+    public override void Init()
     {
-        mixer = AudioManager.AudioGroupProvider.GetMixer();
+        base.Init();
         group = AudioManager.AudioGroupProvider.GetGroup(AudioType.SFX);
         Debug.Log($"SFXGroup : {group}");
         audioPool = new AudioPool(transform, group, poolSize);
         player = new SFXPlayer(mixer, transform, audioPool);
     }
-    public void PostInit() { }
-    public void PlayPlayer()
+    public override void PostInit() { }
+    public override void PlayPlayer()
     {
         player.PlayAll();
     }
-
-    public void PausePlayer()
+    public override void PausePlayer()
     {
         player.PauseAll();
     }
-
-    public void ResumePlayer()
+    public override void ResumePlayer()
     {
         player.ResumeAll();
     }
-
-    public void StopPlayer()
+    public override void StopPlayer()
     {
         player.StopAll();
     }
 
-    public void ResetPlayer()
+    public override void ResetPlayer()
     {
         player.ResetAll();
     }
-
-    public void SetVolumeHalf()
+    public override void SetVolumeHalf()
     {
         
     }
-
-    public void SetVolumeNormal()
+    public override void SetVolumeNormal()
     {
         
     }

@@ -181,6 +181,8 @@ public class StageManager : MonoBehaviour, IStageManager
 
     private void ShowResultUI()
     {
+        //LSH 추가 1120
+        AudioEvents.Raise(UIKey.Stage, 0);
         // 기존 UI 열기
         StageUIManager.Instance.Overlay.SetActive(true);
         StageUIManager.Instance.ResultPanel.SetActive(true);

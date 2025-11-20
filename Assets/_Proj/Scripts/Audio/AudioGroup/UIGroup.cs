@@ -1,52 +1,49 @@
 using UnityEngine;
-using UnityEngine.Audio;
 
-public class UIGroup : MonoBehaviour, IAudioController
+public class UIGroup : BaseAudioGroup
 {
-    private AudioMixer mixer;
-    private AudioMixerGroup group;
     private UIPlayer player;
 
-    public void PlayVoice(AudioClip clip)
+    public void PlayUI(AudioClip clip)
     {
         player.PlayAudio(clip);
     }
 
     // IAudioController 영역
-    public void Init()
+    public override void Init()
     {
         mixer = AudioManager.AudioGroupProvider.GetMixer();
         group = AudioManager.AudioGroupProvider.GetGroup(AudioType.UI);
         Debug.Log($"UIGroup.cs : {group}, SFX 그룹이면 OK");
         player = new UIPlayer(mixer, transform, group);
     }
-    public void PostInit() { }
+    public override void PostInit() { }
     // UI는 oneshot이니 제어 X
-    public void PlayPlayer()
+    public override void PlayPlayer()
     {
-        //player.PlayAll();
+        player.PlayAll();
     }
-    public void PausePlayer()
+    public override void PausePlayer()
     {
-        //player.PauseAll();
+        player.PauseAll();
     }
-    public void ResumePlayer()
+    public override void ResumePlayer()
     {
-        //player.ResumeAll();
+        player.ResumeAll();
     }
-    public void StopPlayer()
+    public override void StopPlayer()
     {
-        //player.StopAll();
+        player.StopAll();
     }
-    public void ResetPlayer()
+    public override void ResetPlayer()
     {
-        //player.ResetAll();
+        player.ResetAll();
     }
-    public void SetVolumeHalf()
+    public override void SetVolumeHalf()
     {
         
     }
-    public void SetVolumeNormal()
+    public override void SetVolumeNormal()
     {
         
     }

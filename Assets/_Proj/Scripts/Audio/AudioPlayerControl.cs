@@ -24,7 +24,7 @@ public abstract class AudioPlayerControl
         {
             if (src != null && !src.isPlaying)
             {
-                //src.DOKill();
+                src.DOKill();
                 if (src.volume != 1)
                 {
                     src.Play();
@@ -44,7 +44,7 @@ public abstract class AudioPlayerControl
         {
             if (src != null && src.isPlaying)
             {
-                //src.DOKill();
+                src.DOKill();
                 src.DOFade(0, 0.5f).OnComplete(() => src.Pause());
             }
         }
@@ -56,7 +56,7 @@ public abstract class AudioPlayerControl
         {
             if (src != null && !src.isPlaying)
             {
-                //src.DOKill();
+                src.DOKill();
                 src.UnPause();
                 src.DOFade(1, 0.5f);
             }
@@ -68,7 +68,7 @@ public abstract class AudioPlayerControl
         {
             if (src != null && src.isPlaying) 
             {
-                //src.DOKill();
+                src.DOKill();
                 src.DOFade(0, 0.5f).OnComplete(() => src.Stop());
             } 
         }
@@ -80,11 +80,15 @@ public abstract class AudioPlayerControl
         {
             if (src != null)
             {
-                if (src.isPlaying) src.Stop();
+                if (src.isPlaying) 
+                {
+                    src.DOKill();
+                    src.DOFade(0, 0.3f).OnComplete(() => {src.Stop(); src.volume = 1f;});
+                }
                 src.loop = false;
                 src.volume = 1f;
                 src.pitch = 1f;
-                src.clip = null;
+                src.clip = null; 
             }
         }
     }
@@ -93,8 +97,8 @@ public abstract class AudioPlayerControl
     {
         foreach (var src in activeSources)
         {
-            //src.DOKill();
-            src.DOFade(0.3f, 0.2f);
+            src.DOKill();
+            src.DOFade(0.3f, 0.5f);
         }
     }
 
@@ -102,7 +106,7 @@ public abstract class AudioPlayerControl
     {
         foreach (var src in activeSources)
         {
-            //src.DOKill();
+            src.DOKill();
             src.DOFade(1, 0.5f);
         }
     }

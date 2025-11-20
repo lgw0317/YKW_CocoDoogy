@@ -86,6 +86,8 @@ public class StageUIManager : MonoBehaviour
 
     void OptionOpen()
     {
+        //LSH 1120 추가
+        //AudioEvents.Raise(UIKey.Normal, 0);
         OptionPanel.SetActive(true);
         Overlay.SetActive(true);
         OptionOpenButton.gameObject.SetActive(false);
@@ -93,6 +95,8 @@ public class StageUIManager : MonoBehaviour
 
     void OptionClose()
     {
+        //LSH 1120 추가
+        AudioEvents.Raise(UIKey.Normal, 1);
         OptionPanel.SetActive(false);
         Overlay.SetActive(false);
         OptionOpenButton.gameObject.SetActive(true);
@@ -101,7 +105,8 @@ public class StageUIManager : MonoBehaviour
     void Retry()
     {
         if (stageManager.isTest) { SceneManager.LoadScene("Chapter1_StageScene_TESTONLY"); return; }
-
+        //LSH 1120 추가
+        AudioEvents.Raise(UIKey.Normal, 2);
         //Todo : 챕터에 따라 분기
         SceneManager.LoadScene("Chapter1_StageScene");
     }
@@ -117,7 +122,8 @@ public class StageUIManager : MonoBehaviour
         //currentStageId.Contains("0_1") => 튜토리얼 1번씬
         //currentStageId.Contains("0_2") => 튜토리얼 2번씬
         //위의 두 케이스 모두 타이틀씬을 불러오도록 하기.
-
+        //LSH 1120 추가
+        AudioEvents.Raise(UIKey.Normal, 2);
         SceneManager.LoadScene("Main");
     }
 

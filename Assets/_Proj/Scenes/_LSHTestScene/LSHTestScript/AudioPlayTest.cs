@@ -30,14 +30,14 @@ public class AudioPlayTest : MonoBehaviour
     // {
     //     AudioEvents.Raise(VoiceKey.Cocodoogy, -1);
     // }
-    public void UIPlay()
-    {
-        AudioEvents.Raise(UIKey.UIClick, -1);
-    }
-    public void UIPlay2()
-    {
-        AudioEvents.Raise(UIKey.UIOpen, -1);
-    }
+    // public void UIPlay()
+    // {
+    //     AudioEvents.Raise(UIKey.UIClick, -1);
+    // }
+    // public void UIPlay2()
+    // {
+    //     AudioEvents.Raise(UIKey.UIOpen, -1);
+    // }
     public void Quit()
     {
         SettingManager.Instance.SaveSettings();

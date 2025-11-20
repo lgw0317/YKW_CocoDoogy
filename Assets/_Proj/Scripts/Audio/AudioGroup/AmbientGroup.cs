@@ -1,19 +1,17 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class AmbientGroup : MonoBehaviour, IAudioController
+public class AmbientGroup : BaseAudioGroup
 {
     [Header("Pooling Settings")]
     [SerializeField] private int poolSize = 5;
 
-    private AudioMixer mixer;
-    private AudioMixerGroup group;
     private AmbientPlayer player;
     private AudioPool audioPool;
 
-    public void Init()
+    public override void Init()
     {
-        mixer = AudioManager.AudioGroupProvider.GetMixer();
+        base.Init();
         Debug.Log($"AmbientGroup Mixer : {mixer.name}");
         group = AudioManager.AudioGroupProvider.GetGroup(AudioType.Ambient);
         Debug.Log($"AmbientGroup MixerGroup : {group}");
@@ -21,7 +19,7 @@ public class AmbientGroup : MonoBehaviour, IAudioController
         player = new AmbientPlayer(mixer, transform, audioPool);
     }
 
-    public void PostInit() { }
+    public override void PostInit() { }
     // ����� ����
     public void PlayAmbient(AudioClip clip, bool loop, bool pooled, Vector3? pos = null)
     {
@@ -29,37 +27,37 @@ public class AmbientGroup : MonoBehaviour, IAudioController
     }
 
     // ����� ����
-    public void PlayPlayer()
+    public override void PlayPlayer()
     {
         player.PlayAll();
     }
 
-    public void PausePlayer()
+    public override void PausePlayer()
     {
         player.PauseAll();
     }
 
-    public void ResumePlayer()
+    public override void ResumePlayer()
     {
         player.ResumeAll();
     }
 
-    public void StopPlayer()
+    public override void StopPlayer()
     {
         player.StopAll();
     }
 
-    public void ResetPlayer()
+    public override void ResetPlayer()
     {
         player.ResetAll();
     }
 
-    public void SetVolumeHalf()
+    public override void SetVolumeHalf()
     {
         
     }
 
-    public void SetVolumeNormal()
+    public override void SetVolumeNormal()
     {
         
     }

@@ -17,6 +17,7 @@ public class UIPlayer : AudioPlayerControl
         currentSource = gObj.AddComponent<AudioSource>();
         activeSources.Add(currentSource);
         currentSource.outputAudioMixerGroup = group;
+        currentSource.loop = false;
         currentSource.volume = 1;
     }
 
@@ -24,5 +25,26 @@ public class UIPlayer : AudioPlayerControl
     {
         //if (currentSource.isPlaying && currentSource.clip == clip) return;
         currentSource.PlayOneShot(clip);
+    }
+
+    public override void PlayAll()
+    {
+        base.PlayAll();
+    }
+    public override void PauseAll()
+    {
+        base.PauseAll();
+    }
+    public override void ResumeAll()
+    {
+        base.ResumeAll();
+    }
+    public override void StopAll()
+    {
+        base.StopAll();
+    }
+    public override void ResetAll()
+    {
+        base.ResetAll();
     }
 }

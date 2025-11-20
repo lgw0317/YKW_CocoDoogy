@@ -37,6 +37,8 @@ public class DialogueManager : MonoBehaviour
         if (isRead) return false;
 
         isRead = true;
+        //LSH 추가
+        AudioManager.Instance.EnterDialogue();
         StageUIManager.Instance.Overlay.SetActive(true);
         StageUIManager.Instance.DialoguePanel.SetActive(true);
         StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(false);
@@ -45,8 +47,6 @@ public class DialogueManager : MonoBehaviour
 
         currentSeq = 0;
         AnalyzeDialogueSideUsage(dialogueId);
-        //LSH 추가
-        AudioManager.Instance.EnterDialogue();
         ShowDialogue(dialogueId, currentSeq);
         isDialogueActive = true;
 

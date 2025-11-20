@@ -30,6 +30,12 @@ public class SceneAudio : MonoBehaviour
     // [Header("SceneMainCamera")]
     // [SerializeField] private Camera cam;
 
+    private void Start()
+    {
+        Debug.Log("씬오디오 시작해요");
+        StartBGM();    
+    }
+
     public void StartBGM()
     {
        if (AudioManager.Instance != null)
