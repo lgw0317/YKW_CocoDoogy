@@ -55,7 +55,7 @@ public class OptionPanelController : MonoBehaviour
         gameInfoPopup.Open();
     }
 
-    private void LogoutOpen()
+    public void LogoutOpen()
     {
         logoutPopup.Open();
     }
