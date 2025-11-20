@@ -324,7 +324,7 @@ MonoBehaviour:
   joystickRoot: {fileID: 484405798}
   playerObject: {fileID: 0}
   camControl: {fileID: 1722618159}
-  mapNameToLoad: WaterTest_4_2
+  mapNameToLoad: map_2_4
   blockPositions: []
   blocks: []
   factory: {fileID: 1415150933}
@@ -2875,6 +2875,7 @@ MonoBehaviour:
   TreasurePanel: {fileID: 1780084018}
   DialoguePanel: {fileID: 1658304251}
   Overlay: {fileID: 491297653}
+  FadePanel: {fileID: 0}
   stageName: {fileID: 1544757045}
   star:
   - {fileID: 65789341}
@@ -3501,6 +3502,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1470828202}
   m_CullTransparentMesh: 1
+--- !u!1 &1475449186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1475449188}
+  - component: {fileID: 1475449187}
+  m_Layer: 0
+  m_Name: DialogueManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1475449187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1475449186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a413518c256558a47b1b5fe206e1e110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDialogueActive: 0
+  playerMovement: {fileID: 0}
+--- !u!4 &1475449188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1475449186}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.18872, y: -0.5, z: 12.49195}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1477821227 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4299389359643487108, guid: 675d10cc836f01f4aa4629eb9530edfe, type: 3}
@@ -3934,7 +3981,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 40
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -4029,6 +4076,7 @@ MonoBehaviour:
   wayPoint:
   - {fileID: 0}
   - {fileID: 0}
+  offset: {x: 0, y: 11, z: -3}
 --- !u!1 &1752784471
 GameObject:
   m_ObjectHideFlags: 0
@@ -4775,12 +4823,20 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1374158261219367731, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3500261074333338270, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: cda9ae0ee2f7ee5489c39597f9a8a279, type: 2}
     - target: {fileID: 3500261074333338270, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5037599534596399432, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5108920150409765423, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
@@ -5234,3 +5290,4 @@ SceneRoots:
   - {fileID: 483818918}
   - {fileID: 734338973}
   - {fileID: 832386954}
+  - {fileID: 1475449188}
