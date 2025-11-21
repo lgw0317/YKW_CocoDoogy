@@ -279,7 +279,7 @@ public class Boar : PushableObjects, IDashDirection, IPlayerFinder
             checkTailPos + Vector3.up * 0.5f,
             halfExt,
             Quaternion.identity,
-             blockingMask
+             blockingMask | LayerMask.GetMask("Player")
             );
 
             if (tailBlocked)
