@@ -368,7 +368,13 @@ public partial class EditModeController
         if (!savedOkButton) return;
 
         savedOkButton.onClick.RemoveAllListeners();
-        savedOkButton.onClick.AddListener(() => savedInfoPanel?.SetActive(false));
+        savedOkButton.onClick.AddListener(() => 
+        {
+            savedInfoPanel?.SetActive(false);
+            //LSH 추가 1121
+            if (LobbyCharacterManager.Instance == null) return;
+            LobbyCharacterManager.Instance.InitWayPoint();
+        });
     }
 
     #endregion

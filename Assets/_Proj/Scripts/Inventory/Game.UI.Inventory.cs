@@ -153,76 +153,85 @@ namespace Game.UI.Inventory
         /// </summary>
         private void BuildHome()
         {
-            // ───────────────────────────────────────────────
-            // 0) UserData 또는 inventory가 유효하지 않으면 중단
-            // ───────────────────────────────────────────────
-            if (UserData.Local == null || UserData.Local.inventory == null)
-                return;
+            const int defaultHomeId = 40001;
 
-            var inventoryItems = UserData.Local.inventory.items;
+            // 0) DataManager/Home 준비 안 됐으면 그냥 리턴
+            if (DataManager.Instance == null || DataManager.Instance.Home == null)
+            {
+                Debug.LogWarning("[Inventory] DataManager.Home 이 준비되지 않아서 Home 인벤을 그릴 수 없습니다.");
+                return;
+            }
+
+            // 1) 항상 기본 집(40001)을 맨 처음에 만든다
+            CreateHomeSlot(defaultHomeId);
+
+            // 2) 그 다음에 인벤토리에 있는 다른 집들 생성
+            var inventory = UserData.Local?.inventory;
+            var inventoryItems = inventory?.items;
+
             if (inventoryItems == null || inventoryItems.Count == 0)
                 return;
 
-            // ───────────────────────────────────────────────
-            // 1) 유저 인벤토리에서 “Home id만” 필터링
-            //    Home id 규칙: 40000 ~ 50000
-            // ───────────────────────────────────────────────
             foreach (var kv in inventoryItems)
             {
                 string key = kv.Key;    // "40001" 형태 문자열
                 if (!int.TryParse(key, out int id))
                     continue;
 
+                // Home id 규칙: 40000 ~ 50000
                 if (id <= 40000 || id >= 50000)
                     continue;
 
-                // ───────────────────────────────────────────
-                // 2) HomeProvider에서 실제 HomeData를 가져오기
-                // ───────────────────────────────────────────
-                var data = DataManager.Instance.Home.GetData(id);
-                if (data == null)
-                {
-                    Debug.LogWarning($"[Inventory] HomeData not found. id={id}");
+                // 기본 집은 이미 만들었으니 스킵
+                if (id == defaultHomeId)
                     continue;
-                }
 
-                // ───────────────────────────────────────────
-                // 3) 슬롯 생성
-                // ───────────────────────────────────────────
-                var slot = GetSlot();
+                // 혹시 이미 만들어진 id면 스킵
+                if (_slotById.ContainsKey(id))
+                    continue;
 
-                slot.SetIcon(data.GetIcon(_loader));
-
-                string homeName = string.IsNullOrEmpty(data.home_name)
-                    ? $"Home {id}"
-                    : data.home_name;
-
-                slot.SetName(homeName);
-
-                // 집은 수량 개념 없음 → count 표시 끔
-                slot.SetCount(null);
-
-                // ───────────────────────────────────────────
-                // 4) 클릭 시: 홈 프리뷰/교체 로직 실행
-                // ───────────────────────────────────────────
-                var localData = data;
-                slot.SetOnClick(() =>
-                {
-                    if (!_edit) _edit = FindFirstObjectByType<EditModeController>();
-                    if (_edit == null) return;
-
-                    // 기존 EditModeController의 집 프리뷰 로직 유지
-                    if (_edit.IsHomePreviewActive) return;
-
-                    _edit.PreviewSwapHome(new HomePlaceable(localData));
-                });
-
-                // ───────────────────────────────────────────
-                // 5) id → slot 저장 (추후 필요 대비)
-                // ───────────────────────────────────────────
-                _slotById[id] = slot;
+                CreateHomeSlot(id);
             }
         }
+        private void CreateHomeSlot(int id)
+        {
+            var data = DataManager.Instance.Home.GetData(id);
+            if (data == null)
+            {
+                Debug.LogWarning($"[Inventory] HomeData not found. id={id}");
+                return;
+            }
+
+            var slot = GetSlot();
+
+            slot.SetIcon(data.GetIcon(_loader));
+
+            string homeName = string.IsNullOrEmpty(data.home_name)
+                ? $"Home {id}"
+                : data.home_name;
+
+            slot.SetName(homeName);
+
+            // 집은 수량 개념 없음 → count 표시 끔
+            slot.SetCount(null);
+
+            var localData = data;
+            slot.SetOnClick(() =>
+            {
+                if (!_edit) _edit = FindFirstObjectByType<EditModeController>();
+                if (_edit == null) return;
+
+                // 기존 EditModeController의 집 프리뷰 로직 유지
+                if (_edit.IsHomePreviewActive) return;
+
+                _edit.PreviewSwapHome(new HomePlaceable(localData));
+            });
+
+            _slotById[id] = slot;
+        }
+
+
+
 
 
         /// <summary>
