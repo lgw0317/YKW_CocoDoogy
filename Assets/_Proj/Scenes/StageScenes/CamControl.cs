@@ -15,6 +15,8 @@ public class CamControl : MonoBehaviour
     private Vector3 endPosition;
     public Vector3 offset;
 
+    [Range(0.5f, 50f), Tooltip("카메라 댐핑 강도, 50 = 댐핑 없음")]
+    public float dampingStrength = 0.5f;
     //void Start()
     //{
     //    //offset = transform.position;//(4,9,-5)
@@ -24,7 +26,7 @@ public class CamControl : MonoBehaviour
     {
         if (!playerObj) return;
 
-        transform.position = playerObj.transform.position + offset;
+        transform.position = Vector3.Lerp(transform.position, playerObj.transform.position + offset, Time.fixedDeltaTime > .02 ? 50 : (dampingStrength * Time.fixedDeltaTime));
     }
 
     public void FindWayPoint()
