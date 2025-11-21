@@ -199,7 +199,12 @@ public class TutorialStageManager : MonoBehaviour, IStageManager
         }
         else
         {
-            SceneManager.LoadScene("Main");
+            if (!UserData.Local.master.nickName.IsNullOrEmpty())
+                SceneManager.LoadScene("Main");
+            else
+            {
+                SceneManager.LoadScene("Nickname");
+            }
         }
         
     }

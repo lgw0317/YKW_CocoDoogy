@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Audio;
 using DG.Tweening;
 
@@ -89,7 +89,7 @@ public class BGMPlayer : AudioPlayerControl
         }
         else
         {
-            Debug.Log($"BGMPlayer : AudioClip 없음 {clip.name}");
+            Debug.Log($"BGMPlayer : AudioClip 없음");
         }
     }
 

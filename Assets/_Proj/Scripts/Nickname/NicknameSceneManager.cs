@@ -24,6 +24,7 @@ public class NicknameSceneManager : MonoBehaviour
             confirmButton.onClick.RemoveAllListeners();
             confirmButton.onClick.AddListener(() => ToMainScene());
             confirmButton.interactable = true;
+            ShowLog("<color=green>닉네임 설정 완료!</color>\n버튼을 누르면 로비로 이동합니다.");
         }
         else
         {
@@ -34,7 +35,7 @@ public class NicknameSceneManager : MonoBehaviour
 
     private void ShowLog(string message)
     {
-        if (logText.alpha < 0)
+        if (logText.alpha < 1)
         {
             logText.alpha = 1;
         }
