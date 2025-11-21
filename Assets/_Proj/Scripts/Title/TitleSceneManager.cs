@@ -103,7 +103,9 @@ public class TitleSceneManager : MonoBehaviour
         //if (UserData.Local.passedTutorials >= 2)
 
         if (UserData.Local.passedTutorials >= 2)
-            SceneManager.LoadScene("Main");
+            if (!UserData.Local.master.nickName.IsNullOrEmpty())
+                 { SceneManager.LoadScene("Main"); }
+            else { SceneManager.LoadScene("Nickname"); }
         else
             SceneManager.LoadScene("Chapter0_StageScene");
                 //모든 튜토리얼을 끝내지 못했다면 튜토리얼로 로드.
