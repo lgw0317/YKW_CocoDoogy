@@ -22,7 +22,7 @@ public class CamControl : MonoBehaviour
     //    //offset = transform.position;//(4,9,-5)
     //}
 
-    void Update()
+    void FixedUpdate()
     {
         if (!playerObj) return;
 

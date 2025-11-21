@@ -2390,6 +2390,7 @@ MonoBehaviour:
   stage: {fileID: 2035390001}
   wayPoint: []
   offset: {x: 0, y: 11, z: -3}
+  dampingStrength: 4
 --- !u!1001 &1769265752
 PrefabInstance:
   m_ObjectHideFlags: 0

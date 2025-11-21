@@ -2444,6 +2444,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   offset: {x: 0, y: 11, z: -3}
+  dampingStrength: 4
 --- !u!1 &1952791719
 GameObject:
   m_ObjectHideFlags: 0
