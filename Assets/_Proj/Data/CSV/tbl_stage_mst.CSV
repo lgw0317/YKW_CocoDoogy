@@ -19,3 +19,15 @@ stage_2_5,[stage_2_5_name],Img/Stage/stage_2_1_main,"작은 돌틈과 풀잎이 
 stage_2_6,[stage_2_6_name],Img/Stage/stage_2_1_main,"물이 빠르게 흘러가는 좁은 수로입니다.\n물살이 거세게 일렁입니다.",map_2_6,-1,-1,-1,-1,treasure_2_6_1,treasure_2_6_2,treasure_2_6_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual2
 stage_2_7,[stage_2_7_name],Img/Stage/stage_2_1_main,"발목까지 닿는 얕은 물길입니다.\n잔물결이 부드럽게 흔들립니다.",map_2_7,-1,-1,-1,-1,treasure_2_7_1,treasure_2_7_2,treasure_2_7_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual2
 stage_2_8,[stage_2_8_name],Img/Stage/stage_2_1_main,"달빛에 반사된 물결이 흐르는 강의 끝 지점입니다.\n고요한 빛이 물 위에 퍼져 있습니다.",map_2_8,-1,-1,-1,-1,treasure_2_8_1,treasure_2_8_2,treasure_2_8_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual2
+stage_2_9,[stage_2_9_name],Img/Stage/stage_2_1_main,“달빛에 반사된 물결이 흐르는 강의 끝 지점입니다.\n고요한 빛이 물 위에 퍼져 있습니다.”,map_2_9,-1,-1,-1,-1,treasure_2_9_1,treasure_2_9_2,treasure_2_9_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual2
+stage_2_10,[stage_2_10_name],Img/Stage/stage_2_1_main,“달빛에 반사된 물결이 흐르는 강의 끝 지점입니다.\n고요한 빛이 물 위에 퍼져 있습니다.”,map_2_10,-1,-1,-1,-1,treasure_2_10_1,treasure_2_10_2,treasure_2_10_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual2
+stage_3_1,[stage_3_1_name],Img/Stage/stage_3_1_main,"스테이지1 설명 훝",map_3_1,-1,-1,-1,-1,treasure_3_1_1,treasure_3_1_2,treasure_3_1_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual9
+stage_3_2,[stage_3_2_name],Img/Stage/stage_3_1_main,"스테이지2 설명 훝",map_3_2,-1,-1,-1,-1,treasure_3_2_1,treasure_3_2_2,treasure_3_2_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual9
+stage_3_3,[stage_3_3_name],Img/Stage/stage_3_1_main,"스테이지3 설명 훝",map_3_3,-1,-1,-1,-1,treasure_3_3_1,treasure_3_3_2,treasure_3_3_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual9
+stage_3_4,[stage_3_4_name],Img/Stage/stage_3_1_main,"스테이지4 설명 훝",map_3_4,-1,-1,-1,-1,treasure_3_4_1,treasure_3_4_2,treasure_3_4_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual9
+stage_3_5,[stage_3_5_name],Img/Stage/stage_3_1_main,"스테이지5 설명 훝",map_3_5,-1,-1,-1,-1,treasure_3_5_1,treasure_3_5_2,treasure_3_5_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual9
+stage_3_6,[stage_3_6_name],Img/Stage/stage_3_1_main,"스테이지6 설명 훝",map_3_6,-1,-1,-1,-1,treasure_3_6_1,treasure_3_6_2,treasure_3_6_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual9
+stage_3_7,[stage_3_7_name],Img/Stage/stage_3_1_main,"스테이지7 설명 훝",map_3_7,-1,-1,-1,-1,treasure_3_7_1,treasure_3_7_2,treasure_3_7_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual9
+stage_3_8,[stage_3_8_name],Img/Stage/stage_3_1_main,"스테이지8 설명 훝",map_3_8,-1,-1,-1,-1,treasure_3_8_1,treasure_3_8_2,treasure_3_8_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual9
+stage_3_9,[stage_3_9_name],Img/Stage/stage_3_1_main,"스테이지9 설명 훝",map_3_9,-1,-1,-1,-1,treasure_3_9_1,treasure_3_9_2,treasure_3_9_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual9
+stage_3_10,[stage_3_10_name],Img/Stage/stage_3_1_main,"스테이지10 설명 훝",map_3_10,-1,-1,-1,-1,treasure_3_10_1,treasure_3_10_2,treasure_3_10_3,-1,-1,-1,-1,-1,-1,-1,-1,-1,Sound/Bgm/Casual9

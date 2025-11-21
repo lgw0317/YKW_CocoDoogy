@@ -48,6 +48,8 @@ MonoBehaviour:
     - stage_2_6
     - stage_2_7
     - stage_2_8
+    - stage_2_9
+    - stage_2_10
     chapter_bg: Img/Chapter/chapter_2bg
   - chapter_id: chapter_3
     chapter_name: "\uC704\uB85C"
@@ -56,6 +58,14 @@ MonoBehaviour:
       \\n-\uAC15\uD568\uC740 \uB298 \uC678\uB85C\uC6C0\uC744 \uB3D9\uBC18\uD558\uC9C0.-\""
     chapter_img: Img/Chapter/chapter_3_main
     chapter_staglist:
-    - stage_0_1
-    - stage_0_2
+    - stage_3_1
+    - stage_3_2
+    - stage_3_3
+    - stage_3_4
+    - stage_3_5
+    - stage_3_6
+    - stage_3_7
+    - stage_3_8
+    - stage_3_9
+    - stage_3_10
     chapter_bg: Img/Chapter/chapter_3bg

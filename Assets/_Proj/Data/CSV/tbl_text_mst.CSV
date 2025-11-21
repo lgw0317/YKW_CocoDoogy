@@ -38,8 +38,8 @@ kr_text_id,kr_text
 [icon_11],챕터 3 아이콘
 [coin],동전
 [cap],병뚜껑
-[coco_get_coin],반짝이는 동전이야! 주인님께 가져다드리자!
-[coco_get_cap],병뚜껑 재밌겠다! 이걸로 뭘 할수 있을까?
+[coco_get_coin],"반짝이는 동전이야! 주인님께 가져다드리자!"
+[coco_get_cap],"병뚜껑 재밌겠다! 이걸로 뭘 할수 있을까?"
 [chapter_1_name],불안
 [chapter_2_name],힐링
 [chapter_3_name],위로
@@ -61,6 +61,18 @@ kr_text_id,kr_text
 [stage_2_6_name],2-6. 흐름의 동행(3)
 [stage_2_7_name],2-7. 발끝의 용기
 [stage_2_8_name],2-8. 달빛의 춤
+[stage_2_9_name],2-9 테스트용얍얍
+[stage_2_10_name],2-10 테스트용얍얍
+[stage_3_1_name],3-1 테스트용얍얍
+[stage_3_2_name],3-2 테스트용얍얍
+[stage_3_3_name],3-3 테스트용얍얍
+[stage_3_4_name],3-4 테스트용얍얍
+[stage_3_5_name],3-5 테스트용얍얍
+[stage_3_6_name],3-6 테스트용얍얍
+[stage_3_7_name],3-7 테스트용얍얍
+[stage_3_8_name],3-8 테스트용얍얍
+[stage_3_9_name],3-9 테스트용얍얍
+[stage_3_10_name],3-10 테스트용얍얍
 [costume_cowboy],카우보이 모자
 [costume_crown],왕관
 [costume_magician],마법사 모자

@@ -483,3 +483,271 @@ MonoBehaviour:
     dialogue_box_8: -1
     dialogue_box_9: -1
     stage_bgm: Sound/Bgm/Casual2
+  - stage_id: stage_2_9
+    stage_name: "2-9 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_2_1_main
+    stage_desc: "\u201C\uB2EC\uBE5B\uC5D0 \uBC18\uC0AC\uB41C \uBB3C\uACB0\uC774 \uD750\uB974\uB294
+      \uAC15\uC758 \uB05D \uC9C0\uC810\uC785\uB2C8\uB2E4.\\n\uACE0\uC694\uD55C \uBE5B\uC774
+      \uBB3C \uC704\uC5D0 \uD37C\uC838 \uC788\uC2B5\uB2C8\uB2E4.\u201D"
+    map_id: map_2_9
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_2_9_1
+    treasure_02_id: treasure_2_9_2
+    treasure_03_id: treasure_2_9_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual2
+  - stage_id: stage_2_10
+    stage_name: "2-10 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_2_1_main
+    stage_desc: "\u201C\uB2EC\uBE5B\uC5D0 \uBC18\uC0AC\uB41C \uBB3C\uACB0\uC774 \uD750\uB974\uB294
+      \uAC15\uC758 \uB05D \uC9C0\uC810\uC785\uB2C8\uB2E4.\\n\uACE0\uC694\uD55C \uBE5B\uC774
+      \uBB3C \uC704\uC5D0 \uD37C\uC838 \uC788\uC2B5\uB2C8\uB2E4.\u201D"
+    map_id: map_2_10
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_2_10_1
+    treasure_02_id: treasure_2_10_2
+    treasure_03_id: treasure_2_10_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual2
+  - stage_id: stage_3_1
+    stage_name: "3-1 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_3_1_main
+    stage_desc: "\"\uC2A4\uD14C\uC774\uC9C01 \uC124\uBA85 \uD6DD\""
+    map_id: map_3_1
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_3_1_1
+    treasure_02_id: treasure_3_1_2
+    treasure_03_id: treasure_3_1_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual9
+  - stage_id: stage_3_2
+    stage_name: "3-2 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_3_1_main
+    stage_desc: "\"\uC2A4\uD14C\uC774\uC9C02 \uC124\uBA85 \uD6DD\""
+    map_id: map_3_2
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_3_2_1
+    treasure_02_id: treasure_3_2_2
+    treasure_03_id: treasure_3_2_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual9
+  - stage_id: stage_3_3
+    stage_name: "3-3 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_3_1_main
+    stage_desc: "\"\uC2A4\uD14C\uC774\uC9C03 \uC124\uBA85 \uD6DD\""
+    map_id: map_3_3
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_3_3_1
+    treasure_02_id: treasure_3_3_2
+    treasure_03_id: treasure_3_3_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual9
+  - stage_id: stage_3_4
+    stage_name: "3-4 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_3_1_main
+    stage_desc: "\"\uC2A4\uD14C\uC774\uC9C04 \uC124\uBA85 \uD6DD\""
+    map_id: map_3_4
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_3_4_1
+    treasure_02_id: treasure_3_4_2
+    treasure_03_id: treasure_3_4_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual9
+  - stage_id: stage_3_5
+    stage_name: "3-5 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_3_1_main
+    stage_desc: "\"\uC2A4\uD14C\uC774\uC9C05 \uC124\uBA85 \uD6DD\""
+    map_id: map_3_5
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_3_5_1
+    treasure_02_id: treasure_3_5_2
+    treasure_03_id: treasure_3_5_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual9
+  - stage_id: stage_3_6
+    stage_name: "3-6 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_3_1_main
+    stage_desc: "\"\uC2A4\uD14C\uC774\uC9C06 \uC124\uBA85 \uD6DD\""
+    map_id: map_3_6
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_3_6_1
+    treasure_02_id: treasure_3_6_2
+    treasure_03_id: treasure_3_6_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual9
+  - stage_id: stage_3_7
+    stage_name: "3-7 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_3_1_main
+    stage_desc: "\"\uC2A4\uD14C\uC774\uC9C07 \uC124\uBA85 \uD6DD\""
+    map_id: map_3_7
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_3_7_1
+    treasure_02_id: treasure_3_7_2
+    treasure_03_id: treasure_3_7_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual9
+  - stage_id: stage_3_8
+    stage_name: "3-8 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_3_1_main
+    stage_desc: "\"\uC2A4\uD14C\uC774\uC9C08 \uC124\uBA85 \uD6DD\""
+    map_id: map_3_8
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_3_8_1
+    treasure_02_id: treasure_3_8_2
+    treasure_03_id: treasure_3_8_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual9
+  - stage_id: stage_3_9
+    stage_name: "3-9 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_3_1_main
+    stage_desc: "\"\uC2A4\uD14C\uC774\uC9C09 \uC124\uBA85 \uD6DD\""
+    map_id: map_3_9
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_3_9_1
+    treasure_02_id: treasure_3_9_2
+    treasure_03_id: treasure_3_9_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual9
+  - stage_id: stage_3_10
+    stage_name: "3-10 \uD14C\uC2A4\uD2B8\uC6A9\uC58D\uC58D"
+    stage_img: Img/Stage/stage_3_1_main
+    stage_desc: "\"\uC2A4\uD14C\uC774\uC9C010 \uC124\uBA85 \uD6DD\""
+    map_id: map_3_10
+    start_cutscene: -1
+    start_talk: -1
+    end_talk: -1
+    end_cutscene: -1
+    treasure_01_id: treasure_3_10_1
+    treasure_02_id: treasure_3_10_2
+    treasure_03_id: treasure_3_10_3
+    dialogue_box_1: -1
+    dialogue_box_2: -1
+    dialogue_box_3: -1
+    dialogue_box_4: -1
+    dialogue_box_5: -1
+    dialogue_box_6: -1
+    dialogue_box_7: -1
+    dialogue_box_8: -1
+    dialogue_box_9: -1
+    stage_bgm: Sound/Bgm/Casual9
