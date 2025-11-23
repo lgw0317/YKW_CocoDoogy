@@ -268,6 +268,15 @@ public class StageManager : MonoBehaviour, IStageManager
                 }
             }
         }
+
+        foreach (Block block in blocks)
+        {
+            if (block is HogBlock) { UserData.Local.codex[CodexType.animal, 30001] = true; break; }
+            if (block is TortoiseBlock) { UserData.Local.codex[CodexType.animal, 30002] = true; break; }
+            if (block is BuffaloBlock) { UserData.Local.codex[CodexType.animal, 30003] = true; break; }
+        }
+
+        //모르겠다... 레이스컨디션 문제에서 과연 안전할까?
         UserData.Local.codex.Save();
 
     }
