@@ -4078,6 +4078,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   offset: {x: 0, y: 11, z: -3}
+  dampingStrength: 4
+  maxLookAroundDistance: 5
+  lookAroundSpeed: 5
 --- !u!1 &1752784471
 GameObject:
   m_ObjectHideFlags: 0
@@ -4831,7 +4834,7 @@ PrefabInstance:
     - target: {fileID: 3500261074333338270, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: cda9ae0ee2f7ee5489c39597f9a8a279, type: 2}
+      objectReference: {fileID: 11400000, guid: 692200064f896b54c8fa08df8d167886, type: 2}
     - target: {fileID: 3500261074333338270, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
@@ -4843,7 +4846,7 @@ PrefabInstance:
     - target: {fileID: 5108920150409765423, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: cda9ae0ee2f7ee5489c39597f9a8a279, type: 2}
+      objectReference: {fileID: 11400000, guid: 692200064f896b54c8fa08df8d167886, type: 2}
     - target: {fileID: 5108920150409765423, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1

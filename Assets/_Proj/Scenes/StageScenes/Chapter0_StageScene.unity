@@ -901,15 +901,15 @@ RectTransform:
   m_GameObject: {fileID: 603882863}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3333299, y: 1.3333299, z: 1.3333299}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1138556503}
-  m_Father: {fileID: 779840534}
+  m_Father: {fileID: 1952791723}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -40, y: -40}
+  m_AnchoredPosition: {x: -60, y: -60}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &603882865
@@ -994,43 +994,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &779840533
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 779840534}
-  m_Layer: 5
-  m_Name: RootCanvas
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &779840534
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 779840533}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3333299, y: 1.3333299, z: 1.3333299}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 603882864}
-  - {fileID: 992100480}
-  m_Father: {fileID: 1952791723}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -772, y: -360}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &795084730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1316,7 +1279,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 779840534}
+    m_TransformParent: {fileID: 1952791723}
     m_Modifications:
     - target: {fileID: 1137055259318584550, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1451,6 +1414,18 @@ PrefabInstance:
       value: 750
       objectReference: {fileID: 0}
     - target: {fileID: 8300094883705127183, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.3333299
+      objectReference: {fileID: 0}
+    - target: {fileID: 8300094883705127183, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.3333299
+      objectReference: {fileID: 0}
+    - target: {fileID: 8300094883705127183, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3333299
+      objectReference: {fileID: 0}
+    - target: {fileID: 8300094883705127183, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1468,15 +1443,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8300094883705127183, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8300094883705127183, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8300094883705127183, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8300094883705127183, guid: e14d935333d07bf48b89c2a9d74f7168, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2391,6 +2366,9 @@ MonoBehaviour:
   wayPoint: []
   offset: {x: 0, y: 11, z: -3}
   dampingStrength: 4
+  maxLookAroundDistance: 5
+  lookAroundSpeed: 25
+  targetHFOV: 85
 --- !u!1001 &1769265752
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2563,7 +2541,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 797436228}
-  - {fileID: 779840534}
+  - {fileID: 603882864}
+  - {fileID: 992100480}
   - {fileID: 1114209764}
   - {fileID: 1006162724}
   - {fileID: 795084731}

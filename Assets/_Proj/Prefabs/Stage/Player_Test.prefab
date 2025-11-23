@@ -55,7 +55,8 @@ MonoBehaviour:
   pushables:
     serializedVersion: 2
     m_Bits: 256
-  frontOffset: 0.4
+  frontOffset: 0.35
+  pushCooltime: 0.3
 --- !u!114 &-2257239476015702201
 MonoBehaviour:
   m_ObjectHideFlags: 0

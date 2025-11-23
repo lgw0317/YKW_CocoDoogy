@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CamControl : MonoBehaviour
@@ -17,6 +16,21 @@ public class CamControl : MonoBehaviour
 
     [Range(0.5f, 50f), Tooltip("카메라 댐핑 강도, 50 = 댐핑 없음")]
     public float dampingStrength = 0.5f;
+
+    // 카메라 상태 관리를 위한 변수
+    private bool isFollowingPlayer = true;
+    public bool IsFollowingPlayer => isFollowingPlayer;
+    private Vector3 lookAroundOffset; // 주변 둘러보기 모드에서 사용할 임시 오프셋
+
+
+    // 주변 둘러보기 모드에서 카메라가 플레이어에서 벗어날 수 있는 최대 거리 (월드 좌표계)
+    [Header("Look Around")]
+    public float maxLookAroundDistance = 5f;
+    [Tooltip("주변 둘러보기 모드에서 카메라 이동 속도")]
+    [Range(0, 25f)] public float lookAroundSpeed = 25f;
+
+
+
     //void Start()
     //{
     //    //offset = transform.position;//(4,9,-5)
@@ -26,7 +40,17 @@ public class CamControl : MonoBehaviour
     {
         if (!playerObj) return;
 
-        transform.position = Vector3.Lerp(transform.position, playerObj.transform.position + offset, Time.fixedDeltaTime > .02 ? 50 : (dampingStrength * Time.fixedDeltaTime));
+        // KHJ - 드래그 기능 추가. 분기.
+        if (isFollowingPlayer)
+        {
+            // 평상시 : 플레이어 추적
+            transform.position = Vector3.Lerp(transform.position, playerObj.transform.position + offset, Time.fixedDeltaTime > .02 ? 50 : (dampingStrength * Time.fixedDeltaTime));
+        }
+        else
+        {
+            // 주변 둘러보기 드래그 모드 : lookAroundOffset에 따라 이동
+            transform.position = Vector3.Lerp(transform.position, playerObj.transform.position + offset + lookAroundOffset, Time.fixedDeltaTime > .02 ? 50 : (dampingStrength * Time.fixedDeltaTime));
+        }
     }
 
     public void FindWayPoint()
@@ -95,5 +119,54 @@ public class CamControl : MonoBehaviour
     //카메라워킹 끝나면 플레이어한테 가야한다
     //웨이포인트 쓰는데 시작지점은 end블록 끝 지점은 start블록
 
-    // KHJ - TODO : 이동이 끝나고 플레이어를 찾아서 연결해줬으면 이후에 터치가 두 손가락으로 들어왔을 때 캠의 타게팅을 플레이어에 고정시키던 것을 주변을 둘러볼 수 있도록 바꿔야 함. 터치가 손가락 하나이하가 되면 다시 플레이어 타겟팅
+    // 11/21 KHJ - TODO : 이동이 끝나고 플레이어를 찾아서 연결해줬으면 이후에 터치가 두 손가락으로 들어왔을(<-Joystick.cs에서 처리) 때 캠의 타게팅을 플레이어에 고정시키던 것을 주변을 둘러볼 수 있도록 바꿔야 함. 터치가 손가락 하나이하가 되면 다시 플레이어 타겟팅
+
+    // KHJ - 카메라 추적 상태 설정
+    public void SetFollowingPlayer(bool follow)
+    {
+        isFollowingPlayer = follow;
+        if (follow)
+        {
+            // 플레이어 추적으로 돌아갈 때 오프셋 초기화
+            lookAroundOffset = Vector3.zero;
+        }
+    }
+
+
+    // KHJ - 두 손가락 드래그 입력에 따라 카메라 이동
+    // drageDelta : 터치 위치 변화량
+    public void LookAroundUpdate(Vector3 dragDelta)
+    {
+        if (isFollowingPlayer) return; // 추적 모드일 때는 동작 X
+
+
+        // 드래그 방향의 반대 방향으로 이동
+        // 화면 좌표계(x = 우, y = 상) -> 월드 좌표계(x = 우, z = 전방)
+        Vector3 moveDir = new Vector3(-dragDelta.x, 0, -dragDelta.y).normalized;
+
+
+        // 카메라 방향을 기준으로 이동 방향을 월드 좌표계로 변환(수평 이동만 허용)
+        Vector3 camRight = cam.transform.right;
+        Vector3 camFwd = cam.transform.forward;
+        camFwd.y = 0; // 수평이동만
+        camFwd.Normalize();
+
+
+        Vector3 worldMove = camRight * -dragDelta.x + camFwd * -dragDelta.y;
+        worldMove.y = 0; // y축 이동 무시
+        worldMove.Normalize();
+
+
+        // 이동 offset 계산. dragDelta 크기를 이동 속도에 곱해서 이동량을 결정..
+        // NOTE : sensitivity는 픽셀값(dragDelta)을 월드 좌표계에 맞추기 위한 임의의 보정값. 테스트하면서 보정 필요.
+        float sensitivityFactor = 0.1f;
+        Vector3 moveAmount = worldMove * dragDelta.magnitude * lookAroundSpeed * Time.deltaTime * sensitivityFactor;
+
+
+        lookAroundOffset += moveAmount;
+
+
+        // 플레이어를 기준으로 최대로 벗어날 수 있는 거리 제한
+        lookAroundOffset = Vector3.ClampMagnitude(lookAroundOffset, maxLookAroundDistance);
+    }
 }
