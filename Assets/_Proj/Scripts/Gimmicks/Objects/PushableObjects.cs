@@ -222,7 +222,7 @@ public abstract class PushableObjects : MonoBehaviour, IPushHandler, IRider
         // throughLayer는 제외하고 검사
         LayerMask riderMask = blockingMask & ~throughLayer;
 
-        Collider[] riderHits = Physics.OverlapBox(center + Vector3.up * tileSize * 0.5f, halfExtents * .9f, transform.rotation, riderMask);
+        Collider[] riderHits = Physics.OverlapBox(center + Vector3.up * tileSize * 0.5f, halfExtents * .98f, transform.rotation, riderMask);
         Transform playerTransform = null;
         foreach (var hit in riderHits)
         {

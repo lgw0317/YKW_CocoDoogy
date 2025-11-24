@@ -7,7 +7,12 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
     [Header("Push Settings")]
     public float tileSize = 1f;
     public LayerMask pushables;
+    [Tooltip("얼마나 가까워야 밀기 시작할지 판단. 값이 작을수록 더 오래 미는 것 처럼 보임")]
     public float frontOffset = 0.4f;
+
+    [Header("PushDelay")]
+    [Range(0.1f, 0.7f)] public float pushCooltime = 0.3f; // push 종료 후 딜레이
+    private float currCooltime = 0f; // 현재 쿨타임 계산
 
     // 현재 밀고 있는 대상 추적을 위한
     private IPushHandler currPushHandler = null;
@@ -17,6 +22,14 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
 
     public (Vector3, Vector3) Execute(Vector3 moveDir, Rigidbody rb, PlayerMovement player)
     {
+        if (currCooltime > 0f)
+        {
+            currCooltime -= Time.deltaTime;
+            
+            //currPushHandler = null;
+            return (Vector3.zero, Vector3.zero);
+        }
+
         // 입력 없으면 즉시 리셋
         if (moveDir.sqrMagnitude < 1e-6f)
         {
@@ -105,9 +118,9 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
             if (Vector3.Distance(transform.position, next.gameObject.transform.position) < 1.3f)
             {
                 currPushHandler.StartPushAttempt(dir4); // 고정 4방향
+                currCooltime = pushCooltime;
 
                 //NOTE: 테스트용. 밀고 있는 경우에는 클램프매그니튜드
-
                 return (Vector3.ClampMagnitude(moveDir, .05f), Vector3.zero);
             }
         }

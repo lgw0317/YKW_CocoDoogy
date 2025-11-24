@@ -1,53 +1,66 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour, IRider
 {
-    // 10/27 기획안 변경됨.
-    // TODO : 플레이어 낭떨어지 막힘. 경사로를 통해서만 y칸 오르내릴 수 있음. 동물친구 (일단은 거북이 제외) 올라타면 안 됨. 1초에 n칸 전진하도록 수정.
     #region Variables
     [Header("Refs")]
     public Joystick joystick;
     public Rigidbody rb;
     public List<IMoveStrategy> moveStrategies;
 
+
     // 캐릭터의 현재 이동 방향을 월드 좌표계에 맞게 변환하기 위해 필요
     private Transform camTr; // NOTE : 비워두면 자동으로 Camera.main을 사용
+
 
     [Header("Move")]
     public float moveSpeed = 3.0f;
     public float accel = 25f;
     public float rotateLerp = 10f;
-    public LayerMask slopeMask; // 경사로에서만 올라타기는 허용시키기 위해. PlayerSlope.cs와 역할이 다름.
+    public LayerMask slopeMask; // 경사로에 올라타기를 허용시키기 위해. PlayerSlope.cs와 역할이 다름.
                                 // 살짝 겹치는 내용 있을 수 있어서 전체적으로 리팩터링 하면 좋긴 함.
 
+
     private Vector3 lastValidPos;
+
 
     //LSH 추가
     public bool isRunning
     {
         get
         {
+            // KHJ - 조이스틱의 두 손가락 드래그 상태일 경우도 false 반환
+            if (joystick != null && joystick.IsTwoFingerMode)
+                return false;
             Vector2 input = new Vector2(joystick.InputDir.x, joystick.InputDir.z);
             return input.sqrMagnitude > 0.01f;
         }
     }
-    
+
     #endregion
+
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         camTr = Camera.main != null ? Camera.main.transform : null;
 
+
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationX;
 
+
         // Strategy Pattern: 시작 시 전략 컴포넌트들을 가져옴
         moveStrategies = new List<IMoveStrategy>(GetComponents<IMoveStrategy>());
     }
+
+
+
 
 
 
@@ -56,13 +69,30 @@ public class PlayerMovement : MonoBehaviour, IRider
         if (joystick == null) return;
         if (camTr == null) camTr = Camera.main?.transform;
 
-        Vector2 input = new Vector2(joystick.InputDir.x, joystick.InputDir.z);
 
+        // 두 손가락 드래그 중에는 플레이어 이동/회전 차단
+        if (joystick.IsTwoFingerMode)
+        {
+            // 플레이어 입력 차단 (조이스틱에서 InputDir = Vector3.zero 처리되었지만, 만약을 위해 다시 확인)
+            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+
+
+            // Strategy Pattern: 입력이 0일 때도 Push 전략이 StopPushAttempt를 호출하도록 실행.
+            if (moveStrategies != null)
+            {
+                foreach (var strategy in moveStrategies)
+                    strategy.Execute(Vector3.zero, rb, this);
+            }
+            return; // 이후의 모든 이동 로직을 건너뜀
+        }
+        Vector2 input = new Vector2(joystick.InputDir.x, joystick.InputDir.z);
         //if (input.magnitude > 0)
         //{
         //    Vector3 input45Below = new(joystick.InputDir.x, -1, joystick.InputDir.z);
 
+
         //    Vector3 offsetRbPos = transform.position + (Vector3.up * .5f);
+
 
         //    Quaternion rotR = Quaternion.Euler(0, 45f, 0);
         //    Quaternion rotL = Quaternion.Euler(0, -45f, 0);
@@ -70,19 +100,24 @@ public class PlayerMovement : MonoBehaviour, IRider
         //    Vector3 rotatedL = rotL * input45Below;
 
 
+
+
         //    Ray mainRay = new(offsetRbPos, input45Below);
+
 
         //    RaycastHit[] mainRayHits = Physics.RaycastAll(mainRay, .71f, LayerMask.GetMask("Ground", "Wall", "Slope"));
         //    bool isSlope = false;
 
+
         //    for (int i = 0; i < mainRayHits.Length; i++)
         //    {
         //        print($"PlayerMovement: [{i}]: {mainRayHits[i].collider.name}");
-        //        isSlope = mainRayHits[i].collider.gameObject.layer == slopeMask; 
+        //        isSlope = mainRayHits[i].collider.gameObject.layer == slopeMask;
         //    }
         //    if (mainRayHits. Length < 1)
         //    {
         //        input *= -.01f;
+
 
         //    }
         //    else
@@ -99,13 +134,16 @@ public class PlayerMovement : MonoBehaviour, IRider
         //        }
         //    }
 
+
         //}
         //Vector3 inputOffset = new(joystick.InputDir.x, 0, joystick.InputDir.z);
         //Ray ray = new(transform.position + (inputOffset * .3f), inputOffset);
         //RaycastHit[] results = new RaycastHit[10];
 
+
         //int hitnums = Physics.BoxCastNonAlloc(transform.position - Vector3.up * .3f + new Vector3(input.x, 0, input.y) * .2f, Vector3.one * .1f, Vector3.down, results);
         //print(hitnums);
+
 
         //if (hitnums < 2)
 
@@ -114,13 +152,22 @@ public class PlayerMovement : MonoBehaviour, IRider
 
 
 
+
+
+
+
+
+
         //    input = Vector2.zero;
+
 
         //생각을 해봅시다...
         //내가 갈 곳에 땅바닥이 있는가? 를 판단하려면
         //내 발밑에서 내가 입력한 방향으로 조금 보낸 지점에서부터 입력 방향으로 0.5거리만큼 레이를 발사함.
         //콜라이더가 검출되면 => 다음 땅이 있다는 뜻.
         //다음 땅이 단순히 있다/없다를 떠나, 다음 땅의 x,z 인접 타일도 있는지 없는지 검사해야 함.
+
+
 
 
         //TODO: 모르겠다;
@@ -133,10 +180,15 @@ public class PlayerMovement : MonoBehaviour, IRider
         ////1. 이동할 방향의 땅 검사: 현재 나의 위치에서, 이동방향으로 .2f만큼 레이캐스트
         ////Ray groundcheck = new(transform.position - new Vector3(0f,.1f,0f), new Vector3(input.x, -.1f, input.y));
 
+
         ////if (!Physics.Raycast(groundcheck, .5f, 9))
         ////    input = Vector2.zero;
 
+
         //Ray ray = new(transform.position - Vector3.up * .1f, input);
+
+
+
 
 
 
@@ -152,11 +204,16 @@ public class PlayerMovement : MonoBehaviour, IRider
 
 
 
+
+
+
+
         if (input.sqrMagnitude < 0.01f)
         {
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
 
-            // Strategy Pattern: 입력이 0일 때도 Push 전략이 StopPushAttempt를 호출하도록 실행. 
+
+            // Strategy Pattern: 입력이 0일 때도 Push 전략이 StopPushAttempt를 호출하도록 실행.
             if (moveStrategies != null)
             {
                 foreach (var strategy in moveStrategies)
@@ -167,6 +224,7 @@ public class PlayerMovement : MonoBehaviour, IRider
             return;
         }
 
+
         Vector3 fwd = camTr ? camTr.forward : Vector3.forward;
         Vector3 right = camTr ? camTr.right : Vector3.right;
         fwd.y = 0;
@@ -174,11 +232,14 @@ public class PlayerMovement : MonoBehaviour, IRider
         fwd.Normalize();
         right.Normalize();
 
+
         Vector3 moveDir = (right * input.x) + (fwd * input.y);
         if (moveDir.sqrMagnitude > 0.1f) moveDir.Normalize();
 
+
         Vector3 finalDir = moveDir;
         Vector3 stepOffset = Vector3.zero;
+
 
         // NOTE: Strategy Pattern 적용 - 모든 상호작용을 전략에게 위임
         if (moveStrategies != null)
@@ -189,7 +250,9 @@ public class PlayerMovement : MonoBehaviour, IRider
                 Vector3 currentDir = finalDir;
                 Vector3 currentOffset = stepOffset;
 
+
                 (Vector3 newDir, Vector3 newOffset) = strategy.Execute(currentDir, rb, this);
+
 
                 // 경사 보정 전략은 finalDir를 변경 (ProjectOnPlane)
                 // 스텝 전략은 stepOffset을 변경
@@ -198,8 +261,10 @@ public class PlayerMovement : MonoBehaviour, IRider
             }
         }
 
+
         // 위치 이동
         Vector3 nextPos = rb.position + finalDir * (moveSpeed * Time.fixedDeltaTime) + stepOffset;
+
 
         //// 같은 y층 오브젝트 감지
         //float halfTile = 0.5f;
@@ -207,10 +272,12 @@ public class PlayerMovement : MonoBehaviour, IRider
         //Vector3 halfExt = new Vector3(0.4f, 0.45f, 0.4f);
         //Collider[] sameYHits = Physics.OverlapBox(boxCenter, halfExt, Quaternion.identity, ~0, QueryTriggerInteraction.Collide);
 
+
         //foreach (var col in sameYHits)
         //{
         //    if (col.attachedRigidbody == rb) continue;
         //    if (col.isTrigger) continue;
+
 
         //    // 상대의 중심 y값이 같은 층에 있다면 이동 차단
         //    float dy = Mathf.Abs(col.bounds.center.y - rb.position.y);
@@ -222,13 +289,13 @@ public class PlayerMovement : MonoBehaviour, IRider
         //}
         rb.MovePosition(nextPos);
 
+
         // 회전 처리
         Quaternion targetRot = Quaternion.LookRotation(new Vector3(joystick.InputDir.x, 0, joystick.InputDir.z), Vector3.up);
         Quaternion smoothRot = Quaternion.Slerp(rb.rotation, targetRot, rotateLerp * Time.fixedDeltaTime);
         rb.MoveRotation(smoothRot);
-
-
     }
+
 
     public Vector2Int To4Dir(Vector3 dir)
     {
@@ -238,18 +305,16 @@ public class PlayerMovement : MonoBehaviour, IRider
             return dir.z > 0 ? Vector2Int.up : Vector2Int.down;
     }
 
+
     public void OnStartRiding()
     {
         joystick.gameObject.SetActive(false);
     }
+
 
     public void OnStopRiding()
     {
         joystick.gameObject.SetActive(true);
         transform.SetParent(null);
     }
-
-
-
-    
 }

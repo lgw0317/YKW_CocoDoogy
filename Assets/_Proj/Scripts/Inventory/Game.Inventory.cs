@@ -46,17 +46,30 @@ namespace Game.Inventory
             //return _counts.TryGetValue((cat, id), out var c) ? c : 0;
         }
 
-
+        //추가!!! 아이템 들어올 때에 해금 처리도 같이 합니다.
         public void Add(int id, int n = 1)
         {
+
             if (id <= 0 || n <= 0) return;
 
+            Func<int, int, int, bool> rangeFunc = new((min, max, value) => min < value && value < max);
             int cur = inventory[id];
             int next = cur + n;
 
             inventory[id] = next;
             OnChanged?.Invoke(id, next);
             inventory.Save();
+
+            //UserData.Local에 직접 추가.
+            if (DataManager.Instance.Codex.Value.codexList.Find(x=>x.item_id==id) != null)
+            {
+                CodexType? type = rangeFunc(10000, 20000, id) ? CodexType.deco :
+                    rangeFunc(30000, 40000, id) ? CodexType.animal :
+                    rangeFunc(20000, 30000, id) ? CodexType.costume :
+                    rangeFunc(40000, 50000, id) ? CodexType.home : null;
+                //rangeFunc(40000, 50000, id) ? CodexType. :
+                UserData.Local.codex[type, id] = true;
+            }
         }
 
         ////_counts[(cat, id)] = next;

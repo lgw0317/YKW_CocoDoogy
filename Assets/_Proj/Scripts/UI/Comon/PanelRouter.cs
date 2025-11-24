@@ -21,6 +21,7 @@ public class PanelRouter : MonoBehaviour
     public GameObject selectStageDimOverlay;
     [SerializeField] Sprite chapterSelectSprite;
 
+    private StageIdInformation stageIdInformation;
     GameObject current;
 
     void Awake()
@@ -31,12 +32,16 @@ public class PanelRouter : MonoBehaviour
     void OnEnable()
     {
         if (typeof(EditModeManager) != null)
+        {
             EditModeManager.OnEnter += CloseAll;
+        }
     }
     void OnDisable()
     {
         if (typeof(EditModeManager) != null)
+        { 
             EditModeManager.OnEnter -= CloseAll;
+        }
     }
     public void ToggleProfile() => Toggle(profilePanel);
     public void ToggleDex() => Toggle(dexPanel);
