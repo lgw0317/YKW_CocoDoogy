@@ -11,7 +11,7 @@ namespace Water
 
         private IFlowStrategy flowStrategy = new FlowWaterStrategy();
 
-        private Vector3 flowDir = Vector3.forward;
+        private Vector3 flowDir;
 
         [Tooltip("밀려날 수 있는 오브젝트 레이어")]
         public LayerMask pushableMask;
@@ -50,14 +50,14 @@ namespace Water
         public void SetFlowDir()
         {
             // 부모의 Y축 회전값으로 흐름 방향을 계산
-            Quaternion parentRot = transform.rotation;
-            flowDir = parentRot * Vector3.forward;
+            //Quaternion parentRot = transform.rotation;
+            flowDir = transform.forward;
             flowDir.y = 0f;
             flowDir.Normalize();
             // KHJ NOTE : 컴포넌트가 root에 붙으므로 transform.rotation으로 변경
             if (waterMat != null)
             {
-                waterMat.SetVector("_FlowDir", new(parentRot.x, parentRot.y, parentRot.z, parentRot.w));
+                waterMat.SetVector("_FlowDir", new(-10, 0, 20, 0));
             }
         }
 

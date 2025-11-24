@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game.Inventory;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -223,9 +224,64 @@ public class StageManager : MonoBehaviour, IStageManager
         {
             prev.bestTreasureCount = Mathf.Max(prev.bestTreasureCount, collectedCount);
         }
-
+        ClaimRewards();
         PlayerProgressManager.Instance.SaveProgress();
     }
+
+
+
+    //보물 획득으로 해금되는 도감의 해금 처리. 이전보다 더 많은 별을 획득했는지의 여부는 관심 없이 스테이지 클리어하면 곧바로 해금하도록 처리.
+    void ClaimRewards()
+    {
+        var stageData = DataManager.Instance.Stage.GetData(currentStageId);
+        string[] treasureIds = { stageData.treasure_01_id, stageData.treasure_02_id, stageData.treasure_03_id };
+
+        Func<int, int, int, bool> rangeFunc = new((min, max, value) => min < value && value < max );
+
+        for (int i = 0; i < treasureIds.Length; i++)
+        {
+            if (collectedTreasures[i])
+            {
+                var itemIdFromTreasure = DataManager.Instance.Treasure.GetData(treasureIds[i]).reward_id;
+                int qty = DataManager.Instance.Treasure.GetData(treasureIds[i]).count;
+                if (rangeFunc(50000, 60000, itemIdFromTreasure))
+                    //아티팩트라는 뜻: 그럼 도감만 단순 해금.
+                {
+                    UserData.Local.codex[CodexType.artifact, itemIdFromTreasure] = true;
+                }
+                if (rangeFunc(10000, 20000, itemIdFromTreasure))
+                    //조경물(배치물)에 해당됨.
+                {
+                    InventoryService.I.Add(itemIdFromTreasure, qty);
+                }
+                if (rangeFunc(20000, 30000, itemIdFromTreasure))
+                //코스튬에 해당됨.
+                {
+                    InventoryService.I.Add(itemIdFromTreasure, qty);
+                }
+                if (rangeFunc(110000, 120000, itemIdFromTreasure))
+                //재화에 해당됨.
+                {
+                    //코드 구조가 좀 이상한데... 모르겠다 작동은 잘 될 거임.
+                    GoodsService service = new GoodsService(new UserDataGoodsStore(110001, 110002, 110003));
+                    service.Add(itemIdFromTreasure, qty);
+                }
+            }
+        }
+
+        foreach (Block block in blocks)
+        {
+            if (block is HogBlock) { UserData.Local.codex[CodexType.animal, 30001] = true; break; }
+            if (block is TortoiseBlock) { UserData.Local.codex[CodexType.animal, 30002] = true; break; }
+            if (block is BuffaloBlock) { UserData.Local.codex[CodexType.animal, 30003] = true; break; }
+        }
+
+        //모르겠다... 레이스컨디션 문제에서 과연 안전할까?
+        UserData.Local.codex.Save();
+
+    }
+
+
     void SpawnPlayer()
     {
         playerObject = Instantiate(playerPrefab, startPoint, Quaternion.identity);
