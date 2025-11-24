@@ -20,6 +20,9 @@ public class DialogueManager : MonoBehaviour
     private bool hasRightSpeaker = false;
 
     private int currentSeq = 0; // dialogue 내 순번
+
+    [SerializeField] GameObject optionPanel;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -37,6 +40,10 @@ public class DialogueManager : MonoBehaviour
         if (isRead) return false;
 
         isRead = true;
+
+        // KHJ - 다이얼로그 시작 시 Option Panel 비활성화
+        optionPanel.SetActive(false);
+
         //LSH 추가
         AudioManager.Instance.EnterDialogue();
         StageUIManager.Instance.Overlay.SetActive(true);
