@@ -90,9 +90,11 @@ public class Joystick : MonoBehaviour
 
         if (Touchscreen.current == null) return;
 
+
         // KHJ - Touch 모드 분기
         int touchCnt = 0;
         var touches = Touchscreen.current.touches;
+
 
         // 터치 몇 개 들어왔는지 카운팅
         for (int i = 0; i < touches.Count; i++)
@@ -100,36 +102,36 @@ public class Joystick : MonoBehaviour
             if (touches[i].press.isPressed)
                 touchCnt++;
         }
-        //Debug.Log(touchCnt);
-
-        // 터치 입력이 아무 것도 안 들어왔을 때 조이스틱 리셋
-        if(touchCnt == 0)
-        {
-            ResetJoystick();
-            return;
-        }
-
 
         // 모드 종료 확인 (터치 개수가 2개 미만이고, 모드가 켜져 있다면 종료하고 카메라 복귀)
         // 모드 종료 조건 (touchCount < 2)을 먼저 확인하고,
         // 모드가 활성화 상태(IsLookAroundMode == true)인지 확인하여 Reset을 실행
         // 두 손가락 터치 로직
+        // touchCnt가 0 또는 1이 되었다면 카메라를 즉시 복귀 시켜야 하기 때문에 0, 1보다 반드시 먼저 실행돼야 함.
         if (touchCnt < 2 && IsTwoFingerMode == true)
         {
             ResetTwoFingerMode(); // IsTwoRingerMode = false <- 카메라 플레이어 추적 시작
-            ResetJoystick();
-            // Reset하면 touchCnt는 0 또는 1이므로, 모드 로직 건너뛰고 일반 로직으로
+            //ResetJoystick(); // ResetJoystick은 각 분기에서 한 번씩 처리 하므로 불필요함.
         }
 
+
+        // 터치 입력이 아무 것도 안 들어왔을 때 조이스틱 리셋
+        if (touchCnt == 0)
+        {
+            ResetJoystick();
+            return;
+        }
 
         // 두 손가락 터치 모드 시작 및 드래그
         if (touchCnt == 2)
         {
-            ResetJoystick(); // 조이스틱의 UI를 복귀 시키기 위해 한 번 호출
+            // 조이스틱의 UI를 복귀시킴
+            handle.rectTransform.anchoredPosition = Vector2.zero;
+            rectTransform.anchoredPosition = initPos;
+
             // 두 번째 터치가 시작되거나 이미 진행 중일 때
             var touch1 = Touchscreen.current.touches[0];
             var touch2 = Touchscreen.current.touches[1];
-
 
             if (touch1.press.isPressed && touch2.press.isPressed)
             {
@@ -141,7 +143,6 @@ public class Joystick : MonoBehaviour
                     // 두 손가락의 평균 위치를 초기 위치로 설정
                     lastTwoFingerPos = (touch1.position.ReadValue() + touch2.position.ReadValue()) / 2f;
 
-
                     // 카메라 플레이어 추적 중단
                     camCon?.SetFollowingPlayer(false);
                 }
@@ -149,15 +150,14 @@ public class Joystick : MonoBehaviour
                 Vector2 currTwoFingerPos = (touch1.position.ReadValue() + touch2.position.ReadValue()) / 2f;
                 Vector2 dragDelta = currTwoFingerPos - lastTwoFingerPos;
 
-
                 camCon?.LookAroundUpdate(dragDelta);
                 lastTwoFingerPos = currTwoFingerPos;
 
+                // Input의 입력을 0으로(드래그 할 때 플레이어가 움직이면 안 됨)
                 InputDir = Vector3.zero;
                 return; // 조이스틱 일반 로직 스킵
             }
         }
-
 
         // 일반 조이스틱 터치 로직(한 손가락 터치)
         if (touchCnt == 1)
@@ -184,10 +184,7 @@ public class Joystick : MonoBehaviour
                         return;
                     }
                 }
-
-
                 transform.position = Vector2.Distance(transform.position, touch.startPosition.ReadValue()) < 150 ? transform.position : touch.startPosition.ReadValue();
-
 
                 //여기까지 왔다면, 터치 시작 위치가 UI요소 위가 아닌 것임.
                 //transform.position = touch.startPosition.ReadValue();
@@ -248,10 +245,7 @@ public class Joystick : MonoBehaviour
     }
 
 
-    // KHJ -  두 손가락으로 터치한 상태로 드래그 할 경우, 카메라가 드래그하는 방향, 드래그 하는 만큼의 -방향으로 이동돼야 함.
-    // 이때, 플레이어가 화면 밖으로 벗어날 정도로 움직이면 안 됨.(현재 플레이어는 카메라의 정중앙에 위치하도록 되어 있음.)
-    // CamControl.cs에서 두 손가락 터치가 입력될 경우 Cam의 타겟을 플레이어에서 끊고 주변을 둘러볼 수 있게 해야 함.
-    // 손가락이 하나라도 떨어지면 다시 코코두기를 타겟팅.
+    // KHJ -  두 손가락으로 터치한 상태로 드래그 할 경우, 카메라가 드래그하는 방향, 드래그 하는 만큼의 -방향으로 이동돼야 함. 이때, 플레이어가 화면 밖으로 벗어날 정도로 움직이면 안 됨.(현재 플레이어는 카메라의 정중앙에 위치하도록 되어 있음.). CamControl.cs에서 두 손가락 터치가 입력될 경우 Cam의 타겟을 플레이어에서 끊고 주변을 둘러볼 수 있게 해야 함. 손가락이 하나라도 떨어지면 다시 코코두기를 타겟팅.
     public void ResetTwoFingerMode()
     {
         IsTwoFingerMode = false;

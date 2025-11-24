@@ -56,6 +56,8 @@ public class StageUIManager : MonoBehaviour
     public Action OnTreasureConfirm;
 
     public GameObject videoImage;
+
+    public StageIdInformation stageIdInformation;
     private string currentChapter;
 
     void Awake()
@@ -82,6 +84,8 @@ public class StageUIManager : MonoBehaviour
         //OptionOpenButton.gameObject.SetActive(true);
         OptionPanel.SetActive(false);
         ResultPanel.SetActive(false);
+        
+        stageIdInformation = FindAnyObjectByType<StageIdInformation>();
     }
 
     void OptionOpen()
@@ -108,7 +112,18 @@ public class StageUIManager : MonoBehaviour
         //LSH 1120 추가
         AudioEvents.Raise(UIKey.Normal, 2);
         //Todo : 챕터에 따라 분기
-        SceneManager.LoadScene("Chapter1_StageScene");
+        if (stageManager.currentStageId.Contains("stage_1"))
+        {
+            SceneManager.LoadScene("Chapter1_StageScene");
+        }
+        else if (stageManager.currentStageId.Contains("stage_2"))
+        {
+            SceneManager.LoadScene("Chapter2_StageScene");
+        }
+        else if (stageManager.currentStageId.Contains("stage_3"))
+        {
+            SceneManager.LoadScene("Chapter3_StageScene");
+        }
     }
 
     void Quit()
@@ -129,6 +144,7 @@ public class StageUIManager : MonoBehaviour
 
     //void Exit()
     //{
+    //    //StageManager로 기능이관
     //    //Todo : 챕터에 따라 스테이지 선택화면 분기
     //    //currentChapter
     //    SceneManager.LoadScene("Main");

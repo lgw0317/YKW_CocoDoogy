@@ -82,6 +82,7 @@ public class StageManager : MonoBehaviour, IStageManager
     IEnumerator StageStart()
     {
         //가림막쳐주기
+        StageUIManager.Instance.stageIdInformation.stageIdInfo = currentStageId;
         var fp = StageUIManager.Instance.FadePanel;
         fp.SetActive(true);
         //stageRoot.name = mapNameToLoad;
@@ -177,6 +178,7 @@ public class StageManager : MonoBehaviour, IStageManager
         }
 
         // 메인씬으로 이동
+        //Todo : 챕터에 따라 스테이지 선택화면 분기
         SceneManager.LoadScene("Main");
     }
 
