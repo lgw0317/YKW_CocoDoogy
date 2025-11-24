@@ -108,7 +108,18 @@ public class StageUIManager : MonoBehaviour
         //LSH 1120 추가
         AudioEvents.Raise(UIKey.Normal, 2);
         //Todo : 챕터에 따라 분기
-        SceneManager.LoadScene("Chapter1_StageScene");
+        if (stageManager.currentStageId.Contains("stage_1"))
+        {
+            SceneManager.LoadScene("Chapter1_StageScene");
+        }
+        else if (stageManager.currentStageId.Contains("stage_2"))
+        {
+            SceneManager.LoadScene("Chapter2_StageScene");
+        }
+        else if (stageManager.currentStageId.Contains("stage_3"))
+        {
+            SceneManager.LoadScene("Chapter3_StageScene");
+        }
     }
 
     void Quit()
@@ -124,11 +135,13 @@ public class StageUIManager : MonoBehaviour
         //위의 두 케이스 모두 타이틀씬을 불러오도록 하기.
         //LSH 1120 추가
         AudioEvents.Raise(UIKey.Normal, 2);
+        //이벤트쏘기?
         SceneManager.LoadScene("Main");
     }
 
     //void Exit()
     //{
+    //    //StageManager로 기능이관
     //    //Todo : 챕터에 따라 스테이지 선택화면 분기
     //    //currentChapter
     //    SceneManager.LoadScene("Main");

@@ -177,6 +177,7 @@ public class StageManager : MonoBehaviour, IStageManager
         }
 
         // 메인씬으로 이동
+        //Todo : 챕터에 따라 스테이지 선택화면 분기
         SceneManager.LoadScene("Main");
     }
 

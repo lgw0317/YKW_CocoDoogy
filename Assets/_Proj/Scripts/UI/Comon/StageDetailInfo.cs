@@ -45,7 +45,18 @@ public class StageDetailInfo : MonoBehaviour
 
         //Todo : 챕터에 따라 분기
         //씬 이름 수정해야함
-        await SceneManager.LoadSceneAsync("Chapter1_StageScene");
+        if (currentStageId.Contains("stage_1"))
+        {
+            SceneManager.LoadScene("Chapter1_StageScene"); 
+        }
+        else if (currentStageId.Contains("stage_2"))
+        {
+            SceneManager.LoadScene("Chapter2_StageScene");
+        }
+        else if (currentStageId.Contains("stage_3"))
+        {
+            SceneManager.LoadScene("Chapter3_StageScene");
+        }
     }
 
     public void CloseButton()
