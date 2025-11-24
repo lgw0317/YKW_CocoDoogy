@@ -40,14 +40,25 @@ public class ChapterInfo : MonoBehaviour
         Button chapterButton = chapterInstance.GetComponent<Button>();
         if (chapterButton != null)
         {
-            chapterButton.onClick.AddListener(() => OpenStage(data.chapter_id));
+            if (UserData.Local.passedTutorials == 2)
+            {
+                chapterButton.onClick.AddListener(() => OpenStage(data.chapter_id));
+            }
+            if (!UserData.Local.progress.scores.ContainsKey($"stage_1_10"))
+            {
+                if(data.chapter_id == "chapter_2")
+                  chapterButton.interactable = false; 
+            }
+            if (!UserData.Local.progress.scores.ContainsKey($"stage_2_10"))
+            {
+                if (data.chapter_id == "chapter_3")
+                    chapterButton.interactable = false; 
+            }
         }
     }
 
     void OpenStage(string chapterId)
     {
-        if (!UserData.Local.progress.scores.ContainsKey($"stage_1_10")) return;
-        if (!UserData.Local.progress.scores.ContainsKey($"stage_2_10")) return;
         PanelRouter pr = GetComponentInParent<PanelRouter>();
         pr.ToggleStage(chapterId);
     }
