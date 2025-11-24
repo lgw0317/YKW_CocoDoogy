@@ -434,6 +434,7 @@ GameObject:
   - component: {fileID: 5778184240504247615}
   - component: {fileID: 6099750130208819465}
   - component: {fileID: -2282606562706890328}
+  - component: {fileID: 6641082229080726239}
   m_Layer: 5
   m_Name: StageDetailPanel
   m_TagString: Untagged
@@ -490,7 +491,7 @@ MonoBehaviour:
   m_Color: {r: 0.79215693, g: 0.5568628, b: 0.32941177, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -527,6 +528,25 @@ MonoBehaviour:
   - {fileID: 2328932647912346344}
   collectedSprite: {fileID: 21300000, guid: 6cd2e4f7622ab468686a5d750551e633, type: 3}
   notCollectedSprite: {fileID: 21300000, guid: 1d3a6f2d5f11b4eb5a16c632c2e98799, type: 3}
+--- !u!114 &6641082229080726239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3138075058950913620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43b255ed87ca84b4c917ce0c2adbd01d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInDuration: 0.18
+  fadeOutDuration: 0.12
+  startScale: 0.9
+  peakScale: 1.05
+  endScale: 1
+  scaleUpDuration: 0.2
+  scaleDownDuration: 0.15
 --- !u!1 &4131257640129259912
 GameObject:
   m_ObjectHideFlags: 0

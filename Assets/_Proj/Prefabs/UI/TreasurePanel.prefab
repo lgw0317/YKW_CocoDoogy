@@ -1230,6 +1230,7 @@ GameObject:
   - component: {fileID: 2601731671851555760}
   - component: {fileID: 2938129826289951415}
   - component: {fileID: 7688188884151401523}
+  - component: {fileID: 698446409904592681}
   m_Layer: 5
   m_Name: TreasureQuitButton
   m_TagString: Untagged
@@ -1339,6 +1340,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &698446409904592681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7976894157105039376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 977eff4d60cbe174e969099135476647, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pressScale: 0.94
+  releaseScale: 1
+  pressDuration: 0.08
+  releaseDuration: 0.22
 --- !u!1 &8575801789806162311
 GameObject:
   m_ObjectHideFlags: 0
