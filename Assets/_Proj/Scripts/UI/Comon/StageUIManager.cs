@@ -56,6 +56,8 @@ public class StageUIManager : MonoBehaviour
     public Action OnTreasureConfirm;
 
     public GameObject videoImage;
+
+    public StageIdInformation stageIdInformation;
     private string currentChapter;
 
     void Awake()
@@ -82,6 +84,8 @@ public class StageUIManager : MonoBehaviour
         //OptionOpenButton.gameObject.SetActive(true);
         OptionPanel.SetActive(false);
         ResultPanel.SetActive(false);
+        
+        stageIdInformation = FindAnyObjectByType<StageIdInformation>();
     }
 
     void OptionOpen()
@@ -135,7 +139,6 @@ public class StageUIManager : MonoBehaviour
         //위의 두 케이스 모두 타이틀씬을 불러오도록 하기.
         //LSH 1120 추가
         AudioEvents.Raise(UIKey.Normal, 2);
-        //이벤트쏘기?
         SceneManager.LoadScene("Main");
     }
 

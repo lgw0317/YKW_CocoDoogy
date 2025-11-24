@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 6968108785120608481}
   - component: {fileID: 7586971141634484518}
   - component: {fileID: -588131312358000233}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SandBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 1110021737103607720}
   - component: {fileID: 5143106370059658914}
   - component: {fileID: 3933657197095190940}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: sand1_block_3_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 6153858379769818180}
   - component: {fileID: 6716625588886789202}
   - component: {fileID: 7515745560997626885}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: sand_cube_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 8142270656289700336}
   - component: {fileID: 1237733505127969701}
   - component: {fileID: 2483411769648234527}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: sand1_block_3_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -600,7 +600,7 @@ GameObject:
   - component: {fileID: 5756937718930222607}
   - component: {fileID: 3239666152672739734}
   - component: {fileID: 7342457569475325604}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: sand1_block_3_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

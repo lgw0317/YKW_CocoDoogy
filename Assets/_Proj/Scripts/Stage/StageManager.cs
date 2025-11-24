@@ -82,6 +82,7 @@ public class StageManager : MonoBehaviour, IStageManager
     IEnumerator StageStart()
     {
         //가림막쳐주기
+        StageUIManager.Instance.stageIdInformation.stageIdInfo = currentStageId;
         var fp = StageUIManager.Instance.FadePanel;
         fp.SetActive(true);
         //stageRoot.name = mapNameToLoad;
