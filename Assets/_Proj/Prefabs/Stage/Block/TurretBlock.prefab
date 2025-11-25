@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79629360358c7024cb8e37e84ab9175a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectRadius: 4
+  detectRadius: 5
   fov: 90
   targetMask:
     serializedVersion: 2
