@@ -4,6 +4,7 @@ using UnityEngine;
 public class AnimalBehaviour : BaseLobbyCharacterBehaviour
 {
     public Transform TargetDeco { get; set; }
+    [SerializeField] AnimalType animalType;
     
     protected override void InitStates()
     {
@@ -24,7 +25,7 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour
     protected override void OnEnable()
     {
         base.OnEnable();
-        if (!LobbyCharacterManager.Instance.IsInitMode) agent.avoidancePriority = Random.Range(70, 90);
+        if (!LobbyCharacterManager.Instance.IsInitMode) agent.avoidancePriority = Random.Range(50, 70);
     }
     protected override void Start()
     {

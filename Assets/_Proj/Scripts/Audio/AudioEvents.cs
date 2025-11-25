@@ -18,6 +18,24 @@ public static class AudioEvents
     {
         OnPlayAudio?.Invoke(key, index, fadeIn, fadeOut, loop, pooled, pos);
     }
+    public static void Raise(AnimalType type, int index = -1, bool loop = false, bool pooled = false, Vector3? pos = null)
+    {
+        switch (type)
+        {
+            case AnimalType.dog:
+            OnPlayAudio?.Invoke(SFXKey.Buffalo, index, 0, 0, loop, pooled, pos);
+            break;
+            case AnimalType.pig:
+            OnPlayAudio?.Invoke(SFXKey.Donkey, index, 0, 0, loop, pooled, pos);
+            break;
+            case AnimalType.bird:
+            OnPlayAudio?.Invoke(SFXKey.Hog, index, 0, 0, loop, pooled, pos);
+            break;
+            case AnimalType.rat:
+            OnPlayAudio?.Invoke(SFXKey.Rooster, index, 0, 0, loop, pooled, pos);
+            break;
+        }
+    }
     
     // 일단 임시로 만듦
     public static void RaiseDialogueSound(AudioType type, string audioFileName)

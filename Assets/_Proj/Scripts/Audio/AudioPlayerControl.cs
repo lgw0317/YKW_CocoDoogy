@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,19 +18,17 @@ using UnityEngine.Audio;
 /// </summary>
 public abstract class AudioPlayerControl
 {
+    protected MonoBehaviour mono; // 각 상속 받을 오디오 플레이어 mono를 각 오디오 그룹으로 잡아줄 거임.
     public List<AudioSource> activeSources = new List<AudioSource>();
-    
     protected float initVolume;
 
     protected AnimationCurve fadeInCurve;
     protected bool doFadeIn;
-    protected float fadeInTime;
-
     protected AnimationCurve fadeOutCurve;
     protected bool doFadeOut;
-    protected float fadeOutTime;
+    protected AnimationCurve fadeCurve;
 
-
+    // 본래 DOTween 구조는 맨 밑에 주석으로 백업은 했고 이제 어떻게 DOTween을 도려내고 적용할까
     public virtual void PlayAll()
     {
         foreach (var src in activeSources)
@@ -83,6 +82,45 @@ public abstract class AudioPlayerControl
             }
         }
     }
+    // public virtual void PlayAll()
+    // {
+    //     foreach (var src in activeSources)
+    //     {
+    //         if (src != null && !src.isPlaying)
+    //         {
+    //             if (src.volume != initVolume)
+    //             {
+    //                 mono.StartCoroutine(VolumeFadeIn(src, mode: 2));
+    //             }
+    //             else
+    //             {
+    //                 src.Play();
+    //             }
+    //         }
+    //     }
+    // }
+
+    // public virtual void PauseAll()
+    // {
+    //     foreach (var src in activeSources)
+    //     {
+    //         if (src != null && src.isPlaying)
+    //         {
+    //             mono.StartCoroutine(VolumeFadeOut(src, mode: 1));
+    //         }
+    //     }
+    // }
+
+    // public virtual void ResumeAll()
+    // {
+    //     foreach (var src in activeSources)
+    //     {
+    //         if (src != null && !src.isPlaying)
+    //         {
+    //             mono.StartCoroutine(VolumeFadeIn(src, mode: 1));
+    //         }
+    //     }
+    // }
     public virtual void StopAll()
     {
         foreach (var src in activeSources)
@@ -157,38 +195,222 @@ public abstract class AudioPlayerControl
     }
 
     // DOTween을 사용하지 않을 시 페이드인 페이드아웃을 애니메이션 커브와 코루틴으로?
-    // 페이드인은 시작하기전 Play하고 페이드아웃은 끝날 때 쯤 Stop을 하는게 일반적?
-    protected IEnumerator AudioSourceVolumeFadeIn(float fadeInTime)
+
+    /// <summary>
+    /// mode : 0 = 일반, 1 = UnPause, 2 = Play()
+    /// 후 페이드인 시작. hasVolumeValue : 0 == initVolume, 0 != hasVolumeValue 값으로 오디오 볼륨 값 설정
+    /// </summary>
+    /// <param name="fadeInTime"></param>
+    /// <returns></returns>
+    protected IEnumerator VolumeFadeIn(AudioSource src, float hasVolumeValue = 0, float fadeInTime = 0.5f, int mode = 0)
     {
         float timer = 0f;
-        
-        foreach (var src in activeSources)
-        {
-            while (timer < fadeInTime)
-            {
-                src.volume = fadeInCurve.Evaluate(timer / fadeInTime);
 
-                timer += Time.deltaTime;
-                yield return null;
-            }
-            src.volume = fadeInCurve.Evaluate(initVolume);
+        switch (mode)
+        {
+            case 0:
+            break;
+            case 1:
+            src.volume = 0f;
+            src.UnPause();
+            break;
+            case 2:
+            src.volume = 0f;
+            src.Play();
+            break;
+            default: throw new Exception("Mode 값은 0~2 만 있습니다.");
+        }
+
+        while (timer < fadeInTime)
+        {
+            src.volume = fadeInCurve.Evaluate(timer / fadeInTime) * initVolume;
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        if (hasVolumeValue == 0)
+        {
+            src.volume = initVolume;
+        }
+        else if (hasVolumeValue != 0)
+        {
+            src.volume = hasVolumeValue;
         }
     }
 
-    protected IEnumerator AudioSourceVolumeFadeOut(float fadeOutTime)
+    /// <summary>
+    /// 현재 값에서 페이드 아웃 후
+    /// hasVolumeValue : 해당 값으로 mode : 0 = 일반, 1 = Pause, 2 = Stop.
+    /// </summary>
+    /// <param name="fadeOutTime"></param>
+    /// <returns></returns>
+    protected IEnumerator VolumeFadeOut(AudioSource src, float hasVolumeValue = 0, float fadeOutTime = 0.5f, int mode = 0)
+    {
+        float currentVolume = src.volume;
+        float timer = 0f;
+
+        while (timer < fadeOutTime)
+        {
+            src.volume = fadeOutCurve.Evaluate(timer / fadeOutTime) * currentVolume;
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        src.volume = hasVolumeValue;
+
+        switch (mode)
+        {
+            case 0:
+            break;
+            case 1:
+            src.Pause();
+            break;
+            case 2:
+            src.Stop();
+            break;
+            default: throw new Exception("Mode 값은 0~2 만 있습니다.");
+        }
+    }
+
+    protected IEnumerator VolumeAToB(AudioSource src, float targetVolume, float changeTime = 0.5f)
     {
         float timer = 0f;
-        
-        foreach (var src in activeSources)
-        {
-            while (timer < fadeInTime)
-            {
-                src.volume = fadeInCurve.Evaluate(timer / fadeInTime);
+        float startVolume = src.volume;
+        float endVolume = targetVolume;
 
-                timer += Time.deltaTime;
-                yield return null;
-            }
-            src.volume = fadeInCurve.Evaluate(0f);
+        while (timer < changeTime)
+        {
+            float evaluated = fadeCurve.Evaluate(timer / changeTime);
+            src.volume = Mathf.Lerp(startVolume, endVolume, evaluated);
+            timer += Time.deltaTime;
+            yield return null;
         }
+        src.volume = endVolume;
     }
 }
+
+// public virtual void PlayAll()
+//     {
+//         foreach (var src in activeSources)
+//         {
+//             if (src != null && !src.isPlaying)
+//             {
+//                 if (DOTween.IsTweening(src, true))
+//                 {
+//                     src.DOKill();
+//                 }
+//                 if (src.volume != 1)
+//                 {
+//                     src.Play();
+//                     src.DOFade(1, 0.5f);
+//                 }
+//                 else
+//                 {
+//                     src.Play();
+//                 }
+//             }
+//         }
+//     }
+
+//     public virtual void PauseAll()
+//     {
+//         foreach (var src in activeSources)
+//         {
+//             if (src != null && src.isPlaying)
+//             {
+//                 if (DOTween.IsTweening(src, true))
+//                 {
+//                     src.DOKill();
+//                 }
+//                 src.DOFade(0, 0.5f).OnComplete(() => src.Pause());
+//             }
+//         }
+//     }
+
+//     public virtual void ResumeAll()
+//     {
+//         foreach (var src in activeSources)
+//         {
+//             if (src != null && !src.isPlaying)
+//             {
+//                 if (DOTween.IsTweening(src, true))
+//                 {
+//                     src.DOKill();
+//                 }
+//                 src.UnPause();
+//                 src.DOFade(1, 0.5f);
+//             }
+//         }
+//     }
+//     public virtual void StopAll()
+//     {
+//         foreach (var src in activeSources)
+//         {
+//             if (src != null && src.isPlaying) 
+//             {
+//                 if (DOTween.IsTweening(src, true))
+//                 {
+//                     src.DOKill();
+//                 }
+//                 src.DOFade(0, 0.5f).OnComplete(() => src.Stop());
+//             } 
+//         }
+//     }
+
+//     public virtual void ResetAll()
+//     {
+//         foreach (var src in activeSources)
+//         {
+//             if (src != null)
+//             {
+//                 if (src.isPlaying) 
+//                 {
+//                     if (DOTween.IsTweening(src, true))
+//                     {
+//                         src.DOKill();
+//                     }
+//                     src.DOFade(0, 0.3f).OnComplete(() => {src.Stop(); src.volume = 1f;});
+//                 }
+//                 src.loop = false;
+//                 src.volume = 1f;
+//                 src.pitch = 1f;
+//                 src.clip = null; 
+//             }
+//         }
+//     }
+
+//     public virtual void SetVolumeZero()
+//     {
+//         foreach (var src in activeSources)
+//         {
+//             if (DOTween.IsTweening(src, true))
+//             {
+//                 src.DOKill();
+//             }
+//             src.DOFade(0, 0.5f);
+//         }
+//     }
+
+//     public virtual void SetVolumeHalf()
+//     {
+//         foreach (var src in activeSources)
+//         {
+//             if (DOTween.IsTweening(src, true))
+//             {
+//                 src.DOKill();
+//             }
+//             src.DOFade(0.3f, 0.5f);
+//         }
+//     }
+
+//     public virtual void SetVolumeNormal()
+//     {
+//         foreach (var src in activeSources)
+//         {
+//             if (DOTween.IsTweening(src, true))
+//             {
+//                 src.DOKill();
+//             }
+//             src.DOFade(1, 0.5f);
+//         }
+//     }

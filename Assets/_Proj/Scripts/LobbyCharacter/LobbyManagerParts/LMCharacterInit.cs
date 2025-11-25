@@ -90,12 +90,12 @@ public class LMCharacterInit
 
     private Vector3 SpawnPoint(Vector3 pos)
     {
-        Vector3 spawn = new Vector3();
+        Vector3 spawn = pos;
         Vector3 randomDir = pos + Random.insideUnitSphere * 1f;
         randomDir.y = pos.y;
         if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, 0.1f, NavMesh.AllAreas))
         {
-            return spawn = hit.position;
+            spawn = hit.position;
         }
         return spawn;
     }
