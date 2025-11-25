@@ -90,8 +90,11 @@ public class Treasure : MonoBehaviour
         StageUIManager.Instance.TreasureName.text = transData.codex_name;
         StageUIManager.Instance.TreasureDesc.text = transData.codex_lore;
         StageUIManager.Instance.TreasureImage.sprite = DataManager.Instance.Codex.GetCodexIcon(data.view_codex_id);
-        StageUIManager.Instance.TreasureType.text = data.treasureType.ToString();
-        StageUIManager.Instance.TreasureCount.text = data.count.ToString();
+        StageUIManager.Instance.TreasureType.text = data.treasureType <= (TreasureType)1 ? "수량" :
+            data.treasureType == TreasureType.deco ? "장식" :
+            data.treasureType == TreasureType.costume ? "의상" :
+            "유물";
+        StageUIManager.Instance.TreasureCount.text = data.count < 2 ? "" : data.count.ToString();
         StageUIManager.Instance.CocoDoogyDesc.text = data.coco_coment;
     }
 
