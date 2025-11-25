@@ -290,7 +290,7 @@ MonoBehaviour:
     property:
       isOn: 0
       linkedPos: {x: 2147483647, y: 2147483647, z: 2147483647}
-  openSpeed: 1
+  openSpeed: 3
 --- !u!1 &2869431054701762474
 GameObject:
   m_ObjectHideFlags: 0

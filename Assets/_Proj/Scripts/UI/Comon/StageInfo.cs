@@ -16,6 +16,9 @@ public class StageInfo : MonoBehaviour
     public Sprite collectedSprite;    // 로비 전용
     public Sprite notCollectedSprite; // 로비 전용
 
+    [Header("Star UI")]
+    public TextMeshProUGUI starText;
+
     private List<GameObject> activeDetails = new List<GameObject>();
     private string currentChapterId;
     private int maxStar;
@@ -44,11 +47,14 @@ public class StageInfo : MonoBehaviour
 
     private void RefreshUI()
     {
+        Debug.Log($"ppm.instance ?? {PlayerProgressManager.Instance == null}");
         if (PlayerProgressManager.Instance == null) return;
 
         // 최신 데이터 강제 동기화
         PlayerProgressManager.Instance.LoadProgress();
+        
 
+        Debug.Log($"string null ?? {currentChapterId.IsNullOrEmpty()}");
         if (string.IsNullOrEmpty(currentChapterId)) return;
 
         myStar = 0;
@@ -61,6 +67,9 @@ public class StageInfo : MonoBehaviour
         }
 
         maxStar = chapter.chapter_staglist.Length * 3;
+
+        if (starText != null)
+            starText.text = $"{myStar} / {maxStar}";
 
         ClearStages();
         foreach (var stageId in chapter.chapter_staglist)

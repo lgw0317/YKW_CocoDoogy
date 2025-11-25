@@ -245,6 +245,12 @@ public class StageManager : MonoBehaviour, IStageManager
 
         Func<int, int, int, bool> rangeFunc = new((min, max, value) => min < value && value < max );
 
+        if (!UserData.Local.progress.scores.ContainsKey(stageData.stage_id))
+        {
+            UserData.Local.progress.scores.Add(stageData.stage_id, new());
+        }
+        
+
         for (int i = 0; i < treasureIds.Length; i++)
         {
             if (i == 0 && UserData.Local.progress.scores[stageData.stage_id].star_1_rewarded) continue;

@@ -52,6 +52,10 @@ public class ProfilePanelController : MonoBehaviour
     }
     public void Close()
     {
+        
+        //LSH 추가 1125
+        AudioEvents.Raise(UIKey.Normal, 1);
+        //
         UIPanelAnimator.Close(gameObject);
     }
 
@@ -137,6 +141,9 @@ public class ProfilePanelController : MonoBehaviour
     public void OpenItemPopup(ProfileType type, ProfileFavoriteIcon caller)
     {
         if (!itemSelectorPopup) return;
+        //LSH 추가 1125
+        AudioEvents.Raise(UIKey.Normal, 3);
+        //
         itemSelectorPopup.gameObject.SetActive(true);
         itemSelectorPopup.Open(type, caller, this);
     }
@@ -145,6 +152,9 @@ public class ProfilePanelController : MonoBehaviour
     public void OpenProfileIconPopup()
     {
         if (!iconSelectorPopup) return;
+        //LSH 추가 1125
+        AudioEvents.Raise(UIKey.Normal, 3);
+        //
         iconSelectorPopup.gameObject.SetActive(true);
         iconSelectorPopup.Open(this);
     }

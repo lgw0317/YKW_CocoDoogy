@@ -57,9 +57,10 @@ public enum AmbientKey
 public enum UIKey
 {
     /// <summary>
-    /// 0 = 열기, 1 = 닫기, 2 = 선택
+    /// 0 = 열기, 1 = 닫기, 2 = 선택, 3 = 일반, 4 = 거부
     /// </summary>
     Normal = 0,
+    Option,
     Popup,
     Error,
     AchievementPop,

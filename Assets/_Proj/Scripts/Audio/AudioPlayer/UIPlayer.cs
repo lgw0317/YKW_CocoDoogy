@@ -18,7 +18,7 @@ public class UIPlayer : AudioPlayerControl
         activeSources.Add(currentSource);
         currentSource.outputAudioMixerGroup = group;
         currentSource.loop = false;
-        currentSource.volume = 0.7f;
+        currentSource.volume = 0.34f;
     }
 
     public void PlayAudio(AudioClip clip)
@@ -27,26 +27,11 @@ public class UIPlayer : AudioPlayerControl
         currentSource.PlayOneShot(clip);
     }
 
-    public override void PlayAll()
-    {
-        base.PlayAll();
-    }
-    public override void PauseAll()
-    {
-        base.PauseAll();
-    }
-    public override void ResumeAll()
-    {
-        base.ResumeAll();
-    }
-    public override void StopAll()
-    {
-        base.StopAll();
-    }
-    public override void ResetAll()
-    {
-        base.ResetAll();
-    }
+    public override void PlayAll() { }
+    public override void PauseAll() { }
+    public override void ResumeAll() { }
+    public override void StopAll() { }
+    public override void ResetAll() { }
     public override void SetVolumeHalf() { }
     public override void SetVolumeNormal() { }
     public override void SetVolumeZero() { }

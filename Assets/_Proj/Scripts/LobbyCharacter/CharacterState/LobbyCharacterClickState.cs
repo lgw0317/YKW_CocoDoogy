@@ -49,7 +49,7 @@ public class LMasterClickState : LobbyCharacterBaseState
         charAnim.ClickMaster();
 
         // 소리 수정하슈
-        AudioEvents.Raise(SFXKey.Master, 0, loop: false, pooled: true);
+        AudioEvents.Raise(SFXKey.Master, 0, loop: false, pooled: true, pos: owner.transform.position);
         //AudioEvents.Raise(SFXKey.CocodoogyFootstep, pooled: true, pos: owner.transform.position);
     }
     

@@ -9,8 +9,8 @@ public class DoorBlock : Block, ISignalReceiver
     public bool IsOn { get; set; }
 
     private bool isPermanentlyOpen = false; // KHJ - 충격파 감지탑에서 한 번 감지되면 영구적으로 문을 열어야 하므로
-
-    public float openSpeed = 1f;
+    [Tooltip("문이 여닫히는 속도")]
+    public float openSpeed = 2f;
     Transform left;
     Transform right;
 

@@ -97,6 +97,9 @@ public class PanelRouter : MonoBehaviour
     public void CloseCurrent()
     {
         if (!current) return;
+        //LSH 추가 1125
+        if (current != shopPanel) CloseButton();
+        //
         current.SetActive(false);
         current = null;
         SyncDim();
@@ -123,6 +126,9 @@ public class PanelRouter : MonoBehaviour
     {
         if (!target) return;
 
+        //LSH 추가 1125
+        OpenButton();
+        //
         if (current == target)
         {
             target.SetActive(false);
@@ -162,5 +168,17 @@ public class PanelRouter : MonoBehaviour
     public void ReturnToMain()
     {
         AudioManager.Instance.ExitChapterOrStagePanel();
+    }
+    public void OpenButton()
+    {
+        AudioEvents.Raise(UIKey.Normal, 0);
+    }
+    public void CloseButton()
+    {
+        AudioEvents.Raise(UIKey.Normal, 1);
+    }
+    public void SelectButton()
+    {
+        AudioEvents.Raise(UIKey.Normal, 2);
     }
 }
