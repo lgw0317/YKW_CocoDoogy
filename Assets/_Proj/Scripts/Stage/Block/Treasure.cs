@@ -10,7 +10,8 @@ public class Treasure : MonoBehaviour
 
     void Start()
     {
-        var progress = UserData.Local.progress.scores[StageUIManager.Instance.stageManager.currentStageId];
+
+        var progress = UserData.Local.progress.scores.TryGetValue(StageUIManager.Instance.stageManager.currentStageId, out var value) ? value : new();
 
         // 이미 먹은 보물은 회색 표시
         if (progress.star_1_rewarded)
