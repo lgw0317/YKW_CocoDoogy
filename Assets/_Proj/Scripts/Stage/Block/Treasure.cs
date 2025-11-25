@@ -17,16 +17,16 @@ public class Treasure : MonoBehaviour
         if (treasureIndex == 0 && progress.star_1_rewarded)
         {
             // 시각적 표시
-            GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+            GetComponentInChildren<SpriteRenderer>().color = Color.gray;
             //isCollected = true; // 다시 못먹게
         }
         if (treasureIndex == 1 && progress.star_2_rewarded)
         {
-            GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+            GetComponentInChildren<SpriteRenderer>().color = Color.gray;
         }
         if (treasureIndex == 2 && progress.star_3_rewarded)
         {
-            GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+            GetComponentInChildren<SpriteRenderer>().color = Color.gray;
         }
     }
     public void Init(string id)
