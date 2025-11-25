@@ -149,7 +149,8 @@ public class StageInfo : MonoBehaviour
         // 클릭 이벤트
         var btn = stageObj.GetComponentInChildren<Button>();
         btn.interactable = canEnter;
-        btn.onClick.AddListener(() => ShowStageDetail(data.stage_id));
+        // LSH 추가 1125
+        btn.onClick.AddListener(() => {ShowStageDetail(data.stage_id); AudioEvents.Raise(UIKey.Normal, 2);});
     }
 
     void ShowStageDetail(string id)
