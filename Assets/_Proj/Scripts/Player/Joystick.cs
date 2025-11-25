@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -9,6 +11,10 @@ public class Joystick : MonoBehaviour
     [SerializeField] private Image handle;
     public float moveRange = 75f; // 핸들 움직임 최대 반경(pixel)
 
+    private static float sharedSnapAngleThreshold = -1;
+    private static bool sharedEnhanceFourDir;
+    private float snapAngleThreshold = 20f;
+    private bool enhanceFourDir;
 
     // 조이스틱 기본 위치
     private Vector3 initPos;
@@ -29,14 +35,22 @@ public class Joystick : MonoBehaviour
     // 패널 켜졌을 떄 조이스틱을 잠그기 위한 변수
     public bool IsLocked { get; set; } = false;
 
-    void Start()
+    IEnumerator Start()
     {
+        snapAngleThreshold = sharedSnapAngleThreshold >= 0 ? sharedSnapAngleThreshold : snapAngleThreshold;
+        enhanceFourDir = sharedEnhanceFourDir;
+        
+
         rectTransform = GetComponent<RectTransform>();
         initPos = rectTransform.anchoredPosition;
         InputDir = Vector3.zero;
 
 
         camCon = Camera.main?.GetComponent<CamControl>();
+        
+        
+        yield return null;
+        onUiSetup?.Invoke(snapAngleThreshold, enhanceFourDir);
     }
 
 
@@ -204,17 +218,17 @@ public class Joystick : MonoBehaviour
         }
     }
 
-    public void MoveToTouch(PointerEventData eventData)
-    {
-        Vector2 pos;
+    //public void MoveToTouch(PointerEventData eventData)
+    //{
+    //    Vector2 pos;
 
-        var parent = rectTransform.parent as RectTransform;
-        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(parent, eventData.position, eventData.pressEventCamera, out pos))
-        {
-            rectTransform.anchoredPosition = pos;
-        }
-        Drag(eventData);
-    }
+    //    var parent = rectTransform.parent as RectTransform;
+    //    if (RectTransformUtility.ScreenPointToLocalPointInRectangle(parent, eventData.position, eventData.pressEventCamera, out pos))
+    //    {
+    //        rectTransform.anchoredPosition = pos;
+    //    }
+    //    Drag(eventData);
+    //}
 
 
     // 터치가 드래그 될 때
@@ -229,12 +243,12 @@ public class Joystick : MonoBehaviour
         Vector2 clamped = Vector2.ClampMagnitude(pos, moveRange);
         handle.rectTransform.anchoredPosition = clamped;
 
-        //핸들 각도 스냅(8방향 기준으로)
         
 
         Vector2 inputNormal = clamped.sqrMagnitude > 0.0001f ? (clamped / moveRange) : Vector2.zero;
 
-        Vector2 snapped = SnapDirection(inputNormal);
+        //핸들 각도 스냅(8방향 기준으로)
+        Vector2 snapped = SnapDirection(inputNormal, enhanceFourDir);
         
         InputDir = new Vector3(snapped.x, 0, snapped.y);
     }
@@ -250,13 +264,15 @@ public class Joystick : MonoBehaviour
                     Vector2.left,
                     (Vector2.up + Vector2.left).normalized
     };
-    private Vector2 SnapDirection(Vector2 inputVector)
+    private Vector2 SnapDirection(Vector2 inputVector, bool enhanceFourdir)
     {
         {
             for (int i = 0; i < 8; i++)
             {
                 Vector2 snapVector = eightDir[i];
-                if (Vector2.Angle(inputVector, snapVector) < 15)
+                float currentThreshold = snapAngleThreshold;
+                if (enhanceFourdir) { if (i % 2 == 0) { currentThreshold *= 2; } }
+                if (Vector2.Angle(inputVector, snapVector) < currentThreshold)
                 {
                     inputVector = snapVector * inputVector.magnitude;
                     break;
@@ -283,7 +299,11 @@ public class Joystick : MonoBehaviour
 
 
         Vector2 inputNormal = clamped.sqrMagnitude > 0.0001f ? (clamped / moveRange) : Vector2.zero;
-        inputNormal = SnapDirection(inputNormal);
+
+        //핸들 각도 스냅(8방향 기준으로)
+        inputNormal = SnapDirection(inputNormal, enhanceFourDir);
+
+
         InputDir = new Vector3(inputNormal.x, 0, inputNormal.y);
     }
 
@@ -303,4 +323,17 @@ public class Joystick : MonoBehaviour
         handle.rectTransform.anchoredPosition = Vector2.zero;
         rectTransform.anchoredPosition = initPos;
     }
+
+
+
+    public void ApplyOptions(float snapAngleThreshold, bool enhanceFourDir)
+    {
+        this.snapAngleThreshold = snapAngleThreshold;
+        this.enhanceFourDir = enhanceFourDir;
+
+        sharedSnapAngleThreshold = snapAngleThreshold;
+        sharedEnhanceFourDir = enhanceFourDir;
+    }
+
+    public Action<float, bool> onUiSetup;
 }
