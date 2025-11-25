@@ -213,19 +213,53 @@ public class Joystick : MonoBehaviour
     public void Drag(PointerEventData eventData)
     {
         RectTransform bgRect = bg.rectTransform;
-        Vector2 pos;
-        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(bgRect, eventData.position, eventData.pressEventCamera, out pos)) return;
+        
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(bgRect, eventData.position, eventData.pressEventCamera, out Vector2 pos)) return;
 
 
         // 핸들 이동반경 제한
         Vector2 clamped = Vector2.ClampMagnitude(pos, moveRange);
         handle.rectTransform.anchoredPosition = clamped;
 
+        //핸들 각도 스냅(8방향 기준으로)
+        
 
         Vector2 inputNormal = clamped.sqrMagnitude > 0.0001f ? (clamped / moveRange) : Vector2.zero;
-        InputDir = new Vector3(inputNormal.x, 0, inputNormal.y);
+
+        Vector2 snapped = SnapDirection(inputNormal);
+        
+        InputDir = new Vector3(snapped.x, 0, snapped.y);
     }
 
+    private readonly static Vector2[] eightDir = new Vector2[8]
+    {
+                    Vector2.up,
+                    (Vector2.up + Vector2.right).normalized,
+                    Vector2.right,
+                    (Vector2.down + Vector2.right).normalized,
+                    Vector2.down,
+                    (Vector2.down + Vector2.left).normalized,
+                    Vector2.left,
+                    (Vector2.up + Vector2.left).normalized
+    };
+    private Vector2 SnapDirection(Vector2 inputVector)
+    {
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Vector2 snapVector = eightDir[i];
+                if (Vector2.Angle(inputVector, snapVector) < 15)
+                {
+                    inputVector = snapVector * inputVector.magnitude;
+                    break;
+                }
+            }
+
+            
+        }
+
+        return inputVector;
+    }
 
     //HACK: 1028 - 강욱: Drag()메서드 오버로드합니다. Vector2를 매개변수로 갖게 하여 터치된 위치를 기준으로 작동하도록 합니다.
     public void Drag(Vector2 pos)
@@ -241,6 +275,7 @@ public class Joystick : MonoBehaviour
 
 
         Vector2 inputNormal = clamped.sqrMagnitude > 0.0001f ? (clamped / moveRange) : Vector2.zero;
+        inputNormal = SnapDirection(inputNormal);
         InputDir = new Vector3(inputNormal.x, 0, inputNormal.y);
     }
 
