@@ -58,7 +58,7 @@ MonoBehaviour:
     dialogue_box_9: -1
     stage_bgm: Sound/Bgm/Casual7
   - stage_id: stage_1_1
-    stage_name: "1-1. \uC78A\uD600\uC9C4 \uACE0\uC18D\uB3C4\uB85C(1)"
+    stage_name: "1-1. \uC78A\uD78C \uACE0\uC18D\uB3C4\uB85C(1)"
     stage_img: Img/Stage/stage_1_1
     stage_desc: "\"\uBD95\uAD34\uB41C \uACE0\uC18D\uB3C4\uB85C \uCD08\uC785\uC785\uB2C8\uB2E4.\\n\uBD80\uC11C\uC9C4
       \uCC28\uB7C9\uACFC \uAC00\uB4DC\uB808\uC77C\uC774 \uD769\uC5B4\uC838 \uC788\uC2B5\uB2C8\uB2E4.\""
@@ -81,7 +81,7 @@ MonoBehaviour:
     dialogue_box_9: -1
     stage_bgm: Sound/Bgm/Casual10
   - stage_id: stage_1_2
-    stage_name: "1-2. \uC78A\uD600\uC9C4 \uACE0\uC18D\uB3C4\uB85C(2) "
+    stage_name: "1-2. \uC78A\uD78C \uACE0\uC18D\uB3C4\uB85C(2) "
     stage_img: Img/Stage/stage_1_2
     stage_desc: "\"\uC801\uB9C9\uC774 \uB0B4\uB824\uC549\uC740 \uACE0\uC18D\uB3C4\uB85C
       \uD55C\uAC00\uC6B4\uB370\uC785\uB2C8\uB2E4.\\n\uC18C\uB9AC \uD558\uB098 \uB4E4\uB9AC\uC9C0
