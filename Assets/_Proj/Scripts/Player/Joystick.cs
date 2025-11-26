@@ -11,9 +11,9 @@ public class Joystick : MonoBehaviour
     [SerializeField] private Image handle;
     public float moveRange = 75f; // 핸들 움직임 최대 반경(pixel)
 
-    private static float sharedSnapAngleThreshold = -1;
-    private static bool sharedEnhanceFourDir;
-    private float snapAngleThreshold = 20f;
+    private static float sharedSnapAngleThreshold = 13;
+    private static bool sharedEnhanceFourDir = true;
+    private float snapAngleThreshold = 13f;
     private bool enhanceFourDir;
 
     // 조이스틱 기본 위치
