@@ -93,6 +93,8 @@ public partial class EditModeController
 
     private void OnBackClicked()
     {
+        if (actionToolbar)
+            actionToolbar.Hide();
         if (hasUnsavedChanges)
         {
             if (exitConfirmPanel) exitConfirmPanel.SetActive(true);
@@ -358,6 +360,10 @@ public partial class EditModeController
             exitNoButton.onClick.AddListener(() =>
             {
                 if (exitConfirmPanel) exitConfirmPanel.SetActive(false);
+
+                // 🔹 편집모드 유지 + 타겟 살아있으면 툴바 다시 띄우기
+                if (IsEditMode && CurrentTarget)
+                    UpdateToolbar();
             });
         }
     }
