@@ -14,18 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCharDataList:
   - mainChar_id: 99999
-    mainChar_name: CocoDoogy
+    mainChar_name: "\uCF54\uCF54\uB450\uAE30"
     mainChar_type: 0
     mainChar_tag: 0
     mainChar_prefab: Prefabs/MainCharacter/CocoDoogy
     mainChar_icon: Icons/Profile_icon/icon_01
     mainChar_acquire: 0
-    mainChar_desc: "\uC648\uC648 \uC648\uC648\uC648"
+    mainChar_desc: "\uC6B0\uB9AC\uC758 \uCE5C\uAD6C \uCF54\uCF54\uB450\uAE30 \uC785\uB2C8\uB2E4."
   - mainChar_id: 99998
-    mainChar_name: Master
+    mainChar_name: "\uC548\uB4DC\uB85C\uC774\uB4DC"
     mainChar_type: 1
     mainChar_tag: 0
     mainChar_prefab: Prefabs/MainCharacter/Master
     mainChar_icon: Icons/Profile_icon/icon_02
     mainChar_acquire: 0
-    mainChar_desc: 010101010
+    mainChar_desc: "\uCF54\uCF54\uB450\uAE30\uC758 \uC8FC\uC778 \uC548\uB4DC\uB85C\uC774\uB4DC
+      \uC785\uB2C8\uB2E4."
