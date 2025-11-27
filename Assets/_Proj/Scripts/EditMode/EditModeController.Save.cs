@@ -26,6 +26,16 @@ public partial class EditModeController
         ToggleTopButtons(on);
         IsEditMode = on;
 
+        if (on)
+        {
+            gridOverlay?.Show();   // 편집모드 → 켜기
+        }
+        else
+        {
+            gridOverlay?.Hide();   // 나가기 → 끄기
+        }
+
+
         // 외부 매니저에도 통보
         var mgr = FindAnyObjectByType<EditModeManager>();
         if (mgr != null)
