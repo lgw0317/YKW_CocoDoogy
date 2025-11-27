@@ -22,6 +22,8 @@ public class DoorBlock : Block, ISignalReceiver
     private Vector3 rightClosedPos, rightOpenPos;
     private Coroutine doorRoutine;
 
+    private BoxCollider boxCol;
+
     public void ReceiveSignal()
     {
         if (!initialized) return;
@@ -64,6 +66,9 @@ public class DoorBlock : Block, ISignalReceiver
         float offset = 0.95f;
         leftOpenPos = leftClosedPos + Vector3.right * offset;
         rightOpenPos = rightClosedPos + Vector3.left * offset;
+
+        boxCol = GetComponent<BoxCollider>();
+        boxCol.enabled = true;
     }
 
     void Start()
@@ -132,6 +137,7 @@ public class DoorBlock : Block, ISignalReceiver
         if (doorRoutine != null)
             StopCoroutine(doorRoutine);
         doorRoutine = StartCoroutine(AnimateDoor(open));
+        boxCol.enabled = !open;
     }
 
     IEnumerator AnimateDoor(bool open)

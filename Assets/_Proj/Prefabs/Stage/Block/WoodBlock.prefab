@@ -321,13 +321,13 @@ MonoBehaviour:
   tileSize: 1
   blockingMask:
     serializedVersion: 2
-    m_Bits: 365448
+    m_Bits: 381832
   groundMask:
     serializedVersion: 2
     m_Bits: 131976
   slopeMask:
     serializedVersion: 2
-    m_Bits: 16384
+    m_Bits: 0
   throughLayer:
     serializedVersion: 2
     m_Bits: 2064

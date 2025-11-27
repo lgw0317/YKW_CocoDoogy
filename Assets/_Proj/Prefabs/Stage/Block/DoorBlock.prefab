@@ -244,6 +244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 139738923215645623}
   - component: {fileID: -5253530330751395769}
+  - component: {fileID: 7218334018359444521}
   m_Layer: 13
   m_Name: DoorBlock
   m_TagString: Untagged
@@ -291,6 +292,27 @@ MonoBehaviour:
       isOn: 0
       linkedPos: {x: 2147483647, y: 2147483647, z: 2147483647}
   openSpeed: 3
+--- !u!65 &7218334018359444521
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2431905018538191131}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 2, z: 0.5}
+  m_Center: {x: 0, y: 0.45, z: 0}
 --- !u!1 &2869431054701762474
 GameObject:
   m_ObjectHideFlags: 0
