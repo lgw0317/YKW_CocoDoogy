@@ -71,7 +71,7 @@ treasure_3_3_3,cap,110002,1500,codex_artifact_cap,"무언가를 구매할 수 �
 treasure_3_4_1,cap,110002,2000,codex_artifact_cap,"우린 부자야!"
 treasure_3_4_2,artifact,50021,1,codex_artifact_survivaldiary,"누군가의 추억이 담겨있어."
 treasure_3_4_3,deco,10020,1,codex_deco_log_chair,"조경물을 획득했어. 배치해보자!"
-treasure_3_5_1,artifact,50022,1,codex_aritfact_map,"집으로 돌아갈 수 있을까?"
+treasure_3_5_1,artifact,50022,1,codex_artifact_map,"집으로 돌아갈 수 있을까?"
 treasure_3_5_2,cap,110002,1500,codex_artifact_cap,"무언가를 구매할 수 있을 거야."
 treasure_3_5_3,cap,110002,2000,codex_artifact_cap,"우린 부자야!"
 treasure_3_6_1,artifact,50028,1,codex_artifcat_tent,"…누군가의 추억이 담겨있어."

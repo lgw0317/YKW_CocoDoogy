@@ -471,7 +471,7 @@ MonoBehaviour:
     treasureType: 4
     reward_id: 50022
     count: 1
-    view_codex_id: codex_aritfact_map
+    view_codex_id: codex_artifact_map
     coco_coment: "\"\uC9D1\uC73C\uB85C \uB3CC\uC544\uAC08 \uC218 \uC788\uC744\uAE4C?\""
   - treasure_id: treasure_3_5_2
     treasureType: 1
