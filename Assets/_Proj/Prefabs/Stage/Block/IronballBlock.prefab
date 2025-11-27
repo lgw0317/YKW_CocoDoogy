@@ -150,7 +150,7 @@ MonoBehaviour:
   useOcclusion: 1
   occludeLayer:
     serializedVersion: 2
-    m_Bits: 17296
+    m_Bits: 320400
 --- !u!114 &180925807758137407
 MonoBehaviour:
   m_ObjectHideFlags: 0
