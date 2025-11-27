@@ -1,34 +1,50 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Splines;
+using static UnityEngine.ParticleSystem;
 
 public class Treasure : MonoBehaviour
 {
     public int treasureIndex;
     public string treaureBlockName;
+    public GameObject particle;
+    public GameObject artifactParticleSystem;
+
     private string treasureId;
     private bool isCollected = false;
+    private SpriteRenderer sprite;
 
     void Start()
     {
-
         var progress = UserData.Local.progress.scores.TryGetValue(StageUIManager.Instance.stageManager.currentStageId, out var value) ? value : new();
 
+        sprite = GetComponentInChildren<SpriteRenderer>();
         // 이미 먹은 보물은 회색 표시
         if (treasureIndex == 0 && progress.star_1_rewarded)
         {
             // 시각적 표시
-            GetComponentInChildren<SpriteRenderer>().color = Color.gray;
+            sprite.color = Color.gray;
             //isCollected = true; // 다시 못먹게
         }
         if (treasureIndex == 1 && progress.star_2_rewarded)
         {
-            GetComponentInChildren<SpriteRenderer>().color = Color.gray;
+            sprite.color = Color.gray;
         }
         if (treasureIndex == 2 && progress.star_3_rewarded)
         {
-            GetComponentInChildren<SpriteRenderer>().color = Color.gray;
+            sprite.color = Color.gray;
+        }
+        //보물 data에서 view_codex_id로 codexData 접근해서 이미지 가져오기-보류, 파티클색깔 편하게 변경
+        var treasureData = DataManager.Instance.Treasure.GetData(treasureId);
+        if (treasureData.treasureType == TreasureType.artifact)
+        {
+            //var data = DataManager.Instance.Codex.GetCodexIcon(treasureData.view_codex_id);
+            //sprite.sprite = data;
+            particle.SetActive(false);
+            artifactParticleSystem.SetActive(true);
         }
     }
+
     public void Init(string id)
     {
         treasureId = id;
@@ -87,6 +103,8 @@ public class Treasure : MonoBehaviour
                 StageUIManager.Instance.OptionOpenButton.gameObject.SetActive(true);
                 joystick.IsLocked = false;
                 other.GetComponent<PlayerMovement>().enabled = true;
+                sprite.color = new Color(1, 1, 1, 0);
+                particle.SetActive(false);
             });
         }
     }
