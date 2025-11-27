@@ -80,6 +80,9 @@ public partial class EditModeController : MonoBehaviour
     [Header("Main Character DB")]
     [SerializeField] private MainCharacterDatabase mainCharDB;
 
+    [Header("Grid Overlay")]
+    [SerializeField] private GridOverlay gridOverlay;   // ← 이것만 남기기
+
     private Transform homeCandidate;
     public static System.Action<bool> HomePreviewActiveChanged;
     public bool IsHomePreviewActive => homePreview != null;
