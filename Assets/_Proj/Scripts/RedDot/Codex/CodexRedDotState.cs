@@ -62,10 +62,17 @@ public static class CodexRedDotManager
             case CodexType.costume: return 20000 < itemId && itemId < 30000;
             case CodexType.animal: return 30000 < itemId && itemId < 40000;
             case CodexType.home: return 40000 < itemId && itemId < 50000;
-            case CodexType.artifact: return 50000 < itemId && itemId < 60000; // ← 실제 유물 범위에 맞게 조정
-            default: return false;
+
+            case CodexType.artifact:
+                // ✅ 일반 유물 50000번대 + 재화유물 110001~110003 둘 다 인정
+                return (50000 < itemId && itemId < 60000)
+                       || (110001 <= itemId && itemId <= 110003);
+
+            default:
+                return false;
         }
     }
+
 
     private static CodexRedDotState CalculateInternal()
     {
