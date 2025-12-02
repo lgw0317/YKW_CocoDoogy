@@ -241,36 +241,49 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
         // 터틀과 탑승 물체 동시 이동
         while (elapsed < duration)
         {
-
-
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
             Vector3 nextPos = Vector3.Lerp(startPos, endPos, t);
 
-            // ⭐ 이동하기 전에 미리 충돌 체크
+            Vector3 hitExt = new Vector3(tileSize * 0.45f, 0.1f, tileSize * 0.45f);
+
+            // blockingLayer 검사
             Collider[] midHits = Physics.OverlapBox(
                 nextPos,
-                new Vector3(tileSize * 0.45f, tileSize * 0.25f, tileSize * 0.45f),
+                hitExt,
                 Quaternion.identity,
                 blockLayer,
                 QueryTriggerInteraction.Ignore
             );
 
-            // ⭐ 박으면 → 이동하지 않고 → 지금 위치 그대로 → END
-            if (midHits.Length > 0)
-            {
-                Debug.Log("[Turtle] 중간 BLOCK → 타일에 스냅 후 정지");
+            // ⭐ 앞 막힘 판단
+            bool blocked = false;
 
-                // ⭐ 현재 위치를 '정확한 타일 좌표'로 스냅 (int형)
+            foreach (var h in midHits)
+            {
+                // ⭐ 머리 위에 실려 있는 애들은 blockLayer라도 무시
+                if (ridableTrans.Contains(h.transform))
+                    continue;
+
+                // 그 외 blockLayer는 진짜로 막힘
+                blocked = true;
+                break;
+            }
+
+            if (blocked)
+            {
+                Debug.Log("[Turtle] BLOCK 감지 → 현재 위치에서 정지");
+
+                // 타일 스냅
                 Vector3 snapped = new Vector3(
                     Mathf.Round(transform.position.x / tileSize) * tileSize,
                     transform.position.y,
                     Mathf.Round(transform.position.z / tileSize) * tileSize
                 );
 
-                transform.position = snapped; // ⭐ 현재 타일에서 정지
-                endPos = snapped;             // ⭐ 이동 종료 지점도 스냅된 타일
-                break;                        // ⭐ Lerp 종료 → 아래 하차 로직으로 진행
+                transform.position = snapped;
+                endPos = snapped;
+                break;
             }
 
             // 충돌 없으면 원래대로 이동
