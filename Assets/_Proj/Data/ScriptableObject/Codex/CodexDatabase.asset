@@ -500,13 +500,6 @@ MonoBehaviour:
     codex_display: Img/Codex_display/Artifact/codex_display_flowerbouquet
     codex_icon: Icons/Artifact/icon_artifact_flowerbouquet
     codex_name: "\uAF43\uB2E4\uBC1C"
-  - codex_id: codex_artifact_energy
-    codex_type: 4
-    item_id: 110001
-    codex_lore: "\u3141\u3134\u3147\u313B\u3134\u3147\u313B\u3134\u3147\u3139asd"
-    codex_display: System/icon_energy
-    codex_icon: System/icon_energy
-    codex_name: "\uD589\uB3D9\uB825"
   - codex_id: codex_artifact_cap
     codex_type: 4
     item_id: 110002
