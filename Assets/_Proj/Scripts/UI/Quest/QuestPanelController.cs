@@ -299,6 +299,15 @@ public class QuestPanelController : MonoBehaviour
         {
             return DataManager.Instance.Animal.GetIcon(itemId);
         }
+        if (110000 < itemId && itemId < 120000)
+        {
+            return DataManager.Instance.Goods.GetIcon(itemId);
+        }
+        if (120000 < itemId && itemId < 130000)
+        {
+            return DataManager.Instance.Profile.GetIcon(itemId);
+        }
+
 
         if (treasureDatabase != null)
         {

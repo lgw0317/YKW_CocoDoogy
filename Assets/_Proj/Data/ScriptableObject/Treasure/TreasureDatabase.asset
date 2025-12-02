@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   treasureList:
   - treasure_id: treasure_1_1_1
-    treasureType: 2
-    reward_id: 10001
-    count: 1
-    view_codex_id: codex_deco_tree_lime
-    coco_coment: "\"\uC870\uACBD\uBB3C\uC744 \uD68D\uB4DD\uD588\uC5B4. \uBC30\uCE58\uD574\uBCF4\uC790!\""
+    treasureType: 1
+    reward_id: 110003
+    count: 500
+    view_codex_id: codex_artifact_coin
+    coco_coment: "\"\uBB34\uC5C7\uC744 \uC0B4 \uC218 \uC788\uC744\uAE4C?\""
   - treasure_id: treasure_1_1_2
     treasureType: 3
     reward_id: 20001
@@ -34,7 +34,7 @@ MonoBehaviour:
   - treasure_id: treasure_1_2_1
     treasureType: 1
     reward_id: 110002
-    count: 1000
+    count: 1500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBCD1\uB69C\uAED1\uC774\uB2E4!\""
   - treasure_id: treasure_1_2_2
@@ -52,7 +52,7 @@ MonoBehaviour:
   - treasure_id: treasure_1_3_1
     treasureType: 1
     reward_id: 110002
-    count: 1000
+    count: 1500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBCD1\uB69C\uAED1\uC774\uB2E4!\""
   - treasure_id: treasure_1_3_2
@@ -70,7 +70,7 @@ MonoBehaviour:
   - treasure_id: treasure_1_4_1
     treasureType: 1
     reward_id: 110002
-    count: 1000
+    count: 1500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBCD1\uB69C\uAED1\uC774\uB2E4!\""
   - treasure_id: treasure_1_4_2
@@ -89,7 +89,7 @@ MonoBehaviour:
   - treasure_id: treasure_1_5_1
     treasureType: 1
     reward_id: 110002
-    count: 1500
+    count: 2500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBB34\uC5B8\uAC00\uB97C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC744
       \uAC70\uC57C.\""
@@ -108,13 +108,13 @@ MonoBehaviour:
   - treasure_id: treasure_1_6_1
     treasureType: 1
     reward_id: 110002
-    count: 1000
+    count: 1500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBCD1\uB69C\uAED1\uC774\uB2E4!\""
   - treasure_id: treasure_1_6_2
     treasureType: 1
     reward_id: 110002
-    count: 2000
+    count: 3000
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
   - treasure_id: treasure_1_6_3
@@ -126,7 +126,7 @@ MonoBehaviour:
   - treasure_id: treasure_1_7_1
     treasureType: 1
     reward_id: 110002
-    count: 1500
+    count: 2500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBB34\uC5B8\uAC00\uB97C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC744
       \uAC70\uC57C.\""
@@ -145,7 +145,7 @@ MonoBehaviour:
   - treasure_id: treasure_1_8_1
     treasureType: 1
     reward_id: 110002
-    count: 1500
+    count: 2500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBB34\uC5B8\uAC00\uB97C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC744
       \uAC70\uC57C.\""
@@ -165,7 +165,7 @@ MonoBehaviour:
   - treasure_id: treasure_1_9_1
     treasureType: 1
     reward_id: 110002
-    count: 2000
+    count: 3000
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
   - treasure_id: treasure_1_9_2
@@ -182,10 +182,10 @@ MonoBehaviour:
     coco_coment: "\"\uC870\uACBD\uBB3C\uC744 \uD68D\uB4DD\uD588\uC5B4. \uBC30\uCE58\uD574\uBCF4\uC790!\""
   - treasure_id: treasure_1_10_1
     treasureType: 1
-    reward_id: 110002
-    count: 2000
-    view_codex_id: codex_artifact_cap
-    coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
+    reward_id: 110003
+    count: 500
+    view_codex_id: codex_artifact_coin
+    coco_coment: "\"\uBB34\uC5C7\uC744 \uC0B4 \uC218 \uC788\uC744\uAE4C?\""
   - treasure_id: treasure_1_10_2
     treasureType: 2
     reward_id: 10009
@@ -202,7 +202,7 @@ MonoBehaviour:
   - treasure_id: treasure_2_1_1
     treasureType: 1
     reward_id: 110002
-    count: 1000
+    count: 1500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBCD1\uB69C\uAED1\uC774\uB2E4!\""
   - treasure_id: treasure_2_1_2
@@ -221,7 +221,7 @@ MonoBehaviour:
   - treasure_id: treasure_2_2_1
     treasureType: 1
     reward_id: 110002
-    count: 1000
+    count: 1500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBCD1\uB69C\uAED1\uC774\uB2E4!\""
   - treasure_id: treasure_2_2_2
@@ -234,7 +234,7 @@ MonoBehaviour:
   - treasure_id: treasure_2_2_3
     treasureType: 1
     reward_id: 110002
-    count: 1000
+    count: 1500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBCD1\uB69C\uAED1\uC774\uB2E4!\""
   - treasure_id: treasure_2_3_1
@@ -259,7 +259,7 @@ MonoBehaviour:
   - treasure_id: treasure_2_4_1
     treasureType: 1
     reward_id: 110002
-    count: 1000
+    count: 1500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBCD1\uB69C\uAED1\uC774\uB2E4!\""
   - treasure_id: treasure_2_4_2
@@ -278,7 +278,7 @@ MonoBehaviour:
   - treasure_id: treasure_2_5_1
     treasureType: 1
     reward_id: 110002
-    count: 1500
+    count: 2500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBB34\uC5B8\uAC00\uB97C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC744
       \uAC70\uC57C.\""
@@ -298,7 +298,7 @@ MonoBehaviour:
   - treasure_id: treasure_2_6_1
     treasureType: 1
     reward_id: 110002
-    count: 1500
+    count: 2500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBB34\uC5B8\uAC00\uB97C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC744
       \uAC70\uC57C.\""
@@ -317,7 +317,7 @@ MonoBehaviour:
   - treasure_id: treasure_2_7_1
     treasureType: 1
     reward_id: 110002
-    count: 1500
+    count: 2500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBB34\uC5B8\uAC00\uB97C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC744
       \uAC70\uC57C.\""
@@ -337,7 +337,7 @@ MonoBehaviour:
   - treasure_id: treasure_2_8_1
     treasureType: 1
     reward_id: 110002
-    count: 2000
+    count: 3000
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
   - treasure_id: treasure_2_8_2
@@ -356,7 +356,7 @@ MonoBehaviour:
   - treasure_id: treasure_2_9_1
     treasureType: 1
     reward_id: 110002
-    count: 2000
+    count: 3000
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
   - treasure_id: treasure_2_9_2
@@ -374,10 +374,10 @@ MonoBehaviour:
       \uC788\uC5B4.\""
   - treasure_id: treasure_2_10_1
     treasureType: 1
-    reward_id: 110002
-    count: 2000
-    view_codex_id: codex_artifact_cap
-    coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
+    reward_id: 110003
+    count: 500
+    view_codex_id: codex_artifact_coin
+    coco_coment: "\"\uBB34\uC5C7\uC744 \uC0B4 \uC218 \uC788\uC744\uAE4C?\""
   - treasure_id: treasure_2_10_2
     treasureType: 2
     reward_id: 10020
@@ -394,7 +394,7 @@ MonoBehaviour:
   - treasure_id: treasure_3_1_1
     treasureType: 1
     reward_id: 110002
-    count: 1500
+    count: 2500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBB34\uC5B8\uAC00\uB97C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC744
       \uAC70\uC57C.\""
@@ -419,7 +419,7 @@ MonoBehaviour:
   - treasure_id: treasure_3_2_2
     treasureType: 1
     reward_id: 110002
-    count: 1500
+    count: 2500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBB34\uC5B8\uAC00\uB97C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC744
       \uAC70\uC57C.\""
@@ -445,14 +445,14 @@ MonoBehaviour:
   - treasure_id: treasure_3_3_3
     treasureType: 1
     reward_id: 110002
-    count: 1500
+    count: 2500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBB34\uC5B8\uAC00\uB97C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC744
       \uAC70\uC57C.\""
   - treasure_id: treasure_3_4_1
     treasureType: 1
     reward_id: 110002
-    count: 2000
+    count: 3000
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
   - treasure_id: treasure_3_4_2
@@ -476,14 +476,14 @@ MonoBehaviour:
   - treasure_id: treasure_3_5_2
     treasureType: 1
     reward_id: 110002
-    count: 1500
+    count: 2500
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uBB34\uC5B8\uAC00\uB97C \uAD6C\uB9E4\uD560 \uC218 \uC788\uC744
       \uAC70\uC57C.\""
   - treasure_id: treasure_3_5_3
     treasureType: 1
     reward_id: 110002
-    count: 2000
+    count: 3000
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
   - treasure_id: treasure_3_6_1
@@ -495,7 +495,7 @@ MonoBehaviour:
   - treasure_id: treasure_3_6_2
     treasureType: 1
     reward_id: 110002
-    count: 2000
+    count: 3000
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
   - treasure_id: treasure_3_6_3
@@ -507,7 +507,7 @@ MonoBehaviour:
   - treasure_id: treasure_3_7_1
     treasureType: 1
     reward_id: 110002
-    count: 2000
+    count: 3000
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
   - treasure_id: treasure_3_7_2
@@ -526,7 +526,7 @@ MonoBehaviour:
   - treasure_id: treasure_3_8_1
     treasureType: 1
     reward_id: 110002
-    count: 2000
+    count: 3000
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
   - treasure_id: treasure_3_8_2
@@ -544,7 +544,7 @@ MonoBehaviour:
   - treasure_id: treasure_3_9_1
     treasureType: 1
     reward_id: 110002
-    count: 2000
+    count: 3000
     view_codex_id: codex_artifact_cap
     coco_coment: "\"\uC6B0\uB9B0 \uBD80\uC790\uC57C!\""
   - treasure_id: treasure_3_9_2
@@ -574,8 +574,8 @@ MonoBehaviour:
     coco_coment: "\"\uC18C\uB9AC\uAC00 \uB4E4\uB9B0\uB2E4\uB294 \uAC83\uB9CC\uC73C\uB85C
       \uC774\uB807\uAC8C \uC548\uC2EC\uB41C \uAC74 \uCC98\uC74C\uC774\uC57C!\""
   - treasure_id: treasure_3_10_3
-    treasureType: 2
-    reward_id: 10010
-    count: 1
-    view_codex_id: codex_deco_fireplace
-    coco_coment: "\"\uC870\uACBD\uBB3C\uC744 \uD68D\uB4DD\uD588\uC5B4. \uBC30\uCE58\uD574\uBCF4\uC790!\""
+    treasureType: 1
+    reward_id: 110003
+    count: 500
+    view_codex_id: codex_artifact_coin
+    coco_coment: "\"\uBB34\uC5C7\uC744 \uC0B4 \uC218 \uC788\uC744\uAE4C?\""

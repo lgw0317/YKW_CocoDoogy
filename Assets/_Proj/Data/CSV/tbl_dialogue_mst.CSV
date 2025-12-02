@@ -55,7 +55,7 @@ dialogue_1_7_0,5,right,hog,Neutral,"그래서, 집으로 돌아가는 중이라�
 dialogue_1_7_0,6,left,coco,Neutral,"주인이 먼저 집으로 돌아갔거든! 나도 빨리 가야 해!",0.04,sfx_none,null
 dialogue_1_7_0,7,right,hog,Happy,"그래? 나랑 놀면 재밌을 텐데! 나 힘 엄청 세거든!",0.04,sfx_none,null
 dialogue_1_7_0,8,right,hog,Neutral,"마침 저기 박스가 있네!\n너가 날 보면 바로 밀어볼 테니까, 내가 얼마나 센지 잘 봐둬!",0.04,sfx_none,null
-dialogue_1_7_1,0,right,hog,Happy,"우하하! 봤지? 나 멋있지?!",0.04,sfx_none,null
+dialogue_1_7_1,0,right,hog,Happy,"우하하! 봤지? 나 멋있지?! 나무상자가 몇 개나 되든 내 앞에만 두라고!",0.04,sfx_none,null
 dialogue_1_7_1,1,left,coco,Happy,"와! 너 짱 멋있다!",0.04,sfx_none,null
 dialogue_1_7_1,2,right,hog,Happy,"너 되게 마음에 드네!",0.04,sfx_none,null
 dialogue_1_7_2,0,right,hog,Angry,"어어? 너 거길 올라가는 거야?",0.04,sfx_none,null
@@ -176,19 +176,63 @@ dialogue_3_10_0,1,left,coco,Happy,"절대라고? 그럴리가! 방법은 어떻�
 dialogue_3_10_0,2,right,buffalo,Happy,"넌, 정말… 끝없이 해맑기만 하구나.",0.04,sfx_none,null
 dialogue_3_10_1,0,right,buffalo,Neutral,"내가 무턱대고 불가능하다고 하는 게 아니야. 저기 보이는 충격 감지탑 있지?",0.04,sfx_none,null
 dialogue_3_10_1,1,right,buffalo,Neutral,"예전이 근처엔 대피소가 있었어. 폭탄에 가까운 강한 충격이 감지되면 저 문이 열리고, 대피소로 이어지는 길이 드러나곤 했지",0.04,sfx_none,null
-dialogue_3_10_1,2,right,buffalo,Neutral,"하지만 우리 힘으로 그런 충격을 만들 수 있을 리가 없잖아.",0.04,sfx_none,null
-dialogue_3_10_1,3,right,buffalo,Sad,"그래서 난 지금까지 저 문을 열어본 적이 없어.",0.04,sfx_none,null
-dialogue_3_10_1,4,left,coco,Surprised,"충격… 그렇다면. 버팔로! 네 발굽으로 세게 구르면 문이 열릴 수도 있지 않을까?!",0.04,sfx_none,null
-dialogue_3_10_1,5,right,buffalo,Angry,"그걸 내가 시도 안 해봤겠냐! 어떻게 해도 문은 꿈쩍도 안 하더라.",0.04,sfx_none,null
-dialogue_3_10_1,6,right,buffalo,Neutral,"그래서 나는 저 아래로 가본 적이 없어. 난 이 산에만 줄곧 있었거든.",0.04,sfx_none,null
-dialogue_3_10_1,7,left,coco,Sad,"…그래도 말이야.",0.04,sfx_none,null
-dialogue_3_10_1,8,left,coco,Happy,"…나. 너에게 산 바깥의 세상을 꼭 보여주고 싶어!",0.04,sfx_none,null
-dialogue_3_10_2,0,left,coco,Happy,"와! 우리가 해냈어!",0.04,sfx_none,null
-dialogue_3_10_2,1,right,buffalo,Happy,"내가 이 절벽 아래에 내려오다니… 여기가 이렇게 생겼었구나…",0.04,sfx_none,null
-dialogue_3_10_2,2,left,coco,Surprised,"어어? 버팔로야! 너 혹시 울려고 하는 건 아니지?!",0.04,sfx_none,null
-dialogue_3_10_2,3,right,buffalo,Angry,"시끄러워!",0.04,sfx_none,null
-dialogue_3_10_2,4,right,buffalo,Happy,"…이상하게 가슴이 두근거려. 갑자기 내 앞에 새로운 길이 열린 느낌이야. 너 덕분이야.",0.04,sfx_none,null
-dialogue_3_10_2,5,left,coco,Happy,"별 소리를! 네가 너의 소중한 친구를 보여줬으니까…",0.04,sfx_none,null
-dialogue_3_10_2,6,left,coco,Happy,"나도 내 소중한 존재를 너에게 꼭 소개해주고 싶어!",0.04,sfx_none,null
-dialogue_3_10_2,7,right,buffalo,Happy,"그래. 나도 기대되네. 아, 근데 나를 찾으러 이 산에 와도 난 없을지도 몰라. 여기저기 다니느라 바쁠 예정이거든.",0.04,sfx_none,null
-dialogue_3_10_2,8,left,coco,Happy,"응! 내가 너를 찾으러 갈게! 너 발굽 소리가 워낙 커서, 어디 있어도 금방 알아챌 것 같아.",0.04,sfx_none,null
+dialogue_3_10_1,2,right,buffalo,Neutral,"지금까지는 저기까지 가는 길이 너무 좁고 복잡해서 저기까지 갈 수 없어",0.04,sfx_none,null
+dialogue_3_10_1,3,right,buffalo,Neutral,"그래서 나는 저 아래로 가본 적이 없어. 난 이 산에만 줄곧 있었거든.",0.04,sfx_none,null
+dialogue_3_10_1,4,right,buffalo,Sad,"하지만 지금은... 네가 함께 있으니까. 어떻게 될지도 모르겠다.",0.04,sfx_none,null
+dialogue_3_10_1,5,left,coco,Surprised,"충격… 그렇다면. 버팔로! 네 발굽으로 세게 굴러줘!\n내가 철구를 이어서 탑까지 충격을 옮겨볼게!",0.04,sfx_none,null
+dialogue_3_10_1,6,left,coco,Happy,"…나. 너에게 산 바깥의 세상을 꼭 보여주고 싶어!",0.04,sfx_none,null
+dialogue_3_10_1,7,right,buffalo,Angry,"흥, 좋아. 내가 있는 힘 것 발굽을 차볼게!",0.04,sfx_none,null
+dialogue_3_10_10,0,left,coco,Happy,"와! 우리가 해냈어!",0.04,sfx_none,null
+dialogue_3_10_10,1,right,buffalo,Happy,"내가 이 절벽 아래에 내려오다니… 여기가 이렇게 생겼었구나…",0.04,sfx_none,null
+dialogue_3_10_10,2,left,coco,Surprised,"어어? 버팔로야! 너 혹시 울려고 하는 건 아니지?!",0.04,sfx_none,null
+dialogue_3_10_10,3,right,buffalo,Angry,"...시끄러워!",0.04,sfx_none,null
+dialogue_3_10_10,4,right,buffalo,Happy,"…이상하게 가슴이 두근거려.\n갑자기 내 앞에 새로운 길이 열린 느낌이야. 너 덕분에.",0.04,sfx_none,null
+dialogue_3_10_10,5,left,coco,Happy,"별 소리를! 네가 너의 소중한 친구를 보여줬으니까…",0.04,sfx_none,null
+dialogue_3_10_10,6,left,coco,Happy,"나도 내 소중한 존재를 너에게 꼭 소개해주고 싶어!",0.04,sfx_none,null
+dialogue_3_10_10,7,right,buffalo,Happy,"그래. 나도 기대되네.",0.04,sfx_none,null
+dialogue_3_10_11,8,right,buffalo,Happy, "아, 근데 나를 찾으러 이 산에 와도 난 없을지도 몰라.\n난 이제 여기저기 다니느라 바쁠 예정이거든.",,,
+dialogue_3_10_10,9,left,coco,Happy,"응! 내가 너를 찾으러 갈게!\n너 발굽 소리가 워낙 커서, 어디 있어도 금방 알아챌 것 같아.",0.04,sfx_none,null
+dialogue_2_1_0,0,left,coco,Neutral,"오늘도 술래잡기 시간인가? 어서 주인을 쫓아가자!",0.04,sfx_none,null
+dialogue_2_1_1,0,left,coco,Sad,"으… 물 웅덩이야! 물은 무서운데...",0.04,sfx_none,null
+dialogue_2_1_1,1,left,coco,Neutral,"상자를 밀어서 밟고 건널 수 있지 않을까?",0.04,sfx_none,null
+dialogue_2_1_2,0,left,coco,Surprised,"헉! 이번엔 물이 소용돌이 처럼 흐르고 있네...",0.04,sfx_none,null
+dialogue_2_1_2,1,left,coco,Neutral,"상자를 넣어볼까? 상자가 물길을 따라 떠다닐까?",0.04,sfx_none,null
+dialogue_2_2_0,0,left,coco,Neutral,"굽이진 물길이 계속 이어지고 있어.\n이 흐름을 따라가면 길이 나올 것 같아. 천천히 따라가보자!",0.04,sfx_none,null
+dialogue_2_3_1,0,left,coco,Neutral,"앗, 저기에 보물이 있어! 상자를 여러게 물길에 흘려보내면 저기로 갈 수 있지 않을까?",0.04,sfx_none,null
+dialogue_2_4_10,0,left,coco,Neutral,"밤의 숲은 조금 무서운 것 같아. 함께 다닐 친구가 있다면 좋겠는데….",0.04,sfx_none,null
+dialogue_2_5_0,0,left,coco,Neutral,"우와! 말로만 듣던 거북이다! 지금 어디 가는 거야?",0.04,sfx_none,null
+dialogue_2_5_0,1,right,tortoise,Neutral,"어딜 간다기보다… 그저 흘러가는 중이었네.",0.04,sfx_none,null
+dialogue_2_5_0,2,right,tortoise,Neutral,"물 흐르는 곳이면 어디든 쉼이 있기 마련이네. 마음이 평안해지고 주변은 고요하니…",0.04,sfx_none,null
+dialogue_2_5_0,3,left,coco,Sad,"쉼이라고…? 물은 차갑고 흔들리고... 무서운데…",0.04,sfx_none,null
+dialogue_2_5_0,4,right,tortoise,Neutral,"역시나. 아까부터 지켜봤는데 어쩐지 물에 들어가질 않더군.",0.04,sfx_none,null
+dialogue_2_5_0,5,left,coco,Sad,"응, 얼른 집으로 돌아가야 하는데, 여긴 물이 너무 많아…\n나만 수영도 못하고, 물이 무서워.",0.04,sfx_none,null
+dialogue_2_5_0,6,right,tortoise,Happy,"강아지가 물을 무서워하다니, 의외군.\n그렇다면 내가 도와주지.",0.04,sfx_none,null
+dialogue_2_5_0,7,left,coco,Happy,"정말…? 나 태워줄 수 있어? 나 무거울 텐데...?",0.04,sfx_none,null
+dialogue_2_5_0,8,right,tortoise,Neutral,"세월로 단련된 이 단단한 등딱지를 무시하지 말게나. 어서 올라타게.",0.04,sfx_none,null
+dialogue_2_5_1,0,right,tortoise,Neutral,"오, 이런. 제법 묵직하네. 움직이는 동안엔 방향을 바꾸기 어렵겠어.",0.04,sfx_none,null
+dialogue_2_5_1,1,right,tortoise,Neutral,"같이 나가려면… 조금만 도와줄 수 있겠나?",0.04,sfx_none,null
+dialogue_2_6_1,0,left,coco,Surprised,"나 떨어질 것 같아!",0.04,sfx_none,null
+dialogue_2_6_1,1,right,tortoise,Neutral,"물살에도 리듬이 있지. 조금만 가만히 느껴보렴.",0.04,sfx_none,null
+dialogue_2_6_1,2,right,tortoise,Happy,"괜찮다. 내가 잡고 있으니 불안해하지 않아도 돼.",0.04,sfx_none,null
+dialogue_2_7_1,0,right,tortoise,Neutral,"이제 네 발로 조금 느껴봐도 괜찮을 거다. 발끝만 살짝 담그게",0.04,sfx_none,null
+dialogue_2_7_1,1,left,coco,Sad,"정말…? 그치만… 물이 나를 끌고 가면 어떡해?!",0.04,sfx_none,null
+dialogue_2_7_1,2,right,tortoise,Neutral,"그럼 내가 바로 올려주지. 내가 줄곧 네 곁에 있지 않는가.",0.04,sfx_none,null
+dialogue_2_7_1,3,left,coco,Sad,"…응. 그럼… 조금만…",0.04,sfx_none,null
+dialogue_2_7_1,4,left,coco,Surprised,"앗! 차가워!",0.04,sfx_none,null
+dialogue_2_7_1,5,right,tortoise,Happy,"허허! 괜찮다. 곧 차가운 게 아니라 시원하게 느껴질 게야.",0.04,sfx_none,null
+dialogue_2_7_1,6,right,tortoise,Neutral,"그리고 무서움도 금방 사라질지니…",0.04,sfx_none,null
+dialogue_2_7_1,7,left,coco,Happy,"응… 계속 담그고 있으니까… 정말로 시원하다고 느껴져…",0.04,sfx_none,null
+dialogue_2_8_1,0,right,tortoise,Neutral,"상자가 저 멀리에 필요하겠구나.\n내 등뒤에 올려보겠나? 내가 옮겨다주마.",0.04,sfx_none,null
+dialogue_2_8_1,1,left,coco,Neutral,"응! 부탁할게!",0.04,sfx_none,null
+dialogue_2_10_1,0,right,tortoise,Neutral,"이런, 감시 포탑 친구가 숨어있었군.",0.04,sfx_none,null
+dialogue_2_10_1,1,left,coco,Surprised,"감시 포탑 친구?",0.04,sfx_none,null
+dialogue_2_10_1,2,right,tortoise,Neutral,"오래전 전쟁 때 사용된 물건이라네.\n지금은 다행히도 고장 나서 고작 문 열고 닫는 것 정도 밖에 하지 못하지.",0.04,sfx_none,null
+dialogue_2_10_1,3,right,tortoise,Neutral,"저 포탑의 눈만 가린다면 문을 통과할 수 있을 텐데…\n저 친구의 시야를 가릴만한 방법을 찾아보겠나?",0.04,sfx_none,null
+dialogue_2_10_1,4,left,coco,Neutral,"좋아! 상자를 한 번 찾아볼게!",0.04,sfx_none,null
+dialogue_2_10_10,0,left,coco,Happy,"나… 물이 이렇게 즐거운 줄 정말 몰랐어.",0.04,sfx_none,null
+dialogue_2_10_10,1,right,tortoise,Neutral,"허허. 물은 늘 같은 흐름 같아 보여도,\n자세히 보면 순간순간 다르다네. 두려움도 그렇지.",0.04,sfx_none,null
+dialogue_2_10_10,2,left,coco,Happy,"처음엔 너무 무서웠는데… 지금은 발끝이 들썩거릴 정도야!",0.04,sfx_none,null
+dialogue_2_10_10,3,right,tortoise,Neutral,"흐름은 혼자 맞서면 거세고 무섭지만, 함께라면 다르지.\n언제든 다시 물이 두려워지면 생각하게. 네가 이미 해냈다는 것을.",0.04,sfx_none,null
+dialogue_2_10_10,4,left,coco,Neutral,"…응! 물에서 수영하는 내 모습을 얼른 주인에게 보여주고 싶어!",0.04,sfx_none,null
+dialogue_2_10_10,5,right,tortoise,Neutral,"그래. 달빛이 길을 비추고 있구나. 달빛을 따라 조심해 가게나, 코코두기.",0.04,sfx_none,null
+dialogue_2_10_10,6,left,coco,Neutral,"응! 오늘따라 밤 달빛은 정말 밝고, 따뜻한 것 같아!",0.04,sfx_none,null

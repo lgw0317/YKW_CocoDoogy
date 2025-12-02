@@ -155,7 +155,7 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
     {
         //아래 변수는 이동을 시작할 때 거북이 사방의 땅 블록 리스트임.
         List<IEdgeColliderHandler> startCache = GetComponent<IEdgeColliderHandler>().DetectGrounds();
-        
+
         float dist = Vector3.Distance(startPos, endPos);
         if (dist < tileSize * 0.5f)
         {
@@ -191,9 +191,9 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
 
         foreach (var col in ridables)
         {
-            
+
             Debug.Log($"[Turtle] {col.name} 탑승 감지됨.");
-            
+
 
             if (col.transform == transform) continue;
 
@@ -236,19 +236,62 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
         }
 
 
-            //HACK: 1106 - 강욱: 터틀이 이동하는 동안, 머리 위에 타고 있는 객체의 위치를 동기화
-            //머리 위에 타고 있는 객체가 IEdgeColliderHandler인 경우도 감안하여 처리 => 해당 객체가 직접 처리하도록 하자. (콜백함수처럼)
+        //HACK: 1106 - 강욱: 터틀이 이동하는 동안, 머리 위에 타고 있는 객체의 위치를 동기화
+        //머리 위에 타고 있는 객체가 IEdgeColliderHandler인 경우도 감안하여 처리 => 해당 객체가 직접 처리하도록 하자. (콜백함수처럼)
         // 터틀과 탑승 물체 동시 이동
         while (elapsed < duration)
         {
-           
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
+            Vector3 nextPos = Vector3.Lerp(startPos, endPos, t);
 
+            Vector3 hitExt = new Vector3(tileSize * 0.45f, 0.1f, tileSize * 0.45f);
+
+            // blockingLayer 검사
+            Collider[] midHits = Physics.OverlapBox(
+                nextPos,
+                hitExt,
+                Quaternion.identity,
+                blockLayer,
+                QueryTriggerInteraction.Ignore
+            );
+
+            // ⭐ 앞 막힘 판단
+            bool blocked = false;
+
+            foreach (var h in midHits)
+            {
+                // ⭐ 머리 위에 실려 있는 애들은 blockLayer라도 무시
+                if (ridableTrans.Contains(h.transform))
+                    continue;
+
+                // 그 외 blockLayer는 진짜로 막힘
+                blocked = true;
+                break;
+            }
+
+            if (blocked)
+            {
+                Debug.Log("[Turtle] BLOCK 감지 → 현재 위치에서 정지");
+
+                // 타일 스냅
+                Vector3 snapped = new Vector3(
+                    Mathf.Round(transform.position.x / tileSize) * tileSize,
+                    transform.position.y,
+                    Mathf.Round(transform.position.z / tileSize) * tileSize
+                );
+
+                transform.position = snapped;
+                endPos = snapped;
+                break;
+            }
+
+            // 충돌 없으면 원래대로 이동
+            transform.position = nextPos;
 
 
             // 터틀 이동 중
-            transform.position = Vector3.Lerp(startPos, endPos, t);
+            //transform.position = Vector3.Lerp(startPos, endPos, t);
             if (dir.sqrMagnitude > 0.001f)
             {
                 //HACK: 1106 - 강욱: 터틀이 이동하는 동안, 머리 위에 타고 있는 객체의 위치를 동기화
@@ -256,19 +299,19 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
                 transform.rotation = targetRot;
                 if (ridableTrans != null && ridableTrans.Count > 0)
                 {
-                    foreach(var trans in ridableTrans)
+                    foreach (var trans in ridableTrans)
                     {
                         //NOTE: 이 코드 필요합니다. 다만, 적층된 물체의 포지션에 보정치를 추가합니다.(1단적 - 0, 2단적 - 1, 3단적 - 2 ...)
                         //NOTE: 또, 플레이어의 경우 자식이 거북이 밑으로 변동되니 0.5f 공중으로 뜨는데, 플레이어무브먼트 검출로 판단시켜서 보정했지만
                         //더 좋은 방법이 있을 겁니다...
 
                         //여기서 처리하는 대신에, IRider의 탑승시작/끝 콜백 안에서의 RidingCoroutine 호출로 빼서 처리가 가능할 지도?
-                       
+
                         trans.SetPositionAndRotation(
-                            trans.GetComponent<PlayerMovement>() == null?
+                            trans.GetComponent<PlayerMovement>() == null ?
                             transform.position + (Vector3Int.up * ridableTrans.IndexOf(trans))
                             : transform.position + (Vector3.up * (ridableTrans.IndexOf(trans) - .5f)),
-                            
+
                             transform.rotation);
                     }
                 }
@@ -351,14 +394,14 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
             if (po != null)
             {
                 po.enabled = true;
-                
+
             }
         }
         isMoving = false;
 
 
         yield return null;
-        
+
         List<IEdgeColliderHandler> endCache = GetComponent<IEdgeColliderHandler>().DetectGrounds();
 
         GetComponent<IEdgeColliderHandler>().DetectAndApplyFourEdge();
