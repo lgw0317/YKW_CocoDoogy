@@ -2,9 +2,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class FriendLobbyManager : MonoBehaviour
 {
-    public UserData.Master friendMaster { get; private set; }
-    public UserData.Lobby friendLobby { get; private set; }
-
+    public UserData.Master FriendMaster { get; private set; }
+    public UserData.Lobby FriendLobby { get; private set; }
+    public UserData Friend { get; private set;  }
+    public string Uid { get; private set; }
     public static FriendLobbyManager Instance { get; private set; }
     private void Awake()
     {
@@ -18,9 +19,11 @@ public class FriendLobbyManager : MonoBehaviour
     
     }
 
-    public void Init(UserData.Master master, UserData.Lobby lobby)
+    public void Init(UserData friend, string friendUid)
     {
-        friendMaster = master;
-        friendLobby = lobby;
+        Friend = friend;
+        FriendMaster = friend.master;
+        FriendLobby = friend.lobby;
+        Uid = friendUid;
     }
 }

@@ -161,10 +161,10 @@ public class PlaceableStore_Friend : MonoBehaviour
     /// </summary>
     private bool TryLoadFromFriendLobby()
     {
-        if (FriendLobbyManager.Instance == null || FriendLobbyManager.Instance.friendLobby == null)
+        if (FriendLobbyManager.Instance == null || FriendLobbyManager.Instance.FriendLobby == null)
             return false;
 
-        var lobby = FriendLobbyManager.Instance.friendLobby;
+        var lobby = FriendLobbyManager.Instance.FriendLobby;
 
         // props 자체가 없거나 비어 있으면 Firebase 쪽에 배치 데이터 없는 것으로 간주
         if (lobby.props == null || lobby.props.Count == 0)
