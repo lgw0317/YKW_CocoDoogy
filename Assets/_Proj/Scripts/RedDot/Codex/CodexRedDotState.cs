@@ -1,36 +1,26 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 public struct CodexRedDotState
 {
-    /// <summary>µµ°¨ ÀüÃ¼ Áß ÇÏ³ª¶óµµ »õ·Î ¿­¸° Ç×¸ñÀÌ ÀÖ´ÂÁö</summary>
     public bool any;
 
-    /// <summary>°¢ Ä«Å×°í¸®º° »õ·Î ¿­¸° Ç×¸ñ Á¸Àç ¿©ºÎ</summary>
     public bool hasAnimal;
     public bool hasDeco;
     public bool hasCostume;
     public bool hasArtifact;
     public bool hasHome;
 
-    /// <summary>ÇÕÃÄ¼­¶óµµ ÇÏ³ª¶óµµ ÀÖÀ¸¸é true (ÆíÀÇ¿ë)</summary>
     public bool hasAny =>
         hasAnimal || hasDeco || hasCostume || hasArtifact || hasHome;
 }
 
-/// <summary>
-/// µµ°¨ »¡°£Á¡ °è»ê Àü´ã ¸Å´ÏÀú
-/// - ±âÁØ: UserData.Local.codex.newlyUnlocked
-/// </summary>
 public static class CodexRedDotManager
 {
     public static CodexRedDotState Current { get; private set; }
 
     public static event Action<CodexRedDotState> OnStateChanged;
 
-    /// <summary>
-    /// »õ·Î ÇØ±İ/È®ÀÎ ÈÄ »¡°£Á¡ »óÅÂ ´Ù½Ã °è»êÇÒ ¶§ È£Ãâ
-    /// </summary>
     public static void Recalculate()
     {
         var newState = CalculateInternal();
@@ -47,9 +37,6 @@ public static class CodexRedDotManager
         OnStateChanged?.Invoke(Current);
     }
 
-    /// <summary>
-    /// ÀüºÎ ÃÊ±âÈ­ÇØ¼­ »¡°£Á¡ °­Á¦·Î ²ô°í ½ÍÀ» ¶§ »ç¿ë
-    /// </summary>
     public static void ForceClear()
     {
         Current = default;
@@ -64,6 +51,20 @@ public static class CodexRedDotManager
                a.hasCostume == b.hasCostume &&
                a.hasArtifact == b.hasArtifact &&
                a.hasHome == b.hasHome;
+    }
+
+    // â–¼ íƒ€ì…-ì•„ì´í…œIDê°€ ë§ëŠ”ì§€ ì²´í¬
+    private static bool IsValidForType(CodexType type, int itemId)
+    {
+        switch (type)
+        {
+            case CodexType.deco: return 10000 < itemId && itemId < 20000;
+            case CodexType.costume: return 20000 < itemId && itemId < 30000;
+            case CodexType.animal: return 30000 < itemId && itemId < 40000;
+            case CodexType.home: return 40000 < itemId && itemId < 50000;
+            case CodexType.artifact: return 50000 < itemId && itemId < 60000; // â† ì‹¤ì œ ìœ ë¬¼ ë²”ìœ„ì— ë§ê²Œ ì¡°ì •
+            default: return false;
+        }
     }
 
     private static CodexRedDotState CalculateInternal()
@@ -81,9 +82,16 @@ public static class CodexRedDotManager
         bool HasNew(CodexType type)
         {
             string key = type.ToString().ToLower();
-            if (!newly.TryGetValue(key, out var set) || set == null)
+            if (!newly.TryGetValue(key, out var set) || set == null || set.Count == 0)
                 return false;
-            return set.Count > 0;
+
+            foreach (var id in set)
+            {
+                // ğŸ”´ íƒ€ì…â€“ID ë²”ìœ„ê°€ ë§ëŠ” ì• ë“¤ë§Œ â€œìƒˆë¡œ í•´ê¸ˆâ€ìœ¼ë¡œ ì¸ì •
+                if (IsValidForType(type, id))
+                    return true;
+            }
+            return false;
         }
 
         state.hasAnimal = HasNew(CodexType.animal);
@@ -92,12 +100,12 @@ public static class CodexRedDotManager
         state.hasArtifact = HasNew(CodexType.artifact);
         state.hasHome = HasNew(CodexType.home);
 
-        // ÀüÃ¼ any ÇÃ·¡±×
-        state.any = state.hasAnimal ||
-                    state.hasDeco ||
-                    state.hasCostume ||
-                    state.hasArtifact ||
-                    state.hasHome;
+        state.any =
+            state.hasAnimal ||
+            state.hasDeco ||
+            state.hasCostume ||
+            state.hasArtifact ||
+            state.hasHome;
 
         return state;
     }
