@@ -671,9 +671,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1341727309}
     m_Modifications:
+    - target: {fileID: 985932547882412248, guid: cc9eae4fae7d0dd4a861cd68da132a37, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1247566229096067010, guid: cc9eae4fae7d0dd4a861cd68da132a37, type: 3}
       propertyPath: m_Name
       value: UIRoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775465189450871480, guid: cc9eae4fae7d0dd4a861cd68da132a37, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5496768738838430174, guid: cc9eae4fae7d0dd4a861cd68da132a37, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7890512722885660201, guid: cc9eae4fae7d0dd4a861cd68da132a37, type: 3}
       propertyPath: m_Pivot.x
@@ -754,6 +766,10 @@ PrefabInstance:
     - target: {fileID: 7890512722885660201, guid: cc9eae4fae7d0dd4a861cd68da132a37, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8633702392648703981, guid: cc9eae4fae7d0dd4a861cd68da132a37, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

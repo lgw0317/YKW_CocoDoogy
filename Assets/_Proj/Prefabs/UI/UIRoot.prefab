@@ -16134,7 +16134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &598009904685948625
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37918,6 +37918,7 @@ MonoBehaviour:
   button: {fileID: 5874207653284439407}
   panel: {fileID: 2900964805002306341}
   nicknameText: {fileID: 4180359858693991776}
+  totalLikesText: {fileID: 744869341132467175}
 --- !u!1 &7489892974230993131
 GameObject:
   m_ObjectHideFlags: 0

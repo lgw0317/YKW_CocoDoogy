@@ -74,6 +74,7 @@ public class ProfilePanelController : MonoBehaviour
             joindateText.text = formatted;
         }
         profileBigImage.sprite = DataManager.Instance.Profile.GetIcon(UserData.Local.master[ProfileType.icon]);
+        totalLikeText.text = $"누적 로비 좋아요  :  {UserData.Local.master.totalLikes}";
 
 
     }
