@@ -91,7 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   relayRadius: 4
   relayDelay: 1
-  towerCooldown: 10
+  towerCooldown: 0.1
   useOcclusion: 1
   occluderMask:
     serializedVersion: 2
