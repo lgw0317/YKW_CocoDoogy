@@ -135,4 +135,4 @@ MonoBehaviour:
     portrait_set_prefix: Talk_portrait/buffalo_Surprised_Right
   - speaker_id: 5
     display_name: "\uB3C4\uC6C0\uB9D0"
-    portrait_set_prefix: Talk_portrait/helper_Neutral_Right
+    portrait_set_prefix: Talk_portrait/helper_Neutral_Left
