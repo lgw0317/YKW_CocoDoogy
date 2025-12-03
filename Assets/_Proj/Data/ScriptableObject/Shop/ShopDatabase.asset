@@ -95,7 +95,7 @@ MonoBehaviour:
       \uD589\uB3D9\uB825\uC785\uB2C8\uB2E4.\""
     shop_item: 90008
     shop_type: 1
-    shop_price: 100
+    shop_price: 20
     shop_stock: -1
     shop_group: 5
     shop_item_category: 15

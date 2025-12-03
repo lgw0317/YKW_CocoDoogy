@@ -6,7 +6,7 @@ shop_id,shop_name,shop_icon,shop_desc,shop_item,shop_type,shop_price,shop_stock,
 80005,카우보이 모자,Icons/Shop/icon_cowboy_hat,"코코두기가 가장 아끼는\n보안관 모자입니다.",90005,cap,25000,1,costume,head
 80006,왕관,Icons/Shop/icon_crown_hat,"박물관에서 챙겨온\n왕관입니다.",90006,cap,25000,1,costume,head
 80007,마법사 모자,Icons/Shop/icon_magician_hat,"착용하면 빗자루를 탈 수 있을 것 같은 마법사의\n모자입니다.",90007,cap,25000,1,costume,head
-80008,행동력,Icons/Shop/icon_energy,"스테이지 진입시 소모되는 행동력입니다.",90008,coin,100,-1,goods,energy
+80008,행동력,Icons/Shop/icon_energy,"스테이지 진입시 소모되는 행동력입니다.",90008,coin,20,-1,goods,energy
 80009,병뚜껑,Icons/Shop/icon_cap,"상점에서 사용 가능한 무료 재화입니다.",90009,coin,1000,-1,goods,cap
 80010,유료 코인,Icons/Shop/icon_coin,"상점에서 사용 가능한 유료 재화입니다.",90010,cash,5000,-1,goods,coin
 80011,기본 배경,Icons/Shop/icon_basic,"익숙하지만 정겨운\n배경입니다.",90011,cap,10000,1,background,all
