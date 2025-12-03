@@ -42,6 +42,9 @@ public class PlayerMovement : MonoBehaviour, IRider
         }
     }
     //
+
+    public bool isMoveLocked = false;
+    private float moveLockTimer;
     #endregion
 
 
@@ -67,7 +70,29 @@ public class PlayerMovement : MonoBehaviour, IRider
         if (joystick == null) return;
         if (camTr == null) camTr = Camera.main?.transform;
 
+        if(moveLockTimer > 0f)
+        {
+            moveLockTimer -= Time.fixedDeltaTime;
+            if(moveLockTimer <= 0f)
+            {
+                moveLockTimer = 0f;
+                isMoveLocked = false;
+            }
+        }
 
+        if (isMoveLocked)
+        {
+            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+
+            if(moveStrategies != null)
+            {
+                foreach(var strategy in moveStrategies)
+                {
+                    strategy.Execute(Vector3.zero, rb, this);
+                }
+            }
+            return;
+        }
         // 두 손가락 드래그 중에는 플레이어 이동/회전 차단
         if (joystick.IsTwoFingerMode)
         {
@@ -305,6 +330,13 @@ public class PlayerMovement : MonoBehaviour, IRider
         //rb.MoveRotation(smoothRot);
     }
 
+    // 인터랙션 이후 투명 콜라이더가 켜지기 전 넘어가버리는 특수 상황처리를 위한 움직임 잠금 메서드
+    public void LockMove(float duration)
+    {
+        if (duration <= 0f) return;
+        isMoveLocked = true;
+        moveLockTimer = Mathf.Max(moveLockTimer, duration);
+    }
 
     public Vector2Int To4Dir(Vector3 dir)
     {
