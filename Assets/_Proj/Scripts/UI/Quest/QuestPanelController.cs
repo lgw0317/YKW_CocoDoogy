@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class QuestPanelController : MonoBehaviour
+public class QuestPanelController : MonoBehaviour, IQuestBehaviour
 {
     [Header("Data Source")]
     [SerializeField] private QuestDatabase questDatabase;
@@ -212,6 +212,11 @@ public class QuestPanelController : MonoBehaviour
         // 보상 체킹
         qData.rewarded.Add(quest.quest_id);
 
+        if (quest.quest_type == QuestType.daily || quest.quest_type == QuestType.weekly)
+        {
+            QuestManager.Instance.Handle(this, quest.quest_type);
+        }
+
         //UserData.Local.flag |= UserDataDirtyFlag.Quest;
         //UserData.Local.flag |= UserDataDirtyFlag.Wallet;
         UserData.Local.Save();
@@ -233,26 +238,26 @@ public class QuestPanelController : MonoBehaviour
         RefreshStack();
         //ResetScroll();   
     }
-    private void UpdateStackRewardProgress(int cleared)
-    {
-        var qData = UserData.Local.quest;
+    //private void UpdateStackRewardProgress(int cleared)
+    //{
+    //    var qData = UserData.Local.quest;
 
-        foreach (var stackQuest in questDatabase.questList)
-        {
-            if (currentType == QuestType.daily &&
-                stackQuest.quest_type != QuestType.daily_stackrewards)
-                continue;
+    //    foreach (var stackQuest in questDatabase.questList)
+    //    {
+    //        if (currentType == QuestType.daily &&
+    //            stackQuest.quest_type != QuestType.daily_stackrewards)
+    //            continue;
 
-            if (currentType == QuestType.weekly &&
-                stackQuest.quest_type != QuestType.weekly_stackrewards)
-                continue;
+    //        if (currentType == QuestType.weekly &&
+    //            stackQuest.quest_type != QuestType.weekly_stackrewards)
+    //            continue;
 
-            if (cleared >= stackQuest.quest_value)
-                qData.progress[stackQuest.quest_id] = stackQuest.quest_value;
-            else
-                qData.progress[stackQuest.quest_id] = 0;
-        }
-    }
+    //        if (cleared >= stackQuest.quest_value)
+    //            qData.progress[stackQuest.quest_id] = stackQuest.quest_value;
+    //        else
+    //            qData.progress[stackQuest.quest_id] = 0;
+    //    }
+    //}
     private void RefreshStack()
     {
         if (!stackRewardUI) return;
@@ -277,12 +282,11 @@ public class QuestPanelController : MonoBehaviour
                 continue;
 
             total++;
-            if (qData.progress.ContainsKey(quest.quest_id) &&
-                qData.progress[quest.quest_id] >= quest.quest_value)
+            if (qData.rewarded.Contains(quest.quest_id))
                 cleared++;
         }
 
-        UpdateStackRewardProgress(cleared);
+        //UpdateStackRewardProgress(cleared);
         stackRewardUI.SetData(total, cleared);
     }
 
