@@ -23,7 +23,11 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
     public LayerMask playerLayer; // 플레이어 레이어 마스크
     private Transform playerTrans; // 감지된 플레이어의 Transform
 
+
+    public float playerLockSec;
+
     private bool isMoving = false;
+
     //LSH 추가 1128
     public bool IsMoving => isMoving;
     private Vector3 targetPos;
@@ -101,6 +105,15 @@ public class Turtle : MonoBehaviour, IDashDirection, IPlayerFinder
         isMoving = true;
         btnGroup.SetActive(false);
 
+        if (playerTrans != null)
+        {
+            var pm = playerTrans.GetComponent<PlayerMovement>();
+            if (pm != null)
+            {
+                // 인터랙션 눌리면 잠깐동안 플레이어 움직임 잠금
+                pm.LockMove(playerLockSec);
+            }
+        }
         Vector3 moveDir = new Vector3(dir.x, 0, dir.y);
 
         // 빙판 로직 적용 : 멈출 때까지 방향으로 이동할 목표 위치 계산
