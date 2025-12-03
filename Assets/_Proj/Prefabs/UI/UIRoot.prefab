@@ -8463,7 +8463,7 @@ MonoBehaviour:
   dailyTabButton: {fileID: 2920240358672699260}
   weeklyTabButton: {fileID: 7481614430220996286}
   achievementTabButton: {fileID: 3976646378281810981}
-  dailyRedDot: {fileID: 0}
+  dailyRedDot: {fileID: 985136216271945922}
   weeklyRedDot: {fileID: 8723094166993344959}
   achievementRedDot: {fileID: 3079658724371091127}
   dailyWeeklyArea: {fileID: 153937435263797548}
