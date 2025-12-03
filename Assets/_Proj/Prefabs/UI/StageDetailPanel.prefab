@@ -530,6 +530,7 @@ MonoBehaviour:
   - {fileID: 2328932647912346344}
   collectedSprite: {fileID: 21300000, guid: 6cd2e4f7622ab468686a5d750551e633, type: 3}
   notCollectedSprite: {fileID: 21300000, guid: 1d3a6f2d5f11b4eb5a16c632c2e98799, type: 3}
+  EnergyNoticePanel: {fileID: 1152150639319465628, guid: a0049bccc2abc7e4a887948c0ea46058, type: 3}
 --- !u!114 &6641082229080726239
 MonoBehaviour:
   m_ObjectHideFlags: 0

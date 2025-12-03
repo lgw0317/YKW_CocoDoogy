@@ -15,6 +15,7 @@ public class StageDetailInfo : MonoBehaviour
     public Image[] treasureIcons; // 스테이지별 보물 아이콘들 (3개)
     public Sprite collectedSprite;
     public Sprite notCollectedSprite;
+    public GameObject EnergyNoticePanel;
     private int consume = 1;
 
     void Awake()
@@ -53,12 +54,13 @@ public class StageDetailInfo : MonoBehaviour
 
     async void EnterStage()
     {
-        //if (UserData.Local.goods[GoodsType.energy] < consume)
-        //{
-        //    //Todo : 행동력이 부족하다면 추가 팝업 보여주고 리턴
-        //    print("행동려기부족카당");
-        //    return;
-        //}
+        if (UserData.Local.goods[GoodsType.energy] < consume)
+        {
+            //Todo : 행동력이 부족하다면 추가 팝업 보여주고 리턴
+            print("행동려기부족카당");
+            Instantiate(EnergyNoticePanel, transform);
+            return;
+        }
         await FirebaseManager.Instance.FindMapDataByStageID(currentStageId);
 
         //행동력을 consume 만큼 빼줘야함
