@@ -64,8 +64,8 @@ public class StageDetailInfo : MonoBehaviour
         await FirebaseManager.Instance.FindMapDataByStageID(currentStageId);
 
         //행동력을 consume 만큼 빼줘야함
-        //UserData.Local.goods[100001] -= consume;
-        //UserData.Local.goods.Save();
+        UserData.Local.goods[110001] -= consume;
+        UserData.Local.goods.Save();
 
         if (currentStageId.Contains("stage_1"))
         {
