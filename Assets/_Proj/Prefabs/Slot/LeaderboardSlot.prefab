@@ -98,7 +98,7 @@ MonoBehaviour:
   nicknameText: {fileID: 6000574370687789576}
   likeCountText: {fileID: 7684648608340281023}
   requestButton: {fileID: 2754383772957115826}
-  requestButtonText: {fileID: 1760295115824733637}
+  statusText: {fileID: 0}
 --- !u!1 &1128805422428468139
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,7 +300,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 99
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 692200064f896b54c8fa08df8d167886, type: 2}
   m_sharedMaterial: {fileID: 235566447649535823, guid: 692200064f896b54c8fa08df8d167886, type: 2}
@@ -436,7 +436,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f9e6edc656fddbb48aeb524cc07547ce, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 24d0163523ac5a04ba4f8dd96daf91f9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -511,7 +511,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC88B\uC544\uC694 : 100029"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 692200064f896b54c8fa08df8d167886, type: 2}
   m_sharedMaterial: {fileID: 235566447649535823, guid: 692200064f896b54c8fa08df8d167886, type: 2}
@@ -600,7 +600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5577293316824633890
 RectTransform:
   m_ObjectHideFlags: 0
@@ -768,7 +768,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uCC9C\uD638\uB3CC\uB3C4\uB07C"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 692200064f896b54c8fa08df8d167886, type: 2}
   m_sharedMaterial: {fileID: 235566447649535823, guid: 692200064f896b54c8fa08df8d167886, type: 2}
