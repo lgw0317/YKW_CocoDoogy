@@ -28,7 +28,8 @@ public class PlayerPush : MonoBehaviour, IMoveStrategy
             currCooltime -= Time.deltaTime;
             
             //currPushHandler = null;
-            return (Vector3.zero, Vector3.zero);
+            //return (Vector3.zero, Vector3.zero);
+            return (moveDir, Vector3.zero);
         }
 
         // 입력 없으면 즉시 리셋
