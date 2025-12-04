@@ -40,7 +40,7 @@ MonoBehaviour:
   - treasure_id: treasure_1_2_2
     treasureType: 2
     reward_id: 10004
-    count: 2
+    count: 10
     view_codex_id: codex_deco_fence
     coco_coment: "\"\uC870\uACBD\uBB3C\uC744 \uD68D\uB4DD\uD588\uC5B4. \uBC30\uCE58\uD574\uBCF4\uC790!\""
   - treasure_id: treasure_1_2_3
@@ -226,11 +226,11 @@ MonoBehaviour:
     coco_coment: "\"\uBCD1\uB69C\uAED1\uC774\uB2E4!\""
   - treasure_id: treasure_2_2_2
     treasureType: 4
-    reward_id: 50011
+    reward_id: 50017
     count: 1
-    view_codex_id: codex_artifact_woodenboard
-    coco_coment: "\"\uBB3C \uC704\uAC00 \uC774\uB807\uAC8C \uD3B8\uC548\uD55C \uACF3\uC77C\n\uC904\uC740
-      \uBAB0\uB790\uC5B4!\""
+    view_codex_id: codex_artifact_paperboat
+    coco_coment: "\"\uBB3C\uC774 \uC774\uB807\uAC8C \uBC18\uC9DD\uC774\uAE30\uB3C4
+      \uD558\uB294\uAD6C\uB098\u2026\""
   - treasure_id: treasure_2_2_3
     treasureType: 1
     reward_id: 110002
@@ -240,7 +240,7 @@ MonoBehaviour:
   - treasure_id: treasure_2_3_1
     treasureType: 2
     reward_id: 10005
-    count: 2
+    count: 5
     view_codex_id: codex_deco_white_fence
     coco_coment: "\"\uC870\uACBD\uBB3C\uC744 \uD68D\uB4DD\uD588\uC5B4. \uBC30\uCE58\uD574\uBCF4\uC790!\""
   - treasure_id: treasure_2_3_2
@@ -290,11 +290,11 @@ MonoBehaviour:
     coco_coment: "\"\uC870\uACBD\uBB3C\uC744 \uD68D\uB4DD\uD588\uC5B4. \uBC30\uCE58\uD574\uBCF4\uC790!\""
   - treasure_id: treasure_2_5_3
     treasureType: 4
-    reward_id: 50017
+    reward_id: 50011
     count: 1
-    view_codex_id: codex_artifact_paperboat
-    coco_coment: "\"\uBB3C\uC774 \uC774\uB807\uAC8C \uBC18\uC9DD\uC774\uAE30\uB3C4
-      \uD558\uB294\uAD6C\uB098\u2026\""
+    view_codex_id: codex_artifact_woodenboard
+    coco_coment: "\"\uBB3C \uC704\uAC00 \uC774\uB807\uAC8C \uD3B8\uC548\uD55C \uACF3\uC77C\n\uC904\uC740
+      \uBAB0\uB790\uC5B4!\""
   - treasure_id: treasure_2_6_1
     treasureType: 1
     reward_id: 110002
@@ -556,7 +556,7 @@ MonoBehaviour:
   - treasure_id: treasure_3_9_3
     treasureType: 2
     reward_id: 10005
-    count: 1
+    count: 5
     view_codex_id: codex_deco_white_fence
     coco_coment: "\"\uC870\uACBD\uBB3C\uC744 \uD68D\uB4DD\uD588\uC5B4. \uBC30\uCE58\uD574\uBCF4\uC790!\""
   - treasure_id: treasure_3_10_1
