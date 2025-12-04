@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class FriendLobbyUIController : MonoBehaviour
+public class FriendLobbyUIController : MonoBehaviour, IQuestBehaviour
 {
     [SerializeField] Button likeButton;
     [SerializeField] Image likeButtonImage;
@@ -12,10 +12,6 @@ public class FriendLobbyUIController : MonoBehaviour
 
     bool IsFollowing => UserData.Local.likes.followings.Contains(FriendLobbyManager.Instance.Uid);
 
-    private void Awake()
-    {
-        
-    }
     public async void Start()
     {
         SetLikeButton();
@@ -35,6 +31,8 @@ public class FriendLobbyUIController : MonoBehaviour
 
         await FirebaseManager.Instance.FollowPlayer_Outbound(FriendLobbyManager.Instance.Uid, !IsFollowing);
 
+        if (IsFollowing)
+            QuestManager.Instance.Handle(this, "SendLike_Repeatable");
         isAwait = false;
         Recolor();
     }
