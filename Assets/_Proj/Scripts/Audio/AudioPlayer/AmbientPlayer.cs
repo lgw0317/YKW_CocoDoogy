@@ -26,12 +26,15 @@ public class AmbientPlayer : AudioPlayerControl
         if (pooled)
         {
             currentSource = audioPool.GetSource();
+            currentSource.spread = 0f; // 환경음은 좌우에 따라 다른 소리가 더 어울리지 않을까?
         }
         else
         {
             GameObject gObj = new GameObject($"AmbientPlayer");
             gObj.transform.parent = myTrans;
             currentSource = gObj.AddComponent<AudioSource>();
+            currentSource.dopplerLevel = 0f;
+            currentSource.reverbZoneMix = 0f;
             activeSources.Add(currentSource);
             Debug.Log($"{activeSources}�� {currentSource.name} ���� ����");
         }

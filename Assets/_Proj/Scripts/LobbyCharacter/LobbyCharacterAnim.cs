@@ -36,7 +36,7 @@ public class LobbyCharacterAnim
     public void PlayCocoInteractionWithAnimal()
     {
         anim.Play("Spin2");
-        AudioEvents.Raise(SFXKey.OutGameMaster, 1, loop: false, pooled: true, pos: owner.transform.position);
+        AudioEvents.Raise(SFXKey.OutGameCocodoogy, 0, loop: false, pooled: true, pos: owner.transform.position);
     }
     public void PlayAnimalInteractionWithCoco()
     {
