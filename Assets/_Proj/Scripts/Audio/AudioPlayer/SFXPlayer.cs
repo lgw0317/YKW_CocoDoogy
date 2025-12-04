@@ -42,10 +42,7 @@ public class SFXPlayer : AudioPlayerControl
         if (pooled)
         {
             currentPooledSource = audioPool.GetSource();
-            currentPooledSource.outputAudioMixerGroup = group;
-            currentPooledSource.clip = clip;
-            currentPooledSource.loop = loop;
-
+            //currentPooledSource.outputAudioMixerGroup = group;
             //  3D 옵션
             if (pos.HasValue)
             {
@@ -53,6 +50,9 @@ public class SFXPlayer : AudioPlayerControl
                 currentPooledSource.spatialBlend = 1f;
             }
             else currentPooledSource.spatialBlend = 0f;
+
+            currentPooledSource.clip = clip;
+            currentPooledSource.loop = loop;
 
             // currentSource.pitch = UnityEngine.Random.Range(0.95f, 1.05f);
             // currentSource.volume = UnityEngine.Random.Range(0.95f, 1f);

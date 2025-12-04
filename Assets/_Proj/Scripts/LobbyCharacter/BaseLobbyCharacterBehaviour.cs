@@ -202,7 +202,7 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     }
     IEnumerator Pressing()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.15f);
         fsm.ChangeState(DragState);
         yield break;
     }

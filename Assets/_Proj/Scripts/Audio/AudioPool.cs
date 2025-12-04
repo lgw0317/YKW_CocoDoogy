@@ -108,7 +108,7 @@ public class AudioPool
 
     public IEnumerator ReturnAfterDelay(AudioSource src, float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay + 0.3f);
         // 코루틴 도중에 Destroy 됐을 수도 있으니 체크
         if (src != null)
         {
@@ -123,7 +123,7 @@ public class AudioPool
 
         src.rolloffMode = AudioRolloffMode.Logarithmic;
         src.minDistance = 1.5f;
-        src.maxDistance = 180f;
+        src.maxDistance = 45f;
     }
     private void SetOutGameMode(AudioSource src)
     {
