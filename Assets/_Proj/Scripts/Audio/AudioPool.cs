@@ -48,6 +48,9 @@ public class AudioPool
 
         src.gameObject.tag = isExtra ? "newPooled" : "pooled";
         src.outputAudioMixerGroup = defaultGroup;
+        src.dopplerLevel = 0;
+        src.reverbZoneMix = 0;
+        src.spread = 180f;
         src.volume = 1f;
         src.pitch = 1f;
         src.spatialBlend = 1f;

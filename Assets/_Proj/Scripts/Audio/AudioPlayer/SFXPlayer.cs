@@ -28,6 +28,8 @@ public class SFXPlayer : AudioPlayerControl
         activeSources.Add(currentNotPooledSource);
         currentNotPooledSource.outputAudioMixerGroup = group;
         currentNotPooledSource.volume = 1f;
+        currentNotPooledSource.dopplerLevel = 0f;
+        currentNotPooledSource.reverbZoneMix = 0f;
         initVolume = currentNotPooledSource.volume;
         currentNotPooledSource.pitch = 1f;
         currentNotPooledSource.rolloffMode = AudioRolloffMode.Custom;
