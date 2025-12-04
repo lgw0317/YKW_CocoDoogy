@@ -6,7 +6,8 @@ using UnityEngine;
 public class AutoVersionIncrement : IPreprocessBuildWithReport
 {
     public int callbackOrder => 0;
-    private const int PatchLimit = 1000;
+    private const int PatchLimit = 500;
+    private const int MinorLimit = 9;
 
     public void OnPreprocessBuild(BuildReport report)
     {
@@ -15,7 +16,7 @@ public class AutoVersionIncrement : IPreprocessBuildWithReport
 
         if (parts.Length != 3)
         {
-            Debug.LogError($"Invalid version format: {version}");
+            Debug.LogError($"[AtuoVersionIncrement]Invalid version format: {version}");
             return;
         }
 
@@ -29,8 +30,18 @@ public class AutoVersionIncrement : IPreprocessBuildWithReport
         {
             patch = 0;
             minor++;
+            Debug.Log("[AtuoVersionIncrement] Patch limit reached → Minor++");
         }
 
+        if (minor > MinorLimit)
+        {
+            minor = 0;
+            major++;
+
+            Debug.Log("[AtuoVersionIncrement] Minor limit reached → Major++");
+        }
+
+        // PlayerSettings에 새 버전 저장
         string newVersion = $"{major}.{minor}.{patch}";
         PlayerSettings.bundleVersion = newVersion;
 
