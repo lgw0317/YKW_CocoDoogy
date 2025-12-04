@@ -71,6 +71,9 @@ public class SettingManager : MonoBehaviour
     /// <param name="pos">해당 동물 오브젝트의 위치 값</param>
     public void SetAnimalPosition(string name, Vector3 pos)
     {
+        var lobbyManager = LobbyCharacterManager.Instance;
+        if (lobbyManager == null) return;
+
         var entry = settingData.animalPos.Find(x => x.objectName == name);
         if (entry == null)
         {
