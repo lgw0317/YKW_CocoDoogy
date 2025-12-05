@@ -103,6 +103,7 @@ MonoBehaviour:
   selectedFrame: {fileID: 9074740852959818474}
   badgeIcon: {fileID: 6197045434061503453}
   button: {fileID: 6760806641137581161}
+  newRedDot: {fileID: 8459543351026363543}
 --- !u!1 &6197045434061503453
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,8 +363,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 42.2764, y: 42.2}
-  m_SizeDelta: {x: 15, y: 15}
+  m_AnchoredPosition: {x: 41.1, y: 40.3}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7732269529832163009
 CanvasRenderer:

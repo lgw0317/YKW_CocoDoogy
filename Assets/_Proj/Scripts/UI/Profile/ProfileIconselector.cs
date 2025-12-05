@@ -74,7 +74,10 @@ public class ProfileIconSelector : MonoBehaviour
         {
             var slot = Instantiate(iconSlotPrefab, slotParent);
             bool unlocked = _panel.IsIconUnlocked(p.id);
-            slot.Bind(p.id, p.icon, unlocked, OnSlotSelected);
+
+            //12.05mj 해금된 아이콘 중에서 새 아이콘인지 체크
+            bool isNew = ProfileRedDotManager.IsNewIcon(p.id);
+            slot.Bind(p.id, p.icon, unlocked, isNew, OnSlotSelected);
         }
     }
 
@@ -101,6 +104,9 @@ public class ProfileIconSelector : MonoBehaviour
         // 패널/외부에 알림
         //_panel.NotifyProfileIconChanged(_selectedSprite, _selectedId);
         _panel.EquipProfileIcon(_selectedId);
+
+        // 12.05mj 이 아이콘은 이제 “본 것”으로 처리 → 빨간점 제거
+        ProfileRedDotManager.MarkSeenIcon(_selectedId);
 
         Close();
     }
