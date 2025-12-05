@@ -1,0 +1,1331 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &18320790705803598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3806367226444891011}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RArm_Thumb1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3806367226444891011
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18320790705803598}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.74727005, y: 0.52232355, z: -0.19893357, w: -0.3594315}
+  m_LocalPosition: {x: -0.07705526, y: -0.0626799, z: -0.076891616}
+  m_LocalScale: {x: 0.999998, y: 1, z: 1.000001}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3843353044360854473}
+  m_Father: {fileID: 1651369068996083441}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1364680221235213444
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3405761141016534857}
+  - component: {fileID: 609628641775390299}
+  m_Layer: 0
+  m_Name: Robobot T7
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3405761141016534857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364680221235213444}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8539497479272690134}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &609628641775390299
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364680221235213444}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5ce20c45cf53b654b9f96b05ab38aa67, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 4300000, guid: c7ce139f2f76d904dab0e0a419f1a91e, type: 2}
+  m_Bones:
+  - {fileID: 7720974083825040022}
+  - {fileID: 2734358759119675211}
+  - {fileID: 3412353902792602451}
+  - {fileID: 6121956199123221866}
+  - {fileID: 1651369068996083441}
+  - {fileID: 3806367226444891011}
+  - {fileID: 4232211209672138067}
+  - {fileID: 8683582193802317224}
+  - {fileID: 4046069071555386574}
+  - {fileID: 6579684116719807196}
+  - {fileID: 2807601348231051454}
+  - {fileID: 2220176754792435793}
+  - {fileID: 6971861195164772745}
+  - {fileID: 7774161965845394219}
+  - {fileID: 8465295762333401735}
+  - {fileID: 8895535992722192120}
+  - {fileID: 3451971933550811845}
+  - {fileID: 7704819422553400432}
+  - {fileID: 2194052241259948816}
+  - {fileID: 3843353044360854473}
+  - {fileID: 416841286713615405}
+  - {fileID: 5596535398669275039}
+  - {fileID: 1783951525378936251}
+  - {fileID: 3832552506849538744}
+  - {fileID: 709555900168326395}
+  - {fileID: 788089297909545400}
+  - {fileID: 3546428880487681225}
+  - {fileID: 7919229349191575739}
+  - {fileID: 5380779383835855875}
+  - {fileID: 4298343020674223675}
+  - {fileID: 6269918605191951917}
+  - {fileID: 189529313513925547}
+  - {fileID: 8420005539439983470}
+  - {fileID: 2889016013698712008}
+  - {fileID: 6063141797391196954}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 8465295762333401735}
+  m_AABB:
+    m_Center: {x: -0.08443138, y: 0.0049231946, z: -0.00000047683716}
+    m_Extent: {x: 0.8142172, y: 0.25064397, z: 0.69537646}
+  m_DirtyAABB: 0
+--- !u!1 &1587760142515173462
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2889016013698712008}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LArm_Middle2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2889016013698712008
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587760142515173462}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.00000025918646, y: 0.000000028750884, z: 0.00043492005, w: 0.99999994}
+  m_LocalPosition: {x: -0.087509595, y: 0.00000045776366, z: 0.000000038146972}
+  m_LocalScale: {x: 1, y: 0.999999, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6063141797391196954}
+  m_Father: {fileID: 7919229349191575739}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1704728674870348382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4232211209672138067}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RArm_Middle1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4232211209672138067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704728674870348382}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0007200417, y: 0.013804868, z: 0.06531524, w: 0.99776894}
+  m_LocalPosition: {x: -0.15808252, y: -0.008628311, z: 0.042074934}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1783951525378936251}
+  m_Father: {fileID: 1651369068996083441}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1983693224632490921
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8895535992722192120}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RArm_UpperArm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8895535992722192120
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983693224632490921}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.21550293, y: 0.97324216, z: -0.07011294, w: -0.037979923}
+  m_LocalPosition: {x: -0.24361213, y: -0.014437477, z: -0.21858352}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6121956199123221866}
+  m_Father: {fileID: 7720974083825040022}
+  m_LocalEulerAnglesHint: {x: 8.792, y: -177.465, z: -24.776}
+--- !u!1 &2079757016585856298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4046069071555386574}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RLegAnkle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4046069071555386574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079757016585856298}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.007883928, y: -0.008395265, z: -0.26291785, w: 0.9647495}
+  m_LocalPosition: {x: -0.26031318, y: 0.00000008940697, z: -0.00000002142042}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6579684116719807196}
+  m_Father: {fileID: 6971861195164772745}
+  m_LocalEulerAnglesHint: {x: 0.619, y: -1.166, z: -30.495}
+--- !u!1 &2275607744066729749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3546428880487681225}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LArm_Thumb1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3546428880487681225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2275607744066729749}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.747271, y: 0.52232236, z: 0.19893305, w: 0.3594316}
+  m_LocalPosition: {x: -0.077055454, y: -0.06268021, z: 0.076891586}
+  m_LocalScale: {x: 1.000001, y: 1, z: 0.999999}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6269918605191951917}
+  m_Father: {fileID: 788089297909545400}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2292979185145548582
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5596535398669275039}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RArm_Index3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5596535398669275039
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2292979185145548582}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000011307444, y: -0.00000008922173, z: 0.0147480145, w: 0.9998913}
+  m_LocalPosition: {x: -0.054065533, y: 0.00000022888183, z: -0.00000001013279}
+  m_LocalScale: {x: 0.999999, y: 1.000001, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 416841286713615405}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2387712156423842587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2194052241259948816}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LLeg_Hip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2194052241259948816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2387712156423842587}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.1324482, y: 0.9911407, z: -0.00983636, w: 0.0008854418}
+  m_LocalPosition: {x: 0.053434998, y: -0.0011508986, z: 0.1596043}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4298343020674223675}
+  m_Father: {fileID: 8465295762333401735}
+  m_LocalEulerAnglesHint: {x: 1.131, y: 180.049, z: 15.223}
+--- !u!1 &3345663083839459850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6063141797391196954}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LArm_Middle3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6063141797391196954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3345663083839459850}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.00000021712543, y: 0.00000056147394, z: 0.014743832, w: 0.99989134}
+  m_LocalPosition: {x: -0.054065626, y: 0.00000061035155, z: 0.000000057220458}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2889016013698712008}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3933331964322756242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8539497479272690134}
+  m_Layer: 0
+  m_Name: Robobot_abandoned3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8539497479272690134
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3933331964322756242}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.27059722, y: -0.65328074, z: -0.27059802, w: 0.6532827}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3405761141016534857}
+  - {fileID: 8465295762333401735}
+  m_Father: {fileID: 1038656308644180100}
+  m_LocalEulerAnglesHint: {x: -45, y: -90, z: 0}
+--- !u!1 &4448341931917559156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4298343020674223675}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LLeg_Shin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4298343020674223675
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4448341931917559156}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.008718885, y: 0.011470357, z: 0.91423, w: 0.4049395}
+  m_LocalPosition: {x: -0.22465801, y: -0.000021148706, z: 0.000019007071}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2807601348231051454}
+  m_Father: {fileID: 2194052241259948816}
+  m_LocalEulerAnglesHint: {x: -0.797, y: 1.446, z: 132.21}
+--- !u!1 &4544624954521023533
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8465295762333401735}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_Pelvis
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8465295762333401735
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4544624954521023533}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.50000006, y: -0.5, z: -0.4999999, w: 0.5}
+  m_LocalPosition: {x: 3.012701e-14, y: 0.6232385, z: -0.026466688}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2194052241259948816}
+  - {fileID: 7774161965845394219}
+  - {fileID: 3451971933550811845}
+  m_Father: {fileID: 8539497479272690134}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4920367863355385409
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3832552506849538744}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RArm_Middle3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3832552506849538744
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4920367863355385409}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000068524464, y: -0.0000001692493, z: 0.01474926, w: 0.9998912}
+  m_LocalPosition: {x: -0.05406557, y: 0.000000076293944, z: -0.000000014305114}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1783951525378936251}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5057891363385508018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2807601348231051454}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LLeg_Ankle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2807601348231051454
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5057891363385508018}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.007962531, y: 0.007461844, z: -0.26344228, w: 0.96461344}
+  m_LocalPosition: {x: -0.2603125, y: 0.000004172325, z: -0.00000003981404}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2220176754792435793}
+  m_Father: {fileID: 4298343020674223675}
+  m_LocalEulerAnglesHint: {x: -0.655, y: 1.065, z: -30.557}
+--- !u!1 &5096004291258953086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7704819422553400432}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LArm_UpperArm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7704819422553400432
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5096004291258953086}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.19508462, y: 0.97054344, z: 0.13410333, w: 0.04476301}
+  m_LocalPosition: {x: -0.24361168, y: -0.014437468, z: 0.21862079}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 709555900168326395}
+  m_Father: {fileID: 7720974083825040022}
+  m_LocalEulerAnglesHint: {x: -16.127, y: 177.938, z: -22.438}
+--- !u!1 &5106337553172373017
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8683582193802317224}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RArm_Index1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8683582193802317224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5106337553172373017}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0007200144, y: 0.013804537, z: 0.06531151, w: 0.9977692}
+  m_LocalPosition: {x: -0.16037539, y: -0.008898926, z: -0.04141266}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 416841286713615405}
+  m_Father: {fileID: 1651369068996083441}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5165055691030755102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2220176754792435793}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LLeg_Toe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2220176754792435793
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5165055691030755102}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.00005529844, y: -0.00036171218, z: -0.23264104, w: 0.9725626}
+  m_LocalPosition: {x: -0.13360432, y: 0.00009871006, z: -0.000000057220458}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2807601348231051454}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5213231361193030361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6579684116719807196}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RLegToe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6579684116719807196
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5213231361193030361}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00020185144, y: 0.0009748114, z: -0.23291492, w: 0.9724966}
+  m_LocalPosition: {x: -0.13360432, y: 0.00009871482, z: 0.000000076293944}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4046069071555386574}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5465198920841815362
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 416841286713615405}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RArm_Index2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &416841286713615405
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5465198920841815362}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0000002901388, y: 0.00000007309882, z: 0.0004359189, w: 0.99999994}
+  m_LocalPosition: {x: -0.0875095, y: 0.0000008392334, z: -0.000000081658364}
+  m_LocalScale: {x: 0.999999, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5596535398669275039}
+  m_Father: {fileID: 8683582193802317224}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5882054468310975841
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6269918605191951917}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LArm_Thumb2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6269918605191951917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5882054468310975841}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0016541458, y: -0.0031423052, z: -0.013260624, w: 0.99990577}
+  m_LocalPosition: {x: -0.07425064, y: -0.000000057220458, z: -0.000000114440915}
+  m_LocalScale: {x: 1.000001, y: 1, z: 0.999999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3546428880487681225}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5919210415355728973
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1651369068996083441}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RArm_Palm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1651369068996083441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5919210415355728973}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.71134865, y: -0.25136992, z: 0.300225, w: 0.58366185}
+  m_LocalPosition: {x: -0.30788958, y: -0.000002212062, z: -0.00000045792694}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8683582193802317224}
+  - {fileID: 4232211209672138067}
+  - {fileID: 3806367226444891011}
+  m_Father: {fileID: 6121956199123221866}
+  m_LocalEulerAnglesHint: {x: 101.095, y: -44.009003, z: 2.1329956}
+--- !u!1 &5971212105799656186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1783951525378936251}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RArm_Middle2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1783951525378936251
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5971212105799656186}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000116634475, y: 0.00000036560934, z: 0.00044032952, w: 0.99999994}
+  m_LocalPosition: {x: -0.08750955, y: -0.00000045776366, z: 0.0000000333786}
+  m_LocalScale: {x: 1, y: 1.000001, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3832552506849538744}
+  m_Father: {fileID: 4232211209672138067}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6159748033311823639
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7919229349191575739}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LArm_Middle1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7919229349191575739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6159748033311823639}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0007199634, y: -0.013804812, z: 0.065313645, w: 0.99776906}
+  m_LocalPosition: {x: -0.15808252, y: -0.008628998, z: -0.042075023}
+  m_LocalScale: {x: 1.000001, y: 0.999999, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2889016013698712008}
+  m_Father: {fileID: 788089297909545400}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6382554402058769748
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3843353044360854473}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RArm_Thumb2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3843353044360854473
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6382554402058769748}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0016516917, y: 0.003139723, z: -0.013261441, w: 0.99990577}
+  m_LocalPosition: {x: -0.07425033, y: 0.000000076293944, z: -0.000000038146972}
+  m_LocalScale: {x: 0.999998, y: 1, z: 1.000001}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3806367226444891011}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6513389140205696265
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3412353902792602451}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_Neck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3412353902792602451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6513389140205696265}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000029437064, y: 0.0000010691435, z: -0.2345527, w: 0.9721034}
+  m_LocalPosition: {x: -0.3554122, y: -0.0021101125, z: 0.00000429656}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2734358759119675211}
+  m_Father: {fileID: 7720974083825040022}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -27.131}
+--- !u!1 &6816600487642247253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6971861195164772745}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RLegShin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6971861195164772745
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6816600487642247253}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00899879, y: -0.011317601, z: 0.9141232, w: 0.4051788}
+  m_LocalPosition: {x: -0.2246478, y: -0.0000075260177, z: 0.000007233117}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4046069071555386574}
+  m_Father: {fileID: 7774161965845394219}
+  m_LocalEulerAnglesHint: {x: 0.768, y: -1.468, z: 132.18}
+--- !u!1 &6939883686218468059
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 709555900168326395}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LArm_LowerArm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &709555900168326395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6939883686218468059}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.023099313, y: 0.0390369, z: -0.14038971, w: 0.98905677}
+  m_LocalPosition: {x: -0.21385822, y: 0.00000010617077, z: -0.0000011958182}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 788089297909545400}
+  m_Father: {fileID: 7704819422553400432}
+  m_LocalEulerAnglesHint: {x: -1.99, y: 4.804, z: -16.241}
+--- !u!1 &7030083192136720701
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1038656308644180100}
+  - component: {fileID: -1024383567851695663}
+  m_Layer: 0
+  m_Name: Robobot_abandoned3Prop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1038656308644180100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7030083192136720701}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8539497479272690134}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-1024383567851695663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7030083192136720701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15f8d9ef56a02f44e9f9c2156c40f3e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridPosition: {x: 0, y: 0, z: 0}
+  origin:
+    blockType: 0
+    blockName: 
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    property:
+      isOn: 0
+      linkedPos: {x: 2147483647, y: 2147483647, z: 2147483647}
+--- !u!1 &7628447688904661003
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8420005539439983470}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LArm_Index3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8420005539439983470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7628447688904661003}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000049468156, y: -0.0000001785152, z: 0.014750126, w: 0.9998912}
+  m_LocalPosition: {x: -0.054065607, y: -0.000000076293944, z: -0.00000001847744}
+  m_LocalScale: {x: 1, y: 0.999999, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 189529313513925547}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7700914929547782273
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 788089297909545400}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LArm_Palm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &788089297909545400
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7700914929547782273}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.69977003, y: 0.21301083, z: 0.3292421, w: 0.5971164}
+  m_LocalPosition: {x: -0.3078654, y: 0.000004977788, z: -0.000013178753}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5380779383835855875}
+  - {fileID: 7919229349191575739}
+  - {fileID: 3546428880487681225}
+  m_Father: {fileID: 709555900168326395}
+  m_LocalEulerAnglesHint: {x: -77.409, y: -108.76, z: 154.141}
+--- !u!1 &7733135616993913347
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 189529313513925547}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LArm_Index2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &189529313513925547
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7733135616993913347}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.00000013158328, y: -0.0000003430182, z: 0.0004380493, w: 0.99999994}
+  m_LocalPosition: {x: -0.087509595, y: 0.00000045776366, z: 0.0000000333786}
+  m_LocalScale: {x: 1.000001, y: 0.999999, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8420005539439983470}
+  m_Father: {fileID: 5380779383835855875}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7982981028944798987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5380779383835855875}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_LArm_Index1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5380779383835855875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7982981028944798987}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0007199634, y: -0.013804812, z: 0.065313645, w: 0.99776906}
+  m_LocalPosition: {x: -0.1603754, y: -0.008899612, z: 0.04141256}
+  m_LocalScale: {x: 1.000001, y: 0.999999, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 189529313513925547}
+  m_Father: {fileID: 788089297909545400}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8031864325034499521
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3451971933550811845}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_Spine
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3451971933550811845
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8031864325034499521}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000020220876, y: 0.000069230795, z: -0.25839043, w: 0.9660406}
+  m_LocalPosition: {x: -0.06983906, y: 0.014419019, z: 0.0000058049336}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7720974083825040022}
+  m_Father: {fileID: 8465295762333401735}
+  m_LocalEulerAnglesHint: {x: 0.004, y: 0.007, z: -29.949}
+--- !u!1 &8148334983763838664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7720974083825040022}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_Chest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7720974083825040022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8148334983763838664}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000016299535, y: -0.00006878741, z: -0.25924665, w: 0.96581113}
+  m_LocalPosition: {x: -0.04617874, y: 0.00000019616047, z: 0.000000028516903}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7704819422553400432}
+  - {fileID: 3412353902792602451}
+  - {fileID: 8895535992722192120}
+  m_Father: {fileID: 3451971933550811845}
+  m_LocalEulerAnglesHint: {x: 0, y: -0.008, z: -30.051}
+--- !u!1 &8387493876124913157
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2734358759119675211}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2734358759119675211
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8387493876124913157}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000003023686, y: 0.0000011070576, z: -0.28292164, w: 0.95914304}
+  m_LocalPosition: {x: -0.12119505, y: 9.313226e-10, z: 0.000004464027}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3412353902792602451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -32.869}
+--- !u!1 &8411799076239128412
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6121956199123221866}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RArm_LowerArm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6121956199123221866
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411799076239128412}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.018253481, y: -0.023109278, z: -0.1440005, w: 0.9891393}
+  m_LocalPosition: {x: -0.21386513, y: -0.0000009937212, z: -0.000000834465}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1651369068996083441}
+  m_Father: {fileID: 8895535992722192120}
+  m_LocalEulerAnglesHint: {x: 1.688, y: -2.923, z: -16.609}
+--- !u!1 &9207662047355531449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7774161965845394219}
+  m_Layer: 0
+  m_Name: RobobotT7_rig_RLegHip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7774161965845394219
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9207662047355531449}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.13244198, y: 0.9911417, z: 0.009833962, w: -0.0008582175}
+  m_LocalPosition: {x: 0.05343792, y: -0.0011534914, z: -0.1595941}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6971861195164772745}
+  m_Father: {fileID: 8465295762333401735}
+  m_LocalEulerAnglesHint: {x: -1.13, y: -180.052, z: 15.223}

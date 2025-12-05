@@ -15,6 +15,10 @@ public class ProfileIconSelector : MonoBehaviour
     [SerializeField] private ScrollRect scroll;
     [SerializeField] private Button profileInfoIconBtn;
     [SerializeField] private Button rootCloseBtn;
+    [SerializeField] private Button animalIconBtn;
+    [SerializeField] private Button decoIconBtn;
+    [SerializeField] private Button costumeIconBtn;
+    [SerializeField] private Button artifactIconBtn;
 
     private ProfilePanelController _panel;
     private int _selectedId = -1;
@@ -33,6 +37,10 @@ public class ProfileIconSelector : MonoBehaviour
         // 이 패널이 열렸을 때 프로필 패널 최상위 오브젝트들에 배치된 버튼들이 눌리지 않도록.
         profileInfoIconBtn.enabled = false;
         rootCloseBtn.enabled = false;
+        animalIconBtn.enabled = false;
+        decoIconBtn.enabled = false;
+        costumeIconBtn.enabled = false;
+        artifactIconBtn.enabled = false;
 
         _panel = panel;
         _selectedId = -1;
@@ -86,6 +94,11 @@ public class ProfileIconSelector : MonoBehaviour
         _selectedId = id;
         _selectedSprite = icon;
 
+        // 12.05mj 이 아이콘은 이제 “본 것”으로 처리 → 빨간점 제거
+        ProfileRedDotManager.MarkSeenIcon(id);
+
+        slot.SetNewDotVisible(false);
+
         foreach (Transform t in slotParent)
         {
             var s = t.GetComponent<ProfileIconSlot>();
@@ -122,6 +135,10 @@ public class ProfileIconSelector : MonoBehaviour
         UIPopupAnimator.Close(gameObject);
         profileInfoIconBtn.enabled = true;
         rootCloseBtn.enabled = true;
+        animalIconBtn.enabled = true;
+        decoIconBtn.enabled = true;
+        costumeIconBtn.enabled = true;
+        artifactIconBtn.enabled = true;
     }
 
     public IEnumerator ResetScrollNextFrame()
