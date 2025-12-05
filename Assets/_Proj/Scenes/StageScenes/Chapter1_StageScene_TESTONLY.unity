@@ -324,7 +324,7 @@ MonoBehaviour:
   joystickRoot: {fileID: 484405798}
   playerObject: {fileID: 0}
   camControl: {fileID: 1722618159}
-  mapNameToLoad: PropTest3
+  mapNameToLoad: map_1_1
   blockPositions: []
   blocks: []
   factory: {fileID: 1415150933}
@@ -2969,6 +2969,7 @@ MonoBehaviour:
   OptionPanel: {fileID: 1918924225}
   ResultPanel: {fileID: 321378219}
   TreasurePanel: {fileID: 1780084018}
+  TreasureCollectedPanel: {fileID: 0}
   DialoguePanel: {fileID: 1658304251}
   Overlay: {fileID: 491297653}
   FadePanel: {fileID: 0}
@@ -3307,6 +3308,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d3ab16109fa97064b96f185e69d402c1, type: 2}
   - {fileID: 11400000, guid: f16710def79e8bd4bbd185a80b93f7e7, type: 2}
   - {fileID: 11400000, guid: b090717053dbded46ace20010d233820, type: 2}
+  - {fileID: 11400000, guid: c0b3d91733b65ed4085e2f8be7d3e7e1, type: 2}
 --- !u!1 &1419950304
 GameObject:
   m_ObjectHideFlags: 0
