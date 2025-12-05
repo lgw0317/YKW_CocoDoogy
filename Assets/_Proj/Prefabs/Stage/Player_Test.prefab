@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7504067854222757437}
   - component: {fileID: -2257239476015702201}
   - component: {fileID: 3732109163880771165}
+  - component: {fileID: 2061468724270768054}
   - component: {fileID: 2751089994372822744}
   - component: {fileID: 5221105871534121589}
   - component: {fileID: 5884658244774026227}
@@ -95,6 +96,22 @@ MonoBehaviour:
   slopeMask:
     serializedVersion: 2
     m_Bits: 16384
+  isMoveLocked: 0
+--- !u!114 &2061468724270768054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5291992017778968749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b681085e4dfd3af4491f93f1c4603c19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transparentMask:
+    serializedVersion: 2
+    m_Bits: 264960
 --- !u!54 &2751089994372822744
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -249,7 +266,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1693816920450361189, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
       propertyPath: m_Direction
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1693816920450361189, guid: 8d863aa0b58a54345a3b739c9e0954cf, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits

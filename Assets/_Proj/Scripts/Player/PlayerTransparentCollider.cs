@@ -23,7 +23,7 @@ public class PlayerTransparentCollider : MonoBehaviour, IMoveStrategy
         if (Physics.Raycast(ray, .5f, transparentMask))
         {
             Debug.Log($"플레이어 이동전략(투명벽 전략): 레이캐스트로 TransparentWall 검출됨.");
-            finalDir = Vector3.ClampMagnitude(finalDir, .005f);
+            finalDir = Vector3.ClampMagnitude(finalDir, .2f);
         }
 
         return (finalDir, Vector3.zero);
