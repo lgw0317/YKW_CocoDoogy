@@ -4,10 +4,11 @@ using UnityEngine;
 public class GoodsService : IQuestBehaviour
 {
     private readonly IGoodsStore store;
-    public Action onValueChanged = UserData.Local.goods.onValueChanged;
+    public Action onValueChanged;
     public GoodsService(IGoodsStore store)
     {
         this.store = store;
+        //UserData.Local.goods.onValueChanged += onValueChanged;
     }
 
     public int Get(int goodsId)
