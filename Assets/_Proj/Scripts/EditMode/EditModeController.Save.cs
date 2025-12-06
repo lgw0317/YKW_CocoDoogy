@@ -162,8 +162,8 @@ public partial class EditModeController : IQuestBehaviour
 
     private void OnSaveClicked()
     {
-        // -1: 배치 저장하기 퀘스트의 진행도 1 올려주기
-        QuestManager.Instance.Handle(this);
+        //퀘스트 핸들링: 배치 저장하기
+        this.Handle(QuestObject.change_deployment);
 
         // 🔹 (0) 집 프리뷰가 있지만 OK(확정)를 안 한 상태라면 → 원래 집으로 되돌리기
         if (homePreview != null && !homePreviewConfirmed)

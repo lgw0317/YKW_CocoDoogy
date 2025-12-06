@@ -31,8 +31,9 @@ public class FriendLobbyUIController : MonoBehaviour, IQuestBehaviour
 
         await FirebaseManager.Instance.FollowPlayer_Outbound(FriendLobbyManager.Instance.Uid, !IsFollowing);
 
+        //퀘스트 핸들링: 좋아요 보내기
         if (IsFollowing)
-            QuestManager.Instance.Handle(this, "SendLike_Repeatable");
+            this.Handle(QuestObject.send_like);
         isAwait = false;
         Recolor();
     }

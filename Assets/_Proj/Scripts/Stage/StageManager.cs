@@ -242,7 +242,12 @@ public class StageManager : MonoBehaviour, IStageManager, IQuestBehaviour
         {
             prev.bestTreasureCount = Mathf.Max(prev.bestTreasureCount, collectedCount);
         }
-        QuestManager.Instance.Handle(this, collectedCount - prevCount);
+
+        //퀘스트 핸들링: 단순 스테이지 클리어
+        this.Handle(QuestObject.stage_clear);
+
+        //퀘스트 핸들링: 누적 별 수집
+        this.Handle(QuestObject.collect_star, value: collectedCount - prevCount);
         ClaimRewards();
         PlayerProgressManager.Instance.SaveProgress();
     }

@@ -24,9 +24,9 @@ public class GoodsService : IQuestBehaviour
         //UI등 리셋 호출용
         onValueChanged?.Invoke();
 
-        //퀘스트 핸들링
+        //퀘스트 핸들링: 병뚜껑 모으기
         if (goodsId == 110002)
-        QuestManager.Instance.Handle(this, amount);
+            this.Handle(QuestObject.collect_cap, value: amount);
 
         //추가: 재화 타입의 해금 처리. 아 코드 또 이상하네 이거
         UserData.Local.codex[CodexType.artifact, goodsId] = true;
@@ -40,9 +40,9 @@ public class GoodsService : IQuestBehaviour
 
         store.SetAmount(goodsId, cur - amount);
         
-        //퀘스트 핸들링(병뚜껑일 때만)
+        //퀘스트 핸들링: 병뚜껑 쓰기
         if (goodsId == 110002)
-            QuestManager.Instance.Handle(this, -amount);
+            this.Handle(QuestObject.use_cap, value: -amount);
 
         onValueChanged?.Invoke();
         return true;

@@ -183,7 +183,7 @@ public class QuestStackRewardUI : MonoBehaviour
 
         //UserData.Local.flag |= UserDataDirtyFlag.Quest;
         //UserData.Local.flag |= UserDataDirtyFlag.Wallet;
-        UserData.Local.Save();
+        qData.Save();
 
         //12.01mj
         QuestRedDotManager.Recalculate();

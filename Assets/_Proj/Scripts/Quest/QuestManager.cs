@@ -2,19 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum QuestHandleMode
+{
+    Increment, Fix
+}
 
+public static class IQuestBehaviourExtension
+{
+    private static UserData.Quest Quest => UserData.Local.quest;
+    private static List<QuestData> DB => DataManager.Instance.Quest.Database.questList;
+    public static void Handle
+        (this IQuestBehaviour behaviour, QuestObject qObject, QuestType? qType = null, QuestHandleMode mode = 0, int value = 1)
+        => behaviour.Handle(qObject, qType, mode, value);
+    
+}
 public interface IQuestBehaviour
 {
-    //public virtual void Handle(object value = null)
-    //{
-    //    QuestManager.Instance.Handle(this, value);
-    //}
+    void Handle(QuestObject qObject,QuestType? qType, QuestHandleMode mode, int value)
+        => QuestManager.Instance.HandleQuest(qObject, qType, mode, value);
+    
+
 }
 public class QuestManager : MonoBehaviour
 {
     #region Defining Singleton
     public static QuestManager Instance { get; private set; }
 
+    private UserData.Quest Quest => UserData.Local.quest;
+    private List<QuestData> DB => DataManager.Instance.Quest.Database.questList;
     void Awake()
     {
         if (Instance != null && Instance != this && Instance.gameObject != gameObject)
@@ -28,12 +43,30 @@ public class QuestManager : MonoBehaviour
 
     }
     #endregion
-    void Start()
+
+    public void HandleQuest(QuestObject qObject, QuestType? qType, QuestHandleMode mode, int value)
     {
+        var targetQuests = DB.FindAll(x => x.quest_object == qObject);
         
-       
+         targetQuests = qType != null ? targetQuests.FindAll(x => x.quest_type == qType) : targetQuests;
+        foreach (var q in targetQuests)
+        {
+            switch (mode)
+            {
+                case QuestHandleMode.Increment:
+                    Quest.progress[q.quest_id] += value;
+                    break;
+                case QuestHandleMode.Fix:
+                    Quest.progress[q.quest_id] = value;
+                    break;
+            }
+        }
+
+        Quest.Save();
+        QuestRedDotManager.Recalculate();
     }
-    public void Handle(IQuestBehaviour behaviour, object value = null)
+
+    public void Handle(IQuestBehaviour behaviour, bool aa, object value = null)
     {
         //daily, weekly, achievements, daily_stackrewards, weekly_stackrewards
         

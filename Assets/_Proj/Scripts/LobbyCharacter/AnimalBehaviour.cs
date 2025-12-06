@@ -98,7 +98,8 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour, IQuestBehaviour
     public override void OnLobbyClick()
     {
         base.OnLobbyClick();
-        QuestManager.Instance.Handle(this);
+        //퀘스트 핸들링: 동물 상호작용하기
+        this.Handle(QuestObject.touch_animals);
     }
     public override void OnLobbyPress()
     {

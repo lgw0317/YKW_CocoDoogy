@@ -52,7 +52,8 @@ public class FriendLobbyManager : MonoBehaviour, IQuestBehaviour
 
     public void Init(UserData friend, string friendUid)
     {
-        QuestManager.Instance.Handle(this);
+        //퀘스트 핸들링: 로비 방문하기
+        this.Handle(QuestObject.visit_lobby);
         Friend = friend;
         FriendMaster = friend.master;
         FriendLobby = friend.lobby;
