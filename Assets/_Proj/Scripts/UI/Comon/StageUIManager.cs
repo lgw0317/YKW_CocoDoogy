@@ -42,6 +42,7 @@ public class StageUIManager : MonoBehaviour
     public TextMeshProUGUI TreasureDesc;
     public Image CocoDoogyImage;
     public TextMeshProUGUI CocoDoogyDesc;
+    public ScrollRect TreasureScrollRect;
 
     [Header("DialoguePanel")]
     public Image DialogueSpeakerLeft;

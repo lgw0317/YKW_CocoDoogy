@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Treasure : MonoBehaviour
 {
@@ -190,6 +189,7 @@ public class Treasure : MonoBehaviour
                 break;
         }
         StageUIManager.Instance.CocoDoogyDesc.text = data.coco_coment;
+        StageUIManager.Instance.TreasureScrollRect.verticalNormalizedPosition = 1f;
     }
 
     public void OnQuitAction(Action action)
