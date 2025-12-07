@@ -40,11 +40,11 @@ public class DecoData
 }
 public enum DecoType
 {
-    plant, strucure, furniture, fixtures
+    plant, strucure, furniture, prop
 }
 public enum DecoTag
 {
-    tree, flower, chair, house, lite
+    tree, water, chair, music, lite, table, street
 }
 public enum DecoAcquire
 {

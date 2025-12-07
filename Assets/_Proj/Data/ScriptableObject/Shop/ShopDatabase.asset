@@ -116,7 +116,7 @@ MonoBehaviour:
     shop_desc: "\uC0C1\uC810\uC5D0\uC11C \uC0AC\uC6A9 \uAC00\uB2A5\uD55C \uC720\uB8CC
       \uC7AC\uD654\uC785\uB2C8\uB2E4."
     shop_item: 90010
-    shop_type: 0
+    shop_type: 2
     shop_price: 5000
     shop_stock: -1
     shop_group: 5

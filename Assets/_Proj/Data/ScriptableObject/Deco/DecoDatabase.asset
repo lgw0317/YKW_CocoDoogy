@@ -63,7 +63,7 @@ MonoBehaviour:
     deco_prefab: Prefabs/Deco/SM_Env_Big_Tree_Base_01
     deco_icon: Icons/Deco/icon_deco_well
     deco_type: 0
-    deco_tag: 0
+    deco_tag: 1
     deco_acquire: 1
     deco_stack: 99
     deco_desc: "\uC774\uACF3\uC5D4 \uC218\uB9CE\uC740 \uC18C\uC6D0\uC774 \uC2A4\uBA70\uB4E0
@@ -72,7 +72,7 @@ MonoBehaviour:
     deco_name: "\uB098\uBB34 \uBC14\uB2E5\uD310"
     deco_prefab: Prefabs/Deco/SM_Prop_Ground_Planks_02
     deco_icon: Icons/Deco/icon_deco_ground_planks
-    deco_type: 0
+    deco_type: 3
     deco_tag: 0
     deco_acquire: 2
     deco_stack: 99
@@ -82,7 +82,7 @@ MonoBehaviour:
     deco_name: "\uAD6C\uC870 \uC2E0\uD638\uD310"
     deco_prefab: Prefabs/Deco/help-ground-apocalypse
     deco_icon: Icons/Deco/icon_deco_help_ground
-    deco_type: 0
+    deco_type: 3
     deco_tag: 0
     deco_acquire: 2
     deco_stack: 99
@@ -92,7 +92,7 @@ MonoBehaviour:
     deco_name: "\uBAA8\uB2E5\uBD88"
     deco_prefab: Prefabs/Deco/fireplace-nofire
     deco_icon: Icons/Deco/icon_deco_firepit
-    deco_type: 0
+    deco_type: 3
     deco_tag: 4
     deco_acquire: 1
     deco_stack: 99
@@ -101,7 +101,7 @@ MonoBehaviour:
     deco_name: "\uBCBD\uB09C\uB85C"
     deco_prefab: Prefabs/Deco/Fireplace_10
     deco_icon: Icons/Deco/icon_deco_fireplace
-    deco_type: 0
+    deco_type: 3
     deco_tag: 4
     deco_acquire: 0
     deco_stack: 99
@@ -110,8 +110,8 @@ MonoBehaviour:
     deco_name: "\uD2B8\uB808\uC77C\uB7EC"
     deco_prefab: Prefabs/Deco/tractor-carriage
     deco_icon: Icons/Deco/icon_deco_carriage
-    deco_type: 0
-    deco_tag: 0
+    deco_type: 3
+    deco_tag: 6
     deco_acquire: 1
     deco_stack: 99
     deco_desc: "\uB204\uAD70\uAC00\uC640 \uD568\uAED8 \uBA3C \uAE38\uC744 \uB2EC\uB824\uC628
@@ -120,8 +120,8 @@ MonoBehaviour:
     deco_name: "\uAF2C\uAE54\uCF58"
     deco_prefab: Prefabs/Deco/traffic-cone
     deco_icon: Icons/Deco/icon_deco_traffic_cone
-    deco_type: 0
-    deco_tag: 0
+    deco_type: 3
+    deco_tag: 6
     deco_acquire: 1
     deco_stack: 99
     deco_desc: "\uD55C\uB54C \uAE38 \uC704\uB97C \uC9C0\uCF30\uB358 \uAF2C\uAE54\uCF58\uC785\uB2C8\uB2E4"
@@ -129,8 +129,8 @@ MonoBehaviour:
     deco_name: "\uD0C0\uC774\uC5B4"
     deco_prefab: Prefabs/Deco/tires
     deco_icon: Icons/Deco/icon_deco_tires
-    deco_type: 0
-    deco_tag: 0
+    deco_type: 3
+    deco_tag: 6
     deco_acquire: 1
     deco_stack: 99
     deco_desc: "\uC624\uB798\uB41C \uACE0\uBB34 \uB0C4\uC0C8\uAC00 \uB098\uB294 \uD0C0\uC774\uC5B4\uC785\uB2C8\uB2E4."
@@ -138,8 +138,8 @@ MonoBehaviour:
     deco_name: "\uBC1C\uC804\uAE30"
     deco_prefab: Prefabs/Deco/generator
     deco_icon: Icons/Deco/icon_deco_generator
-    deco_type: 0
-    deco_tag: 0
+    deco_type: 3
+    deco_tag: 6
     deco_acquire: 0
     deco_stack: 99
     deco_desc: "\uB0AE\uAC8C \uC719\uC719\uAC70\uB9AC\uB294 \uBC1C\uC804\uAE30\uC785\uB2C8\uB2E4."
@@ -184,7 +184,7 @@ MonoBehaviour:
     deco_prefab: Prefabs/Deco/Audio_02
     deco_icon: Icons/Deco/icon_deco_orange_audio
     deco_type: 2
-    deco_tag: 0
+    deco_tag: 3
     deco_acquire: 2
     deco_stack: 99
     deco_desc: "\uC138\uC0C1\uC5D0 \uB0A8\uC740 \uB9C8\uC9C0\uB9C9 \uC8FC\uD669\uC0C9
@@ -203,7 +203,7 @@ MonoBehaviour:
     deco_prefab: Prefabs/Deco/Kids_Table_02
     deco_icon: Icons/Deco/icon_deco_cloud_table
     deco_type: 2
-    deco_tag: 0
+    deco_tag: 5
     deco_acquire: 2
     deco_stack: 99
     deco_desc: "\uC5B4\uB9B0 \uC544\uC774\uAC00 \uC0AC\uC6A9\uD588\uB358 \uAD6C\uB984

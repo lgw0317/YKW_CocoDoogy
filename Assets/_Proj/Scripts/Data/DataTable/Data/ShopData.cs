@@ -26,7 +26,7 @@ public class ShopData
 }
 public enum ShopType
 {
-    cap, coin
+    cap, coin, cash
 }
 public enum ShopGroup
 {

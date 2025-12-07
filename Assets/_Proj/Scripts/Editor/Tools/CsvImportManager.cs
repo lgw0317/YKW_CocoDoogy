@@ -4,7 +4,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Net;
 using System;
-using Codice.CM.Common;
 
 public class CsvImportManager : EditorWindow
 {
