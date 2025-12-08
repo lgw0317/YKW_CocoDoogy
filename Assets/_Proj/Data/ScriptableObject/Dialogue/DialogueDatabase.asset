@@ -1637,7 +1637,7 @@ MonoBehaviour:
     speaker_id: 0
     emotion: 2
     text: "\xB7\xB7\xB7\uC800\uB4E4 \uC911 \uD558\uB098\uAC00 \uB124 \uCE5C\uAD6C\uC600\uB2E4\uB294
-      \uAC70\uC9C0\u2026?"
+      \uAC70\uC9C0\xB7\xB7\xB7?"
     char_delay: 0.04
     sound_type: 1
     sound_key: null
@@ -1779,7 +1779,7 @@ MonoBehaviour:
     speaker_id: 3
     emotion: 0
     text: "\uADF8\uB798\uC11C \uB098\uB294 \uC800 \uC544\uB798\uB85C \uAC00\uBCF8
-      \uC801\uC774 \uC5C6\uC5B4. \uB09C \uC774 \uC0B0\uC5D0\uB9CC \uC904\uACE7 \uC788\uC5C8\uAC70\uB4E0."
+      \uC801 \uC5C6\uC5B4. \uB09C \uC774 \uC0B0\uC5D0\uB9CC \uC904\uACE7 \uC788\uC5C8\uAC70\uB4E0."
     char_delay: 0.04
     sound_type: 1
     sound_key: null
@@ -1820,7 +1820,7 @@ MonoBehaviour:
     speaker_position: 1
     speaker_id: 3
     emotion: 3
-    text: "\uD765, \uC88B\uC544. \uB0B4\uAC00 \uC788\uB294 \uD798 \uAC83 \uBC1C\uAD7D\uC744
+    text: "\uD765, \uC88B\uC544. \uB0B4\uAC00 \uC788\uB294 \uD798\uAECF \uBC1C\uAD7D\uC744
       \uCC28\uBCFC\uAC8C!"
     char_delay: 0.04
     sound_type: 1
@@ -2153,7 +2153,7 @@ MonoBehaviour:
     speaker_id: 2
     emotion: 0
     text: "\uC774\uC81C \uB124 \uBC1C\uB85C \uC870\uAE08 \uB290\uAEF4\uBD10\uB3C4
-      \uAD1C\uCC2E\uC744 \uAC70\uB2E4. \uBC1C\uB05D\uB9CC \uC0B4\uC9DD \uB2F4\uADF8\uAC8C"
+      \uAD1C\uCC2E\uC744 \uAC70\uB2E4. \uBC1C\uB05D\uB9CC \uC0B4\uC9DD \uB2F4\uADF8\uAC8C."
     char_delay: 0.04
     sound_type: 1
     sound_key: null
