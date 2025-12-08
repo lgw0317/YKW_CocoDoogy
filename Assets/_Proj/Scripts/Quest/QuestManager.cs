@@ -28,6 +28,9 @@ public class QuestManager : MonoBehaviour
     #region Defining Singleton
     public static QuestManager Instance { get; private set; }
 
+    //QuestResetManager의 OnQuestReset 이벤트에 로그인 퀘스트 진행도 1 증가 할당.
+    
+
     private UserData.Quest Quest => UserData.Local.quest;
     private List<QuestData> DB => DataManager.Instance.Quest.Database.questList;
     void Awake()
@@ -41,10 +44,13 @@ public class QuestManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
+        //QuestResetManager의 onQuestReset에 일일 로그인 퀘스트 강제 할당
+        QuestResetManager.OnQuestReset += () => HandleQuest(QuestObject.login, QuestType.daily);
+
     }
     #endregion
 
-    public void HandleQuest(QuestObject qObject, QuestType? qType, QuestHandleMode mode, int value)
+    public void HandleQuest(QuestObject qObject, QuestType? qType, QuestHandleMode mode = QuestHandleMode.Increment, int value = 1)
     {
         var targetQuests = DB.FindAll(x => x.quest_object == qObject);
         
