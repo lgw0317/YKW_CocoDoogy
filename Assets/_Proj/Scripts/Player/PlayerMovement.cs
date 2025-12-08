@@ -13,6 +13,10 @@ public class PlayerMovement : MonoBehaviour, IRider
     public Rigidbody rb;
     public List<IMoveStrategy> moveStrategies;
 
+    [Header("Player Movement Smoothing")]
+    [Tooltip("값 낮을수록 민첩")][Range(0.05f, 0.15f)] public float smoothTime = 0.07f;
+    private Vector3 currVel = Vector3.zero;
+    private Vector3 velRef = Vector3.zero;
 
     // 캐릭터의 현재 이동 방향을 월드 좌표계에 맞게 변환하기 위해 필요
     private Transform camTr; // NOTE : 비워두면 자동으로 Camera.main을 사용
@@ -284,7 +288,17 @@ public class PlayerMovement : MonoBehaviour, IRider
 
 
         // 위치 이동
-        Vector3 nextPos = rb.position + finalDir * (moveSpeed * Time.fixedDeltaTime) + stepOffset;
+        Vector3 targetVel = finalDir * moveSpeed;
+
+        currVel = Vector3.SmoothDamp(
+            currVel,
+            targetVel,
+            ref velRef,
+            smoothTime
+        );
+
+        Vector3 nextPos = rb.position + currVel * Time.fixedDeltaTime + stepOffset;
+        //Vector3 nextPos = rb.position + finalDir * (moveSpeed * Time.fixedDeltaTime) + stepOffset;
 
 
         //// 같은 y층 오브젝트 감지

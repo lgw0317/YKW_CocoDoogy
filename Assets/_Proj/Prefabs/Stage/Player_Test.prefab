@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8730780438729636604}
+  - component: {fileID: 3732109163880771165}
   - component: {fileID: 7504067854222757437}
   - component: {fileID: -2257239476015702201}
-  - component: {fileID: 3732109163880771165}
   - component: {fileID: 2061468724270768054}
   - component: {fileID: 2751089994372822744}
   - component: {fileID: 5221105871534121589}
@@ -40,6 +40,28 @@ Transform:
   - {fileID: 3246944614622325129}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3732109163880771165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5291992017778968749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de09abd909b19b74fa7a2a27b1d616ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joystick: {fileID: 0}
+  rb: {fileID: 2751089994372822744}
+  smoothTime: 0.08
+  moveSpeed: 4.8
+  accel: 12
+  rotateLerp: 9
+  slopeMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  isMoveLocked: 0
 --- !u!114 &7504067854222757437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,27 +98,6 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 16384
---- !u!114 &3732109163880771165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5291992017778968749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de09abd909b19b74fa7a2a27b1d616ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  joystick: {fileID: 0}
-  rb: {fileID: 2751089994372822744}
-  moveSpeed: 5
-  accel: 25
-  rotateLerp: 14
-  slopeMask:
-    serializedVersion: 2
-    m_Bits: 16384
-  isMoveLocked: 0
 --- !u!114 &2061468724270768054
 MonoBehaviour:
   m_ObjectHideFlags: 0

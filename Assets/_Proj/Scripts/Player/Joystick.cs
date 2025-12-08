@@ -210,6 +210,7 @@ public class Joystick : MonoBehaviour
                         return;
                     }
                 }
+                // 자유 터치
                 transform.position = Vector2.Distance(transform.position, touch.startPosition.ReadValue()) < 150 ? transform.position : touch.startPosition.ReadValue();
 
                 //여기까지 왔다면, 터치 시작 위치가 UI요소 위가 아닌 것임.
