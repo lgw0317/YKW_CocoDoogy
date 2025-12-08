@@ -211,30 +211,14 @@ public class Joystick : MonoBehaviour
                     }
                 }
                 // 자유 터치
-                //transform.position = Vector2.Distance(transform.position, touch.startPosition.ReadValue()) < 150 ? transform.position : touch.startPosition.ReadValue();
+                transform.position = Vector2.Distance(transform.position, touch.startPosition.ReadValue()) < 150 ? transform.position : touch.startPosition.ReadValue();
 
                 //여기까지 왔다면, 터치 시작 위치가 UI요소 위가 아닌 것임.
                 //transform.position = touch.startPosition.ReadValue();
 
 
                 //가상 조이스틱 핸들을 터치 위치로 옮기되, 범위를 넘어가지 않게 하면 됨.
-                //Drag((Vector3)touch.position.ReadValue() - transform.position);
-                RectTransform bgRect = bg.rectTransform;
-                Vector2 localPos;
-
-                if (RectTransformUtility.ScreenPointToLocalPointInRectangle(bgRect, touch.position.ReadValue(), null, out localPos))
-                {
-                    float deadZone = 10f; // 원하는 값으로 조절
-                    if (localPos.magnitude < deadZone)
-                    {
-                        InputDir = Vector3.zero;
-                        handle.rectTransform.anchoredPosition = Vector2.zero;
-                    }
-                    else
-                    {
-                        Drag(localPos);
-                    }
-                }
+                Drag((Vector3)touch.position.ReadValue() - transform.position);
             }
         }
     }
