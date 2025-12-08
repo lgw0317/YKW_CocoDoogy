@@ -61,6 +61,11 @@ public class AnimalBehaviour : BaseLobbyCharacterBehaviour, IQuestBehaviour
         ETCEvent.OnDeleteAnimalPosition -= HandleDeleteAnimalPos;
     }
 
+    protected override void OnDestroy()
+    {
+        Unregister();
+    }
+
     // 코코두기 상호작용
     public override void ChangeStateToIdleState()
     {

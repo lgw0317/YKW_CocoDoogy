@@ -18,7 +18,10 @@ public class CutscenePlayer : AudioPlayerControl
         activeSources.Add(currentSource);
         currentSource.outputAudioMixerGroup = group;
         currentSource.volume = 0.7f;
-        initVolume = currentSource.volume;
+
+        setVolume = currentSource.volume;
+        ingameVolume = 0.7f;
+        outgameVolume = 0.7f;
     }
 
     public AudioSource GetCutsceneAS()
@@ -26,48 +29,20 @@ public class CutscenePlayer : AudioPlayerControl
         return currentSource;
     }
 
-    public override void PlayAll()
+    public override void ResetPlayer(AudioPlayerMode mode)
     {
-        foreach (var src in activeSources)
-        {
-            src.volume = initVolume;
-        }
+        base.ResetPlayer(mode);
     }
-    public override void PauseAll()
+    public override void SetAudioPlayerState(AudioPlayerState state)
     {
+        base.SetAudioPlayerState(state);
     }
-    public override void ResumeAll()
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
     {
+        base.SetVolume(volume, fadeDuration);
     }
-    public override void StopAll()
+    public override void SetVolumeZero(bool which)
     {
-        foreach (var src in activeSources)
-        {
-            src.volume = 0f;
-        }
-    }
-    public override void ResetAll(float volumeValue)
-    {
-        foreach (var src in activeSources)
-        {
-            if (src != null)
-            {
-                if (DOTween.IsTweening(src, true)) src.DOKill();
-                src.loop = false;
-                src.volume = 0f;
-                src.pitch = 1f;
-                src.clip = null;
-            }
-        }
-    }
-    public override void SetVolumeHalf()
-    {
-    }
-    public override void SetVolumeNormal()
-    {
-    }
-
-    public override void SetVolumeZero()
-    {
+        base.SetVolumeZero(which);
     }
 }

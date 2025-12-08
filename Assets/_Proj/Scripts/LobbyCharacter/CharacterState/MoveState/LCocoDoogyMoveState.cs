@@ -10,6 +10,7 @@ public class LCocoDoogyMoveState : LobbyCharacterBaseState
     private readonly NavMeshAgentControl charAgent;
     private LCocoDoogyRouteManager route;
     private WaitForSeconds wait = new(1f);
+    private Coroutine moveCoroutine;
     private Vector3 draggedPos;
     private bool isDragged;
     private bool init = false;
@@ -50,7 +51,7 @@ public class LCocoDoogyMoveState : LobbyCharacterBaseState
             init = true;
         }
         Debug.Log($"코코두기 웨이포인트 총 길이{route.moveWaypoints.Count}");
-        owner.StartCoroutine(LetsGoCoco());
+        moveCoroutine = owner.StartCoroutine(LetsGoCoco());
 
         //owner.EndRoutine();
     }
@@ -60,11 +61,6 @@ public class LCocoDoogyMoveState : LobbyCharacterBaseState
         {
             owner.StopAllCoroutines();
             agent.ResetPath();
-        }
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-        {
-            //fsm.ChangeState(new LCocoDoogyInteractState(owner, fsm, waypoints));
-            //fsm.ChangeState();
         }
         // 이동 중 멈춤 감지
         if (!agent.isStopped && agent.velocity.sqrMagnitude < 0.01f)
@@ -85,7 +81,11 @@ public class LCocoDoogyMoveState : LobbyCharacterBaseState
         isDragged = false;
         (owner as CocoDoogyBehaviour).SetIsDragged(false);
         timeToStuck = 0f;
-        owner.StopAllCoroutines();
+        if (moveCoroutine != null)
+        {
+            owner.StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
         agent.ResetPath();
     }
 

@@ -24,38 +24,25 @@ public class BGMGroup : BaseAudioGroup
         player = new BGMPlayer(mixer, transform, group);
     }
     public override void PostInit() { }
-    public override void PlayPlayer()
+
+
+    public override void SetAudioPlayerState(AudioPlayerState state)
     {
-        player.PlayAll();
-    }
-    public override void PausePlayer()
-    {
-        player.PauseAll();
-    }
-    public override void ResumePlayer()
-    {
-        player.ResumeAll();
-    }
-    public override void StopPlayer()
-    {
-        player.StopAll();
-    }
-    public override void ResetPlayer(float volumeValue)
-    {
-        Debug.Log($"BGMPlayer : Reset 시작");
-        player.ResetAll(volumeValue);
-    }
-    public override void SetVolumeHalf()
-    {
-        player.SetVolumeHalf();   
-    }
-    public override void SetVolumeNormal()
-    {
-        player.SetVolumeNormal();
+        player.SetAudioPlayerState(state);
     }
 
-    public override void SetVolumeZero()
+    public override void ResetPlayer(AudioPlayerMode mode)
     {
-        player.SetVolumeZero();
+        player.ResetPlayer(mode);
+    }
+
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
+    {
+        player.SetVolume(volume, fadeDuration);
+    }
+
+    public override void SetVolumeZero(bool which)
+    {
+        player.SetVolumeZero(which);
     }
 }

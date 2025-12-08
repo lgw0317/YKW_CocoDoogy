@@ -12,12 +12,9 @@ public abstract class BaseAudioGroup : MonoBehaviour, IAudioController
         mixer = AudioManager.AudioGroupProvider.GetMixer();
     }
     public abstract void PostInit();
-    public abstract void PlayPlayer();
-    public abstract void PausePlayer();
-    public abstract void ResumePlayer();
-    public abstract void StopPlayer();
-    public abstract void ResetPlayer(float volumeValue);
-    public abstract void SetVolumeHalf();
-    public abstract void SetVolumeNormal();
-    public abstract void SetVolumeZero();
+
+    public abstract void SetAudioPlayerState(AudioPlayerState state);
+    public abstract void ResetPlayer(AudioPlayerMode mode);
+    public abstract void SetVolume(float volume, float fadeDuration = 0.5F);
+    public abstract void SetVolumeZero(bool which);
 }

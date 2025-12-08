@@ -5,22 +5,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-/// <summary>
-/// UI�� ��α� ���� X
-/// 
-/// BGM, Cutscene, Voice�� ������ҽ� 1���� ������
-/// �̰͸� �����ϸ� ��(Ŭ����ü�ϴ� ������ ���� X)
-/// 
-/// SFX, Ambient�� Pool�� �ִµ� �±׷� ���� ���� Ǯ �ĺ� ����. �׷��� ���� ���� Ǯ�� �ʱ�ȭ�� �����ϴ� ����
-/// 
-/// �ʱ�ȭ �� ��� ������ҽ��� Ŭ���� ��. �ҽ��� ������ ��ġ�� �ٽ� �ʱ�ȭ,
-/// ��ȹ �ʿ��� �Ϲ� ��ȭ �� ĳ���� �Ҹ� ������ ��� �Ҹ��� ���̱� ����, ��������. �ٵ� �ϴ� ���Ҳ�
-/// </summary>
+public enum AudioPlayerMode
+{
+    InGame = 0,
+    OutGame
+}
+
+public enum AudioPlayerState
+{
+    Play = 0,
+    Pause,
+    Resume,
+    Stop
+}
+
 public abstract class AudioPlayerControl
 {
     protected MonoBehaviour mono; // 각 상속 받을 오디오 플레이어 mono를 각 오디오 그룹으로 잡아줄 거임.
     public List<AudioSource> activeSources = new List<AudioSource>();
-    protected float initVolume;
+    protected float setVolume;
+    protected float ingameVolume;
+    protected float outgameVolume;
 
     protected AnimationCurve fadeInCurve;
     protected bool doFadeIn;
@@ -29,140 +34,22 @@ public abstract class AudioPlayerControl
     protected AnimationCurve fadeCurve;
 
     // 본래 DOTween 구조는 맨 밑에 주석으로 백업은 했고 이제 어떻게 DOTween을 도려내고 적용할까
-    public virtual void PlayAll()
+    public virtual void SetAudioPlayerState(AudioPlayerState state)
     {
-        foreach (var src in activeSources)
+        switch (state)
         {
-            if (src != null && !src.isPlaying)
-            {
-                if (DOTween.IsTweening(src, true))
-                {
-                    src.DOKill();
-                }
-                if (src.volume != initVolume)
-                {
-                    src.Play();
-                    src.DOFade(initVolume, 0.3f);
-                }
-                else
-                {
-                    src.Play();
-                }
-            }
-        }
-    }
-
-    public virtual void PauseAll()
-    {
-        foreach (var src in activeSources)
-        {
-            if (src != null && src.isPlaying)
-            {
-                if (DOTween.IsTweening(src, true))
-                {
-                    src.DOKill();
-                }
-                src.DOFade(0, 0.2f).OnComplete(() => src.Pause());
-            }
-        }
-    }
-
-    public virtual void ResumeAll()
-    {
-        foreach (var src in activeSources)
-        {
-            if (src != null && !src.isPlaying)
-            {
-                if (DOTween.IsTweening(src, true))
-                {
-                    src.DOKill();
-                }
-                src.UnPause();
-                src.DOFade(initVolume, 0.3f);
-            }
-        }
-    }
-
-    public virtual void StopAll()
-    {
-        foreach (var src in activeSources)
-        {
-            if (src != null && src.isPlaying) 
-            {
-                if (DOTween.IsTweening(src, true))
-                {
-                    src.DOKill();
-                }
-                src.DOFade(0, 0.2f).OnComplete(() => src.Stop());
-            } 
-        }
-    }
-
-    public virtual void ResetAll(float volumeValue)
-    {
-        foreach (var src in activeSources)
-        {
-            if (src != null)
-            {
-                if (src.isPlaying) 
-                {
-                    if (DOTween.IsTweening(src, true))
-                    {
-                        src.DOKill();
-                    }
-                    src.DOFade(0, 0.2f).OnComplete(() => 
-                    {
-                        src.Stop();
-                        src.loop = false; 
-                        src.volume = initVolume;
-                        src.pitch = 1f;
-                        src.clip = null; 
-                    });
-                }
-                else
-                {
-                    src.loop = false;
-                    src.volume = initVolume;
-                    src.pitch = 1f;
-                    src.clip = null; 
-                }
-            }
-        }
-    }
-
-    public virtual void SetVolumeZero()
-    {
-        foreach (var src in activeSources)
-        {
-            if (DOTween.IsTweening(src, true))
-            {
-                src.DOKill();
-            }
-            src.DOFade(0, 0.2f);
-        }
-    }
-
-    public virtual void SetVolumeHalf()
-    {
-        foreach (var src in activeSources)
-        {
-            if (DOTween.IsTweening(src, true))
-            {
-                src.DOKill();
-            }
-            src.DOFade(0.3f, 0.3f);
-        }
-    }
-
-    public virtual void SetVolumeNormal()
-    {
-        foreach (var src in activeSources)
-        {
-            if (DOTween.IsTweening(src, true))
-            {
-                src.DOKill();
-            }
-            src.DOFade(initVolume, 0.3f);
+            case AudioPlayerState.Play:
+            PlayAll();
+            break;
+            case AudioPlayerState.Pause:
+            PauseAll();
+            break;
+            case AudioPlayerState.Resume:
+            ResumeAll();
+            break;
+            case AudioPlayerState.Stop:
+            StopAll();
+            break;
         }
     }
 
@@ -177,6 +64,107 @@ public abstract class AudioPlayerControl
             src.DOFade(volume, fadeDuration);
         }
     }
+
+    public virtual void SetVolumeZero(bool which)
+    {
+        if (which)
+        {
+            foreach (var src in activeSources)
+            {
+                src.volume = 0f;
+            }
+        }
+        else
+        {
+            foreach (var src in activeSources)
+            {
+                src.volume = setVolume;
+            }
+        }
+    }
+    
+    public virtual void ResetPlayer(AudioPlayerMode mode)
+    {
+        foreach (var src in activeSources)
+        {
+            if (src != null)
+            {
+                if (DOTween.IsTweening(src, true)) src.DOKill();
+                if (src.isPlaying) src.Stop();
+                src.volume = 0f;
+                src.clip = null;
+                src.loop = false;
+                src.pitch = 1f;
+                switch (mode)
+                {
+                    case AudioPlayerMode.InGame:
+                    setVolume = ingameVolume;
+                    break;
+                    case AudioPlayerMode.OutGame:
+                    setVolume = outgameVolume;
+                    break;
+                }
+                src.volume = setVolume;
+            }
+        }
+    }
+    
+    protected void PlayAll()
+    {
+        foreach (var src in activeSources)
+        {
+            if (src != null && !src.isPlaying)
+            {
+                if (DOTween.IsTweening(src, true))
+                {
+                    src.DOKill();
+                }
+                if (src.volume != setVolume)
+                {
+                    src.volume = setVolume;
+                    src.Play();
+                }
+                else
+                {
+                    src.Play();
+                }
+            }
+        }
+    }
+
+    protected void PauseAll()
+    {
+        foreach (var src in activeSources)
+        {
+            if (src != null && src.isPlaying)
+            {
+                src.Pause();
+            }
+        }
+    }
+
+    protected void ResumeAll()
+    {
+        foreach (var src in activeSources)
+        {
+            if (src != null && !src.isPlaying)
+            {
+                src.UnPause();
+            }
+        }
+    }
+
+    protected void StopAll()
+    {
+        foreach (var src in activeSources)
+        {
+            if (src != null && src.isPlaying) 
+            {
+                src.Stop();
+            }
+        }
+    }
+
 
     // DOTween을 사용하지 않을 시 페이드인 페이드아웃을 애니메이션 커브와 코루틴으로?
 
@@ -207,14 +195,14 @@ public abstract class AudioPlayerControl
 
         while (timer < fadeInTime)
         {
-            src.volume = fadeInCurve.Evaluate(timer / fadeInTime) * initVolume;
+            src.volume = fadeInCurve.Evaluate(timer / fadeInTime) * setVolume;
 
             timer += Time.deltaTime;
             yield return null;
         }
         if (hasVolumeValue == 0)
         {
-            src.volume = initVolume;
+            src.volume = setVolume;
         }
         else if (hasVolumeValue != 0)
         {
@@ -273,128 +261,34 @@ public abstract class AudioPlayerControl
     }
 }
 
-// public virtual void PlayAll()
+// public virtual void ResetAll(float volumeValue)
+// {
+//     foreach (var src in activeSources)
 //     {
-//         foreach (var src in activeSources)
+//         if (src != null)
 //         {
-//             if (src != null && !src.isPlaying)
+//             if (src.isPlaying) 
 //             {
 //                 if (DOTween.IsTweening(src, true))
 //                 {
 //                     src.DOKill();
 //                 }
-//                 if (src.volume != 1)
+//                 src.DOFade(0, 0.2f).OnComplete(() => 
 //                 {
-//                     src.Play();
-//                     src.DOFade(1, 0.5f);
-//                 }
-//                 else
-//                 {
-//                     src.Play();
-//                 }
+//                     src.Stop();
+//                     src.loop = false; 
+//                     src.volume = initVolume;
+//                     src.pitch = 1f;
+//                     src.clip = null; 
+//                 });
 //             }
-//         }
-//     }
-
-//     public virtual void PauseAll()
-//     {
-//         foreach (var src in activeSources)
-//         {
-//             if (src != null && src.isPlaying)
+//             else
 //             {
-//                 if (DOTween.IsTweening(src, true))
-//                 {
-//                     src.DOKill();
-//                 }
-//                 src.DOFade(0, 0.5f).OnComplete(() => src.Pause());
-//             }
-//         }
-//     }
-
-//     public virtual void ResumeAll()
-//     {
-//         foreach (var src in activeSources)
-//         {
-//             if (src != null && !src.isPlaying)
-//             {
-//                 if (DOTween.IsTweening(src, true))
-//                 {
-//                     src.DOKill();
-//                 }
-//                 src.UnPause();
-//                 src.DOFade(1, 0.5f);
-//             }
-//         }
-//     }
-//     public virtual void StopAll()
-//     {
-//         foreach (var src in activeSources)
-//         {
-//             if (src != null && src.isPlaying) 
-//             {
-//                 if (DOTween.IsTweening(src, true))
-//                 {
-//                     src.DOKill();
-//                 }
-//                 src.DOFade(0, 0.5f).OnComplete(() => src.Stop());
-//             } 
-//         }
-//     }
-
-//     public virtual void ResetAll()
-//     {
-//         foreach (var src in activeSources)
-//         {
-//             if (src != null)
-//             {
-//                 if (src.isPlaying) 
-//                 {
-//                     if (DOTween.IsTweening(src, true))
-//                     {
-//                         src.DOKill();
-//                     }
-//                     src.DOFade(0, 0.3f).OnComplete(() => {src.Stop(); src.volume = 1f;});
-//                 }
 //                 src.loop = false;
-//                 src.volume = 1f;
+//                 src.volume = initVolume;
 //                 src.pitch = 1f;
 //                 src.clip = null; 
 //             }
 //         }
 //     }
-
-//     public virtual void SetVolumeZero()
-//     {
-//         foreach (var src in activeSources)
-//         {
-//             if (DOTween.IsTweening(src, true))
-//             {
-//                 src.DOKill();
-//             }
-//             src.DOFade(0, 0.5f);
-//         }
-//     }
-
-//     public virtual void SetVolumeHalf()
-//     {
-//         foreach (var src in activeSources)
-//         {
-//             if (DOTween.IsTweening(src, true))
-//             {
-//                 src.DOKill();
-//             }
-//             src.DOFade(0.3f, 0.5f);
-//         }
-//     }
-
-//     public virtual void SetVolumeNormal()
-//     {
-//         foreach (var src in activeSources)
-//         {
-//             if (DOTween.IsTweening(src, true))
-//             {
-//                 src.DOKill();
-//             }
-//             src.DOFade(1, 0.5f);
-//         }
-//     }
+// }

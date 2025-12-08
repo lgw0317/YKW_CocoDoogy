@@ -22,7 +22,7 @@ public class DialoguePlayer : AudioPlayerControl
         activeSources.Add(diaBGM);
         diaBGM.outputAudioMixerGroup = bgm;
         diaBGM.volume = 1;
-        initVolume = diaBGM.volume;
+        setVolume = diaBGM.volume;
 
         GameObject gObj2 = new GameObject("DialogueSFX");
         gObj2.transform.parent = myTrans;
@@ -30,6 +30,9 @@ public class DialoguePlayer : AudioPlayerControl
         activeSources.Add(diaSFX);
         diaSFX.outputAudioMixerGroup = sfx;
         diaSFX.volume = 1;
+
+        ingameVolume = 1f;
+        outgameVolume = 1f;
     }
 
     public void PlayDialogueAudio(AudioType type, string audioFileName)
@@ -60,37 +63,21 @@ public class DialoguePlayer : AudioPlayerControl
         }
         else { }
     }
-    
-    public override void PlayAll()
+
+    public override void ResetPlayer(AudioPlayerMode mode)
     {
-        base.PlayAll();
+        base.ResetPlayer(mode);
     }
-    public override void PauseAll()
+    public override void SetAudioPlayerState(AudioPlayerState state)
     {
-        base.PauseAll();
+        base.SetAudioPlayerState(state);
     }
-    public override void ResumeAll()
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
     {
-        base.ResumeAll();
+        base.SetVolume(volume, fadeDuration);
     }
-    public override void StopAll()
+    public override void SetVolumeZero(bool which)
     {
-        base.StopAll();
-    }
-    public override void ResetAll(float volumeValue)
-    {
-        base.ResetAll(volumeValue);
-    }
-    public override void SetVolumeHalf()
-    {
-        // ?필요없음
-    }
-    public override void SetVolumeNormal()
-    {
-        // ?필요없음
-    }
-    public override void SetVolumeZero()
-    {
-        // ?필요없음
+        base.SetVolumeZero(which);
     }
 }

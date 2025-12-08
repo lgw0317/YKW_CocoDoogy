@@ -18,7 +18,10 @@ public class AmbientPlayer : AudioPlayerControl
         this.myTrans = myTrans;
         audioPool = pool;
         coroutineHost = myTrans.GetComponent<MonoBehaviour>();
-        initVolume = 1f;
+        
+        setVolume = 1f;
+        ingameVolume = 1f;
+        outgameVolume = 1f;
     }
 
     public void PlayAudio(AudioClip clip, AudioMixerGroup group, bool loop, bool pooled, Vector3? pos = null)
@@ -83,56 +86,26 @@ public class AmbientPlayer : AudioPlayerControl
         }
     }
 
-    public override void PlayAll()
+    public override void ResetPlayer(AudioPlayerMode mode)
     {
-        base.PlayAll();
-        audioPool.PlayPool();
+        base.ResetPlayer(mode);
+        audioPool.ResetPool();
+        audioPool.SettingPool(mode);
     }
-
-    public override void PauseAll()
+    public override void SetAudioPlayerState(AudioPlayerState state)
     {
-        base.PauseAll();
-        audioPool.PausePool();
+        base.SetAudioPlayerState(state);
+        audioPool.SetAudioPoolState(state);
     }
-
-    public override void ResumeAll()
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
     {
-        base.ResumeAll();
-        audioPool.ResumePool();
+        base.SetVolume(volume, fadeDuration);
+        audioPool.SetPoolVolume(volume, fadeDuration);
     }
-
-    public override void ResetAll(float volumeValue)
+    public override void SetVolumeZero(bool which)
     {
-        base.ResetAll(volumeValue);
-        
-    }
-
-    public void ResetAll(float volumeValue, SFXMode sfxMode)
-    {
-        ResetAll(volumeValue);
-        audioPool.ResetPool(volumeValue);
-        audioPool.SettingPool(volumeValue,sfxMode);
-    }
-
-    public override void StopAll()
-    {
-        base.StopAll();
-        audioPool.StopPool();
-    }
-    public override void SetVolumeHalf()
-    {
-        base.SetVolumeHalf();
-        audioPool.SetPoolVolumeHalf();
-    }
-    public override void SetVolumeNormal()
-    {
-        base.SetVolumeNormal();
-        audioPool.SetPoolVolumeNormal();
-    }
-    public override void SetVolumeZero()
-    {
-        base.SetVolumeZero();
-        audioPool.SetPoolVolumeZero();
+        base.SetVolumeZero(which);
+        audioPool.SetVolumeZero(which);
     }
 
     private void NewDestroy(GameObject gObj, float length)

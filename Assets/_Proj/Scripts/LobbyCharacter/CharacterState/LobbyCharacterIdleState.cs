@@ -9,6 +9,7 @@ using UnityEngine.AI;
 public class LCocoDoogyIdleState : LobbyCharacterBaseState
 {
     private readonly NavMeshAgent agent;
+    private Coroutine waitCoroutine;
 
     public LCocoDoogyIdleState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
     {
@@ -21,7 +22,7 @@ public class LCocoDoogyIdleState : LobbyCharacterBaseState
         if (!agent.enabled) agent.enabled = true;
         agent.Warp(owner.transform.position);
 
-        owner.StartCoroutine(WaitThenMove());
+        waitCoroutine = owner.StartCoroutine(WaitThenMove());
     }
 
     public override void OnStateUpdate()
@@ -35,7 +36,11 @@ public class LCocoDoogyIdleState : LobbyCharacterBaseState
 
     public override void OnStateExit()
     {
-        owner.StopCoroutine(WaitThenMove());
+        if (waitCoroutine != null)
+        {
+            owner.StopCoroutine(waitCoroutine);
+            waitCoroutine = null;
+        }
     }
     
     private IEnumerator WaitThenMove()
@@ -52,6 +57,7 @@ public class LCocoDoogyIdleState : LobbyCharacterBaseState
 public class LMasterIdleState : LobbyCharacterBaseState
 {
     private readonly NavMeshAgent agent;
+    private Coroutine waitCoroutine;
 
     public LMasterIdleState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
     {
@@ -64,7 +70,7 @@ public class LMasterIdleState : LobbyCharacterBaseState
         if (!agent.enabled) agent.enabled = true;
         agent.Warp(owner.transform.position);
 
-        owner.StartCoroutine(WaitThenMove());
+        waitCoroutine = owner.StartCoroutine(WaitThenMove());
     }
 
     public override void OnStateUpdate()
@@ -78,7 +84,11 @@ public class LMasterIdleState : LobbyCharacterBaseState
 
     public override void OnStateExit()
     {
-        owner.StopCoroutine(WaitThenMove());
+        if (waitCoroutine != null)
+        {
+            owner.StopCoroutine(waitCoroutine);
+            waitCoroutine = null;
+        }
     }
     
     private IEnumerator WaitThenMove()
@@ -95,6 +105,7 @@ public class LMasterIdleState : LobbyCharacterBaseState
 public class LAnimalIdleState : LobbyCharacterBaseState
 {
     private readonly NavMeshAgent agent;
+    private Coroutine waitCoroutine;
 
     public LAnimalIdleState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm) : base(owner, fsm)
     {
@@ -107,7 +118,7 @@ public class LAnimalIdleState : LobbyCharacterBaseState
         if (!agent.enabled) agent.enabled = true;
         agent.Warp(owner.transform.position);
         
-        owner.StartCoroutine(WaitThenMove());
+        waitCoroutine = owner.StartCoroutine(WaitThenMove());
     }
 
     public override void OnStateUpdate()
@@ -121,7 +132,11 @@ public class LAnimalIdleState : LobbyCharacterBaseState
 
     public override void OnStateExit()
     {
-        owner.StopCoroutine(WaitThenMove());
+        if (waitCoroutine != null)
+        {
+            owner.StopCoroutine(waitCoroutine);
+            waitCoroutine = null;
+        }
     }
     
     private IEnumerator WaitThenMove()

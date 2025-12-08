@@ -37,41 +37,24 @@ public class SFXGroup : BaseAudioGroup
         player = new SFXPlayer(mixer, group, transform, audioPool);
     }
     public override void PostInit() { }
-    public override void PlayPlayer()
+
+    public override void SetAudioPlayerState(AudioPlayerState state)
     {
-        player.PlayAll();
-    }
-    public override void PausePlayer()
-    {
-        player.PauseAll();
-    }
-    public override void ResumePlayer()
-    {
-        player.ResumeAll();
-    }
-    public override void StopPlayer()
-    {
-        player.StopAll();
+        player.SetAudioPlayerState(state);
     }
 
-    public override void ResetPlayer(float volumeValue)
+    public override void ResetPlayer(AudioPlayerMode mode)
     {
-        player.ResetAll(volumeValue);
+        player.ResetPlayer(mode);
     }
-    public void ResetPlayer(float volumeValue, SFXMode sfXMode)
+
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
     {
-        player.ResetAll(volumeValue, sfXMode);
+        player.SetVolume(volume, fadeDuration);
     }
-    public override void SetVolumeHalf()
+
+    public override void SetVolumeZero(bool which)
     {
-        player.SetVolumeHalf();
-    }
-    public override void SetVolumeNormal()
-    {
-        player.SetVolumeNormal();
-    }
-    public override void SetVolumeZero()
-    {
-        player.SetVolumeZero();
+        player.SetVolumeZero(which);
     }
 }

@@ -24,10 +24,13 @@ public class AudioPool
     // 초기 생성된 풀(설정 변경용)
     private readonly List<AudioSource> poolList = new List<AudioSource>();
 
+    private float setVolume;
+
     public AudioPool(Transform parent, AudioMixerGroup defaultGroup, int size)
     {
         this.parent = parent;
         this.defaultGroup = defaultGroup;
+        setVolume = 1f;
 
         for (int i = 0; i < size; i++)
         {
@@ -51,7 +54,7 @@ public class AudioPool
         src.dopplerLevel = 0;
         src.reverbZoneMix = 0;
         src.spread = 180f;
-        src.volume = 1f;
+        src.volume = setVolume;
         src.pitch = 1f;
         src.spatialBlend = 1f;
 
@@ -124,6 +127,7 @@ public class AudioPool
     {
         if (src == null) return;
 
+        src.volume = setVolume;
         src.rolloffMode = AudioRolloffMode.Logarithmic;
         src.minDistance = 1.5f;
         src.maxDistance = 45f;
@@ -132,6 +136,7 @@ public class AudioPool
     {
         if (src == null) return;
 
+        src.volume = setVolume;
         src.rolloffMode = AudioRolloffMode.Custom;
         AnimationCurve curve = new AnimationCurve(
             new Keyframe(0f, 1f),
@@ -146,7 +151,56 @@ public class AudioPool
         src.maxDistance = 200f;
     }
 
-    public void PlayPool()
+    // 제어 
+    public virtual void SetAudioPoolState(AudioPlayerState state)
+    {
+        switch (state)
+        {
+            case AudioPlayerState.Play:
+            PlayPool();
+            break;
+            case AudioPlayerState.Pause:
+            PausePool();
+            break;
+            case AudioPlayerState.Resume:
+            ResumePool();
+            break;
+            case AudioPlayerState.Stop:
+            StopPool();
+            break;
+        }
+    }
+
+    public void SetPoolVolume(float volume, float fadeDuration = 0.5f)
+    {
+        foreach (var src in poolList)
+        {
+            if (DOTween.IsTweening(src, true))
+            {
+                src.DOKill();
+            }
+            src.DOFade(volume, fadeDuration);
+        }
+    }
+
+    public void SetVolumeZero(bool which)
+    {
+        if (which)
+        {
+            foreach (var src in poolList)
+            {
+                src.volume = 0f;
+            }
+        }
+        else
+        {
+            foreach (var src in poolList)
+            {
+                src.volume = setVolume;
+            }
+        }
+    }
+    private void PlayPool()
     {
         // 중간에 Destroy 된 애들 제거
         CleanupActiveList();
@@ -157,7 +211,7 @@ public class AudioPool
         }
     }
 
-    public void PausePool()
+    private void PausePool()
     {
         CleanupActiveList();
 
@@ -167,7 +221,7 @@ public class AudioPool
         }
     }
 
-    public void ResumePool()
+    private void ResumePool()
     {
         CleanupActiveList();
 
@@ -177,7 +231,7 @@ public class AudioPool
         }
     }
 
-    public void StopPool()
+    private void StopPool()
     {
         CleanupActiveList();
 
@@ -194,7 +248,7 @@ public class AudioPool
     /// <summary>
     /// 볼륨/루프/클립 초기화 + newPooled 정리
     /// </summary>
-    public void ResetPool(float volumeValue)
+    public void ResetPool()
     {
         // activePool 정리
         CleanupActiveList();
@@ -205,7 +259,7 @@ public class AudioPool
             {
                 if (src.isPlaying) src.Stop();
                 src.loop = false;
-                src.volume = volumeValue;
+                src.volume = setVolume;
                 src.pitch = 1f;
                 src.clip = null;
             }
@@ -245,20 +299,18 @@ public class AudioPool
     /// <summary>
     /// 초기 풀에 볼륨/거리 셋팅
     /// </summary>
-    public void SettingPool(float volumeValue, SFXMode sfxMode)
+    public void SettingPool(AudioPlayerMode mode)
     {
         foreach (var src in poolList)
         {
             if (src != null)
             {
-                src.volume = volumeValue;
-
-                switch (sfxMode)
+                switch (mode)
                 {
-                    case SFXMode.InGame:
+                    case AudioPlayerMode.InGame:
                         SetInGameMode(src);
                         break;
-                    case SFXMode.OutGame:
+                    case AudioPlayerMode.OutGame:
                         SetOutGameMode(src);
                         break;
                 }
@@ -266,56 +318,7 @@ public class AudioPool
         }
     }
 
-    public void SetPoolVolumeHalf()
-    {
-        CleanupActiveList();
-
-        foreach (var src in poolList)
-        {
-            if (src != null)
-            {
-                if (DOTween.IsTweening(src, true))
-                {
-                    src.DOKill();
-                }
-                src.DOFade(0.3f, 0.3f);
-            }
-        }
-    }
-
-    public void SetPoolVolumeNormal()
-    {
-        CleanupActiveList();
-
-        foreach (var src in poolList)
-        {
-            if (src != null)
-            {
-                if (DOTween.IsTweening(src, true))
-                {
-                    src.DOKill();
-                }
-                src.DOFade(1, 0.3f);
-            }
-        }
-    }
-
-    public void SetPoolVolumeZero()
-    {
-        CleanupActiveList();
-
-        foreach (var src in poolList)
-        {
-            if (src != null)
-            {
-                if (DOTween.IsTweening(src, true))
-                {
-                    src.DOKill();
-                }
-                src.DOFade(0, 0.2f);
-            }
-        }
-    }
+    
 
     /// <summary>
     /// 특정 클립을 재생 중인 Pool 안에 상태를 제어하는 메서드

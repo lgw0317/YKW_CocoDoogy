@@ -27,7 +27,7 @@ public class LCocoDoogyClickState : LobbyCharacterBaseState
     public override void OnStateExit()
     {
         charAnim.DefaultAnimSpeed();
-        if (agent.enabled && agent.isStopped) agent.isStopped = false;
+        //if (agent.enabled && agent.isStopped) agent.isStopped = false;
     }
 }
 
@@ -58,7 +58,7 @@ public class LMasterClickState : LobbyCharacterBaseState
     public override void OnStateExit()
     {
         charAnim.DefaultAnimSpeed();
-        if (agent.enabled && agent.isStopped) agent.isStopped = false;
+        //if (agent.enabled && agent.isStopped) agent.isStopped = false;
     }
 }
 
@@ -89,6 +89,6 @@ public class LAnimalClickState : LobbyCharacterBaseState
     public override void OnStateExit()
     {
         charAnim.DefaultAnimSpeed();
-        if (agent.enabled && agent.isStopped) agent.isStopped = false;
+        //if (agent.enabled && agent.isStopped) agent.isStopped = false;
     }
 }

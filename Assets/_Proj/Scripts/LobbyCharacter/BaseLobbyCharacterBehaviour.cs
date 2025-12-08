@@ -101,19 +101,14 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
                 StopMoving();
                 break;
             case "Animal":
-                //Unregister();
                 StopMoving();
                 break;
             default: throw new Exception("누구세요?");
         }
     }
 
-    protected void OnDestroy()
+    protected virtual void OnDestroy()
     {
-        if (gameObject.CompareTag("Animal"))
-        {
-            Unregister();
-        }
     }
     
     public void SetCocoMasterIsActive(bool which)
@@ -136,9 +131,12 @@ public abstract class BaseLobbyCharacterBehaviour : MonoBehaviour, ILobbyInterac
     // 애니메이션 이벤트 마지막 부분에
     public void FromAToB()
     {
-        fsm.ChangeState(IdleState); 
+        if (fsm.CurrentState == ClickSate || fsm.CurrentState == InteractState)
+        {
+            fsm.ChangeState(IdleState); 
+        }
     }
-    
+
     /// <summary>
     /// 상호작용 상태로 만들어버리기
     /// </summary>

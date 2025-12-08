@@ -20,37 +20,24 @@ public class CutsceneGroup : BaseAudioGroup
         player = new CutscenePlayer(mixer, transform, group);
     }
     public override void PostInit() { }
-    public override void PlayPlayer()
+
+    public override void ResetPlayer(AudioPlayerMode mode)
     {
-        player.PlayAll();
-    }
-    public override void PausePlayer()
-    {
-        player.PauseAll();
-    }
-    public override void ResumePlayer()
-    {
-        player.ResumeAll();
-    }
-    public override void StopPlayer()
-    {
-        player.StopAll();
-    }
-    public override void ResetPlayer(float volumeValue)
-    {
-        player.ResetAll(volumeValue);
-    }
-    public override void SetVolumeHalf()
-    {
-        // ?필요없음
-    }
-    public override void SetVolumeNormal()
-    {
-        
+        player.ResetPlayer(mode);
     }
 
-    public override void SetVolumeZero()
+    public override void SetAudioPlayerState(AudioPlayerState state)
     {
-        
+        player.SetAudioPlayerState(state);
+    }
+
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
+    {
+        player.SetVolume(volume, fadeDuration);
+    }
+
+    public override void SetVolumeZero(bool which)
+    {
+        player.SetVolumeZero(which);
     }
 }

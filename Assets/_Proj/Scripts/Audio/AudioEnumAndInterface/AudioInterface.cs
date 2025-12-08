@@ -39,13 +39,9 @@ public interface IAudioController
     void Init();
     void PostInit();
 
-    void PlayPlayer();
-    void PausePlayer();
-    void ResumePlayer();
-    void StopPlayer();
-    void ResetPlayer(float volumeValue);
-    void SetVolumeHalf();
-    void SetVolumeNormal();
-    void SetVolumeZero();
+    void SetAudioPlayerState(AudioPlayerState state);
+    void ResetPlayer(AudioPlayerMode mode);
+    void SetVolume(float volume, float fadeDuration = 0.5F);
+    void SetVolumeZero(bool which);
 }
 

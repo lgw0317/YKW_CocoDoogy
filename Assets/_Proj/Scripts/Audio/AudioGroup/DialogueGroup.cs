@@ -22,37 +22,21 @@ public class DialogueGroup : BaseAudioGroup
         player = new DialoguePlayer(mixer, transform, bgm, sfx);
     }
     public override void PostInit() { }
-    public override void PlayPlayer()
-    {
-        player.PlayAll();
-    }
-    public override void PausePlayer()
-    {
-        player.PauseAll();
-    }
-    public override void ResumePlayer()
-    {
-        player.ResumeAll();
-    }
-    public override void StopPlayer()
-    {
-        player.StopAll();
-    }
-    public override void ResetPlayer(float volumeValue)
-    {
-        player.ResetAll(volumeValue);
-    }
-    public override void SetVolumeHalf()
-    {
-        // ?필요없음
-    }
-    public override void SetVolumeNormal()
-    {
-        // ?필요없음
-    }
 
-    public override void SetVolumeZero()
+    public override void SetAudioPlayerState(AudioPlayerState state)
     {
-        // ?필요없음
+        player.SetAudioPlayerState(state);
+    }
+    public override void ResetPlayer(AudioPlayerMode mode)
+    {
+        player.ResetPlayer(mode);
+    }
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
+    {
+        player.SetVolume(volume, fadeDuration);
+    }
+    public override void SetVolumeZero(bool which)
+    {
+        player.SetVolumeZero(which);
     }
 }

@@ -11,6 +11,7 @@ public class LMasterMoveState : LobbyCharacterBaseState
     private LMasterRouteManager route;
     private Transform startPoint; // 지금은 마스터의 포지션으로 되어있는데 로비매니저 정리되면 스타트 
     private WaitForSeconds wait = new(1f);
+    private Coroutine moveCoroutine;
     private float timeToStuck = 0;
 
     public LMasterMoveState(BaseLobbyCharacterBehaviour owner, LobbyCharacterFSM fsm, NavMeshAgentControl charAgent) : base(owner, fsm)
@@ -30,19 +31,13 @@ public class LMasterMoveState : LobbyCharacterBaseState
         // 루틴 초기화
         route.RefreshDecoList();
         //owner.EndRoutine();
-        owner.StartCoroutine(MoveRoutine());
+        moveCoroutine = owner.StartCoroutine(MoveRoutine());
         
     }
     public override void OnStateUpdate()
     {
         if (owner.gameObject.IsDestroyed()) owner.StopAllCoroutines();
         
-        // 코코두기 상호작용
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-        {
-            //fsm.ChangeState(new LCocoDoogyInteractState(owner, fsm, waypoints));
-            //fsm.ChangeState();
-        }
         // 이동 중 멈춤 감지
         if (!agent.isStopped && agent.velocity.sqrMagnitude < 0.01f)
         {
@@ -60,7 +55,11 @@ public class LMasterMoveState : LobbyCharacterBaseState
     public override void OnStateExit()
     {
         timeToStuck = 0f;
-        owner.StopAllCoroutines();
+        if (moveCoroutine != null)
+        {
+            owner.StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
         agent.ResetPath();
     }
 
@@ -68,6 +67,7 @@ public class LMasterMoveState : LobbyCharacterBaseState
     {
         while (true)
         {
+
             Transform next = route.GetNextDeco();
 
             if (route.hasComplete)

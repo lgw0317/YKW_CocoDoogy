@@ -174,8 +174,8 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
     }
 
     // 오디오 그룹 제어
-    public void EnterChapterPanel() => AudioGroupController.SetVolumeOneORZero(true);
-    public void ExitChapterOrStagePanel() => AudioGroupController.SetVolumeOneORZero(false);
+    public void EnterChapterPanel() => AudioGroupController.SetEnterChapterPanel(true);
+    public void ExitChapterOrStagePanel() => AudioGroupController.SetEnterChapterPanel(false);
     public void EnterDialogue() => AudioGroupController.SetDialogueState(true);
     public void ExitDialogue() => AudioGroupController.SetDialogueState(false);
 
@@ -188,11 +188,11 @@ public class AudioManager : MonoBehaviour, IAudioGroupSetting
         // 중요: 스테이지 씬 챕터 추가시 기존 스테이지 씬 이름 처럼 _StageScene으로 해주세요
         if (scne.name.Contains("_StageScene"))
         {
-            AudioGroupController.ResetAllAudioGroupInGame();
+            AudioGroupController.ResetAllAudioGroup(AudioPlayerMode.InGame);
         }
         else
         {
-            AudioGroupController.ResetAllAudioGroupOutGame();
+            AudioGroupController.ResetAllAudioGroup(AudioPlayerMode.OutGame);
             sAudio = FindFirstObjectByType<SceneAudio>();
             if (sAudio != null)
             {

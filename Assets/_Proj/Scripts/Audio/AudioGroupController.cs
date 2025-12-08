@@ -9,54 +9,19 @@ public class AudioGroupController
         this.audioGroups = audioGroups;
     }
 
-    public void PlayAllAudioGroup()
+    public void SetAllStateAudioGroup(AudioPlayerState state)
     {
         foreach (IAudioController aG in audioGroups)
         {
-            aG.PlayPlayer();
+            aG.SetAudioPlayerState(state);
         }
     }
-    public void PauseAllAudioGroup()
+
+    public void ResetAllAudioGroup(AudioPlayerMode mode)
     {
         foreach (IAudioController aG in audioGroups)
         {
-            aG.PausePlayer();
-        }
-    }
-    public void ResumeAllAudioGroup()
-    {
-        foreach (IAudioController aG in audioGroups)
-        {
-            aG.ResumePlayer();
-        }
-    }
-    public void StopAllAudioGroup()
-    {
-        foreach (IAudioController aG in audioGroups)
-        {
-            aG.StopPlayer();
-        }
-    }
-    public void ResetAllAudioGroupOutGame()
-    {
-        foreach (IAudioController aG in audioGroups)
-        {
-            if (aG is SFXGroup) (aG as SFXGroup).ResetPlayer(1f, SFXMode.OutGame);
-            else if (aG is AmbientGroup) (aG as AmbientGroup).ResetPlayer(1f, SFXMode.OutGame);
-            else if (aG is CutsceneGroup) aG.ResetPlayer(0.7f);
-            else if (aG is UIGroup) aG.ResetPlayer(0.34f);
-            else aG.ResetPlayer(1f);
-        }
-    }
-    public void ResetAllAudioGroupInGame()
-    {
-        foreach (IAudioController aG in audioGroups)
-        {
-            if (aG is SFXGroup) (aG as SFXGroup).ResetPlayer(1f, SFXMode.InGame);
-            else if (aG is AmbientGroup) (aG as AmbientGroup).ResetPlayer(1f, SFXMode.InGame);
-            else if (aG is CutsceneGroup) aG.ResetPlayer(0.7f);
-            else if (aG is UIGroup) aG.ResetPlayer(1f);
-            else aG.ResetPlayer(1f);
+            aG.ResetPlayer(mode);
         }
     }
 
@@ -64,13 +29,14 @@ public class AudioGroupController
     /// true = 볼륨 0, false = 볼륨 1
     /// </summary>
     /// <param name="isEntering"></param>
-    public void SetVolumeOneORZero(bool isEntering)
+    public void SetEnterChapterPanel(bool isEntering)
     {
         foreach (IAudioController aG in audioGroups)
         {
             if (aG is BGMGroup) continue;
-            if (isEntering) aG.SetVolumeZero();
-            else if (!isEntering) aG.SetVolumeNormal();
+            if (aG is UIGroup) continue;
+            if (isEntering) aG.SetVolumeZero(true);
+            else if (!isEntering) aG.SetVolumeZero(false);
         }
     }
     /// <summary>
@@ -81,10 +47,18 @@ public class AudioGroupController
     {
         foreach (IAudioController aG in audioGroups)
         {
-            if (aG is DialogueGroup) aG.ResetPlayer(1f);
+                if (aG is UIGroup) continue;
 
-            if (isEntering && aG is not DialogueGroup) aG.SetVolumeHalf();
-            else if (!isEntering && aG is not DialogueGroup) aG.SetVolumeNormal();
+            if (isEntering)
+            {
+                if (aG is DialogueGroup) aG.SetVolumeZero(false);
+                aG.SetVolume(0.1f, 0.2f);
+            } 
+            else
+            {
+                if (aG is DialogueGroup) aG.SetVolumeZero(true);
+                aG.SetVolumeZero(false);
+            }
         }
     }
 
@@ -99,13 +73,13 @@ public class AudioGroupController
 
             if (isEntering)
             {
-                if (aG is CutsceneGroup) aG.PlayPlayer();
-                else aG.PausePlayer();  
+                if (aG is CutsceneGroup) aG.SetVolumeZero(false);
+                else aG.SetVolumeZero(true); 
             }
             else
             {
-                if (aG is CutsceneGroup) aG.StopPlayer();
-                else aG.ResumePlayer();  
+                if (aG is CutsceneGroup) aG.SetVolumeZero(true);
+                else aG.SetVolumeZero(false);  
             }
         }
     }

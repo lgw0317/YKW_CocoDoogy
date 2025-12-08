@@ -8,6 +8,7 @@ public class LAnimalMoveState : LobbyCharacterBaseState
     private readonly NavMeshAgent agent;
     private readonly NavMeshAgentControl charAgent;
     private Transform targetDeco;
+    private Coroutine moveCoroutine;
     private float decoDetectRadius = 20f;
     private float timeToStuck = 0f;
 
@@ -26,17 +27,12 @@ public class LAnimalMoveState : LobbyCharacterBaseState
         if (agent.enabled && agent.isStopped) agent.isStopped = false;
 
         //owner.EndRoutine();
-        owner.StartCoroutine(Move());
+        moveCoroutine = owner.StartCoroutine(Move());
     }
     public override void OnStateUpdate()
     {
         if (owner.gameObject.IsDestroyed()) owner.StopAllCoroutines();
         
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-        {
-            //fsm.ChangeState(new LCocoDoogyInteractState(owner, fsm, waypoints));
-            //fsm.ChangeState();
-        }
         // 이동 중 멈춤 감지
         if (!agent.isStopped && agent.velocity.sqrMagnitude < 0.01f)
         {
@@ -54,7 +50,11 @@ public class LAnimalMoveState : LobbyCharacterBaseState
     public override void OnStateExit()
     {
         timeToStuck = 0f;
-        owner.StopAllCoroutines();
+        if (moveCoroutine != null)
+        {
+            owner.StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
         agent.ResetPath();
     }
     

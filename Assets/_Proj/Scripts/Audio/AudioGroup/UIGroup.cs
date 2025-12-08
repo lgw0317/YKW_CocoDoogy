@@ -19,37 +19,22 @@ public class UIGroup : BaseAudioGroup
         player = new UIPlayer(mixer, transform, group);
     }
     public override void PostInit() { }
-    // UI는 oneshot이니 제어 X
-    public override void PlayPlayer()
+
+    public override void SetAudioPlayerState(AudioPlayerState state)
     {
-        player.PlayAll();
+        player.SetAudioPlayerState(state);
     }
-    public override void PausePlayer()
+    public override void ResetPlayer(AudioPlayerMode mode)
     {
-        player.PauseAll();
+        player.ResetPlayer(mode);
     }
-    public override void ResumePlayer()
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
     {
-        player.ResumeAll();
+        player.SetVolume(volume, fadeDuration);
     }
-    public override void StopPlayer()
+    public override void SetVolumeZero(bool which)
     {
-        player.StopAll();
+        player.SetVolumeZero(which);
     }
-    public override void ResetPlayer(float volumeValue)
-    {
-        player.ResetAll(volumeValue);
-    }
-    public override void SetVolumeHalf()
-    {
-        // ?필요없음
-    }
-    public override void SetVolumeNormal()
-    {
-        // ?필요없음
-    }
-    public override void SetVolumeZero()
-    {
-        // ?필요없음
-    }
+
 }

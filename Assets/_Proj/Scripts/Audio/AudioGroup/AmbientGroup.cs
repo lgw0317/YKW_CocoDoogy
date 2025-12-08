@@ -26,56 +26,32 @@ public class AmbientGroup : BaseAudioGroup
         player.PlayAudio(clip, group, loop, pooled, pos);
     }
 
-    // ����� ����
-    public override void PlayPlayer()
+
+    public override void SetAudioPlayerState(AudioPlayerState state)
     {
-        player.PlayAll();
+        player.SetAudioPlayerState(state);
     }
 
-    public override void PausePlayer()
+    public override void ResetPlayer(AudioPlayerMode mode)
     {
-        player.PauseAll();
+        player.ResetPlayer(mode);
     }
 
-    public override void ResumePlayer()
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
     {
-        player.ResumeAll();
+        player.SetVolume(volume, fadeDuration);
     }
 
-    public override void StopPlayer()
+    public override void SetVolumeZero(bool which)
     {
-        player.StopAll();
-    }
-
-    public override void ResetPlayer(float volumeValue)
-    {
-        player.ResetAll(volumeValue);
+        player.SetVolumeZero(which);
     }
     
-    public void ResetPlayer(float volumeValue, SFXMode sfxMode)
-    {
-        ResetPlayer(volumeValue);
-        audioPool.ResetPool(volumeValue);
-        audioPool.SettingPool(volumeValue,sfxMode);
-    }
-
-    public override void SetVolumeHalf()
-    {
-        player.SetVolumeHalf();
-    }
-
-    public override void SetVolumeNormal()
-    {
-        player.SetVolumeNormal();
-    }
-
-    public override void SetVolumeZero()
-    {
-        player.SetVolumeZero();
-    }
+    
 
     public void CustomPlayerControl()
     {
         // ?필요없음
     }
+
 }

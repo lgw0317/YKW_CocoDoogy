@@ -30,7 +30,11 @@ public class SFXPlayer : AudioPlayerControl
         currentNotPooledSource.volume = 1f;
         currentNotPooledSource.dopplerLevel = 0f;
         currentNotPooledSource.reverbZoneMix = 0f;
-        initVolume = currentNotPooledSource.volume;
+
+        setVolume = currentNotPooledSource.volume;
+        ingameVolume = 1f;
+        outgameVolume = 1f;
+        
         currentNotPooledSource.pitch = 1f;
         currentNotPooledSource.rolloffMode = AudioRolloffMode.Custom;
         AnimationCurve curve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(50f, 0.877f), new Keyframe(60f, 0.59f), new Keyframe(80f, 0.34f), new Keyframe(128f, 0.125f), new Keyframe(200f, 0.002f));
@@ -82,52 +86,30 @@ public class SFXPlayer : AudioPlayerControl
             if (loop) { }
         }
     }
-    
-    public override void PlayAll()
+
+    // 제어
+    public override void ResetPlayer(AudioPlayerMode mode)
     {
-        base.PlayAll();
-        audioPool.PlayPool();
+        base.ResetPlayer(mode);
+        audioPool.ResetPool();
+        audioPool.SettingPool(mode);
     }
-    public override void PauseAll()
+    public override void SetAudioPlayerState(AudioPlayerState state)
     {
-        base.PauseAll();
-        audioPool.PausePool();
+        base.SetAudioPlayerState(state);
+        audioPool.SetAudioPoolState(state);
     }
-    public override void ResumeAll()
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
     {
-        base.ResumeAll();
-        audioPool.ResumePool();
+        base.SetVolume(volume, fadeDuration);
+        audioPool.SetPoolVolume(volume, fadeDuration);
     }
-    public override void ResetAll(float volumeValue)
+    public override void SetVolumeZero(bool which)
     {
-        base.ResetAll(volumeValue);
+        base.SetVolumeZero(which);
+        audioPool.SetVolumeZero(which);
     }
-    public void ResetAll(float volumeValue, SFXMode sfxMode)
-    {
-        ResetAll(volumeValue);
-        audioPool.ResetPool(volumeValue);
-        audioPool.SettingPool(volumeValue,sfxMode);
-    }
-    public override void StopAll()
-    {
-        base.StopAll();
-        audioPool.StopPool();
-    }
-    public override void SetVolumeHalf()
-    {
-        base.SetVolumeHalf();
-        audioPool.SetPoolVolumeHalf();
-    }
-    public override void SetVolumeNormal()
-    {
-        base.SetVolumeNormal();
-        audioPool.SetPoolVolumeNormal();
-    }
-    public override void SetVolumeZero()
-    {
-        base.SetVolumeZero();
-        audioPool.SetPoolVolumeZero();
-    }
+    //
 
     public void CustomPoolSourceInPool(AudioClip clip, int mode, float? volumeValue = null)
     {
@@ -143,10 +125,4 @@ public class SFXPlayer : AudioPlayerControl
             activeSources.Remove(aS);
         }
     }
-    // PlayOneShot()
-    // �� : (�ܹ߼� ȿ������ �ſ� ����) (������ AudioSource�� ���� �� ���� �ʿ� ����) (Ǯ�� ���� ����ȭ ����)
-    // �� : (�޸𸮿� ����� ä���� �� ���� ���) (loop �Ұ�) (Stop()���� �ߴ� �Ұ��� : ������ ���)
-    // ���� �� �����Ǵ� ���� �������.
-    // �ʱ�ȭ �� ������ȯ�� ��������
-
 }

@@ -14,13 +14,18 @@ public class BGMPlayer : AudioPlayerControl
     {
         this.mixer = mixer;
         this.myTrans = myTrans;
+
+        setVolume = 0.9f;
+        ingameVolume = 0.32f;
+        outgameVolume = 0.9f;
+        
         GameObject gObj = new GameObject($"BGMPlayer");
         gObj.transform.parent = myTrans;
         currentSource = gObj.AddComponent<AudioSource>();
         activeSources.Add(currentSource);
         currentSource.outputAudioMixerGroup = group;
-        currentSource.volume = 0.8f;
-        initVolume = currentSource.volume;
+        currentSource.volume = setVolume;
+        setVolume = currentSource.volume;
     }
 
     public void PlayAudio(AudioClip clip, float fadeIn, float fadeOut, bool loop, bool forcePlay = false)
@@ -28,16 +33,14 @@ public class BGMPlayer : AudioPlayerControl
 
         if (!forcePlay && currentSource.isPlaying && currentSource.clip == clip) return;
 
-        currentSource.DOKill();
-        currentSource.DOFade(0f, fadeOut).OnComplete(() =>
-        {
-            Debug.Log($"BGMPlayer : DoTween fadeOut 끝 재생 시작");
-            currentSource.clip = clip;
-            currentSource.loop = loop;
-            //currentSource.volume = 0f;
-            currentSource.Play();
-            currentSource.DOFade(initVolume, fadeIn);
-        });
+        if (DOTween.IsTweening(currentSource, true)) currentSource.DOKill();
+        currentSource.volume = 0f;
+        Debug.Log($"BGMPlayer : DoTween fadeOut 끝 재생 시작");
+        currentSource.clip = clip;
+        currentSource.loop = loop;
+        //currentSource.volume = 0f;
+        currentSource.Play();
+        currentSource.DOFade(setVolume, fadeIn);
     }
 
     public void PlayBGMForResources(AudioClip clip, float fadeIn, float fadeOut, bool loop)
@@ -49,53 +52,39 @@ public class BGMPlayer : AudioPlayerControl
         }
         if (clip != null)
         {
-            currentSource.DOKill();
-            currentSource.DOFade(0f, fadeOut).OnComplete(() =>
-            {
-                currentSource.clip = clip;
-                currentSource.loop = loop;
-                //currentSource.volume = 0f;
-                currentSource.Play();
-                currentSource.DOFade(initVolume, fadeIn);
-            });
+            if (DOTween.IsTweening(currentSource, true)) currentSource.DOKill();
+            currentSource.volume = 0f;
+            currentSource.clip = clip;
+            currentSource.loop = loop;
+            //currentSource.volume = 0f;
+            currentSource.Play();
+            currentSource.DOFade(setVolume, fadeIn);
         }
         else
         {
             Debug.Log($"BGMPlayer : AudioClip 없음");
         }
     }
+    
+    public override void SetAudioPlayerState(AudioPlayerState state)
+    {
+        base.SetAudioPlayerState(state);
+    }
 
-    public override void PlayAll()
+    public override void ResetPlayer(AudioPlayerMode mode)
     {
-        base.PlayAll();
+        base.ResetPlayer(mode);
     }
-    public override void PauseAll()
+
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
     {
-        base.PauseAll();
+        base.SetVolume(volume, fadeDuration);
     }
-    public override void ResumeAll()
+
+    public override void SetVolumeZero(bool which)
     {
-        base.ResumeAll();
+        base.SetVolumeZero(which);
     }
-    public override void StopAll()
-    {
-        base.StopAll();
-    }
-    public override void ResetAll(float volumeValue)
-    {
-        base.ResetAll(volumeValue);
-    }
-    public override void SetVolumeHalf()
-    {
-        base.SetVolumeHalf();
-    }
-    public override void SetVolumeNormal()
-    {
-        base.SetVolumeNormal();
-    }
-    public override void SetVolumeZero()
-    {
-        base.SetVolumeZero();
-    }
+
 }
 

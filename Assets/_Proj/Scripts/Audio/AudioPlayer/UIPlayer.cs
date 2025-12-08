@@ -18,8 +18,11 @@ public class UIPlayer : AudioPlayerControl
         activeSources.Add(currentSource);
         currentSource.outputAudioMixerGroup = group;
         currentSource.loop = false;
-        currentSource.volume = 0.34f;
-        initVolume = currentSource.volume;
+        currentSource.volume = 0.5f;
+
+        setVolume = currentSource.volume;
+        ingameVolume = 1f;
+        outgameVolume = 0.5f;
     }
 
     public void PlayAudio(AudioClip clip)
@@ -28,18 +31,20 @@ public class UIPlayer : AudioPlayerControl
         currentSource.PlayOneShot(clip);
     }
 
-    public override void PlayAll() { }
-    public override void PauseAll() { }
-    public override void ResumeAll() { }
-    public override void StopAll() { }
-    public override void ResetAll(float volumeValue)
+    public override void ResetPlayer(AudioPlayerMode mode)
     {
-        foreach (var src in activeSources)
-        {
-            src.volume = volumeValue;
-        }
+        base.ResetPlayer(mode);
     }
-    public override void SetVolumeHalf() { }
-    public override void SetVolumeNormal() { }
-    public override void SetVolumeZero() { }
+    public override void SetAudioPlayerState(AudioPlayerState state)
+    {
+        base.SetAudioPlayerState(state);
+    }
+    public override void SetVolume(float volume, float fadeDuration = 0.5F)
+    {
+        base.SetVolume(volume, fadeDuration);
+    }
+    public override void SetVolumeZero(bool which)
+    {
+        base.SetVolumeZero(which);
+    }
 }

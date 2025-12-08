@@ -54,7 +54,10 @@ public class MasterBehaviour : BaseLobbyCharacterBehaviour
     }
     public void ChangeUniqueState()
     {
-        fsm.ChangeState(UniqueState);
+        if (fsm.CurrentState == DragState)
+        {
+            fsm.ChangeState(UniqueState);
+        }
     }
 
     //코코두기 상호작용
