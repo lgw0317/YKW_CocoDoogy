@@ -17116,6 +17116,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CheatButton
       objectReference: {fileID: 0}
+    - target: {fileID: 692959971482667569, guid: f27828f5dfdc1984ba99bf008f630a2f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1851373538913116153, guid: f27828f5dfdc1984ba99bf008f630a2f, type: 3}
       propertyPath: m_Pivot.x
       value: 1
