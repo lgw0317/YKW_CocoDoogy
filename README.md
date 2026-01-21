@@ -68,7 +68,7 @@ Unity를 활용하여 제작하였습니다.
 
 2.3 플레이 가능 영역 재설정 로직 구성
 
-관련 스크립트: [IEdgeColliderHandler.cs](Assets/_Proj/Scripts/Stage/IEdgeColliderHandler.cs)
+관련 스크립트: [IEdgeColliderHandler.cs](Assets/_Proj/Scripts/Stage/Block/Interfaces/IEdgeColliderHandler.cs)
 
 * IEdgeCollider 인터페이스 구성
 * Unity 물리 기능 활용, 통과 가능 여부 능동적 재설정 기능 구현
