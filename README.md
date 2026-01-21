@@ -60,7 +60,7 @@ Unity를 활용하여 제작하였습니다.
 
 2.2 유저 데이터 핸들링, 직렬화 및 저장(Firebase Realtime DB)
 
-관련 스크립트: [UserData.cs](Assets/_Proj/Firebase/UserData.cs)
+관련 스크립트: [UserData.cs](Assets/_Proj/Scripts/Firebase/UserData.cs)
 
 * 직렬화 가능 아키텍쳐 설계, 업로드/다운로드 API 구현
 * 부분 저장으로 패킷 최적화
@@ -68,7 +68,7 @@ Unity를 활용하여 제작하였습니다.
 
 2.3 플레이 가능 영역 재설정 로직 구성
 
-관련 스크립트: [IEdgeColliderHandler.cs](Assets/_Proj/Stage/IEdgeColliderHandler.cs)
+관련 스크립트: [IEdgeColliderHandler.cs](Assets/_Proj/Scripts/Stage/IEdgeColliderHandler.cs)
 
 * IEdgeCollider 인터페이스 구성
 * Unity 물리 기능 활용, 통과 가능 여부 능동적 재설정 기능 구현
@@ -76,14 +76,14 @@ Unity를 활용하여 제작하였습니다.
 
 2.4 친구 기능 내부구현 비동기 처리
 
-관련 스크립트: [FirebaseManager.cs](Assets/_Proj/Managers/FirebaseManager.cs)
+관련 스크립트: [FirebaseManager.cs](Assets/_Proj/Scripts/Managers/FirebaseManager.cs)
 
 * DB로부터 데이터 인바운드할 수 있도록 처리
 
 
 2.5 퀘스트 진행도 누적 기능 구현
 
-관련 스크립트: [QuestManager.cs](Assets/_Proj/Quest/QuestManager.cs)
+관련 스크립트: [QuestManager.cs](Assets/_Proj/Scripts/Quest/QuestManager.cs)
 
 * IQuestBehaviour 인터페이스 구성
 * 인터페이스 전용 메서드를 통한 우회 처리로 오류 최소화
@@ -91,11 +91,15 @@ Unity를 활용하여 제작하였습니다.
 
 2.6 입력 방향 스냅 로직 구성
 
+관련 스크립트: [Joystick.cs](Assets/_Proj/Scripts/Player/Joystick.cs)
+
 * 상하좌우 강한 스냅, 대각선 방향 약한 스냅
 * 조작감 개선 처리
 
 
 2.7 게임 플로우 로직 전반 구성
+
+관련 스크립트: [TitleSceneManager.cs](Assets/_Proj/Scripts/Title/TitleSceneManager.cs)
 
 * 타이틀, 스테이지 씬 플로우 로직 구성
 * 메뉴 기능 작동을 통한 데이터 핸들링, 업로드/다운로드 로직 전반 구성
