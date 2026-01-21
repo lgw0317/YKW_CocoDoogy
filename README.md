@@ -52,7 +52,7 @@ Unity를 활용하여 제작하였습니다.
 
 2.1 익명 로그인/구글 로그인 및 익명-구글계정 연동 기능
 
-관련 스크립트: [FirebaseManager.cs](Assets/_Proj/Managers/FirebaseManager.cs)
+관련 스크립트: [FirebaseManager.cs](Assets/_Proj/Scripts/Managers/FirebaseManager.cs)
 
 * Firebase Auth SDK 활용
 * Google Signin SDK 활용
